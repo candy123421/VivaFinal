@@ -5,30 +5,30 @@ import java.util.Date;
 public class UserQuestion {
 	
 	private int qNo;
+	private String qTitle;
 	private String qContent;
 	private String qProcess;
 	private Date qDate;
-	private String qTitle;
 	private int userNo;
-	private int aNo;
 	
 	public UserQuestion() {	}
 
-	public UserQuestion(int qNo, String qContent, String qProcess, Date qDate, String qTitle, int userNo, int aNo) {
+	public UserQuestion(int qNo, String qTitle, String qContent, String qProcess, Date qDate, int userNo) {
 		super();
 		this.qNo = qNo;
+		this.qTitle = qTitle;
 		this.qContent = qContent;
 		this.qProcess = qProcess;
 		this.qDate = qDate;
-		this.qTitle = qTitle;
 		this.userNo = userNo;
-		this.aNo = aNo;
 	}
+	
+	
 
 	@Override
 	public String toString() {
-		return "UserQuestion [qNo=" + qNo + ", qContent=" + qContent + ", qProcess=" + qProcess + ", qDate=" + qDate
-				+ ", qTitle=" + qTitle + ", userNo=" + userNo + ", aNo=" + aNo + "]";
+		return "UserQuestion [qNo=" + qNo + ", qTitle=" + qTitle + ", qContent=" + qContent + ", qProcess=" + qProcess
+				+ ", qDate=" + qDate + ", userNo=" + userNo + "]";
 	}
 
 	public int getqNo() {
@@ -37,6 +37,14 @@ public class UserQuestion {
 
 	public void setqNo(int qNo) {
 		this.qNo = qNo;
+	}
+
+	public String getqTitle() {
+		return qTitle;
+	}
+
+	public void setqTitle(String qTitle) {
+		this.qTitle = qTitle;
 	}
 
 	public String getqContent() {
@@ -63,14 +71,6 @@ public class UserQuestion {
 		this.qDate = qDate;
 	}
 
-	public String getqTitle() {
-		return qTitle;
-	}
-
-	public void setqTitle(String qTitle) {
-		this.qTitle = qTitle;
-	}
-
 	public int getUserNo() {
 		return userNo;
 	}
@@ -79,14 +79,5 @@ public class UserQuestion {
 		this.userNo = userNo;
 	}
 
-	public int getaNo() {
-		return aNo;
-	}
-
-	public void setaNo(int aNo) {
-		this.aNo = aNo;
-	}
 	
-	
-
 }

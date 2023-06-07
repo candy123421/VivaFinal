@@ -277,8 +277,8 @@ public class BoardServiceImpl implements BoardService {
 	
 	
 	@Override
-	public void writeComment(Comments comments, int boardNo) {
-		boardDao.insertComment(comments, boardNo);
+	public List<Comments> writeComment(Comments comments, int boardNo) {
+		return boardDao.insertComment(comments, boardNo);
 	}
 	
 	
@@ -293,4 +293,9 @@ public class BoardServiceImpl implements BoardService {
 		boardDao.deleteComment(board);
 	}
 
+	
+	@Override
+	public List<Board> searchBoard(String keyword, Paging page) {
+		return boardDao.searchAll(keyword, page);
+	}
 }

@@ -4,6 +4,8 @@ package web.controller;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import web.dto.Board;
-import web.dto.UserQuestion;
+import web.dto.UserProfile;
 import web.dto.Users;
 import web.service.face.KakaoService;
 import web.service.face.MailSendService;
@@ -45,13 +46,13 @@ public class UsersController {
 	}
 	
 	//임시로 만든 main페이지
-//	@RequestMapping("/main")
-//	public void kakaoLogin() {
-//		logger.info("users/main [GET]");
-//	}
+	@RequestMapping("/main")
+	public void kakaoLogin() {
+		logger.info("users/main [GET]");
+	}
 	
 	@GetMapping("/kakaologin")
-	public String kakaoLogin(
+	   public String kakaoLogin(
 	         @RequestParam("code")String code
 			   , HttpSession session, Users users) {
 	      
@@ -157,24 +158,24 @@ public class UsersController {
 
 	// 발급받은 토큰을 만료시켜 로그아웃 시킨다
    // 리턴은 메인페이지로
-//    @RequestMapping("/logout")
-//    public String logout(HttpSession session) {
-//    	
-//    	if(session.getAttribute("access_Token") != null) {
-//    		kakaoService.kakaoLogout((String)session.getAttribute("access_Token"));
-//    	}
-//        
-//    	// 세션 삭제
-//        session.invalidate();
-//        logger.info("logout() - 로그아웃 성공");
-//        return "redirect:./main";
-//    }
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
+    	
+    	if(session.getAttribute("access_Token") != null) {
+    		kakaoService.kakaoLogout((String)session.getAttribute("access_Token"));
+    	}
+        
+    	// 세션 삭제
+        session.invalidate();
+        logger.info("logout() - 로그아웃 성공");
+        return "redirect:./main";
+    }
 
 
 	@GetMapping("/join")
 	public void join() {}
 	
-	//회원가입시 이메일 인증
+	//회원가입, 비밀번호 찾기시 이메일 인증
 	@GetMapping("/mailCheck")
 	@ResponseBody
 	public boolean mailCheck(String email, HttpSession session) {
@@ -228,6 +229,7 @@ public class UsersController {
 	public void kakaojoin() {
 	
 	}
+	
 	@PostMapping("/kakaojoin")
 	public String kakaojoinProc(Users users,HttpSession session) {
 		
@@ -374,24 +376,34 @@ public class UsersController {
 		int userNo = (int)session.getAttribute("userNo");
 		logger.info("마이페이지 : {}" , users.getUserNo());
 		
+		users.setUserNo(userNo);
+		//로그인시 해당 유저 번호에 대한 유저 모든 정보 저장
 		Users userInfo = usersService.selectAllInfo(userNo);
 		logger.info("userInfo:{}", userInfo);
 		
 		model.addAttribute("userInfo",userInfo);
+		
+		//userno로 프로필사진정보 조회
+		// 사진 storedname 만 가져온다
+		Map<String, Object> list = usersService.profileInfo(users);
+		logger.info("list:{}" , list);
+		model.addAttribute("userProfile",list);
+		
 	}
 	
 	//마이페이지
 	@PostMapping("/mypage")
 	public void userInfoProc(Users users, HttpSession session , Model model) {
 		logger.info("/users/mypage[POST]");
+		
 	}
 
 	//회원정보수정 페이지
 	@GetMapping("/update")
-	public void userupdate(Users users, HttpSession session , Model model) {
+	public void userupdate(Users users, HttpSession session , Model model, UserProfile userProfile ) {
 		logger.info("/users/update[GET]");
 		
-		//로그인했을 때 유저 번호 세션에 저장한거 userNo에 저장
+		//로그인했을 때 유저 번호 세션에 저장한거 userNo라는 변수에 저장
 		int userNo = (int)session.getAttribute("userNo");
 		logger.info("마이페이지 : {}" , users.getUserNo());
 		
@@ -399,22 +411,76 @@ public class UsersController {
 		logger.info("userInfo:{}", userInfo);
 		
 		model.addAttribute("userInfo",userInfo);
+		session.setAttribute("userInfo", userInfo);
+		
+//		//userno로 프로필사진정보 조회
+		// 사진 storedname 만 가져온다
+		Map<String, Object> list = usersService.profileInfo(users);
+		session.setAttribute("userProfileNo", list);
+		model.addAttribute("userProfile", list);
 	}
 	
 	//회원정보수정 페이지
 	@PostMapping("/update")
-	public void userupdateProc(Users users, HttpSession session , Model model) {
+	public String userupdateProc(Users users, HttpSession session , UserProfile userProfile,Model model, MultipartFile profile) {
 		logger.info("/users/update[POST]");
 		
+		//userno 가져오기
+		int userNo = (int)session.getAttribute("userNo");
+		users.setUserNo(userNo);
 		
+		//회원정보 수정 (update)
+		logger.info("프로필 정보 : {}", profile);
+		logger.info("수정하는 사람 : {}", users);
 		
+//		//유저넘버에 대한 프로필 테이블 행개수 가져오기
+//		boolean isProfileNo = usersService.selectFileNo(userProfile);
+//		logger.info("isProfileNo:{}", isProfileNo);
+//		//회원정보수정하기전에 fileno가 DB에 존재하면 삭제하고 업데이트/DB에 없으면 insert 시키기
+//		//true를 받아서 DB에 fileno가 존재하므로 프로필사진 수정(update)
+//		if(isProfileNo == true) {
+//			logger.info("프로필사진 올린적있음");
+//			usersService.updateProfile(users,profile);
+//			return "redirect:./mypage";
+//		
+//		// false를 받아서 회원프로필사진 삽입(insert)
+//		}else if(isProfileNo == false) {
+//			logger.info("프로필사진 올린적없음");
+//			usersService.insertProfile(users,profile);
+//			return "redirect:./mypage";
+//		}
+		
+		return "redirect:./mypage";
 	}
 	
 	//문의하기 페이지
 	@GetMapping("/question")
 	public void userQuestion(Users users, HttpSession session , Model model) {
 		logger.info("/users/question[GET]");
+		
+		session.getAttribute("userInfo");
+		session.getAttribute("id");
 	}
+	
+	  @RequestMapping("/delete")
+	    public String delete(HttpSession session) {
+	    	
+	    	int userno = (int)session.getAttribute("userNo");
+	    	logger.info("delete : userNo:{}" , userno);
+	    	
+	    	usersService.deleteInfo(userno);
+	    	
+	        return "redirect:./login";
+	    }
+	
+	//회원정보 수정하기 페이지
+//	@GetMapping("/change")
+//	public void userChange(Users users, HttpSession session , Model model) {
+//		logger.info("/users/change[GET]");
+//		
+//		session.getAttribute("userInfo");
+//		session.getAttribute("id");
+//	}
 	
 
 	//문의하기 페이지

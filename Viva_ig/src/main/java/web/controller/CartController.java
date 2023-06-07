@@ -31,29 +31,35 @@ public class CartController {
 	
 	//----------------------------------------------------------------------------------------
 	//로그인 기능 구현 전, userNo 알아내기 위해 임시로 만든 페이지
-	@GetMapping("/test")
-	public String list1() {
-		logger.info("cart/list - test()");
-		
-		return "/cart/test";
-		
-	}
+//	@GetMapping("/test")
+//	public String list1() {
+//		logger.info("cart/list - test()");
+//		
+//		return "/cart/test";
+//		
+//	}
 	
 	//----------------------------------------------------------------------------------------
 	//userNo 알아낸 뒤, cart 목록 부르는 페이지
-	@PostMapping("/list")
+	@RequestMapping("/list")
 	public void list(Cart userNo, Model model) {
 		logger.info("cart/list - list()");
-		logger.info("userno: {} ", userNo);
+		
+		//userNo 임시로 지정 (44) => 세션 구현해줘야해!
+		userNo.setUserNo(44);
+		logger.info("userNo : {}", userNo.getUserNo());
 		  
 		List<Map<String,Object>> cartList = cartService.getCartList(userNo);
+		
 		model.addAttribute("list", cartList);
 		
 	}
 	
 	//----------------------------------------------------------------------------------------
 	//항목 삭제 요청 받은 이후 페이지
-	@GetMapping("/delete")
+	//credit 페이지와 다르게 요청 url 을 delete 와 deleteChk 로 받을거다. 
+	//컨트롤러부분만 두개로 나뉘면서 다를뿐, 서비스 이후 로직은 비슷함!
+	@RequestMapping("/delete")
 	public void delete(@RequestParam("cartNo") Cart cartNo, Cart userNo, Writer out) {
 	    logger.info("/cart/delete - delete()");
 	    logger.info("{}", cartNo);
@@ -77,41 +83,47 @@ public class CartController {
 	    }
 	}
 
-//	@ResponseBody
-//	@PostMapping("/delete")
-//	public void deleteChkBox(
-//		     @RequestParam(value = "chbox[]") List<String> chArr, Cart cart, Cart userNo, Writer out) throws Exception {
-//		 logger.info("delete cart");
-//		 
-//		//회원번호 임시로 지정(n번)
-//		//(세션 기능 완료되면 주석처리하기!!)
-//		userNo.setUserNo(44);
-//		logger.info("userNo : {}", userNo.getUserNo());
-//		 
-//		 int cartNo = 0;
-//		 boolean success = false;
-//		 
-//		 if(userNo != null) {
-//			 cart.setUserNo(userNo.getUserNo());
-//		 
-//		 
-//			 for(String i : chArr) {   
-//				 cartNo = Integer.parseInt(i);
-//				 logger.info("{}", cartNo);
-//				 
-//				 cart.setCartNo(cartNo);
-//				 success = cartService.deleteCartItem(cart);
-//				 logger.info("{}", success);
-//			  }   
-//		 }  
-//		 
-//		 // 삭제 성공 여부에 따라 응답 데이터 설정
-//		 try {
-//			 out.write("{\"result\": " + success + "}");
-//		 } catch (IOException e) {
-//			 e.printStackTrace();
-//		 }
-//	}
+	@ResponseBody
+	@RequestMapping("/deleteChk")
+	public void deleteChkBox(
+			@RequestParam(value = "chbox[]") List<String> chArr, Cart cart, Writer out
+
+			) throws Exception {
+		logger.info("delete cart");
+
+		//회원번호 임시로 지정(n번)
+		//(세션 기능 완료되면 주석처리하기!!)
+		cart.setUserNo(44);
+		logger.info("userNo : {}", cart.getUserNo());
+
+		int cartNo = 0;
+		boolean success = false;
+
+		//세션 구현할때 수정해야할 부분
+		if(cart != null) {
+
+			for(String i : chArr) {  
+				
+				//int형 변수(cartNo)에다가 배열의 요소를 parseInt하여 하나씩 담기
+				cartNo = Integer.parseInt(i);
+				logger.info("{}", cartNo);
+
+				cart.setCartNo(cartNo);
+				logger.info("담겨진 cartNo:{}", cart.getCartNo());
+				
+				//삭제여부에 따라서 boolean 값 반환(default 는 false 임)
+				success = cartService.deleteCartItem(cart);
+				logger.info("삭제결과 : {}", success);
+			}   
+		}  
+
+		// 삭제 성공 여부에 따라 응답 데이터 설정
+		try {
+			out.write("{\"result\": " + success + "}");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 		 
 		 
 		 

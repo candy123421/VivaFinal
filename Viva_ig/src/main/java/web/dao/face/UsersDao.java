@@ -1,6 +1,12 @@
 package web.dao.face;
 
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import web.dto.UserProfile;
 import web.dto.Users;
 
 public interface UsersDao {
@@ -119,6 +125,50 @@ public interface UsersDao {
 	 * @return 
 	 */
 	public Users selectUserAll(int userNo);
+
+	/**
+	 * 유저번호로 회원탈퇴하기
+	 * 
+	 * @param userno
+	 */
+	public void deleteInfo(int userno);
+
+	/**
+	 * 수정 페이지에서 기존에 등록된 프로필 사진을 조회한다
+	 * @param users - 조회할 사용자 정보
+	 * @return - 사용자에 맞는 프로필 이미지 정보
+	 */
+	public Map<String, Object> selectProfile(Users users);
+
+	/**
+	 * 회원정보 수정 - 프로필사진 삽입
+	 * 
+	 * @param file
+	 */
+	public void insertUserProfile(UserProfile file);
+
+	/**
+	 * 회원정보 수정 - 비밀번호, 닉네임 수정
+	 * 
+	 * @param profile
+	 */
+	public void insertUserInfo(Users users);
+
+	/**
+	 * db에 프로필 사진번호 존재유무 확인
+	 * 
+	 * @param userProfile
+	 * @return
+	 */
+	public int selectCntProfile(UserProfile userProfile);
+
+	/**
+	 * 회원정보 수정 - 프로필사진 업데이트
+	 * 
+	 * @param file
+	 */
+	public void updateUserProfile(UserProfile file);
+
 	
 
 }

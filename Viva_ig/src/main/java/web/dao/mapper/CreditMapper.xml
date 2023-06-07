@@ -7,23 +7,47 @@
   
 <mapper namespace="web.dao.face.CreditDao">
 
+	<!--  크레딧 이용내역 전체 조회 -->
+	<!--  조건 : 회원번호, visible 상태인것만 -->
 	<select id="selectAllCreditList" resultType="web.dto.Credit" parameterType="web.dto.Credit">
 		select 
 			deal_no, 
 			user_no, 
-			(SELECT to_date(to_char(deal_date,'yy.mm.dd'),'yy.mm.dd') from dual) deal_date, 
+<!-- 			(SELECT to_date(to_char(deal_date,'yy.mm.dd'),'yy.mm.dd') from dual) deal_date,  -->
+			DEAL_DATE, 
 			deal_category, 
 			amount 
 		from credit
 		where user_no = #{userNo}
+		and DEAL_STATUS = 'VISIBLE'
 		order by deal_date desc
 	</select>
 	
+	<!--  크레딧 필터에 따른 조회결과 - 충전/구매/수익/환전 -->
+	<!--  조건 : 회원번호, visible, 거래유형 -->
+	<select id="selectCreditList" resultType="web.dto.Credit" parameterType="web.dto.Credit">
+		SELECT 
+	    	DEAL_NO, 
+	    	USER_NO, 
+	    	DEAL_DATE, 
+	    	DEAL_CATEGORY, 
+	    	AMOUNT 
+		FROM CREDIT
+		WHERE USER_NO = #{userNo}
+		AND DEAL_STATUS = 'VISIBLE'
+		AND DEAL_CATEGORY = #{dealCategory}
+		ORDER BY DEAL_DATE DESC
+	</select>
+	
+	
+	
+	<!--  회원등급 조회 (0:일반회원/1:업로더. varchar 타입임)-->
 	<select id="selectUserGrade" resultType="String" parameterType="web.dto.Users">
 		select user_grade from users 
 		where user_no = #{userNo}
 	</select>
 
+	<!--  회원 크레딧 총계 구하기 .  null 값은 0으로 -->
 	<select id="selectCreditAcc" resultType="int" parameterType="web.dto.Credit">
 		SELECT 
 	    (
@@ -39,4 +63,16 @@
 	    ) AMOUNT
 		FROM DUAL
 	</select>
+	
+	<!--  크레딧 내역 삭제 => hidden 으로 변경 -->
+	<!--  조건 : 회원번호 와 거래번호-->
+	<update id="deleteDeal" parameterType="web.dto.Credit">
+		UPDATE CREDIT SET DEAL_STATUS = 'HIDDEN'
+		WHERE USER_NO = #{userNo} AND DEAL_NO = #{dealNo}
+	</update>
+	
+	<!--  크레딧 충전 (TossPayments api)-->
+	<insert id="insertTossData" parameterType="HashMap">
+		
+	</insert>
 </mapper>

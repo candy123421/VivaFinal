@@ -6,6 +6,61 @@
 <c:import url="/WEB-INF/views/layout/header.jsp" />
 <script type="text/javascript">
 
+// function optionChange(){ 
+	
+// 	var selectedOption = document.getElementById("category").value;
+	
+// 		// 선택된 옵션 값에 따라서 AJAX 요청 처리
+// 		if (selectedOption === "free") {
+			
+// 		// 자유 카테고리에 대한 AJAX 요청
+// 	    $.ajax({
+	    	
+// 	      url: "free_category",
+// 	      method: "GET",
+// 	      success: function(response) {
+// 	        // AJAX 요청 성공 시 처리
+// 	      },
+// 	      error: function(xhr, status, error) {
+// 	        // AJAX 요청 실패 시 처리
+// 	      }
+// 	    });
+		
+// 	  } else if (selectedOption === "notice") {
+		  
+// 	    // 공지 카테고리에 대한 AJAX 요청
+// 	    $.ajax({
+// 	      url: "notice_category",
+// 	      method: "GET",
+// 	      success: function(response) {
+// 	        // AJAX 요청 성공 시 처리
+// 	      },
+// 	      error: function(xhr, status, error) {
+// 	        // AJAX 요청 실패 시 처리
+// 	      }
+// 	    });
+// 	  }
+// 	}
+	
+// 	if (free == "자유") {
+		
+// 		} else if (option1 == "selectB") {
+// 			options = new Array("B) 첫번째 옵션", "B) 두번째 옵션", "B) 세번째 옵션");
+// 			values = new Array("1", "2", "3");
+// 	    	}
+	
+//	var optionChange = document.getElementById("category")	
+//
+//	if(optionChange.options[optionChange.selectedIndex].value == "자유"){
+//		location.href = "/board/list?bType=자유";
+//	}
+//	if(optionChange.options[optionChange.selectedIndex].value == "공지"){
+//		location.href = "/board/list?bType=공지";
+//	}
+
+
+
+
 // 전체선택 
 function checkSelectAll(checkbox)  {
   const selectall 
@@ -33,6 +88,7 @@ function selectAll(selectAll)  {
 //         del.parentElement.parentElement.remove();
 //     }
 // });
+
 </script>
 
 <style>
@@ -50,11 +106,34 @@ th, td {
 </style>
 
 
-
-<div class="top">
-<h1>FREE BOARD</h1>
+<div class="FunctionTitle">
+   FREE BOARD
+</div>
+<div class="FunctionTitleLine">
+   <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
 </div>
 
+
+<!-- 전체검색 -->
+<div class="bigsearch">
+	<div class="middleSearch" style="padding-right:10px">
+		<select class="searchType" name="searchType" id="searchType">
+			<option value="title">제목</option>
+			<option value="Content">본문</option>
+			<option value="userNo">작성자</option>
+		</select>
+	</div>
+
+	<div class="smallSearch" style="padding-right:10px">
+		<input type="text" class="keyword" name="keyword" id="keyword">
+	</div>
+	
+	<div>
+		<button class="btnSearch" name="btnSearch" id="btnSearch">검색</button>
+	</div>
+</div>
+
+		<!-- search{e} -->
 
 <div class="head">
 <table>
@@ -68,9 +147,12 @@ th, td {
 	</c:if>
 	<th>게시글 번호</th>
 	<th>카테고리
-		<select name="category">
-			<option value="자유">자유</option>
-			<option value="공지">공지</option>
+		<select id="category" name="category" onchange="optionChange()">
+			<option value="all">전체</option>
+			<option value="free">자유</option>
+			<option value="notice">공지</option>
+<%-- 			<option value="free" <c:if test="${boardList==자유}"> selected </c:if>>자유</option> --%>
+<%-- 			<option value="notice" <c:if test="${boardList==공지}"> selected </c:if>>공지</option> --%>
 		</select>
 	</th>
 	<th>게시글 제목</th>

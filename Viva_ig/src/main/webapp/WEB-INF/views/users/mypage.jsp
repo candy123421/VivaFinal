@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <c:import url="../layout/header.jsp"/>
 <style type="text/css">
 #grid{
@@ -96,7 +96,7 @@ a {
 					<div class="contentSmalls">프로필</div>
 				<div id="colgrid3">
 					<div class="contentSmall">프로필 사진</div>
-					<div class="contentMedium">${userInfo.userProfile}</div>
+					<div class="contentMedium"><img src="../../../profile/${userProfile.STOREDNAME}"></div>
 					<div class="contentSmall">아이디</div>
 					<div class="contentMedium">${userInfo.userId}</div>
 					<div class="contentSmall">이름</div>
@@ -104,7 +104,7 @@ a {
 					<div class="contentSmall">닉네임</div>
 					<div class="contentMedium">${userInfo.userNick}</div>
 					<div class="contentSmall">생일</div>
-					<div class="contentMedium">${userInfo.userBirth}</div>
+					<div class="contentMedium"><fmt:formatDate value="${userInfo.userBirth}" pattern="yyyy-MM-dd"/></div>
 					<div class="contentSmall">이메일</div>
 					<div class="contentMedium">${userInfo.userEmail}</div>
 					<div class="contentSmall">연락처</div>
@@ -112,11 +112,11 @@ a {
 				</div>
 			</div>		
 <!-- 				<a href="./main"><button>메인으로</button></a> -->
-			<div class="contentSide"></div>	
-		</div>
 		<div>
 			<a href="./update"><button type="button" id="lastbtn">회원수정</button></a>
 			<a href="./delete"><button type="button" id="lastbtn">탈퇴하기</button></a>	
+		</div>
+			<div class="contentSide"></div>	
 		</div>
 	</div>
 </div>

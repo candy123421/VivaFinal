@@ -26,36 +26,74 @@ $(document).ready(function() {
 		//var contextPath = '<%= request.getContextPath() %>';
 		//console.log(contextPath);
 		//return false;
-		var commContent=$("#commContent").val();		//댓글 내용
-		var boardNo = "${board.boardNo}"				//게시물 번호
+		var commContent=$("#commContent").val();	//댓글 내용
+		var boardNo = "${board.boardNo}";			//게시물 번호
 		//var param="commentContent" + commentContent + "&boardNo" + boardNo;
 		
-		console.log(commContent)
+		console.log(commContent);
 		
 		$.ajax({
 			type: "post",
 			url: "/board/commentWrite",
-			data: {boardNo: boardNo, commContent: commContent},
+			data: {commContent: commContent, boardNo: boardNo},
 			success: function(result) {
 				
+		        var commentHtml = '';
+		        for (var i=0; i<result.length; i++) {
+		            commentHtml += '<p>' + result[i].commContent + '</p>';
+		        }
+					
 				//댓글 작성 성공 시 처리할 동작
-				if (result == "success") {
+				if( result == "success") {
+					
+//                $("#commentList").html(result);
+				$("#commentList").html(commentHtml);
+				
                 alert("댓글이 작성되었습니다.");
+                console.log(result);
                 location.reload(); // 페이지 새로고침
 				}
 				
-				$('#commentList').val('') //댓글 등록시 댓글 등록창 초기화
-				getcommentList(); 			//등록후 댓글 목록 불러오기 함수 실행
-				//DOM 조작 함수호츨 등 가능
-	            },
-	            
-	            error: function() {
-	                //Ajax 요청 실패 시 처리할 동작
-	                alert("댓글 작성에 실패했습니다.");
-	            }
-		})
-	})
+				$('#commContent').val(''); 		//댓글 등록시 댓글 등록창 초기화
+	            viewComment();					//등록후 댓글 목록 불러오기 함수 실행
+	            //DOM 조작 함수호출 등 가능
+            },
+            error: function() {
+                //Ajax 요청 실패 시 처리할 동작
+                alert("댓글 작성에 실패했습니다.");
+            }
+		}) //ajax end
+	})//$("#btnComment").click(function() end
+			
+			
+	
+	 //댓글 조회 ajax
+	   function viewComment() {
+		   var boardNo = $('input[name=boardNo]').val();
+		      $.ajax({
+		    	  type: 'GET',
+		          url: "/board/commentView",
+		          data: {boardNo},
+		          success: function(result) {
+		        	  console.log(result);
+		              for(var i=0; i<result.length; i++) {
+		            	  var str = "<div class=\"comment\">"
+		                  str += result[i].commentList+"</div></hr>"
+		                  $("#comments.commentList").append(str);
+		              } //for end
+		          }, //success end
+		          
+		         error: function(result) {
+		            
+		         },
+		         complete: function() {
+		            
+		         }
+
+		      }) //ajax end
+	}	//function viewComment() end
 })
+
 </script>
 
 <div class="container">
@@ -98,12 +136,6 @@ $(document).ready(function() {
 <div>
 	<button id="btnList">목록</button>
 	
-<!-- 	관리자 세션아이디로 접속되어있을때 삭제버튼 무조건 뜨게 만든거임 -->
-	<c:if test="${not empty adminlogin and adminlogin }">
-		<button id="btnDelete" class="btn btn-outline-danger">삭제</button>
-	</c:if>
-	
-	
 <%--  	<c:if test="${id eq viewBoard.userId }"> --%>
  		<button id="btnUpdate">수정</button>
  		<button id="btnDelete">삭제</button>
@@ -114,11 +146,9 @@ $(document).ready(function() {
 <!----- 댓글 작성 ----->
 <div id="comment">
 	<form action="/commentWrite" method="post">
-<%--      <c:if test="${sessionScope.userNo != null }"> --%>
-	<input type="hidden" name="boardNo" value="${board.boardNo}">
+	<input type="hidden" name="boardNo" value="${boardNo }">
 	<textarea id="commContent" name="commContent" placeholder="댓글을 작성하세요" rows="5" cols="50"></textarea><br>
 	<button type="button" id="btnComment">댓글 작성</button>
-<%--      </c:if> --%>
 	</form>
 </div>
 
@@ -132,7 +162,7 @@ $(document).ready(function() {
               </div>
               <p>${commentList.commContent}</p>
 		     </div>
-		</c:forEach>   
+		 </c:forEach>   
 	</div>
 </div>
 

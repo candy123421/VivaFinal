@@ -2,10 +2,11 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:import url="../layout/header.jsp"/>
 
-<script type="text/javascript">
+<script type="text/javascript"> 
 
 $(function(){
 	//닉네임 중복 검사
@@ -45,6 +46,49 @@ $(function(){
 			}
 		})
 	})
+	
+// 	//수정하기 버튼을 누르면 ./change ajax실행 후 마이페이지로 redirect
+// 	$(".change").on("click", function(){
+// 		var userPw = $("#userPw").val();
+// 		var userNick = $("#userNick").val();
+		
+// 		if( userPw == '' ) {
+// 			$('#userpw_msg').html("비밀번호를 입력해주세요")
+// 			return
+// 		}
+		
+// 		if( userNick == '' ) {
+// 			$('#usernick_msg').html("닉네임을 입력해주세요")
+// 			return
+// 		}
+		
+// 		console.log(userPw)
+// 		console.log(userNick)
+		
+// 		//비밀번호 찾기시 아이디과 이메일 존재여부 확인
+// 		$.ajax({
+// 			type:"get",
+// 			url: " /users/change",
+// 			data : {
+// 				"userId":userId,
+// 				"userEmail":userEmail
+// 			},
+// 			dataType : "json",
+// 			success:function(res){
+				
+// 				//result가 DB에 이름과 닉네임 존재하면 success을 리턴
+// 				if(res.result == true){
+// // 					alert("당신의 아이디는 : "+res.userId)
+// 					location.href="./pwchange?userNo="+res.userNo
+// 				}
+// 			}, error: function() {
+// 				console.log("ajax 실패")
+// 				alert("아이디, 이메일이 일치하지않습니다")
+// 				location.href="./pwcheck"
+// 			}
+// 		})
+// 	})
+	
 })
 	
 </script>
@@ -129,6 +173,7 @@ a {
 }
 </style>
 
+<form action="./update" method="post" enctype="multipart/form-data">
 <div id="wrap">
 	<div id="grid">
 	
@@ -147,36 +192,40 @@ a {
 					<div class="contentSmalls">프로필</div>
 				<div id="colgrid3">
 					<div class="contentSmall">프로필 사진</div>
-					<div class="contentMedium"><input type="file" id="userProfile" name="userProfile"></div>
+					<div class="contentMedium"><input type="file" id="userProfile" name="profile"></div>
 					<div class="contentSmall">아이디</div>
 					<div class="contentMedium">${userInfo.userId}</div>
 					<div class="contentSmall">비밀번호</div>
-					<div class="contentMedium"><input type="text" id="userPw" placeholder="비밀번호"></div>
+					<div class="contentMedium"><input type="text" id="userPw" name="userPw" placeholder="비밀번호"></div>
+<!-- 					<span id="userpw_msg" class="msg"></span> -->
 					<div class="contentSmall">이름</div>
 					<div class="contentMedium">${userInfo.userName}</div>
 					<div class="contentSmall">닉네임</div>
-					<div class="contentMedium"><input type="text" id="userNick" placeholder="닉네임">
-					<span id="usernick_msg" class="msg"></span>
-					<button type="button" value="닉네임중복확인" class="nick_input">닉네임중복확인</button>
-					<span class="nick_input1" >사용 가능한 닉네임입니다.</span>
-					<span class="nick_input2">닉네임이 이미 존재합니다.</span></div>
+					<div class="contentMedium"><input type="text" id="userNick" name="userNick" placeholder="닉네임"></div>
+<!-- 					<span id="usernick_msg" class="msg"></span> -->
+<!-- 					<button type="button" value="닉네임중복확인" class="nick_input">닉네임중복확인</button> -->
+<!-- 					<span class="nick_input1" >사용 가능한 닉네임입니다.</span> -->
+<!-- 					<span class="nick_input2">닉네임이 이미 존재합니다.</span></div> -->
 					<div class="contentSmall">생일</div>
-					<div class="contentMedium">${userInfo.userBirth}</div>
+					<div class="contentMedium"><fmt:formatDate value="${userInfo.userBirth}" pattern="yyyy-MM-dd"/></div>
 					<div class="contentSmall">이메일</div>
 					<div class="contentMedium">${userInfo.userEmail}</div>
 					<div class="contentSmall">연락처</div>
 					<div class="contentMedium">${userInfo.userMobile}</div>
 				</div>
-			</div>		
-<!-- 				<a href="./main"><button>메인으로</button></a> -->
+			</div>	
+			<div>
+				<button>수정하기</button>	
+				<a href="./mypage"><button type="button">뒤로가기</button></a>
+			</div>
+				
 			<div class="contentSide"></div>	
 		</div>
 		<div>
-			<a href="./mypage"><button type="button">뒤로가기</button></a>
 		</div>
 	</div>
 </div>
 
-
+</form>
 
 <c:import url="../layout/footer.jsp" />

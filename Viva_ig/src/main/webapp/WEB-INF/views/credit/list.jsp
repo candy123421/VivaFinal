@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
 
 <c:import url="../layout/header.jsp"/>   
 
@@ -69,6 +69,24 @@
 	</c:if>
 </div> <!--  CreditStatus 끝 -->
 
+<!--  내역 조회 필터 기능 -->
+<!--  1. 전체 : 디폴트 -->
+<button class="dealCategory">전체</button>
+<!--  2. 충전 -->
+<button class="dealCategory">충전</button>
+<!--  3. 구매 -->
+<button class="dealCategory">구매</button>
+<!--  4. 수익 : 업로더에게만 보이는 필터 -->
+<button class="dealCategory">수익</button>
+<!--  5. 환전 : 업로더에게만 보이는 필터 -->
+<button class="dealCategory">환전</button>
+
+<script>
+
+
+</script>
+
+
 
 <!--  내역 조회 -->
 <section id = "creditContent">
@@ -76,6 +94,65 @@
 	<div>	
 		<label for="allCheck">전체 선택</label>
 		<button type="button" class="selectDelete_btn">선택 삭제</button>
+		
+		<!--  선택 삭제에 대한 script -->
+		<script>
+			$(".selectDelete_btn").click(function() {
+				console.log("선택 삭제 clicked()");
+				
+				var confirm_val = confirm("삭제된 내역은 복구할 수 없습니다. 정말로 삭제하시겠습니까?");
+				
+				//삭제 - 확인 눌렀을 경우 -> true
+				if(confirm_val) {
+					console.log("삭제 확인 clicked()");
+					
+					//checkArr 배열 생성
+					var checkArr = new Array();
+					console.log(checkArr);
+					
+					//삭제될 항목..?
+// 					var removeArr = new Array();
+					
+					//체크 상태 항목 각각에 걸어놓은 메소드. 
+					//data-deal-no 요소(attr), 즉 dealNo를 
+					//checkArr 배열의 끝에 요소를 추가하고, 추가된 배열의 길이를 반환하겠다.
+					//class명이 2개일때는 상태가 적용이 안되었다.. 그래서 name 으로 선택자를 지정해준거다.
+					$("input[name='chBox']:checked").each(function(){
+						
+						console.log("체크항목들 각각에 대한 동작");
+						checkArr.push($(this).attr("data-deal-no"));
+						//각 배열의 수에 따라 n+1 개씩 추가되어 계속해서 출력됨을 알 수 있었다.
+						//['147'] / (2) ['147', '138']/ (3) ['147', '138', '144']
+						console.log(checkArr);
+// 						removeArr.push($(this).attr("data-deal-no"));
+						
+					});
+					
+// 					var $dealItem = removeArr;
+					
+					//ajax 로 해당 url 에 데이터 전송하기
+					$.ajax({
+						url : "/credit/delete"
+						//get이 없는데 냅다 post 로 써도 될랑가? => 가능하군..
+						, type : "post"
+						, data : {chbox : checkArr}
+						, success : function(result) {
+							//성공했을경우, 1반환..
+							if(result == 1) {
+								console.log("ajax 성공!");
+// 								$dealItem.remove(); // $dealItem 변수를 사용하여 항목 제거 <= 실패..ㅠㅠ 이게 좀 더 부드러운 느낌인데.. 아쉽다..
+								location.href = "/credit/list";
+								
+							} else {
+								//이 알람이 뜰일은 없을 것 같다... 왜냐면.. 값이 넘어오지 않을테니..
+								alert("삭제 실패");
+							}
+						}
+					})
+				}
+			})
+		
+		</script>
 	</div>
 	
 	<!--  테이블 내용 -->
@@ -87,7 +164,7 @@
 		    <tr>
 		      <th scope="col">
 		      	<div class="form-check">
-				  <input class="form-check-input" type="checkbox" data-deal-no="${i.dealNo}" id="flexCheckDefault" name="allCheck" >
+				  <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="allCheck" >
 				  <label class="form-check-label" for="flexCheckDefault"></label>
 			  		
 			  		<!--  전체선택 클릭에 대한 이벤트 -->
@@ -114,7 +191,7 @@
 		  <!--  테이블 데이터 -->
 		  <c:forEach var="i" items="${list}">
 		  <tbody>
-				<tr class="cart-item"><!--  첫번째 열 시작-->
+				<tr class="deal-item"><!--  첫번째 열 시작-->
 					<td><!--  1. 체크박스 -->
 						<div class="checkBox">
 						  <input class="form-check-input chBox" type="checkbox" name="chBox" data-deal-no="${i.dealNo}">
@@ -144,34 +221,50 @@
 					</td>
 					
 					<td class="popup"><!--  6. delete -->
-						<img data-deal-no='${i.dealNo}' class="delete-button" alt="삭제" src="../resources/icon/X.png" width="20">
+						<img data-deal-no='${i.dealNo}' class="delete-${i.dealNo}button" alt="삭제" src="../resources/icon/X.png" width="20">
 							<!--  삭제 완료 후 떴다 사라지는 메시지 -->
 							<!--  html 미완성 -->
 							<!--  script 미완성 -->
+							
 							<script>
-							/*  장바구니 항목 삭제 시 ajax 구현 */
-							$(document).on('click', '.delete-button', function() {
-								var cartNo = $(this).data('cart-no');
-								var $cartItem = $(this).closest('.cart-item'); // .cart-item을 찾아서 저장
-								console.log(cartNo);
-								console.log($cartItem);
+							/*  크레딧 이용내역 항목 삭제 시 ajax 구현 */
+							/*  사실은 실제 데이터를 지우는게 아니라 hidden 으로 상태변경하여, 사용자에게는 삭제된 척 할거임. */
+							$(document).on('click', '.delete-${i.dealNo}button', function() {
+								console.log("항목 삭제 clicked()");
 								
-								$.ajax({
-									url: "/credit/delete",
-									type: "GET",
-									data: { cartNo: cartNo },
-									success: function(response) {
-										console.log("ajax 성공");
-										console.log(cartNo);
-												                    
-										$cartItem.remove(); // $cartItem 변수를 사용하여 항목 제거
-									},
-									error: function() {
-										console.log("AJAX 실패")
-									}
-								});
+								var confirm_val = confirm("삭제된 내역은 복구할 수 없습니다. 정말로 삭제하시겠습니까?");
+								//삭제 - 확인 눌렀을 경우 -> true
+								if(confirm_val) {
+									console.log("삭제 확인 clicked()");
+									
+									//여러 항목 삭제 메소드와 같이 코드를 쓰려고 굳이 한개의 항목도 배열에 넣는거다.
+									var checkArr = new Array();
+									checkArr.push($(this).attr("data-deal-no"));
+									
+// 									var dealNo = $(this).data('deal-no'); //다른 방식
+
+									var $dealItem = $(this).closest('.deal-item'); // .deal-item을 찾아서 저장
+									console.log(checkArr);
+// 									console.log(dealNo);
+									console.log($dealItem);
+								
+									//ajax 로 해당 url 에 데이터 전송하기
+									$.ajax({
+										url : "/credit/delete"
+										, type : "post"
+										, data : {chbox : checkArr}
+										, success : function(result) {
+											if(result == 1) {
+												console.log("ajax 성공");
+												$dealItem.remove(); // $dealItem 변수를 사용하여 항목 제거
+											}else {
+												//이 알람이 뜰일은 없을 것 같다... 왜냐면.. 값이 넘어오지 않을테니..
+												alert("삭제 실패");
+											}
+										}
+									})
+								}
 							});
-							/*  하지만 전체 선택 및 부분 선택하여 삭제하는 기능은 미정 ... 수정해야함 !*/						
 							</script>
 								
 					</td>

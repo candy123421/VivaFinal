@@ -1,6 +1,7 @@
 package web.dao.face;
 
 import java.util.List;
+import java.util.Map;
 
 import web.dto.Credit;
 import web.dto.Users;
@@ -30,6 +31,20 @@ public interface CreditDao {
 	 * @return 크레딧 총계 구하기
 	 */
 	public int selectCreditAcc(Credit userNo);
+
+	/**
+	 * 크레딧 내역 삭제 (hidden 으로 변경)
+	 * 
+	 * @param deal - userNo, dealNo
+	 */
+	public void deleteDeal(Credit deal);
+
+	/**
+	 * 결제 정보를 DB에 insert하기
+	 * 
+	 * @param tossData - 결제 정보 여러가지
+	 */
+	public void insertTossData(Map<String, Object> tossData);
 
 
 }

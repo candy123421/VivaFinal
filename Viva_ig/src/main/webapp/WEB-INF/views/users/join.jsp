@@ -228,7 +228,7 @@ $(function(){
 			success: function(result){
 				//
 				if(result != "fail"){
-					//중복아이디가 없어서 사용가능한 닉네임입니다
+					//중복닉네임 없어서 사용가능한 닉네임입니다
 					$(".nick_input1").css("display","inline-block");
 					//span input2는 안보이게
 					$(".nick_input2").css("display","none");

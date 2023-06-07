@@ -90,6 +90,7 @@ public interface BoardService {
 	public List<Comments> viewComment(int boardNo);
 
 	/**
+
 	 * 관리자가 /board/list에서 선택한애들 삭제하도록
 	 * @param board
 	 */
@@ -101,8 +102,10 @@ public interface BoardService {
 	 * 
 	 * @param boardNo - 댓글 작성할 게시글 번호(를 가지고 있는 DTO)
 	 */
-	public void writeComment(Comments comments, int boardNo);
-
+//	public void writeComment(Comments comments, int boardNo);
+	public List<Comments> writeComment(Comments comments, int boardNo);
+	
+	
 	/**
 	 * 댓글 수정하기
 	 * 
@@ -116,6 +119,16 @@ public interface BoardService {
 	 * @param board - 댓글 삭제할 게시글 번호(를 가지고 있는 DTO)
 	 */
 	public void deleteComment(Board board);
+
+	/**
+	 * 전체 검색하기
+	 * 
+	 * @param keyword - 클라이언트가 입력한 검색할 키워드
+	 * @param page - 페이징 정보 객체
+	 * @return
+	 */
+	public List<Board> searchBoard(String keyword, Paging page);
+
 
 
 

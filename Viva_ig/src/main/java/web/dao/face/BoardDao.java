@@ -106,8 +106,9 @@ public interface BoardDao {
 	 * @param comments 
 	 * 
 	 * @param boardNo - 댓글 작성할 게시글 번호(를 가지고 있는 DTO)
+	 * @return 
 	 */
-	public void insertComment(Comments comments, int boardNo);
+	public List<Comments> insertComment(Comments comments, int boardNo);
 
 	/**
 	 * 댓글 수정하기
@@ -122,6 +123,15 @@ public interface BoardDao {
 	 * @param board - 댓글 삭할 게시글 번호(를 가지고 있는 DTO)
 	 */
 	public void deleteComment(Board board);
+
+	/**
+	 * 전체 검색하기
+	 * 
+	 * @param keyword - 
+	 * @param page - 페이징 정보 객체
+	 * @return
+	 */
+	public List<Board> searchAll(String keyword, Paging page);
 
 
 

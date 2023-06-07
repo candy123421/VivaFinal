@@ -17,6 +17,31 @@
   	
   	<select id="selectAdminNo" resultType="web.dto.Admin" parameterType="web.dto.Admin">
   	select admin_no from admin where admin_id = #{adminId}
-  	
   	</select>  
+  	
+  	<select id="selectQnAList" resultType="web.dto.UserQuestion" >
+  	select * from userquestion order by q_no desc
+  	
+  	</select>
+  	
+  	
+  	<select id="selectQnAView" resultType="web.dto.UserQuestion" parameterType="web.dto.UserQuestion">
+  	select * from userquestion where q_no=#{qNo}
+  	</select>
+  	
+  	<insert id="insertAdminAnswer" parameterType="web.dto.AdminAnswer">
+  	<selectKey keyProperty="aNo" order="BEFORE" resultType="int" >
+  	select adminanswer_seq.nextval from dual
+  	</selectKey>
+  	insert into adminanswer(a_no, a_answer, a_date, admin_no, q_no)
+  	values(#{aNo}, #{aAnswer}, sysdate, #{adminNo}, #{qNo} )
+  	</insert>
+
+
+	<update id="updateQProcess" parameterType="web.dto.UserQuestion">
+	update userquestion 
+	set q_content = '답변완료'
+	where q_no = #{qNo}
+	</update>
+  	
   </mapper>

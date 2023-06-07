@@ -81,6 +81,40 @@
 		WHERE user_no = #{userNo}
 	</select>
 	
+	<delete id="deleteInfo" parameterType="int">
+		DELETE FROM users
+		WHERE user_no = #{userNo}
+	</delete>
+
+	<select id="selectProfile" parameterType="web.dto.Users" resultType="hashmap">
+		SELECT up.storedname
+		FROM USERPROFILE up
+		INNER JOIN users u on up.user_no = u.user_no
+		WHERE up.user_no = #{userNo}
+	</select>
+	
+	<insert id="insertUserProfile" parameterType="web.dto.UserProfile">
+        INSERT INTO userProfile( profile_fileno, originname, storedname, filesize, user_no)
+        VALUES(seq_userProfile.nextval, #{originname}, #{storedname}, #{filesize}, #{userNo})
+    </insert>
+	
+	<update id="insertUserInfo" parameterType="web.dto.Users">
+        UPDATE users
+        SET user_pw = #{userPw}, user_nick = #{userNick}
+        WHERE user_no= #{userNo}
+    </update>
+	
+	<select id="selectCntProfile" resultType="int" parameterType="web.dto.UserProfile">
+		SELECT count(*) FROM UserProfile
+		WHERE user_no = #{userNo}
+	</select>
+	
+	<update id="updateUserProfile" parameterType="web.dto.UserProfile">
+        UPDATE userProfile
+        SET originname = #{originname}, storedname = #{storedname}, filesize = #{filesize}
+        WHERE user_no= #{userNo}
+    </update>
+	
 </mapper>
 
 

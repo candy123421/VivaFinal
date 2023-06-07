@@ -85,7 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	
   	<insert id="insertComment" parameterType="web.dto.Comments">
   		INSERT INTO Comments (COMM_NO, COMM_CONTENT, COMM_DATE, BOARD_NO, USER_NO)
-  		VALUES ( comm_seq.nextval, #{commContent}, sysdate, {#boardNo}, {#userNo})	
+  		VALUES ( comm_seq.nextval, #{commContent}, sysdate, {#boardNo}, 1)	
   	</insert>
   	
   	<update id="updateComment" parameterType="web.dto.Comments">
@@ -102,6 +102,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		DELETE FROM comments
  		WHERE comm_no = #{commNo} AND board_no = #{boardNo}
  	</delete>
+ 	
+ 	<select id="searchAll" resultType="web.dto.Board">
+ 		SELECT * FROM board
+ 		WHERE title LIKE #{keyword}
+ 	</select>
  	
  	
   </mapper>

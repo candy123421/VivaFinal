@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:import url="/WEB-INF/views/layout/header.jsp" />
+<c:import url="/WEB-INF/views/layout/header.jsp" /> 
 
 <script type="text/javascript">
 
@@ -29,21 +29,28 @@ $(document).ready(function() {
 	text-align: center; 
 }
 
+.question{
+	font-size:30px;
+}
+
 </style>
 
 
 <div class="container">
-<h1>글 작성</h1>
+<h1>문의하기</h1>
 <hr>
 
 <div class="box">
 <form action="./question" method="post" enctype="multipart/form-data">
 
-<h1>문의</h1>
+<a href="./question"><label class="question">1:1문의</label></a>
+ | 
+<a href="./question"><label class="question">문의내역확인</label></a>
 
 <div class="form-group">
 	<label class="form-label" for="write">작성자 아이디</label>
-	<div>${userInfo.userId }</div>
+	<div>${userInfo.userId} 하이</div>
+	<div>${id.userId} 하이</div>
 <%-- 	<input type="text" id="userId" name="userId" value="${userInfo.userId }" class="form-control"> --%>
 </div>
 

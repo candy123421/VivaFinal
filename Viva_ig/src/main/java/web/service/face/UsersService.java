@@ -1,6 +1,12 @@
 package web.service.face;
 
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import web.dto.UserProfile;
 import web.dto.Users;
 
 public interface UsersService {
@@ -101,10 +107,53 @@ public interface UsersService {
 	public void update(Users users);
 
 	/**
+	 * 회원탈퇴하기
+	 * 
+	 * @param userno
+	 */
+	public void deleteInfo(int userno);
+
+	/**
 	 * 회원 모든 정보 저장
 	 * 
 	 * @param userNo
 	 * @return 
 	 */
 	public Users selectAllInfo(int userNo);
+
+	/**
+	 * userno로 프로필사진정보 조회
+	 * 
+	 * @param users
+	 * @return
+	 */
+	public Map<String, Object> profileInfo(Users users);
+
+	/**
+	 * 마이페이지 수정하기 버튼을 누르면
+	 * 프로필 insert ( 파일 업로드 )
+	 * 회원정보수정이 진행된다 ( 비밀번호, 닉네임 )
+	 * 
+	 * @param users - 회원정보수정 요청한 사용자
+	 * @param profile - 회원이 업데이트 하려는 프로필사진
+	 */
+	public void insertProfile(Users users, MultipartFile profile);
+
+	/**
+	 * 프로필번호 존재하는지 확인
+	 * 
+	 * @param userProfile
+	 * @return
+	 */
+	public boolean selectFileNo(UserProfile userProfile);
+
+	/**
+	 * 회원정보 수정 - 프로필 update
+	 * 
+	 * @param users
+	 * @param profile
+	 */
+	public void updateProfile(Users users, MultipartFile profile);
+
+
 }

@@ -52,10 +52,12 @@ public class BoardController {
 		model.addAttribute("page", page);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("userNick", userNick);
+		
+		
 	}
 	
 	@PostMapping("/list")
-	public void listpost(Paging paging, Model model, String userNick,Board board) {
+	public void listpost(Paging paging, Model model, String userNick, Board board) {
 		logger.info("/board/list [Post]");
 		
 		//페이징 계산
@@ -69,6 +71,8 @@ public class BoardController {
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("userNick", userNick);
 		
+		model.addAttribute("category", board.getCategoryType());
+
 		//관리자일때 리스트에서 선택한거 삭제가능하게 만드는거 - 보현
 		boardService.deleteBoard(board);
 		
@@ -94,8 +98,6 @@ public class BoardController {
 		//첨부파일 정보 모델값 전달
 		List<Files> boardFile = boardService.getAttachFile(viewBoard);
 		
-		logger.info("**************파일!{}", file);
-		logger.info("^^^^^^^^^^^^^^컨트롤러 {}", boardFile);
 		model.addAttribute("boardFile", boardFile);
 		
 		//댓글 조회
@@ -122,7 +124,7 @@ public class BoardController {
 		
 		//로그인
 		//session에 저장된 userId를 id에 저장
-//		String id = null; 
+		String id = null; 
 //		if( session.getAttribute("userid")!= null ) {
 //
 //			id = (String)session.getAttribute("userid");	  
@@ -193,22 +195,37 @@ public class BoardController {
 		return "redirect:./list";
 	}
 	
+	@GetMapping("/commentView")
+	@ResponseBody
+	public List<Comments> commentList(@RequestParam("boardNo") int boardNo) {
+		 
+		Comments comments = new Comments();
+//		comments.setCommContent(boardNo);
+		comments.setCommContent(String.valueOf(boardNo));
+		
+		List<Comments> commentsList = boardService.viewComment(boardNo);
+		
+		return commentsList;
+		
+	}
 	
-	@RequestMapping("/commentWrite")
-//	public String commentWrite(Comments comments, @RequestBody Map<String, Object> param) {
-	public String commentWrite(Board viewBoard, @RequestBody Comments comments, @RequestParam("comments") int boardNo, Model model) {
+	@PostMapping("/commentWrite")
+	@ResponseBody
+//	public String commentWrite(Board viewBoard, @RequestBody Comments comments, @RequestParam("comments") int boardNo, Model model) {
 //	public String commentWrite(@ModelAttribute("commContent") Comments commContent, @RequestParam("commContent") int boardNo, Model model) {
-	
+	public String commentWrite(Board viewBoard, 
+			@RequestParam("commContent") String commContent, 
+			@RequestParam("boardNo") int boardNo, 
+			Model model) {
 		
-		boardService.writeComment(comments, boardNo);
+		//Comments 객체 생성 및 데이터 설정
+	    Comments comments = new Comments();
+	    comments.setCommContent(commContent);
+	    comments.setBoardNo(boardNo);
+	    
+	    boardService.writeComment(comments, boardNo);
 		
-		//댓글 조회
-		List<Comments> commentList = boardService.viewComment(boardNo);
-		model.addAttribute("commentList", commentList);
-		
-//		return "redirect:./view?boardNo=" + board.getBoardNo();
-		return "redirect:./view?boardNo=" + comments.getBoardNo();
-//		return null;
+		return "redirect:/board/view?boardNo=" + Integer.toString(boardNo);
 	}
 	
 	
@@ -227,5 +244,22 @@ public class BoardController {
 		
 		return "redirect:./view?boardNo=" + board.getBoardNo();
 	}
+	
+	
+	@RequestMapping("/search")
+	public String searchBoard(Paging paging, @RequestParam("keyword") String keyword, Model model) {
+		
+		//페이징 계산
+		Paging page = boardService.getPaging(paging);
+		logger.info("{}", page);
+				
+		List<Board> searchList = boardService.searchBoard(keyword, page);
+		
+		model.addAttribute("page", page);
+		model.addAttribute("searchList", searchList);
+		
+		return "./searchResult"; // 검색 결과를 보여줄 JSP 이름
+		
+	    }
 
 }

@@ -124,7 +124,6 @@
   to {opacity:1 ;}
 }
 </style>
-
 <div class="FunctionTitle">
    Cart
 </div>
@@ -140,30 +139,36 @@
 		<button type="button" class="selectDelete_btn">선택 삭제</button>
 		
 		<script>
- $('.selectDelete_btn').click(function(){
-	 console.log("선택 삭제 누름")
-  
-   var checkArr = new Array();
-   
-   $("input[class='chBox']:checked").each(function(){
-    checkArr.push($(this).attr("data-cart-no"));
-   });
-    
-   $.ajax({
-    url : "/cart/delete",
-    type : "POST",
-    data : { chbox : checkArr },
-    success: function(response) {
-    	console.log("ajax 성공");
-		console.log(cartNo);
-		location.href = "/cart/list";		                    
-	},
-	error: function() {
-		console.log("AJAX 실패")
-	}
-});
-});
-</script>
+		 $('.selectDelete_btn').click(function(){
+			 console.log("선택 삭제 clicked()")
+		  
+			//배열선언
+			var checkArr = new Array();
+			 
+			//체크박스의 name (attr)이 체크된 상태인 항목 각각에 대한 동작
+			$("input[name='chBox']:checked").each(function(){
+				
+				//밖에서 선언한 배열변수에 체크박스의 cartNo 요소를 추가해주며
+				//추가된 배열의 길이를 반환.
+				checkArr.push($(this).attr("data-cart-no"));
+				console.log(checkArr);
+			});
+		    
+			//ajax로 데이터 전달하기
+			$.ajax({
+		    	url : "/cart/deleteChk",
+		    	type : "POST",
+		    	data : { chbox : checkArr },
+		    	success: function(response) {
+		    	console.log("ajax 성공");
+				location.href = "/cart/list";		                    
+			},
+			error: function() {
+				console.log("AJAX 실패")
+			}
+		});
+		});
+		</script>
 		
 	</div>
 

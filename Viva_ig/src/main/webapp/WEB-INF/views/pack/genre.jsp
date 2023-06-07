@@ -89,11 +89,13 @@ div[data-itemtype='line']{
 }
 a{
 	text-decoration: none;
+	color: black;
 }
 #grid{
 	display: grid;
 	grid-template-columns : 200px 200px 200px 200px 200px;
 	grid-column-gap: 30px;
+	grid-row-gap: 30px;
 	width: 1300px;
 }
 .packimg{
@@ -102,6 +104,7 @@ a{
 }
 .packname{
 	font-size: 20px;
+	text-align: center;
 }
 .wavewrap{
 	display: none;
@@ -286,7 +289,7 @@ a{
 			<c:forEach items="${list }" var="list">
 				<div class="content">
 					<div class="packimg" data-img="${list.PACK_IMG_STOREDNAME }" ><img src="../upload/${list.PACK_IMG_STOREDNAME }" style="width: 100%"></div>
-					<div class="packname" data-no="${list.PACK_NO }" data-packname="${list.PACK_NAME }" data-name="${list.FILE_STOREDNAME }">${list.PACK_NAME }</div>
+					<a href="/source/pack?packNo=${list.PACK_NO }"><div class="packname" data-no="${list.PACK_NO }" data-packname="${list.PACK_NAME }" data-name="${list.FILE_STOREDNAME }">${list.PACK_NAME }</div></a>
 					<div class="wavewrap"><div id="wave${list.PACK_NO }"></div>
 					</div>
 				</div>

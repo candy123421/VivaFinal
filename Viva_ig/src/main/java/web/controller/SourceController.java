@@ -365,17 +365,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 			model.addAttribute("pack", "Pack");
 		}
 		
-		// 뭔가 추가
-		
 	}
-	
-
-	
-	
-	
-	
-	
-	
 	
 	
 	

@@ -49,20 +49,25 @@
 #barsourcename{
 	position: absolute;
 	top: 20px;
-	left: 640px;
+	left: 600px;
 }
 #barprocess{
 	position: absolute;
 	top: 45px;
-	left: 680px;
+	left: 600px;
 }
 #barduration{
 	position: absolute;
 	top: 45px;
-	left: 810px;
+	left: 650px;
 }
 #cartWrap{
 	position: relative;
+}
+#bar{
+	position: absolute;
+	top: 45px;
+	left: 638px;
 }
 </style>
 <div id="footer">
@@ -103,6 +108,7 @@
 			</script>
 			<span id="barsourcename"></span>
 			<span id="barprocess"></span>
+			<span id="bar"> | </span>
 			<span id="barduration"></span>
 		</div>
 	</div>	

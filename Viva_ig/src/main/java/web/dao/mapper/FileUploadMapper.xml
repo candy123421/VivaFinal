@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 마이바티스 3 Mapper DTD -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+	<mapper namespace="web.dao.face.FileUploadDao">
+	
+	<select id="selectAllSourceList" resultType="hashMap">
+	SELECT s.source_no, s.source_name, s.bpm, s.key, t.tag_no,
+	    t.genre,t.instrument,t.detail,t.scape,t.fx,
+	    p.pack_no, si.source_img_storedname, si.source_img_originname,
+	    sf.file_originname, sf.file_storedname
+	FROM source S
+	INNER JOIN tag t on s.tag_no = t.tag_no
+	INNER JOIN pack p on s.pack_no = p.pack_no 
+	INNER JOIN sourceimginfo si on s.source_no = si.source_no
+	INNER JOIN sourcefileinfo sf on s.source_no = sf.source_no
+	order by #{sourceNo} desc
+	</select>
+	
+	<select id="selectAllPackList" resultType="hashMap">
+	SELECT s.source_no, s.source_name, s.bpm, s.key, t.tag_no,
+	    t.genre,t.instrument,t.detail,t.scape,t.fx,
+	    p.pack_content,p.pack_name,
+	    p.pack_no,pi.pack_img_originname,pack_img_storedname,
+	    sf.file_originname,sf.file_storedname
+	FROM source S
+	INNER JOIN tag t on s.tag_no = t.tag_no
+	INNER JOIN pack p on s.pack_no = p.pack_no 
+	INNER JOIN packimginfo pi on p.pack_no=pi.pack_no
+	INNER JOIN sourcefileinfo sf on s.source_no=sf.source_no
+	order by #{sourceNo} desc
+	</select>	
+	
+	<insert id="TagInsert" parameterType="web.dto.Tag">
+	<selectKey keyProperty="tagNo" order="BEFORE" resultType="int">
+	select tag_seq.nextval from dual
+	</selectKey>
+	
+	insert into tag
+	(tag_no, instrument, genre, scape, detail,fx)
+	values
+	(#{tagNo}, #{instrument}, #{genre}, #{scape}, #{detail}, #{fx}) 
+	
+	</insert>
+	
+	
+	
+	<insert id="SourceInsertSource" parameterType="web.dto.Source">
+	<selectKey keyProperty="sourceNo" order="BEFORE" resultType="int">
+	select source_seq.nextval from dual
+	</selectKey>
+	insert into source
+	(source_no, source_name, bpm, key, source_price, tag_no, pack_no, user_no,source_time)
+	values
+	(#{sourceNo} , #{sourceName}, #{bpm} , #{key}, 30, #{tagNo} , 1 , 1,#{sourceTime})
+	</insert>
+   
+   	<insert id="SourceInsertImg" parameterType="web.dto.SourceImgInfo">
+   	insert into sourceimginfo
+   	(source_img_originname , source_img_storedname , source_no)
+   	values
+   	(#{sourceImgOriginname}, #{sourceImgStoredname}, #{sourceNo})
+   	</insert>
+   	
+   	<insert id="SourceInsertFile" parameterType="web.dto.SourceFileInfo">
+   	<selectKey keyProperty="uploadNo" order="BEFORE" resultType="int">
+	select sourcefileinfo_seq.nextval from dual
+	</selectKey>
+   	insert into sourcefileinfo
+   	(upload_no, file_originname, file_storedname,file_size ,source_no)
+   	values
+   	(#{uploadNo}, #{fileOriginname}, #{fileStoredname} , #{fileSize} ,#{sourceNo} )
+   	</insert>
+   
+	<insert id="packInsert" parameterType="web.dto.Pack">
+	<selectKey keyProperty="packNo" order="BEFORE" resultType="int">
+	select pack_seq.nextval from dual
+	</selectKey>
+	insert into pack 
+	(pack_no, pack_name , pack_content , tag_no)
+	values
+	(#{packNo} , #{packName} , #{packContent} , #{tagNo})
+	</insert>
+   
+   
+   <insert id="PackImgInsert" parameterType="web.dto.PackImgInfo">
+   insert into packimginfo
+   (pack_no, pack_img_originname, pack_img_storedname)
+   values
+   (#{packNo}, #{packImgOriginname}, #{packImgStoredname} )
+   
+   </insert>
+   
+   <insert id="PackSourceInsert" parameterType="web.dto.Source">
+   	<selectKey keyProperty="sourceNo" order="BEFORE" resultType="int">
+	select source_seq.nextval from dual
+	</selectKey>
+    insert into source
+   (source_no, source_price, tag_no, pack_no, user_no)
+   values
+   (#{sourceNo} ,30, #{tagNo} , #{packNo} , 1)
+   </insert>
+   
+   
+  	
+  	</mapper>

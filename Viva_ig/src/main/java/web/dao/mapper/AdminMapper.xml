@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!-- 마이바티스 3 Mapper DTD -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="web.dao.face.AdminDao">
+  
+  
+  	<select id="selectCntByAdminIdPw" resultType="int" parameterType="web.dto.Admin">
+  	select count(*) from admin
+  	where admin_id = #{adminId} 
+  	and admin_pw = #{adminPw}
+  	</select>
+  	
+  	<select id="selectAdminNo" resultType="web.dto.Admin" parameterType="web.dto.Admin">
+  	select admin_no from admin where admin_id = #{adminId}
+  	
+  	</select>  
+  </mapper>

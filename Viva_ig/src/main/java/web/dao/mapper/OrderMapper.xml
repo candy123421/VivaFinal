@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+  <mapper namespace="web.dao.face.OrderDao">
+  
+  	<select id="selectSourceFileBysourceNo" parameterType="int" resultType="web.dto.SourceFileInfo">
+  		SELECT * FROM SOURCEFILEINFO
+  		WHERE SOURCE_NO = #{sourceNo}
+  	</select>
+  
+  	<select id="selectSourceChkByUsernoSourceNo" parameterType="web.dto.MySource" resultType="int">
+  		SELECT count(*) cnt FROM MySOURCE
+		WHERE source_no = #{sourceNo} and USER_NO = #{userNo}
+  	</select>
+
+	<select id="selectSourceBySourceNo" parameterType="int" resultType="web.dto.Source">
+		SELECT * FROM SOURCE
+		WHERE source_no = #{sourceNo}
+	</select>
+	
+	<insert id="insertMySource" parameterType="web.dto.MySource">
+		INSERT INTO MYSOURCE(LIST_NO, SOURCE_NAME, BPM, KEY, TAG_NO, USER_NO, PACK_NO, SOURCE_NO)
+		VALUES( MYSOURCE_SEQ.NEXTVAL, #{sourceName}, #{bpm}, #{key}, #{tagNo}, #{userNo}, #{packNo}, #{sourceNo})
+	</insert>
+	
+	<insert id="insertSourceDown" parameterType="web.dto.SourceDown">
+		INSERT INTO SOURCEDOWN (SOURCEDOWN_NO, USER_NO, SOURCE_NO )
+		VALUES( sourcedown_seq.nextval, #{userNo}, #{sourceNo} )
+	</insert>
+	
+	<insert id="insertCreditPay" parameterType="web.dto.Credit">
+		INSERT INTO CREDIT (DEAL_NO, USER_NO, DEAL_CATEGORY, AMOUNT)
+		VALUES( CREDIT_SEQ.NEXTVAL, #{userNo},#{dealCategory},#{amount})
+	</insert>
+	
+	<insert id="insertCreditIncome" parameterType="web.dto.Credit">
+		INSERT INTO CREDIT (DEAL_NO, USER_NO, DEAL_CATEGORY, AMOUNT)
+		VALUES( CREDIT_SEQ.NEXTVAL, #{userNo},#{dealCategory},#{amount})
+	</insert>
+	
+	<select id="selectSource" parameterType="int" resultType="web.dto.Source">
+		SELECT * FROM SOURCE
+		WHERE SOURCE_NO = #{sourceNo}
+	</select>
+	
+	<select id="selectTagBySourceNo" parameterType="int" resultType="web.dto.Tag">
+		SELECT * FROM TAG
+		WHERE TAG_NO = #{tagNo}
+	</select>
+	
+	<select id="selectCreditAcc" resultType="int" parameterType="web.dto.Users">
+		SELECT 
+	    (
+	        SELECT nvl(SUM(AMOUNT),0) FROM CREDIT
+	        WHERE DEAL_CATEGORY IN (1, 3)
+	        AND USER_NO=#{userNo}
+	    )
+	    - 
+	    (
+	        SELECT nvl(SUM(AMOUNT),0) FROM CREDIT
+	        WHERE DEAL_CATEGORY IN (2, 4)
+	        AND USER_NO=#{userNo}
+	    ) AMOUNT
+		FROM DUAL
+	</select>
+	
+	
+</mapper>

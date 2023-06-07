@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+  <mapper namespace="web.dao.face.SourceDao">
+  
+  	<select id="selectTagByGenre" parameterType="web.dto.Tag" resultType="web.dto.Tag">
+  		SELECT DISTINCT INSTRUMENT FROM TAG
+	  	WHERE genre = #{genre}	
+  	</select>
+  	
+  	<select id="selectTagByGenreforScape" parameterType="web.dto.Tag" resultType="web.dto.Tag">
+  		SELECT DISTINCT SCAPE FROM TAG
+	  	WHERE GENRE = #{genre}
+  	</select>
+  	
+  	<select id="selectTagByGenreforDetail" parameterType="web.dto.Tag" resultType="web.dto.Tag">
+  		SELECT DISTINCT DETAIL FROM TAG
+	  	WHERE GENRE = #{genre}
+  	</select>
+  	
+  	<select id="selectTagByGenreforFx" parameterType="web.dto.Tag" resultType="web.dto.Tag">
+  		SELECT DISTINCT Fx FROM TAG
+	  	WHERE GENRE = #{genre}
+  	</select>
+  
+  	<select id="selectSourceByGenre" parameterType="String" resultType="hashmap">
+		SELECT distinct s.source_no, s.source_name, s.bpm, s.key, s.source_time,
+			t.tag_no, t.genre, 
+		    p.pack_no, pi.pack_img_storedname, pi.pack_img_originname,
+		    sf.file_originname, sf.file_storedname,
+		    sif.source_img_originname, sif.source_img_storedname
+		FROM source S
+		INNER JOIN tag t on s.tag_no = t.tag_no
+		INNER JOIN pack p on s.pack_no = p.pack_no 
+		INNER JOIN packimginfo pi on p.pack_no = pi.pack_no
+		INNER JOIN sourcefileinfo sf on s.source_no = sf.source_no
+		INNER JOIN sourceimginfo sif on s.source_no = sif.source_no
+		WHERE t.genre = #{genre}
+		
+		<if test="instrument != null and !instrument.equals('')">
+			AND t.instrument = #{instrument}
+		</if>
+		
+		<if test="scape != null and !scape.equals('')">
+			AND t.scape = #{scape}
+		</if>
+		
+		<if test="detail != null and !detail.equals('')">
+			AND t.detail = #{detail}
+		</if>
+		
+		<if test="fx != null and !fx.equals('')">
+			AND t.fx = #{fx}
+		</if>
+		
+		order by source_no
+		
+  	</select>
+  
+  	<insert id="insertSourceLike" parameterType="web.dto.SourceLike">
+  		INSERT INTO SOURCE_LIKE(USER_NO, SOURCE_NO)
+  		VALUES(#{userNo},#{sourceNo})
+  	</insert>
+  
+  	<select id="selectByLike" parameterType="web.dto.SourceLike" resultType="int">
+  			
+  		SELECT count(*) chk FROM SOURCE_LIKE
+  		WHERE user_no = #{userNo} and source_no = #{sourceNo}
+  	
+  	</select>
+  
+  	<delete id="deleteByLike" parameterType="web.dto.SourceLike">
+  		DELETE SOURCE_LIKE
+  		WHERE SOURCE_NO = #{sourceNo} and USER_NO = #{userNo}
+  	</delete>
+  	
+  	<select id="selectBySourceNoforFile" parameterType="web.dto.SourceFileInfo" resultType="web.dto.SourceFileInfo">
+  		SELECT * FROM SOURCEFILEINFO
+  		WHERE SOURCE_NO = #{sourceNo}	
+  	</select>
+  	
+  	<select id="selectTagByInstDetail" parameterType="web.dto.Tag" resultType="web.dto.Tag">
+  		SELECT DISTINCT GENRE FROM TAG
+  		WHERE 1=1
+  		<if test="detail != null and !detail.equals('')">
+  			AND DETAIL = #{detail}
+  		</if>
+  		<if test="instrument != null and !instrument.equals('')">
+			AND INSTRUMENT = #{instrument}
+  		</if>
+  	</select>
+  	
+  	<select id="selectScapeByInstDetail" parameterType="web.dto.Tag" resultType="web.dto.Tag">
+  		SELECT DISTINCT SCAPE FROM TAG
+  		WHERE 1=1
+  		<if test="detail != null and !detail.equals('')">
+  			AND DETAIL = #{detail}
+  		</if>
+  		<if test="instrument != null and !instrument.equals('')">
+			AND INSTRUMENT = #{instrument}
+  		</if>
+  	</select>
+  	
+  	<select id="selectFxByInstDetail" parameterType="web.dto.Tag" resultType="web.dto.Tag">
+  		SELECT DISTINCT FX FROM TAG
+  		WHERE 1=1
+  		<if test="detail != null and !detail.equals('')">
+  			AND DETAIL = #{detail}
+  		</if>
+  		<if test="instrument != null and !instrument.equals('')">
+			AND INSTRUMENT = #{instrument}
+  		</if>
+  	</select>
+  	
+  	
+  	<select id="selectDetailByInst" parameterType="web.dto.Tag" resultType="web.dto.Tag">
+  		SELECT DISTINCT DETAIL FROM TAG
+  		WHERE 1=1
+  		<if test="detail != null and !detail.equals('')">
+  			AND DETAIL = #{detail}
+  		</if>
+  		<if test="instrument != null and !instrument.equals('')">
+			AND INSTRUMENT = #{instrument}
+  		</if>
+  	</select>
+  	
+  	<select id="selectSourceByInstDetail" parameterType="web.dto.Tag" resultType="hashmap">
+  		SELECT distinct s.source_no, s.source_name, s.bpm, s.key, s.source_time,
+        t.tag_no, t.genre, t.instrument,
+        p.pack_no, pi.pack_img_storedname, pi.pack_img_originname,
+        sf.file_originname, sf.file_storedname,
+        sif.source_img_storedname
+		FROM source S
+		INNER JOIN tag t on s.tag_no = t.tag_no
+		INNER JOIN pack p on s.pack_no = p.pack_no 
+		INNER JOIN packimginfo pi on p.pack_no = pi.pack_no
+		INNER JOIN sourcefileinfo sf on s.source_no = sf.source_no
+		INNER JOIN sourceimginfo sif on s.source_no = sif.source_no
+		WHERE 1=1 
+		
+		<if test="detail != null and !detail.equals('')">
+			AND t.detail = #{detail}
+		</if>
+		
+		<if test="instrument != null and !instrument.equals('')">
+			AND t.instrument = #{instrument}
+		</if>
+	  	
+	  	<if test="scape != null and !scape.equals('')">
+			AND t.scape = #{scape}
+		</if>
+	  	
+  		<if test="fx != null and !fx.equals('')">
+			AND t.fx = #{fx}
+		</if>
+		
+	  	ORDER BY S.SOURCE_NO
+  	</select>
+  	
+	<select id="selectPackForSound" resultType="hashmap">
+		SELECT p.pack_no, p.pack_name, pmg.pack_img_storedname
+		FROM pack p 
+		INNER JOIN packimginfo pmg on pmg.pack_no = p.pack_no
+		where rownum<![CDATA[<=]]>10
+		order by p.pack_no desc
+	</select>  	
+  	
+  	
+  	<select id="selectLikePackForSound" resultType="hashmap">
+		SELECT distinct p.pack_name, p.pack_no,
+		    (SELECT count(*) FROM pack_like where pack_no = p.pack_no ) rec,
+		    p.tag_no,
+		    (SELECT genre FROM tag where p.tag_no = tag_no)genre,
+		    (SELECT instrument FROM tag where p.tag_no = tag_no)instrument,
+		    pmg.pack_img_storedname
+		FROM pack p
+		INNER JOIN pack_like pl on p.pack_no = pl.pack_no
+		INNER join packimginfo pmg on p.pack_no = pmg.pack_no
+		INNER JOIN source s on p.pack_no = s.pack_no
+		order by rec desc
+  	</select>
+  	
+  	
+  	<select id="selectPackByPackNo" parameterType="map" resultType="hashmap">
+  		SELECT sif.file_originname, sif.file_storedname,
+  			s.bpm, s.key, s.source_time, s.source_no,
+            p.pack_no, p.pack_name, p.pack_content,
+            pig.pack_img_storedname,
+            t.tag_no
+		FROM Pack p
+		INNER JOIN source s on s.pack_no = p.pack_no
+		INNER JOIN packimginfo pig on pig.pack_no = p.pack_no
+		INNER JOIN tag t on t.tag_no = s.tag_no
+		INNER JOIN sourcefileinfo sif on s.source_no = sif.source_no
+		WHERE 1=1 and p.pack_no = #{packNo}
+		
+		<if test="genre != null and !genre.equals('')">
+			AND t.genre = #{genre}
+		</if>
+		
+		<if test="detail != null and !detail.equals('')">
+			AND t.detail = #{detail}
+		</if>
+		
+		<if test="instrument != null and !instrument.equals('')">
+			AND t.instrument = #{instrument}
+		</if>
+	  	
+	  	<if test="scape != null and !scape.equals('')">
+			AND t.scape = #{scape}
+		</if>
+	  	
+  		<if test="fx != null and !fx.equals('')">
+			AND t.fx = #{fx}
+		</if>
+		
+		order by s.source_no desc
+		
+  	</select>
+  	
+  	
+  	<select id="selectPackInfoByPackNo" parameterType="int" resultType="map">
+  		SELECT P.PACK_NAME, P.PACK_CONTENT, P.PACK_NO,
+    		PIG.PACK_IMG_STOREDNAME
+		FROM PACK P
+		INNER JOIN PACKIMGINFO PIG ON P.PACK_NO = PIG.PACK_NO
+		WHERE P.PACK_NO = #{packNo}
+  	</select>
+  	
+  	
+  	<select id="selectPackGenreByPackNo" parameterType="int" resultType="hashmap">
+  		SELECT DISTINCT t.genre, p.pack_no
+		FROM source s
+		inner join pack p on s.pack_no = p.pack_no
+		inner join tag t on s.tag_no = t.tag_no
+		where p.pack_no = #{packNo}
+  	</select>
+  	
+  	<select id="selectPackInstByPackNo" parameterType="int" resultType="hashmap">
+  		SELECT DISTINCT t.instrument, p.pack_no
+		FROM source s
+		inner join pack p on s.pack_no = p.pack_no
+		inner join tag t on s.tag_no = t.tag_no
+		where p.pack_no = #{packNo}
+  	</select>
+  	
+  	<select id="selectPackDetailByPackNo" parameterType="int" resultType="hashmap">
+  		SELECT DISTINCT t.detail, p.pack_no
+		FROM source s
+		inner join pack p on s.pack_no = p.pack_no
+		inner join tag t on s.tag_no = t.tag_no
+		where p.pack_no = #{packNo}
+  	</select>
+  	
+  	<select id="selectPackScapeByPackNo" parameterType="int" resultType="hashmap">
+  		SELECT DISTINCT t.scape, p.pack_no
+		FROM source s
+		inner join pack p on s.pack_no = p.pack_no
+		inner join tag t on s.tag_no = t.tag_no
+		where p.pack_no = #{packNo}
+  	</select>
+  	
+  	<select id="selectPackFxByPackNo" parameterType="int" resultType="hashmap">
+  		SELECT DISTINCT t.fx, p.pack_no
+		FROM source s
+		inner join pack p on s.pack_no = p.pack_no
+		inner join tag t on s.tag_no = t.tag_no
+		where p.pack_no = #{packNo}
+  	</select>
+  	
+  	
+  	<select id="selectByPackLike" parameterType="web.dto.PackLike" resultType="int">
+	  	SELECT count(*) chk FROM PACK_LIKE
+		WHERE user_no = #{userNo} and pack_no = ${packNo}
+  	</select>
+  	
+  	<delete id="deleteByPackLike" parameterType="web.dto.PackLike">
+  		DELETE PACK_LIKE
+  		WHERE USER_NO = #{userNo} and PACK_NO = #{packNo}
+  	</delete>
+  	
+  	<insert id="insertPackLike" parameterType="web.dto.PackLike">
+  		INSERT INTO PACK_LIKE ( PACK_NO, USER_NO )
+  		VALUES( #{packNo}, #{userNo})
+  	</insert>
+  	
+  	<select id="selectPackLikeCnt" parameterType="web.dto.PackLike" resultType="int">
+  		SELECT count(*) FROM PACK_LIKE
+  		WHERE PACK_NO = #{packNo}
+  	</select>
+  	
+  	
+  	<select id="selectPackInfos" parameterType="web.dto.Tag" resultType="hashmap">
+  		SELECT
+		    p.pack_no, p.pack_name,
+		    t.tag_no, t.genre, t.instrument,
+		    pif.pack_img_storedname, 
+		    sif.file_storedname
+		From Pack p
+		INNER JOIN tag t on t.tag_no = p.tag_no
+		INNER JOIN SOURCE s on s.pack_no = p.pack_no
+		INNER JOIN SOURCEFILEINFO sif on sif.source_no = s.source_no
+		INNER JOIN PACKIMGINFO pif on pif.pack_no = p.pack_no
+		WHERE 1=1 
+		    and lower(sif.file_storedname) Like '%main%'
+		    
+		<if test="genre != null and !genre.equals('')">
+		    and t.genre = #{genre}
+		</if>
+		
+		<if test="instrument != null and !instrument.equals('')">
+			and t.instrument = #{instrument}
+		</if>
+		
+		<if test="detail != null and !detail.equals('')">
+			and t.detail = #{detail}
+		</if>
+		
+		order by p.pack_no desc
+  	</select>
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  
+  </mapper>

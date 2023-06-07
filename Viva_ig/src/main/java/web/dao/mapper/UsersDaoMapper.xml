@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="web.dao.face.UsersDao">
+
+	<select id="selectCntMember" resultType="int" parameterType="web.dto.Users">
+		SELECT count(*) FROM users
+		WHERE user_id = #{userId} AND user_pw = #{userPw}
+	</select>
+	
+	<select id="selectNickByMember" resultType="string" parameterType="web.dto.Users">
+		SELECT user_nick FROM users
+		WHERE user_id = #{userId}
+	</select>
+	
+	<select id="selectCntById" resultType="int" parameterType="web.dto.Users">
+		SELECT count(*) FROM users
+		WHERE user_id = #{userId}
+	</select>
+	
+	<insert id="insert" parameterType="web.dto.Users">
+		INSERT INTO users( user_no, user_id, user_pw ,user_name, user_birth,
+		user_nick, user_email, user_mobile ,user_joindate, user_grade)
+		VALUES (users_seq.nextval, #{userId}, #{userPw}, #{userName},#{userBirth}
+		,#{userNick}, #{userEmail},#{userMobile} ,current_date, 0)
+	</insert>
+
+	<select id="getUserNo" resultType="web.dto.Users" parameterType="web.dto.Users">
+		SELECT user_no FROM users
+		WHERE user_id = #{userId}
+	</select>
+	
+	<select id="selectByKakaoId" resultType="int" parameterType="web.dto.Users">
+		SELECT count(*) FROM users
+		WHERE kakao_id = #{kakaoId}
+	</select>
+	
+	<insert id="insertkakao" parameterType="web.dto.Users">
+		INSERT INTO users( user_no, user_id, user_pw ,user_name, user_birth,
+		user_nick, user_email, user_mobile ,user_joindate, user_grade, kakao_id)
+		VALUES (users_seq.nextval, #{userId}, #{userPw}, #{userName},#{userBirth}
+		,#{userNick}, #{userEmail},#{userMobile} ,current_date, 0, #{kakaoId})
+	</insert>
+	
+	<select id="checkUserId" resultType="int">
+		SELECT count(*) FROM users
+		WHERE user_id = #{userId}
+	</select>
+	
+	<select id="checkUserNick" resultType="int">
+		SELECT count(*) FROM users
+		WHERE user_nick = #{userNick}
+	</select>
+	
+	<select id="selectAllInfo" resultType="int" parameterType="web.dto.Users">
+		SELECT user_no FROM users
+		WHERE kakao_id = #{kakaoId}
+	</select>
+	
+	<select id="checkUserNameEmail" resultType="web.dto.Users" parameterType="web.dto.Users">
+		SELECT * FROM users
+		WHERE user_nick = #{userNick} and user_email = #{userEmail}
+	</select>
+	
+	<select id="checkUserIdEmail" resultType="web.dto.Users" parameterType="web.dto.Users">
+		SELECT * FROM users
+		WHERE user_id = #{userId} and user_email = #{userEmail}
+	</select>
+
+	<update id="updatePw" parameterType="web.dto.Users">
+		UPDATE users
+		SET user_pw = #{userPw}
+		WHERE user_no = #{userNo}
+	</update>
+	
+	<select id="selectUserAll" resultType="web.dto.Users" parameterType="int">
+		SELECT * FROM users
+		WHERE user_no = #{userNo}
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

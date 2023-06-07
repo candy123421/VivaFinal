@@ -8,7 +8,7 @@
 	<!-- DB접속 정보 -->	 
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-		<property name="url" value="jdbc:oracle:thin:@viva_high?TNS_ADMIN=C:/Wallet_Viva/"/>	
+		<property name="url" value="jdbc:oracle:thin:@viva_high?TNS_ADMIN=D:/[LIB]/Wallet_Viva/"/>	
 		<property name="username" value="admin"/>
 		<property name="password" value="Viva!@34!@34"/>
 	</bean>

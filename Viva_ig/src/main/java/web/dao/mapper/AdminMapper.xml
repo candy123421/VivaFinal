@@ -25,8 +25,33 @@
   	</select>
   	
   	
-  	<select id="selectQnAView" resultType="web.dto.UserQuestion" parameterType="web.dto.UserQuestion">
+  	
+  	<select id="selectQnAViewQuestion" resultType="web.dto.UserQuestion" parameterType="web.dto.UserQuestion">
   	select * from userquestion where q_no=#{qNo}
+  	</select>
+  	
+  	<select id="selectQnAViewAnswer" resultType="web.dto.AdminAnswer" parameterType="web.dto.AdminAnswer">
+  	select * from adminanswer where q_no=#{qNo}
+  	</select>
+  	
+  	<select id="selectUserInfo" resultType="web.dto.Users" parameterType="int">
+  	select * from users where user_no=#{attribute}
+  	</select>
+  	
+  	  <insert id="insertUserQuestion" parameterType="web.dto.UserQuestion">
+  	 <selectKey keyProperty="qNo" order="BEFORE" resultType="int" >
+  	select userquestion_seq.nextval from dual
+  	</selectKey>
+  	insert into userquestion(q_no , q_title, q_content, q_process ,q_date ,user_no)
+  	values(#{qNo},#{qTitle}, #{qContent}, '답변대기', current_date, #{userNo} )
+  	</insert>
+  	
+  	<select id="selectAdminInfo" resultType="web.dto.Admin" parameterType="int">
+  	select * from admin where admin_no=#{attribute}
+  	</select>
+  	
+  	<select id="selectUsersInfo" resultType="web.dto.Users" parameterType="web.dto.Users">
+  	select * from users where user_no=#{userNo}
   	</select>
   	
   	<insert id="insertAdminAnswer" parameterType="web.dto.AdminAnswer">
@@ -34,14 +59,25 @@
   	select adminanswer_seq.nextval from dual
   	</selectKey>
   	insert into adminanswer(a_no, a_answer, a_date, admin_no, q_no)
-  	values(#{aNo}, #{aAnswer}, sysdate, #{adminNo}, #{qNo} )
+  	values(#{aNo}, #{aAnswer}, current_date, #{adminNo}, #{qNo} )
   	</insert>
 
 
 	<update id="updateQProcess" parameterType="web.dto.UserQuestion">
 	update userquestion 
-	set q_content = '답변완료'
+	set q_process = '답변완료'
 	where q_no = #{qNo}
 	</update>
+  	
+  	<select id="selectQProcess" resultType="int" parameterType="web.dto.UserQuestion">
+  	select count(*) from userquestion 
+  	where q_no=#{qNo} and q_process = '답변완료'
+  	</select>
+  	
+  	<select id="selectAdminNick" resultType="web.dto.Admin" parameterType="web.dto.Admin">
+  	select * from admin
+  	where admin_no = #{adminNo}
+  	</select>
+
   	
   </mapper>

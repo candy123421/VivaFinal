@@ -61,7 +61,7 @@
 
 
 
-// 전체선택 
+// 보현작성  -전체선택 
 function checkSelectAll(checkbox)  {
   const selectall 
     = document.querySelector('input[name="checkall"]');
@@ -79,15 +79,6 @@ function selectAll(selectAll)  {
     checkbox.checked = selectAll.checked
   })
 }
-
-//삭제하는건데 DB를 거쳐야하기때문에 이건 아닌거같긴함 
-// document.addEventListener("DOMContentLoaded", function() {
-//     var del = document.querySelector("#btnDelete");
-//     del.onclick = function() {
-//         // 삭제 작업 수행
-//         del.parentElement.parentElement.remove();
-//     }
-// });
 
 </script>
 
@@ -135,10 +126,11 @@ th, td {
 
 		<!-- search{e} -->
 
-<div class="head">
+<form action="./list" method="post">
 <table>
 <thead>
-<tr>
+<tr class = "head">
+
 	<c:if test="${not empty adminlogin and adminlogin }">
 	<th><input type='checkbox'
        name='checkall' 
@@ -161,10 +153,7 @@ th, td {
 	<th>게시글 작성일</th>
 </tr>
 </thead>
-</div>
-
-<div class="body">
-<tbody>
+<tbody class="body">
 <c:forEach var="boardList" items="${boardList}">
 <tr>
 	<c:if test="${not empty adminlogin and adminlogin }">
@@ -183,19 +172,17 @@ th, td {
 </tr>
 </c:forEach>
 </tbody>
-</div>
 </table>
 
 <a href="./write"><button>게시글 작성하기</button></a>
 	<c:if test="${not empty adminlogin and adminlogin }">
-	<form action="./list" method="post">
+	
 		<button id="btnDelete" name = "btnDelete" class="btn btn-danger">선택삭제</button>
-		</form>
 	</c:if>
 <span class="float-end mb-3">total : ${paging.totalCount }</span>
+</form>
 
 <c:import url="/WEB-INF/views/layout/paging.jsp" />
-
 
 <c:import url="/WEB-INF/views/layout/footer.jsp" />
 

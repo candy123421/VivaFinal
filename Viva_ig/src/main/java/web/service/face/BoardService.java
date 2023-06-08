@@ -129,6 +129,13 @@ public interface BoardService {
 	 */
 	public List<Board> searchBoard(String keyword, Paging page);
 
+	/**
+	 * 보현작성
+	 * 체크 선택한거 삭제 시키는거
+	 * @param check
+	 */
+	public void deleteCheckBoard(int[] check);
+
 
 
 

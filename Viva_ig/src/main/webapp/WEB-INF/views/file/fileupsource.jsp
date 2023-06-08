@@ -246,7 +246,17 @@ $(function(){
 </head>
 
 <body>
-<div class=body>
+<c:choose>
+	<c:when test="${empty adminlogin and empty login }">
+	<h1>Source / Pack Upload</h1>
+	<hr>
+	 로그인 후 이용해주세요!
+	  <a href="/viva/login"> <button class="btn btn-outline-secondary btn-sm">Login</button> </a>
+	</c:when>
+	
+	
+	<c:when test="${not empty login and login }">
+	<div class=body>
 <!-- container : div안에있는것들 다 가운데 -->
 <div id="containerid" class="container" >
 <h2> 자신만의 Source로 세상을 움직여주세요!</h2>
@@ -608,6 +618,15 @@ Pack을 올리기전에 <a href="/file/guide">가이드</a>를 확인해주세�
 </form>
 </div>
 </div>
+	
+	
+	</c:when>
+	
+</c:choose>
+
+
+
+
 
 </body>
 </html>

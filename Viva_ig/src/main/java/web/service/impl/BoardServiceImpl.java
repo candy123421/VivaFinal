@@ -277,20 +277,28 @@ public class BoardServiceImpl implements BoardService {
 	
 	
 	@Override
-	public List<Comments> writeComment(Comments comments, int boardNo) {
-		return boardDao.insertComment(comments, boardNo);
+	public void writeComment(Comments comments) {
+        System.out.println("==================================");
+		System.out.println(comments);
+		System.out.println("==================================");
+
+		boardDao.insertComment(comments);
 	}
 	
 	
 	@Override
-	public void updateComment(Board board) {
-		boardDao.updateComment(board);
+	public void updateComment(Comments comments) {
+		boardDao.updateComment(comments);
 	}
 	
 	
 	@Override
-	public void deleteComment(Board board) {
-		boardDao.deleteComment(board);
+	public void deleteComment(Comments comments) {
+		
+		System.out.println("==========================");
+		System.out.println(comments);
+		System.out.println("==========================");
+		boardDao.deleteComment(comments);
 	}
 
 	

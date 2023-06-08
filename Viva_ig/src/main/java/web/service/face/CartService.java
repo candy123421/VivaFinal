@@ -41,7 +41,6 @@ public interface CartService {
 	 * 
 	 * @param userNo, sourceNo
 	 * @return 구매 가능 여부
-	 * 작성자 : 지선
 	 */
 	public boolean chkCreditAcc(Users userNo, Source sourceNo);
 	
@@ -52,9 +51,17 @@ public interface CartService {
 	 * @param sourceNo - 선택한 음원 항목
 	 * @param cartNo - 해당 장바구니 항목
 	 * @return 구매 완료 여부
-	 * 작성자 : 지선
 	 */
 	public boolean purchaseCartItem(Users userNo, Source sourceNo, Cart cartNo);
+
+	/**
+	 * 배열과 userNo 을 foreach 문을 통해 Map으로 지정해준다.
+	 * 
+	 * @param userNo
+	 * @param source - sourceNo 배열
+	 * @throws Exception 
+	 */
+	public void addPack(int userNo, int[] source) throws Exception;
 
 
 

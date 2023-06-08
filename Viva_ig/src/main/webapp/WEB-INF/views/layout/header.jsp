@@ -215,9 +215,13 @@ font-weight: bold;
 }
 
 #header {
-	background : #FFFFFF;
+	background: rgba(255, 255, 255, 0.77);
 	text-align: right;
 	display:block;
+}
+.fixed-top {
+	background: rgba(255, 255, 255, 0.85);
+
 }
 #layout_content{
 	top : 100px;
@@ -364,7 +368,7 @@ font-weight: bold;
 	<!--  헤더 : 상단 바 (장바구니, 마이소스, 마이페이지)-->
 	 <div class = "item" id="header">
 	  	<div class="fixed-top">
-	  		<nav class="navbar navbar-expand-lg bg-light">
+	  		<nav class="navbar navbar-expand-lg">
 	  			<div class="container-fluid justify-content-end">
 	  			
 	  			
@@ -392,7 +396,7 @@ font-weight: bold;
 	  	
 	  	<c:when test="${not empty login and login }">
 	  	
-	  	<img src="../upload/${userInfo.userProfile }" style="width: 40px; ">
+	  	<img src="../../../profile/${userProfile.STOREDNAME}" style="width: 40px; border-radius:50px;">
 		nick:<span style="font-size: 1.5em; color: red;"> ${nick }</span>님
 	  	<a href="/users/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
 	  	

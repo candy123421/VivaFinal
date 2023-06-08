@@ -109,4 +109,12 @@ public interface CartDao {
 	 * @param uploaderInc - userNo, category, amount
 	 */
 	public void uploaderIncomeCredit(Credit uploaderInc);
+
+	/**
+	 * pack 의 source 를 cart TB에 삽입한다.
+	 * 
+	 * @param cart - userNo, sourceNo
+	 */
+	public void insertPack(Cart cart);
+
 }

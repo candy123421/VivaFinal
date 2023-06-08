@@ -1,5 +1,7 @@
 package web.service.impl;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +65,38 @@ public class CartServiceImpl implements CartService {
 		return false;
 	}
 	
+//======================================================================================================
+	//여기서 int 배열을 하나씩 꺼내어 userNo과 짝지어준다.
+	@Override
+	public void addPack(int userNo, int[] source) throws Exception {
+		logger.info("addPack()");
+		logger.info("userNo:{}", userNo);
+	    logger.info("source[]: {}", source);
+	    
+		//성공적으로 끝날지에 대한 결과값
+		int result = 0;
+		Cart cart = new Cart();
+		
+		//배열로 담아온 source를 하나씩 꺼내어 Cart TB에 set 해주기
+		//추후, 세션 종료 여부를 위해 if 문으로 걸러주는거임. 
+		if(cart !=null) {
+			logger.info("세션유지중(추후 개발)");
+
+			for(int s : source) {
+				
+				//int형 배열로 받아온 sourceNo값을 하나씩 꺼내어 cart DTO에 set해준다.
+				cart.setSourceNo(s);
+				cart.setUserNo(userNo);
+				logger.info("잘 담김? :{}", cart );
+				
+				//메소드를 반복해준다. (foreach문 밖을 나가면, 메소드는 반복되지 않음)
+				cartDao.insertPack(cart);
+			}
+			logger.info("insertPack 성공");
+			result = 1;
+		}
+		logger.info("pack 장바구니 추가 성공!");
+	}
 //======================================================================================================
 	
 	//음원 소스의 총계를 전역변수로 지정해서 다른 메소드에서도 쓸수 있게 선언했다.

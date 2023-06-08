@@ -121,8 +121,6 @@ public class CreditController {
 		String orderId= "VIVA" + id.split("-")[2] + id.split("-")[3] + id.split("-")[4];
 		model.addAttribute("id", orderId);
 		
-		
-		
 	}
 	
 //----------------------------------------------------------------------------------------------------------------------
@@ -229,7 +227,7 @@ public class CreditController {
 //-----------------------------------------------------------------------------
 	//결제 완료 시, 이동할 리다이렉트 페이지!
 	@RequestMapping("/chargeOk")
-	public void chargeOk(@SessionAttribute(value="dealNo") int dealNo) {
+	public void chargeOk(@SessionAttribute(value="dealNo") int dealNo, Model model) {
 		logger.info("credit/chargeOk - 결제 완료");
 		
 		logger.info("{}", dealNo);
@@ -240,6 +238,7 @@ public class CreditController {
 		//확인하기
 		logger.info("{}", info);
 		
+		model.addAttribute("info", info);
 		
 	}
 

@@ -156,6 +156,24 @@ public class CartController {
 	}
 	
 	//--------------------------------------------------------------------
+	//source 페이지에서 pack 단위로 장바구니 넣어야할 때 
+	//지금까지 했던 방식과 다르게, 배열을 값을 serviceImpl까지 끌고가서 map 으로 userno과 짝지어줄것임. 
+	//컨트롤러에서 for each 문을 쓰니 성능 낭비가 있을것 같음(물론 우리의 데이터는 적지만!)
+	@GetMapping("/addPack")
+	public void addPack(int userNo, @RequestParam(value="sourceNo[]") int[] source) throws Exception {
+		logger.info("/cart/addPack - addPack()");
+		
+		//userNo은 44로 jsp에서 설정하여 받아왔음.
+		logger.info("userNo : {}", userNo);
+		logger.info("int배열 : {}", source);
+		
+		//수행해야할 코드는 서비스로 넘기기
+		cartService.addPack(userNo, source);
+		
+		logger.info("addPack 완전히 성공확인!");
+	}
+	
+	//--------------------------------------------------------------------
 	//장바구니에서 항목 구매시 처리할 메소드
 	@RequestMapping("/buy")
 	public void cartBuy(Users userNo, Source sourceNo, Cart cartNo, Writer out) {

@@ -32,9 +32,16 @@
 		where user_no = #{userNo} and source_no = #{sourceNo}
 	</select>
 	
+<!--  ====================================================================== -->	
 	<insert id="insertCartItem" parameterType="web.dto.Cart">
 		INSERT INTO cart (CART_NO, SOURCE_NO, USER_NO )
 		VALUES( cart_seq.nextval, #{sourceNo}, #{userNo})
+	</insert>
+
+<!--  ====================================================================== -->
+	<insert id="insertPack" parameterType="web.dto.Cart">
+	  	INSERT INTO CART (CART_NO, SOURCE_NO, USER_NO)
+	  	VALUES (cart_seq.nextval, #{sourceNo}, #{userNo})
 	</insert>
 
 <!--  ====================================================================== -->

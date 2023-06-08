@@ -38,6 +38,14 @@ $(function() {
 #Wrap{
 	padding: 16px;
 }
+#WrapTop{
+	width: 1400px;
+	margin: 0 auto;
+}
+#WrapMiddle{
+	width: 1400px;
+	margin: 0 auto;
+}
 #line{
 	width: 1300px;
 	border-top: 1px solid #ccc;
@@ -97,6 +105,7 @@ a{
 	grid-column-gap: 30px;
 	grid-row-gap: 30px;
 	width: 1300px;
+	place-content: center;
 }
 .packimg{
 	width: 200px;

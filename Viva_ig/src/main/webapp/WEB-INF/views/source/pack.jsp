@@ -28,8 +28,14 @@ $(function() {
 }
 #WrapTop{
 	display: grid;
-	grid-template-columns: 200px 1100px
+	grid-template-columns: 200px 1100px;
+	width: 1400px;
+	margin: 0 auto;
 	
+}
+#WrapMiddle{
+	width: 1400px;
+	margin: 0 auto;
 }
 .packimg{
 	width: 200px;
@@ -58,7 +64,8 @@ $(function() {
 	padding-top: 10px;
 }
 #WrapContent{
-	width: 1300px;
+	width: 1400px;
+	margin: 0 auto;
 
 }
 #explain{
@@ -94,7 +101,7 @@ $(function() {
 }
 #infoline{
 	display : grid;
-	grid-template-columns: 100px 1200px
+	grid-template-columns: 200px 1100px
 }
 .already{
 	font-family:"typeFont", "sans-serif;";
@@ -219,11 +226,14 @@ div[data-itemtype='line']{
 			</div>		
 		</div>
 	</div>
+	
 	<div id="WrapContent">
-		<img class="FunctionTilteLine" src="../resources/icon/Line.svg" style="margin-top:15px; margin-bottom: 15px;">
+		<img class="FunctionTilteLine" src="../resources/icon/Line.svg" style="margin-top:15px; margin-bottom: 15px; width:1300px;">
 		
 		<div class="tagWrap">
-		
+			<!-- 메인 Pack View로 가는 태그 -->
+			<a class="tagA" href="/source/pack?packNo=${packNo}"><div class="tagcover">Main</div></a>
+			
 			<c:forEach var="tag" items="${genre }" >
 				<c:if test="${empty tag.GENRE}">
 					${tag.GENRE }
@@ -268,6 +278,7 @@ div[data-itemtype='line']{
 					<a class="tagA" href="/source/pack?packNo=${tag.PACK_NO}&fx=${tag.FX}"><div class="tagcover">${tag.FX}</div></a> 
 				</c:if>
 			</c:forEach>
+		</div>
 		</div>
 		
 		<div id="WrapMiddle">
@@ -588,7 +599,7 @@ div[data-itemtype='line']{
 						  			"paddingTop":"10px"
 						  		}) 
 					  		} 
-						  $("#pop").fadeOut(3000)
+						  $("#pop").fadeOut(5000)
 					  	  }
 					  , error : function() {
 					  		$("#cartWrap").html('<div id="pop">이미 장바구니에 담겨있습니다!</div>')
@@ -603,7 +614,7 @@ div[data-itemtype='line']{
 					  			"border":"2px solid #ccc",
 					  			"paddingTop":"10px"
 				  			})
-				  			$("#pop").fadeOut(3000)
+				  			$("#pop").fadeOut(5000)
 					  	  }
 					  }) // ajax End
 				  }) // click end

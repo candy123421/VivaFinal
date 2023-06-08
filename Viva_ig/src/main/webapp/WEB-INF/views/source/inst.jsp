@@ -28,7 +28,14 @@ $(function() {
 	padding-left: 0px;
 }
 #Wrap{
-	padding: 16px;
+}
+#WrapTop{
+	width: 1400px;
+	margin: 0 auto;
+}
+#WrapMiddle{
+	width: 1400px;
+	margin: 0 auto;
 }
 #line{
 	width: 1200px;
@@ -176,6 +183,7 @@ div[data-itemtype='line']{
 }
 </style>
 <div id="Wrap">
+	<div id="WrapTop">
 	<div id="drop" class="dropdown">
 		<button id="btn" class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> 
 			<c:if test="${empty inst}">
@@ -218,8 +226,6 @@ div[data-itemtype='line']{
 			<li><a class="dropdown-item" href="/source/inst?detail=Pad">Pad</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Arp">Arp</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Pluck">Pluck</a></li>
-			<li><a class="dropdown-item" href="/source/inst?detail=Melody">Melody</a></li>
-			<li><a class="dropdown-item" href="/source/inst?detail=Fx">Fx</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Chord">Chord</a></li>
 			
 			
@@ -228,7 +234,7 @@ div[data-itemtype='line']{
 			<li><a class="dropdown-item" href="/source/inst?detail=Saxophone">Saxophone</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Trumpet">Trumpet</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Trombone">Trombone</a></li>
-			<li><a class="dropdown-item" href="/source/inst?detail=Pad">Pad</a></li>
+			<li><a class="dropdown-item" href="/source/inst?detail=Ensemble">Ensemble</a></li>
 			
 			
 			<li><a class="dropdown-item disabled">WoodWinds</a></li>
@@ -240,26 +246,24 @@ div[data-itemtype='line']{
 			
 			<li><a class="dropdown-item disabled">Guitar</a></li>
 			<li><a class="dropdown-item" href="/source/inst?instrument=Guitar">Guitar</a></li>
-			<li><a class="dropdown-item" href="/source/inst?detail=Electric">Electric</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Acoustic">Acoustic</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Clean">Clean</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Dist">Dist</a></li>
-			<li><a class="dropdown-item" href="/source/inst?detail=Lead">Lead</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Rhythm">Rhythm</a></li>
-			<li><a class="dropdown-item" href="/source/inst?detail=Melody">Melody</a></li>
+			<li><a class="dropdown-item" href="/source/inst?detail=Melody">Solo</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Riff">Riff</a></li>
 			
 			<li><a class="dropdown-item disabled">Bass</a></li>
 			<li><a class="dropdown-item" href="/source/inst?instrument=Bass">Bass</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Synth">Synth</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Analog">Analog</a></li>
-			<li><a class="dropdown-item" href="/source/inst?detail=Acoustic">Acoustic</a></li>
-			<li><a class="dropdown-item" href="/source/inst?detail=ElectricBass">Electric Bass</a></li>
+			<li><a class="dropdown-item" href="/source/inst?detail=Electric">Electric</a></li>
 			
 			<li><a class="dropdown-item disabled">String</a></li>
 			<li><a class="dropdown-item" href="/source/inst?instrument=String">String</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Violin">Violin</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Viola">Viola</a></li>
+			<li><a class="dropdown-item" href="/source/inst?detail=Cello">Cello</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Contrabass">Contrabass</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Orchestral">Orchestral</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=StringPad">StringPad</a></li>
@@ -274,19 +278,19 @@ div[data-itemtype='line']{
 	
 	<div id="tab">
 		<div class="cateWrap">
-			<c:if test="${empty source }">
-				<a href="/source/inst?instrument=${inst}"><span class="cate">Source</span></a>
+<%-- 			<c:if test="${empty source }"> --%>
+<%-- 				<a href="/source/inst?instrument=${dinst}"><span class="cate">Source</span></a> --%>
+<%-- 			</c:if> --%>
+			<c:if test="${ empty inst}">
+				<a style="text-decoration:none; text-decoration-color:#ccc;" href="/source/inst?detail=${det}"><span class="cate">Source</span></a>
 			</c:if>
-			<c:if test="${ not empty source && empty inst}">
+			<c:if test="${ not empty inst}">
 				<a style="text-decoration:none; text-decoration-color:#ccc;" href="/source/inst?instrument=${dinst}"><span class="cate">Source</span></a>
-			</c:if>
-			<c:if test="${ not empty source && not empty inst}">
-				<a style="text-decoration:none; text-decoration-color:#ccc;" href="/source/inst?instrument=${inst}"><span class="cate">Source</span></a>
 			</c:if>
 		</div>
 		<div class="cateWrap">
 			<c:if test="${empty inst }">
-				<a style="text-decoration:none; " href="/pack/inst?instrument=${dinst}"><span class="cate">Pack</span></a>
+				<a style="text-decoration:none; " href="/pack/inst?detail=${det}"><span class="cate">Pack</span></a>
 			</c:if>
 			<c:if test="${not empty inst }">
 				<a style="text-decoration:none; " href="/pack/inst?instrument=${inst}"><span class="cate">Pack</span></a>
@@ -299,10 +303,10 @@ div[data-itemtype='line']{
 			<c:if test="${empty tag.genre }">
 				${tag.genre }
 			</c:if>
-			<c:if test="${not empty tag.genre && empty inst}">
+			<c:if test="${not empty tag.genre && empty inst && tag.genre ne cgenre}">
 				<a class="tagA" href="/source/inst?detail=${det}&genre=${tag.genre}"><div class="tagcover">${tag.genre}</div></a>
 			</c:if>
-			<c:if test="${not empty tag.genre && not empty inst}">
+			<c:if test="${not empty tag.genre && not empty inst && tag.genre ne cgenre}">
 				<a class="tagA" href="/source/inst?instrument=${inst}&genre=${tag.genre}"><div class="tagcover">${tag.genre}</div></a>
 			</c:if>
 		</c:forEach>
@@ -311,10 +315,10 @@ div[data-itemtype='line']{
 			<c:if test="${empty tag.scape }">
 				${tag.scape }
 			</c:if>
-			<c:if test="${not empty tag.scape && empty inst }">
+			<c:if test="${not empty tag.scape && empty inst  && tag.scape ne cscape}">
 				<a class="tagA" href="/source/inst?detail=${det}&scape=${tag.scape}"><div class="tagcover">${tag.scape}</div></a> 
 			</c:if>
-			<c:if test="${not empty tag.scape && not empty inst}">
+			<c:if test="${not empty tag.scape && not empty inst && tag.scape ne cscape}">
 				<a class="tagA" href="/source/inst?instrument=${inst}&scape=${tag.scape}"><div class="tagcover">${tag.scape}</div></a>
 			</c:if>
 		</c:forEach>
@@ -324,10 +328,10 @@ div[data-itemtype='line']{
 			<c:if test="${empty tag.detail }">
 				${tag.detail }
 			</c:if>
-			<c:if test="${not empty tag.detail && empty inst}">
+			<c:if test="${not empty tag.detail && empty inst && tag.detail ne cdetail}">
 				<a class="tagA" href="/source/inst?detail=${det}&detail=${tag.detail}"><div class="tagcover">${tag.detail}</div></a> 
 			</c:if>
-			<c:if test="${not empty tag.detail && not empty inst}">
+			<c:if test="${not empty tag.detail && not empty inst && tag.detail ne cdetail}">
 				<a class="tagA" href="/source/inst?instrument=${inst}&detail=${tag.detail}"><div class="tagcover">${tag.detail}</div></a>
 			</c:if>
 		</c:forEach>
@@ -337,13 +341,14 @@ div[data-itemtype='line']{
 			<c:if test="${empty tag.fx }">
 				${tag.fx }
 			</c:if>
-			<c:if test="${not empty tag.fx && empty inst}">
+			<c:if test="${not empty tag.fx && empty inst && tag.fx ne cfx}">
 				<a class="tagA" href="/source/inst?detail=${det}&fx=${tag.fx}"><div class="tagcover">${tag.fx}</div></a> 
 			</c:if>
-			<c:if test="${not empty tag.fx && not empty inst}">
+			<c:if test="${not empty tag.fx && not empty inst && tag.fx ne cfx}">
 				<a class="tagA" href="/source/inst?instrument=${inst}&fx=${tag.fx}"><div class="tagcover">${tag.fx}</div></a> 
 			</c:if>
 		</c:forEach>
+	</div>
 	</div>
 	
 	<div id="WrapMiddle">
@@ -573,7 +578,7 @@ div[data-itemtype='line']{
 					type: "get"
 					, url: "./genre/like"
 					, data: {
-						"userNo" : 1,
+						"userNo" : ${userNo},
 						"sourceNo" : sourceno
 					}
 					, dataType: "json"
@@ -607,7 +612,7 @@ div[data-itemtype='line']{
 					type :"get"
 					, url :"/cart/add"
 					, data : {
-						"userNo" : 1,
+						"userNo" : ${userNo},
 						"sourceNo" : csourceNo
 					}
 				  	, dataType :"json"
@@ -622,14 +627,14 @@ div[data-itemtype='line']{
 					  			"height":"60px",
 					  			"fontSize":"1.2em",
 					  			"top":"-300px",
-					  			"left":"8000px",
+					  			"left":"800px",
 					  			"borderRadius":"5px",
 					  			"border":"2px solid #ccc",
 					  			"paddingTop":"10px"
 					  		})
 					  		
 				  		}
-				  		$("#pop").fadeOut(3000)
+				  		$("#pop").fadeOut(5000)
 				  	  }
 				  	, error : function(res) {
 				  		console.log("장바구니 ajax 실패")
@@ -648,12 +653,12 @@ div[data-itemtype='line']{
 					  		})
 				  		
 				  		
-				  		$("#pop").fadeOut(3000)
+				  		$("#pop").fadeOut(5000)
 				  	}
 				  }) // ajax End
 			  }) // click end
 			  
-			  $(".already").fadeOut(3000)
+			  $(".already").fadeOut(5000)
 			  
 		</script> 
 	</div>

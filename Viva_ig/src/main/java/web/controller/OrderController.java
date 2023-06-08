@@ -29,7 +29,7 @@ public class OrderController {
 		logger.info("source : {}",source);
 		
 		
-		session.setAttribute("userno", 1);
+		session.getAttribute("userno");
 		Users user = new Users();
 		user.setUserNo((int)session.getAttribute("userno"));
 		

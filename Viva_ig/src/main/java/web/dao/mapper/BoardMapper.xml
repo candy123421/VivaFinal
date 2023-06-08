@@ -81,21 +81,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		SELECT COMM_NO, COMM_CONTENT, COMM_DATE, BOARD_NO, USER_NO
   		FROM Comments
   		WHERE board_no = #{boardNo}
+  		ORDER BY comm_no DESC
   	</select>
   	
-  	<insert id="insertComment" parameterType="web.dto.Comments">
+<!--   	<insert id="insertComment" parameterType="web.dto.Comments"> -->
+	<insert id="insertComment" parameterType="web.dto.Comments">
   		INSERT INTO Comments (COMM_NO, COMM_CONTENT, COMM_DATE, BOARD_NO, USER_NO)
-  		VALUES ( comm_seq.nextval, #{commContent}, sysdate, {#boardNo}, 1)	
+  		VALUES ( comments_seq.nextval, #{commContent}, sysdate, #{boardNo}, 1)	
   	</insert>
   	
   	<update id="updateComment" parameterType="web.dto.Comments">
-  		UPDATE comments
-  		SET COMM_NO = #{commNo}
-  			, COMM_CONTENT = #{commContent}
-  			, COMM_DATE = sysdate
-  			, BOARD_NO = #{boardNo}
-  			, USER_NO = #{userNo}
-  		WHERE comm_no = #{commNo} AND board_no = #{boardNo}
+  		<selectKey order="BEFORE" resultType="int" keyProperty="commNo">
+  			SELECT comments_seq.nextval FROM dual
+  		</selectKey>
+	  		UPDATE comments
+	  		SET COMM_NO = #{commNo}
+	  			, COMM_CONTENT = #{commContent}
+	  			, COMM_DATE = sysdate
+	  			, BOARD_NO = #{boardNo}
+	  			, USER_NO = 1
+	  		WHERE comm_no = #{commNo} AND board_no = #{boardNo}
   	</update>
  
  	<delete id="deleteComment" parameterType="web.dto.Comments">

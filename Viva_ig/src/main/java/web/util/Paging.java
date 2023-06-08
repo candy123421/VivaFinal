@@ -12,11 +12,10 @@ public class Paging {
 	private int endPage;	//화면에 보이는 끝 페이지네이션 번호
 	
 	private int startNo;	//화면에 보이는 게시글의 시작 번호
-	private int endNo;	//화면에 보이는 게시글의 끝 번호
+	private int endNo;		//화면에 보이는 게시글의 끝 번호
 	
-	
-	
-	
+	private String keyword;	//검색 기준이 되는 검색 타입(옵션)
+
 	
 	//디폴트 생성자 - 페이징 계산이 완료되지 않는다
 	public Paging() { }
@@ -56,9 +55,6 @@ public class Paging {
 	}
 	
 	
-	
-	
-	
 	//페이징 정보를 생성하는 메소드
 	private void makePaging() {
 		if(totalCount == 0)	return; //게시글이 없는 경우 중단한다
@@ -87,65 +83,96 @@ public class Paging {
 		endNo = curPage * listCount;
 	}
 	
+
+	
 	@Override
 	public String toString() {
 		return "Paging [curPage=" + curPage + ", totalCount=" + totalCount + ", listCount=" + listCount + ", totalPage="
 				+ totalPage + ", pageCount=" + pageCount + ", startPage=" + startPage + ", endPage=" + endPage
-				+ ", startNo=" + startNo + ", endNo=" + endNo + "]";
+				+ ", startNo=" + startNo + ", endNo=" + endNo + ", keyword=" + keyword + "]";
 	}
+
+	
 	
 	public int getCurPage() {
 		return curPage;
 	}
+
 	public void setCurPage(int curPage) {
 		this.curPage = curPage;
 	}
+
 	public int getTotalCount() {
 		return totalCount;
 	}
+
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
 	}
+
 	public int getListCount() {
 		return listCount;
 	}
+
 	public void setListCount(int listCount) {
 		this.listCount = listCount;
 	}
+
 	public int getTotalPage() {
 		return totalPage;
 	}
+
 	public void setTotalPage(int totalPage) {
 		this.totalPage = totalPage;
 	}
+
 	public int getPageCount() {
 		return pageCount;
 	}
+
 	public void setPageCount(int pageCount) {
 		this.pageCount = pageCount;
 	}
+
 	public int getStartPage() {
 		return startPage;
 	}
+
 	public void setStartPage(int startPage) {
 		this.startPage = startPage;
 	}
+
 	public int getEndPage() {
 		return endPage;
 	}
+
 	public void setEndPage(int endPage) {
 		this.endPage = endPage;
 	}
+
 	public int getStartNo() {
 		return startNo;
 	}
+
 	public void setStartNo(int startNo) {
 		this.startNo = startNo;
 	}
+
 	public int getEndNo() {
 		return endNo;
 	}
+
 	public void setEndNo(int endNo) {
 		this.endNo = endNo;
 	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	
 }

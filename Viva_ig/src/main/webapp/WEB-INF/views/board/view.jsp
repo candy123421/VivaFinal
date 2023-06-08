@@ -4,95 +4,144 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
 <c:import url="/WEB-INF/views/layout/header.jsp" /> 
 
 <script type="text/javascript">
 $(document).ready(function() {
+	
+	//게시글 상세보기 - 목록으로 돌아가기
 	$("#btnList").click(function() {
 		location.href = "./list";
 	})
 	
+	//게시글 상세보기 - 수정하기
 	$("#btnUpdate").click(function() {
 		location.href="./update?boardNo=${viewBoard.boardNo}";
 	})
 	
+	//게시글 상세보기 - 삭제
 	$("#btnDelete").click(function() {
 		location.href="./delete?boardNo=${viewBoard.boardNo}";
 	}) 
 	
-	//댓글 불러오기
-	//댓글 작성
+	
+	//댓글 작성 ajax
 	$("#btnComment").click(function() {
 		//var contextPath = '<%= request.getContextPath() %>';
-		//console.log(contextPath);
-		//return false;
 		var commContent=$("#commContent").val();	//댓글 내용
 		var boardNo = "${board.boardNo}";			//게시물 번호
 		//var param="commentContent" + commentContent + "&boardNo" + boardNo;
-		
-		console.log(commContent);
-		
+
 		$.ajax({
 			type: "post",
 			url: "/board/commentWrite",
 			data: {commContent: commContent, boardNo: boardNo},
 			success: function(result) {
 				
-		        var commentHtml = '';
+		        /* var commentHtml = '';
 		        for (var i=0; i<result.length; i++) {
 		            commentHtml += '<p>' + result[i].commContent + '</p>';
-		        }
+		        } */
 					
-				//댓글 작성 성공 시 처리할 동작
-				if( result == "success") {
-					
-//                $("#commentList").html(result);
-				$("#commentList").html(commentHtml);
-				
-                alert("댓글이 작성되었습니다.");
-                console.log(result);
-                location.reload(); // 페이지 새로고침
-				}
-				
-				$('#commContent').val(''); 		//댓글 등록시 댓글 등록창 초기화
-	            viewComment();					//등록후 댓글 목록 불러오기 함수 실행
-	            //DOM 조작 함수호출 등 가능
-            },
+		        if (result.length > 0) {
+	                /* $("#commentList").html(commentHtml); */
+	                $("#commentList").html(result);
+	                alert("댓글이 작성되었습니다.");
+	                location.reload(); // 페이지 새로고침
+	            } else {
+	                alert("댓글 작성에 실패했습니다.");
+	            }
+	          
+	            $('#commentList').val('');
+	            // DOM 조작 함수호출 등 가능
+	        },
             error: function() {
                 //Ajax 요청 실패 시 처리할 동작
                 alert("댓글 작성에 실패했습니다.");
             }
-		}) //ajax end
-	})//$("#btnComment").click(function() end
-			
-			
-	
-	 //댓글 조회 ajax
-	   function viewComment() {
-		   var boardNo = $('input[name=boardNo]').val();
-		      $.ajax({
-		    	  type: 'GET',
-		          url: "/board/commentView",
-		          data: {boardNo},
-		          success: function(result) {
-		        	  console.log(result);
-		              for(var i=0; i<result.length; i++) {
-		            	  var str = "<div class=\"comment\">"
-		                  str += result[i].commentList+"</div></hr>"
-		                  $("#comments.commentList").append(str);
-		              } //for end
-		          }, //success end
-		          
-		         error: function(result) {
-		            
-		         },
-		         complete: function() {
-		            
-		         }
+		}); //ajax end
+	}); //$("#btnComment").click(function() end
 
-		      }) //ajax end
-	}	//function viewComment() end
-})
+			
+			
+	//댓글 조회 ajax - 초기 페이지 로딩시 댓글 불러오기
+	$(function(){
+		viewComment();
+	});			
+	//댓글 조회 ajax
+	function viewComment() {
+	var boardNo = $('input[name=boardNo]').val();
+		$.ajax({
+		type: 'GET',
+		url: "/board/commentView",
+		data: { boardNo: boardNo },
+		success: function(result) {
+			console.log(result);
+		}, //success end
+		          
+		error: function(result) {},
+		complete: function() {}
+
+		}) //ajax end
+	} //function viewComment() end
+	
+	
+	
+	//댓글 수정 ajax
+	 $(document).on("click", ".btnCommentUpdate", function() {
+		var boardNo = $("#boardNo").val();
+// 		var commNo = "${comments.commNo}";
+// 		var commContent=$("#commContent").val();	//댓글 내용
+		var commNo = $(this).data("comm-no");
+        var commContent = $("#commContent-" + commNo).val();
+		
+	    //서버로 수정할 댓글의 내용과 댓글 번호를 전달하여 처리하는 Ajax 요청 추가
+	    $.ajax({
+	        type: 'POST',
+	        url: "/board/commentUpdate",
+	        data: { boardNo: boardNo, commNo: commNo, commContent: commContent },
+	        success: function(result) {
+	            // 수정 성공 시에 대한 처리 로직 작성
+	            // 예: 댓글 수정이 성공하면 새로운 내용으로 업데이트
+				alert("댓글이 수정되었습니다.");
+				location.reload(); // 페이지 새로고침
+	        },
+	        error: function(error) {
+	            // 수정 실패 시에 대한 처리 로직 작성
+	        	alert("댓글 수정에 실패했습니다.");
+	        }
+	    });  //$.ajax end
+	}); //$("#btnCommentUpdate").click(function() end
+	
+			
+	//댓글 삭제 ajax
+	$('.btnCommentDelete').click(function() {
+		
+		var idx = $(".btnCommentDelete").index(this);
+		var boardNo = $("input[name='commboardNo']").val();
+        var commNo = $(".btnCommentDelete").eq(idx).attr('data-comm-no');
+
+        $.ajax({
+	        type: 'POST',
+	        url: "/board/commentDelete",
+ 	        data: {boardNo: boardNo, commNo: commNo},
+	        success: function(result) {
+
+				$(".commentList").html(result);
+
+ 	            console.log("댓글 삭제 성공")
+ 	            alert("댓글을 삭제했습니다")
+  				location.reload(); // 페이지 새로고침
+	        },
+	        error: function(error) {
+	            console.log("댓글 삭제 실패");
+	            alert("댓글 삭제에 실패했습니다.");
+	        }
+	    }); //$.ajax end
+	}); //$("#btnCommentDelete").click(function() end
+}) //$(document).ready(function() end
 
 </script>
 
@@ -141,31 +190,32 @@ $(document).ready(function() {
  		<button id="btnDelete">삭제</button>
 <%-- 	</c:if> --%>
 </div>
+<hr>
 
-<!---------- 댓글 시작 ---------->
-<!----- 댓글 작성 ----->
+<!-------------------- 댓글 시작 -------------------->
+<!---------- 댓글 작성 ---------->
 <div id="comment">
 	<form action="/commentWrite" method="post">
-	<input type="hidden" name="boardNo" value="${boardNo }">
-	<textarea id="commContent" name="commContent" placeholder="댓글을 작성하세요" rows="5" cols="50"></textarea><br>
-	<button type="button" id="btnComment">댓글 작성</button>
+		<input type="hidden" name="boardNo" value="${viewBoard.boardNo }">
+		<textarea id="commContent" name="commContent" placeholder="댓글을 작성하세요" rows="4" cols="100"></textarea><br>
+		<button type="button" id="btnComment">댓글 작성</button>
 	</form>
 </div>
+<hr>
 
-<div id="comments">
-	<div class="commentList">
-		<c:forEach items="${commentList}" var="commentList">
-		    <div>
-		      <div>
-		      작성자 : ${commentList.userNo}<br />
-		      작성일 :  <fmt:formatDate value="${commentList.commDate}" pattern="yyyy-MM-dd" />
-              </div>
-              <p>${commentList.commContent}</p>
-		     </div>
-		 </c:forEach>   
-	</div>
+<!---------- 댓글 목록 ---------->
+<div id="commentList" class="commentList">
+	<c:forEach items="${commentList}" var="commentList">
+		<input type="hidden" name="commboardNo" value="${commentList.boardNo }">
+		<div>작성자 번호: ${commentList.userNo}</div>
+		<div>댓글 번호 : ${commentList.commNo }</div>
+        <div>작성일: <fmt:formatDate value="${commentList.commDate}" pattern="yyyy-MM-dd hh:mm" /></div>
+		<input id="commContent-${commentList.commNo}" name="commContent" value="${commentList.commContent}"><br>
+			<button type="button" class="btnCommentUpdate" data-comm-no="${commentList.commNo}">댓글 수정</button>
+			<button type="button" class="btnCommentDelete" data-comm-no="${commentList.commNo}">댓글 삭제</button>
+			<hr>
+	</c:forEach>
 </div>
-
 <!-- 댓글 끝 -->
 
 </div><!-- .container end -->

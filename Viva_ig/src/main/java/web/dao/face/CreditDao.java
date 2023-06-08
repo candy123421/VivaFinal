@@ -64,11 +64,13 @@ public interface CreditDao {
 	public void insertTossData(TossApi toss);
 
 	/**
-	 * 트랜잭션 중,
-	 * @param tossNo
-	 * @return 결제완료된 토스 정보 전체
+	 * 결제완료된 정보 일부 추출 
+	 * 
+	 * @param dealNo
+	 * @return HashMap - key : credit 총계, 결제방식, 결제시간, 실제 금액
 	 */
-//	public TossApi selectByTossNo(int tossNo);
+	public Map<String, Object> selectOkInfo(int dealNo);
+
 
 
 }

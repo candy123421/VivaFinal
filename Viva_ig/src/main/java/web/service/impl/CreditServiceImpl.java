@@ -177,7 +177,14 @@ public class CreditServiceImpl implements CreditService {
 //		TossApi chargeOkData = creditDao.selectByTossNo(toss.getTossNo());
 		//생성된 정보를 보내줄 준비.. dealNo만.. 
 		return num;
+	}
+	
+	@Override
+	public Map<String, Object> viewChargeOkInfo(int dealNo) {
+		logger.info("viewChargeOkInfo()");
+		logger.info("{}", dealNo);
 		
 		
+		return creditDao.selectOkInfo(dealNo);
 	}
 }

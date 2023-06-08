@@ -1,6 +1,7 @@
 package web.service.face;
 
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONObject;
 
@@ -47,6 +48,14 @@ public interface CreditService {
 	 * @return 승인된 결제 정보
 	 */
 	public int addPurchaseInfo(JSONObject jsonObject);
+
+	/**
+	 * 결제가 완료된 정보 
+	 * 
+	 * @param dealNo
+	 * @return HashMap 형태의 조회된 정보
+	 */
+	public Map<String, Object> viewChargeOkInfo(int dealNo);
 
 
 }

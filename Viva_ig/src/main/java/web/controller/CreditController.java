@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Base64.Encoder;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -217,20 +218,28 @@ public class CreditController {
 		
 		logger.info("dealNo : {}", dealNo);
 
+		//session 에 dealNo를 넣어둔다.
 		HttpSession session = request.getSession();
-		
 		session.setAttribute("dealNo", dealNo);
 		
+		//url에 결제정보가 담기지 않도록 redirect 를 해준다.
 		return "redirect:/credit/chargeOk";
 	}
 	
+//-----------------------------------------------------------------------------
 	//결제 완료 시, 이동할 리다이렉트 페이지!
 	@RequestMapping("/chargeOk")
 	public void chargeOk(@SessionAttribute(value="dealNo") int dealNo) {
 		logger.info("credit/chargeOk - 결제 완료");
-		//크레딧 잔액 + 결제방식 + 실제 결제 금액 + 결제 승인 시각 조회해오기
 		
 		logger.info("{}", dealNo);
+		
+		//결제완료된 정보 조회해오기(크레딧 총계, 결제방법, 결제승인시간, 실제 금액)
+		Map<String,Object> info = creditService.viewChargeOkInfo(dealNo);
+		
+		//확인하기
+		logger.info("{}", info);
+		
 		
 	}
 

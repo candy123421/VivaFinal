@@ -1,17 +1,17 @@
 package web.dto;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Credit {
 	private int dealNo;
 	private int userNo;
-	private Date dealDate;
+	private Timestamp dealDate;
 	private int dealCategory;
 	private int amount;
 	
-	public Credit() {	}
+	public Credit() {}
 
-	public Credit(int dealNo, int userNo, Date dealDate, int dealCategory, int amount) {
+	public Credit(int dealNo, int userNo, Timestamp dealDate, int dealCategory, int amount) {
 		super();
 		this.dealNo = dealNo;
 		this.userNo = userNo;
@@ -42,12 +42,12 @@ public class Credit {
 		this.userNo = userNo;
 	}
 
-	public Date getDealDate() {
+	public Timestamp getDealDate() {
 		return dealDate;
 	}
 
-	public void setDealDate(Date dealDate) {
-		this.dealDate = dealDate;
+	public void setDealDate(Timestamp chargeTime) {
+		this.dealDate = chargeTime;
 	}
 
 	public int getDealCategory() {
@@ -65,7 +65,6 @@ public class Credit {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-	
-	
+
 
 }

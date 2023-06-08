@@ -104,23 +104,6 @@ $(function() {
 
 
 
-<!-- ================================================================ -->
-
-<!--  토스 블로그 보고 시도해본 30분안에 결제 페이지 개발하기 코드임 -->
-<!-- <script> -->
-<!-- //   const clientKey = 'test_ck_oeqRGgYO1r5XDApxvq1VQnN2Eyaz' // 상점을 특정하는 키 -->
-<!-- //   const customerKey = 'YbX2HuSlsC9uVJW6NMRMj' // 결제 고객을 특정하는 키 -->
-<!-- //   const amount = 15_000 // 결제 금액 -->
-
-<!-- //   /*결제위젯 영역 렌더링*/ -->
-<!-- //   const paymentWidget = PaymentWidget(clientKey, customerKey) // 회원 결제 초기화 -->
-<!-- //   // const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS) // 비회원 결제 초기화 -->
-<!-- //   paymentMethods = paymentWidget.renderPaymentMethods('#payment-method', amount) -->
-  
-<!-- //   /*약관 영역 렌더링*/ -->
-<!-- //   const paymentAgreement = paymentWidget.renderAgreement('#agreement') -->
-<!-- </script> -->
-
 
 
 <!-- ================================================================ -->
@@ -190,9 +173,9 @@ $(function() {
     // https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
     button.addEventListener("click", function () {
       paymentWidget.requestPayment({
-        orderId: "L84sqOnguyAQ4rZYlAf36",            // 주문 ID(직접 만들어주세요)
+        orderId: "${id}",            // uuid 난수로 컨트롤러에서 받아옴
         orderName: "크레딧 충전",                 // 주문명
-        successUrl: 'http://localhost:8888/credit/success', 	// 결제에 성공하면 이동하는 페이지(직접 만들어주세요)
+        successUrl: 'http://localhost:8888/credit/charging', 	// 결제에 성공하면 이동하는 페이지(직접 만들어주세요)
 		failUrl: 'http://localhost:8888/credit/fail',			// 결제에 실패하면 이동하는 페이지(직접 만들어주세요)
         customerEmail: "hjsun12@naver.com",
         customerName: "지서닝"

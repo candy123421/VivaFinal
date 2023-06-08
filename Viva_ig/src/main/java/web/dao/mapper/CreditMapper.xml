@@ -71,8 +71,28 @@
 		WHERE USER_NO = #{userNo} AND DEAL_NO = #{dealNo}
 	</update>
 	
-	<!--  크레딧 충전 (TossPayments api)-->
-	<insert id="insertTossData" parameterType="HashMap">
-		
+	<!-- 결제 번호 받아오기 -->
+	<select id="selectNextDealNo" resultType="int">
+		select credit_seq.nextval from dual
+	</select>
+
+	<!--  결제 트랜잭션 중 -->
+	<!--  1. 트랜잭션 중, credit TB에 충전정보 생성 하기 -->
+	<insert id="insertcharge" parameterType="web.dto.Credit">
+		insert into credit (DEAL_NO, user_no, DEAL_DATE, DEAL_CATEGORY, AMOUNT) 
+		values (#{dealNo}, #{userNo}, #{dealDate}, #{dealCategory}, #{amount})
 	</insert>
+	
+ 	<!--  2. 트랜잭션 중, 크레딧 충전 (TossPayments api)-->
+	<insert id="insertTossData" parameterType="web.dto.TossApi">
+		insert into toss_api (
+			TOSS_NO, DEAL_NO, USER_NO, ORDER_ID, PAYMENT_KEY, METHOD, TOTAL_AMOUNT, APPROVED_AT) 
+		values (toss_api_seq.nextval, #{dealNo}, #{userNo}, #{orderId}, #{paymentKey}, #{method}, #{totalAmount}, #{approvedAt})
+	</insert>
+	
+	<!--  3. 트랜잭션 중, 토스 정보 조회 -->
+<!-- 	<select id="selectByTossNo" resultType="web.dto.TossApi" parameterType="int"> -->
+<!-- 		select TOSS_NO, DEAL_NO, USER_NO, ORDER_ID, PAYMENT_KEY, METHOD, TOTAL_AMOUNT, APPROVED_AT from TOSS_API  -->
+<!-- 		where toss_no = #{tossNo} -->
+<!-- 	</select> -->
 </mapper>

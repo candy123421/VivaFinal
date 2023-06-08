@@ -175,7 +175,12 @@ function compare_check(){
 
 //아이디 중복 검사
 $(function(){
-	
+		//아이디 중복체크를 하지않으면 false
+		var isIdCheck = false;
+		//닉네임 중복체크를 하지않으면 false
+		var isNickCheck = false;
+
+	//아이디 중복체크 버튼을 누르면
 	$(".id_input").on("click", function(){
 		
 		var userId = $("#userId").val();
@@ -185,7 +190,6 @@ $(function(){
 			$('#userid_msg').html("아이디를 입력해주세요")
 			return
 		}
-		
 		//회원가입시 아이디 중복검사
 		$.ajax({
 			type:"get",
@@ -194,11 +198,13 @@ $(function(){
 			success: function(result){
 				//
 				if(result != "fail"){
+					isIdCheck=true;
 					//중복아이디가 없어서 사용가능한 아이디입니다
 					$(".id_input1").css("display","inline-block");
 					//span input2는 안보이게
 					$(".id_input2").css("display","none");
 				}else{
+					isIdCheck=false;
 					//중복아이디이므로 '아이디가 이미 존재합니다' 띄우기
 					$(".id_input1").css("display","none");
 					$(".id_input2").css("display","inline-block");
@@ -211,11 +217,11 @@ $(function(){
 	
 	//닉네임 중복 검사
 	$(".nick_input").on("click", function(){
-	// 		console.log("keyup 테스트");
+	//console.log("keyup 테스트");
 	
 		var userNick = $("#userNick").val();
 		var data = {userNick : userNick}
-		
+
 		if(userNick == ''){
 			$('#usernick_msg').html("닉네임을 입력해주세요")
 			return
@@ -228,11 +234,13 @@ $(function(){
 			success: function(result){
 				//
 				if(result != "fail"){
+					isNickCheck=true;					
 					//중복닉네임 없어서 사용가능한 닉네임입니다
 					$(".nick_input1").css("display","inline-block");
 					//span input2는 안보이게
 					$(".nick_input2").css("display","none");
 				}else{
+					isNickCheck=false;					
 					//중복닉네임이므로 '닉네임 이미 존재합니다' 띄우기
 					$(".nick_input1").css("display","none");
 					$(".nick_input2").css("display","inline-block");
@@ -241,17 +249,38 @@ $(function(){
 			}
 		})
 	})
+	
+	//아이디 ,닉네임 중복이면 submit불가
+	 $('#btn').click(function() {
+	     if(!isIdCheck){
+	         alert('아이디가 중복되었습니다.');
+	         return false;
+	      }else{
+	         return true;
+	      }
+
+	})
+	//아이디 ,닉네임 중복이면 submit불가
+	 $('#btn').click(function() {
+	     if(!isNickCheck){
+	         alert('닉네임이 중복되었습니다.');
+	         return false;
+	      }else{
+	         return true;
+	      }
+
+	})
 })
 
 $(function(){
 	
 	//회원가입시 이메일인증(ajax) 
 	$('#mail-Check-Btn').click(function() {
-		const email = $('#userEmail').val() + $('#userEmail2').val(); // 이메일 주소값 얻어오기!
+		const email = $('#userEmail1').val() + $('#userEmail2').val(); // 이메일 주소값 얻어오기!
 		console.log('완성된 이메일 : ' + email); // 이메일 오는지 확인
 		const checkInput = $('.mail-check-input') // 인증번호 입력하는곳 
 		
-		var userEmail = $("#userEmail").val();
+		var userEmail = $("#userEmail1").val();
 		
 		if( userEmail == '' ) {
 			$('#mail-check-warn').html("이메일을 입력해주세요")
@@ -329,7 +358,30 @@ $(function(){
 	      }
 
 	})
+	
+	 //회원가입시 이메일주소 앞에꺼 + 뒤에(@naver.com) 합쳐서 DB에 저장
+	   $("#userEmail1").blur(function(){
+	      email();   
+	   });
+	
+	   $("#userEmail2").change(function(){
+	      email();   
+	   });
+	      console.log(userEmail1);
+	      console.log(userEmail2);
+
 })	
+
+//회원가입시 이메일주소 앞에꺼 + 뒤에(@naver.com) 합쳐서 DB에 저장
+function email() {
+   const Email1 = $("#userEmail1").val();
+   const Email2 = $("#userEmail2").val();
+   
+   if(Email1 != "" && Email2 != "") {
+      $("#userEmail").val(Email1 + Email2);
+      
+   }
+};
 
 </script>
 <style type="text/css">
@@ -484,7 +536,6 @@ input{
 	<div class="select">
 		<label for="userBirth">생년월일</label>
 		 <input type="date"  id="userBirth" name="userBirth" required="required">
-<!-- 			<input type="text" name="userBirth" placeholder="YYYY/MM/DD" > -->
 		<span id="userbirth_msg" class="msg"></span>
 	</div>
 	
@@ -499,14 +550,15 @@ input{
 	
 	<div class="select">
 		<label for="userEmail">이메일</label>
-		<input class="userEmail" type="text"  id="userEmail" name="userEmail" placeholder="이메일" required="required">
+		<input class="userEmail" type="text"  id="userEmail1" name="userEmail1" placeholder="이메일" required="required">
 		<select class="form-controll" id="userEmail2" name="userEmail2">
-			<option>@naver.com</option>
-			<option>@daum.net</option>
-			<option>@gmail.com</option>
-			<option>@hanmail.com</option>
-			<option>@yahoo.co.kr</option>
+			<option value="@naver.com">@naver.com</option>
+			<option value="@daum.net">@daum.net</option>
+			<option value="@gmail.com">@gmail.com</option>
+			<option value="@hanmail.com">@hanmail.com</option>
+			<option value="@yahoo.co.kr">@yahoo.co.kr</option>
 		</select>
+		<input type="hidden" id="userEmail" name="userEmail">
 		<div class="mail-check-box">
 			<input class="mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled" maxlength="6">
 		</div>

@@ -142,10 +142,10 @@ public interface UsersService {
 	/**
 	 * 프로필번호 존재하는지 확인
 	 * 
-	 * @param userProfile
+	 * @param users
 	 * @return
 	 */
-	public boolean selectFileNo(UserProfile userProfile);
+	public boolean selectFileNo(Users users);
 
 	/**
 	 * 회원정보 수정 - 프로필 update
@@ -154,6 +154,14 @@ public interface UsersService {
 	 * @param profile
 	 */
 	public void updateProfile(Users users, MultipartFile profile);
+
+	/**
+	 * 회원수정 - 프로필이 있으면 삭제하고 삽입
+	 * 
+	 * @param users
+	 * @param profile
+	 */
+//	public void deleteProfile(Users users, MultipartFile profile);
 
 
 }

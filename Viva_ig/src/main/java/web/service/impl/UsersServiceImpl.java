@@ -191,9 +191,9 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public boolean selectFileNo(UserProfile userProfile) {
+	public boolean selectFileNo(Users users) {
 
-		int fileNoChk = usersDao.selectCntProfile(userProfile);
+		int fileNoChk = usersDao.selectCntProfile(users);
 		
 		logger.info("filenoChk : {}", fileNoChk);
 		
@@ -206,7 +206,14 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public void updateProfile(Users users, MultipartFile profile) {
 
-	//파일이 저장될 경로
+      //유저 비밀번호,닉네임 수정
+      usersDao.insertUserInfo(users);
+      
+      usersDao.deleteProfile(users.getUserNo());
+      logger.info("삭제하려는 유우저 {} ", users.getUserNo());
+      
+      
+	  //파일이 저장될 경로
       String storedPath = context.getRealPath("profile");
       File storedFolder = new File(storedPath);
       
@@ -251,12 +258,18 @@ public class UsersServiceImpl implements UsersService {
       file.setFilesize((int)profile.getSize());
       
       logger.info("file: {}", file);
-	
+      //유저 프로필 삭제
       
-      //유저 프로필사진 수정
-	  usersDao.updateUserProfile(file);
-	  //유저 비밀번호,닉네임 수정
-	  usersDao.insertUserInfo(users);
+      //유저 프로필사진 삽입
+//	  usersDao.updateUserProfile(file);
+	  usersDao.insertUserProfile(file);
+
 		
 	}
+
+//	@Override
+//	public void deleteProfile(Users users, MultipartFile profile) {
+//		usersDao.deleteProfile(users,profile);
+//		
+//	}
 }

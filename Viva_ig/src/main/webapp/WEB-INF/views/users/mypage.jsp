@@ -57,17 +57,19 @@ a {
 .contentSmall{
 	font-size:22px;
 	padding:2px;
-	margin:25px;
+/* 	margin:25px; */
 	border-bottom: 1px solid #ccc;
+	height: 100px;
 }
 
 /* 회원정보 글자 */
 .contentMedium{
 	font-size:22px;
 	padding:2px;
-	margin:25px;
+/* 	margin:25px; */
 	text-align:end;
 	border-bottom: 1px solid #ccc;
+	height: 100px;
 }
 
 #lastbtn{
@@ -75,6 +77,10 @@ a {
 /* 	height :100vh; */
 	justify-content: center;
 	align-items: center;
+}
+#imgwrap{
+	width: 100px;
+	height:100px;
 }
 </style>
 
@@ -96,7 +102,7 @@ a {
 					<div class="contentSmalls">프로필</div>
 				<div id="colgrid3">
 					<div class="contentSmall">프로필 사진</div>
-					<div class="contentMedium"><img src="../../../profile/${userProfile.STOREDNAME}"></div>
+					<div id="imgwrap" class="contentMedium"><img src="../../../profile/${userProfile.STOREDNAME}" style="width: 100%"></div>
 					<div class="contentSmall">아이디</div>
 					<div class="contentMedium">${userInfo.userId}</div>
 					<div class="contentSmall">이름</div>

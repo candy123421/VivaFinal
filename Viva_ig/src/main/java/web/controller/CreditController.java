@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Base64.Encoder;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -94,21 +95,41 @@ public class CreditController {
 		logger.info("전송할 회원등급:{}", model.getAttribute("grade"));
 		//문제는 이런 방식으로는 (String은 view로 전달 안되는가? Object 타입만 전달이 가능한가?) null 이 들어가 있어서 해결이 안된다,,,ㅠ
 		//=> model.getAttribute()괄호 안에 따옴표까지 포함해서 써야 출력이 되는거다!!!!
-		
-		
-		
 	}
-	
+
+//----------------------------------------------------------------------------------------------------------------------
+	//토스페이먼츠 결제 페이지 이동 시 
 	@RequestMapping("/charge")
 	public void charge(Credit userNo, Model model) {
-		logger.info("credit/charge - charge()");
+		logger.info("credit/charge - 결제 페이지 이동");
 		logger.info("userno: {} ", userNo);
+		
+		//orderID 로 랜덤 uuid 난수 생성하기
+//		UUID uid = UUID.randomUUID();
+//		logger.info("uid : {} ", uid);
+//		//출력 : uid : 625a3eac-368f-4a18-b04e-1de60849a894 (매번 바뀜)
+		
+		//생성 시 UUID 형태이므로 String 형태로 바꿔줘야함
+		String id = UUID.randomUUID().toString();
+		logger.info("id : {} ", id);
+		
+		//근데 너무 기니까, split 해서 전체 UUID 중 뒤에 16자리만 추출하려고 한다.
+		logger.info("id: {}", "VIVA" + id.split("-")[3] + id.split("-")[4]);
+		//출력 : ad7c7f904298e57a 잘되고 있다. 
+
+		//orderID로 jsp에게 전달해주기
+		String orderId= "VIVA" + id.split("-")[3] + id.split("-")[4];
+		model.addAttribute("id", orderId);
+		
+		
+		
 	}
 	
-	
-	@RequestMapping("/success")
-	public void success(HttpServletRequest request) {
-		logger.info("credit/charge - 결제 완료()");
+//----------------------------------------------------------------------------------------------------------------------
+	//토스페이먼츠 결제 요청 시 
+	@RequestMapping("/charging")
+	public void charging(HttpServletRequest request) {
+		logger.info("credit/charging - 결제 요청후 결제 진행 중");
 
 		String orderId = request.getParameter("orderId");
 		String paymentKey = request.getParameter("paymentKey");
@@ -176,60 +197,23 @@ public class CreditController {
 //		return "redirect:/credit/chargeOk";
 	}
 	
+	//결제 완료 시, 이동할 리다이렉트 페이지!
 	@RequestMapping("/chargeOk")
 	public void chargeOk() {
 		logger.info("credit/chargeOk - 결제 완료");
 	}
-//	@ResponseBody
-//	@RequestMapping("/success")
-//	public String success(HttpServletRequest request, Writer out) {
-//		logger.info("credit/charge - 결제 완료()");
-//		
-//		//url 로 넘어온 데이터를 추출하기
-//		
-//		String orderId = request.getParameter("orderId");
-//		String paymentKey = request.getParameter("paymentKey");
-//		String amount = request.getParameter("amount");
-//		String secretKey = "test_sk_P24xLea5zVAqyEqG6P6VQAMYNwW6:";
-//		
-//		logger.info(orderId);
-//		logger.info(paymentKey);
-//		logger.info(amount);
-//		logger.info(secretKey);
-//		
-//		HttpRequest req = HttpRequest.newBuilder()
-//				//토스 결제 승인하는 url
-//				.uri(URI.create("https://api.tosspayments.com/v1/payments/confirm"))
-//				
-//				//토스와 계약 전 사용하는 시크릿 키를 base64로 인코딩한거!
-//				.header("Authorization", "Basic dGVzdF9za19QMjR4TGVhNXpWQXF5RXFHNlA2VlFBTVlOd1c2Og==")
-//				.header("Content-Type", "application/json")
-////				.method("POST", HttpRequest.BodyPublishers.ofString("{\"paymentKey\":\"{paymentKey}\",\"amount\":15000,\"orderId\":\"{orderId}\"}"))
-//				.build();
-//		
-//		HttpResponse<String> resp = null;
-//		
-//		try {
-//			resp = HttpClient.newHttpClient().send(req, HttpResponse.BodyHandlers.ofString());
-//			out.write("{\"resp\": " + resp + "}");
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//		logger.info("{}",resp.body());
-//		
-//		return "redirect:/credit/charge";
-//	}
+
 	
+	//결제 실패 시, 이동할 리다이렉트 페이지!
 	@RequestMapping("/fail")
 	public void fail(Credit userNo, Model model) {
-		logger.info("credit/charge - charge()");
+		logger.info("credit/fail - 결제 실패");
 		logger.info("userno: {} ", userNo);
 		
 	}
 	
 
+//-----------------------------------------------------------------------------
 	@RequestMapping("/exchange")
 	public void exchange(Credit userNo, Model model) {
 		logger.info("credit/exchange - exchange()");

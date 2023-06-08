@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import web.dto.Credit;
+import web.dto.TossApi;
 import web.dto.Users;
 
 public interface CreditDao {
@@ -40,11 +41,27 @@ public interface CreditDao {
 	public void deleteDeal(Credit deal);
 
 	/**
+	 * seq.nextval()을 통해서 dealNo 미리 select해오기
+	 * 
+	 * @return deal_no
+	 */
+	public int selectNextDealNo();
+
+	/**
+	 * 트랜잭션 중, 
+	 * 크레딧 tb에 정보 insert하기
+	 * 
+	 * @param credit - userNo, amount
+	 */
+	public void insertcharge(Credit credit);
+
+	/**
+	 * 트랜잭션 중, 
 	 * 결제 정보를 DB에 insert하기
 	 * 
-	 * @param tossData - 결제 정보 여러가지
+	 * @param toss - 결제 정보 여러가지
 	 */
-	public void insertTossData(Map<String, Object> tossData);
+	public void insertTossData(TossApi toss);
 
 
 }

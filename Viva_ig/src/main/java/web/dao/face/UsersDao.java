@@ -157,17 +157,25 @@ public interface UsersDao {
 	/**
 	 * db에 프로필 사진번호 존재유무 확인
 	 * 
-	 * @param userProfile
+	 * @param users
 	 * @return
 	 */
-	public int selectCntProfile(UserProfile userProfile);
+	public int selectCntProfile(Users users);
 
 	/**
 	 * 회원정보 수정 - 프로필사진 업데이트
 	 * 
 	 * @param file
 	 */
-	public void updateUserProfile(UserProfile file);
+//	public void updateUserProfile(UserProfile file);
+
+
+	/**
+	 * 기존에 프로필 사진이 있는 경우 삭제한다
+	 * 
+	 * @param userNo - 프로필 사진을 삭제할 회원정보
+	 */
+	public void deleteProfile(int userNo);
 
 	
 

@@ -49,9 +49,37 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public UserQuestion getQNo(UserQuestion userQuestion) {
-		return adminDao.selectQnAView(userQuestion);
+		return adminDao.selectQnAViewQuestion(userQuestion);
 	}
 	
+	@Override
+	public AdminAnswer getANo(AdminAnswer adminAnswer) {
+		return adminDao.selectQnAViewAnswer(adminAnswer);
+	}
+	
+	@Override
+	public Users getUserInfo(int attribute) {
+		return adminDao.selectUserInfo(attribute);
+	}
+	
+	@Override
+	public void writeQuestion(UserQuestion userQuestion) {
+		//문의등록
+		adminDao.insertUserQuestion(userQuestion);
+	}
+	
+	@Override
+	public Admin getAdminInfo(int attribute) {
+		//세션에있는 adminno로 admin정보 알아오기
+		return adminDao.selectAdminInfo(attribute);
+	}
+	
+	@Override
+	public Users getUsersInfo(Users users) {
+		return adminDao.selectUsersInfo(users);
+	}
+
+
 	@Override
 	public void answerSingUp(UserQuestion userQuestion, AdminAnswer adminAnswer,Admin admin , Users users) {
 		//답변등록
@@ -62,7 +90,13 @@ public class AdminServiceImpl implements AdminService {
 		adminDao.updateQProcess(userQuestion);
 		
 	}
-
+	@Override
+	public int getProcess(UserQuestion userQuestion) {
+		return adminDao.selectQProcess(userQuestion);
+	}
 	
-
+	@Override
+	public Admin getAdminId(Admin admin) {
+		return adminDao.selectAdminNick(admin);
+	}
 }

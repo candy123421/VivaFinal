@@ -433,22 +433,27 @@ public class UsersController {
 		logger.info("프로필 정보 : {}", profile);
 		logger.info("수정하는 사람 : {}", users);
 		
-//		//유저넘버에 대한 프로필 테이블 행개수 가져오기
-//		boolean isProfileNo = usersService.selectFileNo(userProfile);
-//		logger.info("isProfileNo:{}", isProfileNo);
-//		//회원정보수정하기전에 fileno가 DB에 존재하면 삭제하고 업데이트/DB에 없으면 insert 시키기
-//		//true를 받아서 DB에 fileno가 존재하므로 프로필사진 수정(update)
-//		if(isProfileNo == true) {
-//			logger.info("프로필사진 올린적있음");
-//			usersService.updateProfile(users,profile);
-//			return "redirect:./mypage";
-//		
-//		// false를 받아서 회원프로필사진 삽입(insert)
-//		}else if(isProfileNo == false) {
-//			logger.info("프로필사진 올린적없음");
-//			usersService.insertProfile(users,profile);
-//			return "redirect:./mypage";
-//		}
+		//유저넘버에 대한 프로필 테이블 행개수 가져오기
+		boolean isProfileNo = usersService.selectFileNo(users);
+		logger.info("isProfileNo:{}", isProfileNo);
+		
+		//회원정보수정하기전에 fileno가 DB에 존재하면 삭제하고 업데이트/DB에 없으면 insert 시키기
+		//true를 받아서 DB에 fileno가 존재하므로 프로필사진 수정(update)
+		if(isProfileNo == true) {
+			logger.info("프로필사진 올린적있음");
+			
+			//회원프로필 삭제 
+//			usersService.deleteProfile(users,profile);
+			//회원정보 수정한거 삽입
+			usersService.updateProfile(users,profile);
+			return "redirect:./mypage";
+		
+		// false를 받아서 회원프로필사진 삽입(insert)
+		}else if(isProfileNo == false) {
+			logger.info("프로필사진 올린적없음");
+			usersService.insertProfile(users,profile);
+			return "redirect:./mypage";
+		}
 		
 		return "redirect:./mypage";
 	}

@@ -1,15 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<c:import url="../layout/header.jsp"/>
+
+
+<title>user main</title>
 </head>
 <body>
-
+<h1>User Main</h1>
+<hr>
 <div class="text-center">
 <c:if test="${login eq false or login eq null}">
 <%-- <c:if test="${empty login}"> --%>

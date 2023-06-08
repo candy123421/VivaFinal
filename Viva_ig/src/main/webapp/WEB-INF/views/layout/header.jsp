@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -276,6 +278,10 @@ font-weight: bold;
 .FunctionTitleLine {
 	margin-left: 20px;
 }
+.admin_profile{
+	width: 60px;
+	height: 36px;
+}
 </style>
 
 </head>
@@ -285,14 +291,14 @@ font-weight: bold;
 	  <div id="sidebar">
 	<div>
 		  	<!--  상단 메인 로고 클릭시 메인페이지로 이동하도록 -->
-	  		<a href=""><img class="layout_logo" src="../../../resources/icon/viva_icon_final.svg"></a>
+	  		<a href="/"><img class="layout_logo" src="../../../resources/icon/viva_icon_final.svg"></a>
 	  	</div>
 <div class="sideNav">
   <ul id="accordion" class="accordion">
 
    	<!--  목록1 : 메인 홈 -->
     <li class="show">
-      <div class="menu"><i class="fa fa-code"></i><a class="subCategory" href="">Home</a><i class="fa fa-chevron-down"></i></div>
+      <div class="menu"><i class="fa fa-code"></i><a class="subCategory" href="/">Home</a><i class="fa fa-chevron-down"></i></div>
     </li>
     
     <!--  목록2 : 음원소스 -->
@@ -333,6 +339,18 @@ font-weight: bold;
         <li><a href="">Hot</a></li>
       </ul>
     </li>
+    
+<!--     목록4: 문의 -->
+	<li>
+	<div class="menu"><i class="fa fa-globe"></i><a class="subCategory" href="/qna/list">Q&A</a><i class="fa fa-chevron-down"></i></div>
+	</li>
+	
+<!-- 	목록5: 파일업로드 -->
+	<li>
+	<div class="menu"><i class="fa fa-globe"></i><a class="subCategory" href="/file/fileupsource">Upload</a><i class="fa fa-chevron-down"></i></div>
+	</li>
+	
+	
   </ul>
   </div>
 	  </div><!--  sidebar end-->
@@ -349,18 +367,43 @@ font-weight: bold;
 	  		<nav class="navbar navbar-expand-lg bg-light">
 	  			<div class="container-fluid justify-content-end">
 	  			
-				  	<a class="header_icon" id="header_icon_cart" href="/cart/list">
-				  		<span class="iconName">Cart</span>
-				  	</a>
+	  			
+	  				  <div class="loginstate">
+	  
+	  
+	  <c:choose>
+	  
+	  <c:when test="${empty adminlogin and empty login }">
+	  <a href="/viva/login"> <button class="btn btn-outline-secondary btn-sm">Login</button> </a>
+	  
+	  </c:when>
+	  
+
+	  
+	  	<c:when test="${not empty adminlogin and adminlogin }">
+		<a class="header_icon" id="header_icon_profile" href="/admin/main">
+		<img class="admin_profile" src="/resources/icon/profile.svg" alt="기본프로필" class="d-inline-block align-text-top"></a>
+		<span style="font-size: 1.5em; color: red;"> ${adminNo }</span>번 Admin
+		<span style="font-size: 1.5em; color: red;"> ${adminloginid }</span>님
+		<a href="/admin/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
+		
+	  	
+	  	</c:when>
+	  	
+	  	<c:when test="${not empty login and login }">
+	  	
+	  	<img src="../upload/${userInfo.userProfile }" style="width: 40px; ">
+		nick:<span style="font-size: 1.5em; color: red;"> ${nick }</span>님
+	  	<a href="/users/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
+	  	
+	  	</c:when>
+	  
+	  
+	  </c:choose>
+	  </div>
 				
-				  	<a class="header_icon" id="header_icon_mySouncds" href="">
-				  		<span class="iconName">My Sounds</span>
-				  	</a>
-				
-				
-				  	<a class="header_icon" id="header_icon_profile" href="">
-				  		<img class="iconName" src="/resources/icon/profile.svg" alt="기본프로필" class="d-inline-block align-text-top">
-				  	</a>
+				  	
+				  	
 				
 				</div><!--  container-fluid justify-content-end -->
 			</nav><!--  navbar end-->
@@ -369,6 +412,13 @@ font-weight: bold;
 			  	<a class="header_icon" id="header_icon_credits" href="/credit/list">
 			  		<span class="iconName">1200 credits</span>
 			  	</a>
+			  					  	<a class="header_icon" id="header_icon_cart" href="/cart/list">
+				  		<span class="iconName">Cart</span>
+				  	</a>
+				
+				  	<a class="header_icon" id="header_icon_mySouncds" href="">
+				  		<span class="iconName">My Sounds</span>
+				  	</a>
 			</div>
 		
 		</div><!--  fixed-top end-->

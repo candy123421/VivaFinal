@@ -54,7 +54,7 @@ $(document).ready(function() {
 <%-- 	<input type="text" id="userId" name="userId" value="${userInfo.userId }" class="form-control"> --%>
 </div>
 
-<div class="form-group">
+<div class="select">
 	<label class="form-label" for="title">제목</label>
 	<input type="text" id="boardTitle" name="boardTitle" class="form-control">
 </div>

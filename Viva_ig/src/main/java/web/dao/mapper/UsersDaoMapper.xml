@@ -104,16 +104,18 @@
         WHERE user_no= #{userNo}
     </update>
 	
-	<select id="selectCntProfile" resultType="int" parameterType="web.dto.UserProfile">
+	<select id="selectCntProfile" resultType="int" parameterType="web.dto.Users">
 		SELECT count(*) FROM UserProfile
 		WHERE user_no = #{userNo}
 	</select>
 	
-	<update id="updateUserProfile" parameterType="web.dto.UserProfile">
-        UPDATE userProfile
-        SET originname = #{originname}, storedname = #{storedname}, filesize = #{filesize}
-        WHERE user_no= #{userNo}
-    </update>
+	<delete id="deleteProfile" parameterType="int">
+		DELETE UserProfile
+		WHERE user_no = #{userNo}
+	</delete>
+	
+	
+	
 	
 </mapper>
 

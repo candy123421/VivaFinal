@@ -6,6 +6,18 @@
 <c:import url="/WEB-INF/views/layout/header.jsp" />
 <script type="text/javascript">
 
+	$(document).on('click', '#btnSearch', function(e){
+	
+		e.preventDefault();
+	
+		var url = "${pageContext.request.contextPath}/board/list";
+		url = url + "?searchOption=" + $('#searchOption').val();
+		url = url + "&keyword=" + $('#keyword').val();
+	
+		location.href = url;
+		console.log(url);
+	});	
+
 // function optionChange(){ 
 	
 // 	var selectedOption = document.getElementById("category").value;
@@ -61,7 +73,7 @@
 
 
 
-// 전체선택 
+// 보현작성  -전체선택 
 function checkSelectAll(checkbox)  {
   const selectall 
     = document.querySelector('input[name="checkall"]');
@@ -80,20 +92,11 @@ function selectAll(selectAll)  {
   })
 }
 
-//삭제하는건데 DB를 거쳐야하기때문에 이건 아닌거같긴함 
-// document.addEventListener("DOMContentLoaded", function() {
-//     var del = document.querySelector("#btnDelete");
-//     del.onclick = function() {
-//         // 삭제 작업 수행
-//         del.parentElement.parentElement.remove();
-//     }
-// });
-
 </script>
 
 <style>
 table {
-	width: 77%;
+	width: 85%;
 	border-top: 1px solid #444444;
 	border-collapse: collapse;
 }
@@ -113,32 +116,33 @@ th, td {
    <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
 </div>
 
-
-<!-- 전체검색 -->
-<div class="bigsearch">
-	<div class="middleSearch" style="padding-right:10px">
-		<select class="searchType" name="searchType" id="searchType">
-			<option value="title">제목</option>
-			<option value="Content">본문</option>
-			<option value="userNo">작성자</option>
-		</select>
+<!--------------- 검색 옵션 --------------->
+<form action="./list" method="post" name="searchForm">
+	<div class="search_wrap">
+		<div class="search_area" style="padding-right:10px">
+			<select class="searchType" name="searchType" id="searchType">
+				<option value="title" <c:if test="${map.search_option == 'boardTitle'}">selected</c:if>>제목</option>
+				<option value="content" <c:if test="${map.search_option == 'boardContent'}">selected</c:if>>내용</option>
+				<option value="userId" <c:if test="${map.search_option == 'userId'}">selected</c:if>>작성자</option>
+				<option value="all" <c:if test="${map.search_option == 'all'}">selected</c:if>>제목+내용+작성자</option>
+			</select>
+		</div>
+		<div class="search" style="padding-right:10px">
+			<input type="text" class="keyword" name="keyword" id="keyword" value="${map.keyword}"  placeholder="키워드를 입력하세요">
+			<button class="btnSearch" name="btnSearch" id="btnSearch">검색</button>
+		</div>
 	</div>
+</form>
 
-	<div class="smallSearch" style="padding-right:10px">
-		<input type="text" class="keyword" name="keyword" id="keyword">
-	</div>
-	
-	<div>
-		<button class="btnSearch" name="btnSearch" id="btnSearch">검색</button>
-	</div>
-</div>
 
-		<!-- search{e} -->
 
-<div class="head">
+
+<form action="./list" method="post">
+
 <table>
 <thead>
-<tr>
+<tr class = "head">
+
 	<c:if test="${not empty adminlogin and adminlogin }">
 	<th><input type='checkbox'
        name='checkall' 
@@ -147,12 +151,24 @@ th, td {
 	</c:if>
 	<th>게시글 번호</th>
 	<th>카테고리
-		<select id="category" name="category" onchange="optionChange()">
-			<option value="all">전체</option>
-			<option value="free">자유</option>
-			<option value="notice">공지</option>
-<%-- 			<option value="free" <c:if test="${boardList==자유}"> selected </c:if>>자유</option> --%>
-<%-- 			<option value="notice" <c:if test="${boardList==공지}"> selected </c:if>>공지</option> --%>
+		<select id="search_option" name="search_option" onchange="optionChange()">
+			 <c:choose>
+			 	<c:when test="${head eq '전체' }"> 
+					<option value="all">전체</option>
+					<option value="free">자유</option>
+					<option value="notice">공지</option>
+				</c:when>
+				<c:when test="${head eq '자유' }">
+					<option value="all">전체</option>
+					<option value="free">자유</option>
+					<option value="notice">공지</option>
+				</c:when>
+				<c:when test="${head eq '공지' }">
+					<option value="all">전체</option>
+					<option value="free">자유</option>
+					<option value="notice">공지</option>
+				</c:when>
+			</c:choose>
 		</select>
 	</th>
 	<th>게시글 제목</th>
@@ -161,10 +177,7 @@ th, td {
 	<th>게시글 작성일</th>
 </tr>
 </thead>
-</div>
-
-<div class="body">
-<tbody>
+<tbody class="body">
 <c:forEach var="boardList" items="${boardList}">
 <tr>
 	<c:if test="${not empty adminlogin and adminlogin }">
@@ -183,19 +196,17 @@ th, td {
 </tr>
 </c:forEach>
 </tbody>
-</div>
 </table>
 
 <a href="./write"><button>게시글 작성하기</button></a>
 	<c:if test="${not empty adminlogin and adminlogin }">
-	<form action="./list" method="post">
+	
 		<button id="btnDelete" name = "btnDelete" class="btn btn-danger">선택삭제</button>
-		</form>
 	</c:if>
 <span class="float-end mb-3">total : ${paging.totalCount }</span>
+</form>
 
 <c:import url="/WEB-INF/views/layout/paging.jsp" />
-
 
 <c:import url="/WEB-INF/views/layout/footer.jsp" />
 

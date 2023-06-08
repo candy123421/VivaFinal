@@ -102,8 +102,8 @@ public interface BoardService {
 	 * 
 	 * @param boardNo - 댓글 작성할 게시글 번호(를 가지고 있는 DTO)
 	 */
-//	public void writeComment(Comments comments, int boardNo);
-	public List<Comments> writeComment(Comments comments, int boardNo);
+	public void writeComment(Comments comments);
+//	public List<Comments> writeComment(Comments comments);
 	
 	
 	/**
@@ -111,14 +111,14 @@ public interface BoardService {
 	 * 
 	 * @param board - 댓글 수정할 게시글 번호(를 가지고 있는 DTO)
 	 */
-	public void updateComment(Board board);
+	public void updateComment(Comments comments);
 
 	/**
 	 * 댓글 삭제하기
 	 * 
 	 * @param board - 댓글 삭제할 게시글 번호(를 가지고 있는 DTO)
 	 */
-	public void deleteComment(Board board);
+	public void deleteComment(Comments comments);
 
 	/**
 	 * 전체 검색하기
@@ -128,6 +128,13 @@ public interface BoardService {
 	 * @return
 	 */
 	public List<Board> searchBoard(String keyword, Paging page);
+
+	/**
+	 * 보현작성
+	 * 체크 선택한거 삭제 시키는거
+	 * @param check
+	 */
+	public void deleteCheckBoard(int[] check);
 
 
 

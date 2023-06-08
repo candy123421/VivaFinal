@@ -108,21 +108,21 @@ public interface BoardDao {
 	 * @param boardNo - 댓글 작성할 게시글 번호(를 가지고 있는 DTO)
 	 * @return 
 	 */
-	public List<Comments> insertComment(Comments comments, int boardNo);
+	public void insertComment(Comments comments);
 
 	/**
 	 * 댓글 수정하기
 	 * 
 	 * @param board - 댓글 작성할 게시글 번호(를 가지고 있는 DTO)
 	 */
-	public void updateComment(Board board);
+	public void updateComment(Comments comment);
 
 	/**
 	 * 댓글 삭제하기
 	 * 
 	 * @param board - 댓글 삭할 게시글 번호(를 가지고 있는 DTO)
 	 */
-	public void deleteComment(Board board);
+	public void deleteComment(Comments comment);
 
 	/**
 	 * 전체 검색하기
@@ -132,6 +132,13 @@ public interface BoardDao {
 	 * @return
 	 */
 	public List<Board> searchAll(String keyword, Paging page);
+
+	/**
+	 * 보현작성 
+	 * 체크박스로 글 삭제하기전에 댓글 먼저 삭제하는거
+	 * @param board
+	 */
+	public void deleteCommentAll(Board board);
 
 
 

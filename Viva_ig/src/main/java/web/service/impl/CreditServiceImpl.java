@@ -65,7 +65,7 @@ public class CreditServiceImpl implements CreditService {
 	//크레딧 tb 에 생성 해주면서, tossApi tb에 생성해줘야함
 	@Transactional
 	@Override
-	public void addPurchaseInfo(JSONObject jsonObject) {
+	public int addPurchaseInfo(JSONObject jsonObject) {
 		logger.info("addPurchaseInfo()");
 		
 		//JSONObject 는 mybatis 에서 인식이 안되므로, 
@@ -108,9 +108,13 @@ public class CreditServiceImpl implements CreditService {
 		//dealNo 받아오기
 		int num = creditDao.selectNextDealNo();
 		logger.info("dealNo : {}", num);
+		credit.setDealNo(num);
 		
 		//충전내역 만들 회원번호 설정(임시)
 		credit.setUserNo(44);
+		
+		//dealCategory = 1 : 충전 설정하기
+		credit.setDealCategory(1);
 		
 		//금액 설정
 		int price = 0;
@@ -154,23 +158,25 @@ public class CreditServiceImpl implements CreditService {
 		//TossApi DTO 초기화
 		TossApi toss = new TossApi();
 		
-		toss.setDealNo(num);
+		toss.setDealNo(credit.getDealNo());
 		toss.setUserNo(credit.getUserNo());
 		toss.setOrderId((String) tossData.get("orderId"));
-		toss.setPaymentKey((String) tossData.get("orderId"));
-		toss.setMethod((String) tossData.get("orderId"));
+		toss.setPaymentKey((String) tossData.get("paymentKey"));
+		toss.setMethod((String) tossData.get("method"));
 		toss.setTotalAmount((int) tossData.get("totalAmount"));
-		
-		//얘네가 문제인듯
-//		toss.setCard((String) tossData.get("card"));
-//		toss.setTransfer((String) tossData.get("transfer"));
-//		toss.setPhone((String) tossData.get("phone"));
 		
 		toss.setApprovedAt(chargeTime);
 		
 		logger.info("toss정보 : {}", toss);
 		
+		//토스정보 생성할 메소드
 		creditDao.insertTossData(toss);
+		
+//		---------------------------------------
+		//3. 완성된 데이터를 담아서 보내주기
+//		TossApi chargeOkData = creditDao.selectByTossNo(toss.getTossNo());
+		//생성된 정보를 보내줄 준비.. dealNo만.. 
+		return num;
 		
 		
 	}

@@ -12,15 +12,12 @@ public class TossApi {
 	private String paymentKey;
 	private String method;
 	private int totalAmount;
-	private String card;
-	private String transfer;
-	private String phone;
 	private Timestamp approvedAt;
 	
 	public TossApi() {}
 
 	public TossApi(int tossNo, int dealNo, int userNo, String orderId, String paymentKey, String method,
-			int totalAmount, String card, String transfer, String phone, String requestedAt, Timestamp approvedAt) {
+			int totalAmount, Timestamp approvedAt) {
 		super();
 		this.tossNo = tossNo;
 		this.dealNo = dealNo;
@@ -29,17 +26,14 @@ public class TossApi {
 		this.paymentKey = paymentKey;
 		this.method = method;
 		this.totalAmount = totalAmount;
-		this.card = card;
-		this.transfer = transfer;
-		this.phone = phone;
 		this.approvedAt = approvedAt;
 	}
 
 	@Override
 	public String toString() {
 		return "TossApi [tossNo=" + tossNo + ", dealNo=" + dealNo + ", userNo=" + userNo + ", orderId=" + orderId
-				+ ", paymentKey=" + paymentKey + ", method=" + method + ", totalAmount=" + totalAmount + ", card="
-				+ card + ", transfer=" + transfer + ", phone=" + phone +  "approvedAt=" + approvedAt + "]";
+				+ ", paymentKey=" + paymentKey + ", method=" + method + ", totalAmount=" + totalAmount + ", approvedAt="
+				+ approvedAt + "]";
 	}
 
 	public int getTossNo() {
@@ -98,36 +92,12 @@ public class TossApi {
 		this.totalAmount = totalAmount;
 	}
 
-	public String getCard() {
-		return card;
-	}
-
-	public void setCard(String card) {
-		this.card = card;
-	}
-
-	public String getTransfer() {
-		return transfer;
-	}
-
-	public void setTransfer(String transfer) {
-		this.transfer = transfer;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
 	public Timestamp getApprovedAt() {
 		return approvedAt;
 	}
 
-	public void setApprovedAt(Timestamp chargeTime) {
-		this.approvedAt = chargeTime;
+	public void setApprovedAt(Timestamp approvedAt) {
+		this.approvedAt = approvedAt;
 	}
 
 

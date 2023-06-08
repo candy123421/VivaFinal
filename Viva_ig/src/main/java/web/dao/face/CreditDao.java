@@ -63,5 +63,12 @@ public interface CreditDao {
 	 */
 	public void insertTossData(TossApi toss);
 
+	/**
+	 * 트랜잭션 중,
+	 * @param tossNo
+	 * @return 결제완료된 토스 정보 전체
+	 */
+//	public TossApi selectByTossNo(int tossNo);
+
 
 }

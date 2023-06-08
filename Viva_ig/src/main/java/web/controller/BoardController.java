@@ -57,12 +57,14 @@ public class BoardController {
 	}
 	
 	@PostMapping("/list")
-	public void listpost(Paging paging, Model model, String userNick, Board board) {
+	public String listpost(Paging paging, Model model, String userNick, Board board,
+				@RequestParam(value="check") int[] check
+				) {
 		logger.info("/board/list [Post]");
 		
 		//페이징 계산
 		Paging page = boardService.getPaging(paging);
-		logger.info("{}", page);
+		logger.info("check : {}", check);
 		
 		//게시글 목록 조회
 		List<Board> boardList = boardService.list(page);
@@ -74,8 +76,11 @@ public class BoardController {
 		model.addAttribute("category", board.getCategoryType());
 
 		//관리자일때 리스트에서 선택한거 삭제가능하게 만드는거 - 보현
-		boardService.deleteBoard(board);
+		logger.info("***check의값 : ***{}",check);
+		boardService.deleteCheckBoard(check);
 		
+		
+		return "redirect:./list";
 	}
 	
 	@RequestMapping("/view")

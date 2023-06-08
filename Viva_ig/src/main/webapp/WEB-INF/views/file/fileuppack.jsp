@@ -199,115 +199,131 @@ $(function(){
 </head>
 
 <body>
-<div class=body>
-<!-- container : div안에있는것들 다 가운데 -->
-<div id="containerid" class="container" >
-<h2> 자신만의 Pack으로 세상을 움직여주세요!</h2>
-<div class="guide">
-Pack을 올리기전에 <a href="/file/guide">가이드</a>를 확인해주세요!
-</div>
-<hr>
-<a class="source" href="/file/fileupsource">Source</a> 
-<a class="pack" href="/file/fileuppack"> Pack</a> 
 
-
-<br><br>
+<c:choose>
+	<c:when test="${empty adminlogin and empty login }">
+	<h1>Source / Pack Upload</h1>
+	<hr>
+	 로그인 후 이용해주세요!
+	  <a href="/viva/login"> <button class="btn btn-outline-secondary btn-sm">Login</button> </a>
+	</c:when>
 
 
 
-<form action="/file/fileuppack" method="post" enctype="multipart/form-data">
-
-
-<div id="container" >
-	
-	
-		<div class="item">
-		<label>제목</label>
-		<input type="text" id="title" name="packName" class="form-control" placeholder="회원들에게 보일 제목을 써주세요!"><br>
-		<span id="title_msg" class="msg"></span>
-	<br>
-	
-	<label>설명</label>
-	<textarea id="content" name="packContent" class="form-control" placeholder="음원에 대한 간략한 설명을 써주세요!" rows="7"></textarea><br>
-	<span id="content_msg" class="msg"></span>
-	</div>
-	
-	
-	<div class="tag">
-	<div class="instrument">
-  <label>Instrument</label>
-  	 <input name='instrument' class='some_class_name' placeholder='악기를 선택해주세요!'>
-	  <script>
-	  var input = document.querySelector('input[name="instrument"]');
-	
-	  var whitelist = ["none","Drum", "Vocal", "Synth", "Brass", "Woodwinds", "Guitar", "Bass", "String", "ABSET", "Piano" ];
-	
-	  var tagify = new Tagify(input, {
-	        whitelist:whitelist,
-	        maxTags: 1,
-	        dropdown: {
-	          maxItems: 20,          
-	          classname: "tags-look", 
-	          enabled: 0,            
-	          closeOnSelect: true   
-	        }
-	      })
-	  
-	  </script>
-  </div>
-  
-	<div class="genre">
-    <label>Genre</label>
-  	 <input name='genre' class='some_class_name' placeholder='장르를 선택해주세요!' >
-	  <script>
-	  var input = document.querySelector('input[name="genre"]');
-	
-	  var whitelist = ["none","Trap", "R&B", "Soul", "Boombap", "Rock", "Jazz", "House", "Heavy Metal", "Funk", "Reggae", "Folk", "Electro", "House", "Disco", "Pop", "EDM", "Tropical House", "Drum and Bass", "Jungle"];
-	 
-	  tagify = new Tagify (input, {
-	      whitelist:whitelist,
-	      maxTags: 1,
-	      dropdown: {
-	        maxItems: 20,          
-	        classname: "tags-look", 
-	        enabled: 0,            
-	        closeOnSelect: true   
-	      }
-	    })
-	  
-	  </script>
-	</div>  
-	<br>
-			<div class="inputfile">
-			<div >
-			이미지파일
-			<input type="file" id="imgfile" name="packImg" class="form-control" style="width: 237px;">
-			<span style="font-size: 0.8em; color: red; text-align: center;">Pack Img는 한장 올려주세요!</span>
-			</div>
-			<div>
-			음원파일 
-			<input type="file" id="file" name="packFileList" class="form-control" multiple="multiple">
-			<span style="font-size: 0.8em; color: red; text-align: center;">Pack Source는 여러개 올려주세요!</span>
-			</div>
+	<c:when test="${not empty login and login}">
+			
+		<div class=body>
+		<!-- container : div안에있는것들 다 가운데 -->
+		<div id="containerid" class="container" >
+		<h2> 자신만의 Pack으로 세상을 움직여주세요!</h2>
+		<div class="guide">
+		Pack을 올리기전에 <a href="/file/guide">가이드</a>를 확인해주세요!
 		</div>
-	
-	</div>
-	
-</div> <!-- container -->
+		<hr>
+		<a class="source" href="/file/fileupsource">Source</a> 
+		<a class="pack" href="/file/fileuppack"> Pack</a> 
+		
+		
+		<br><br>
+		
+		
+		
+		<form action="/file/fileuppack" method="post" enctype="multipart/form-data">
+		
+		
+		<div id="container" >
+			
+			
+				<div class="item">
+				<label>제목</label>
+				<input type="text" id="title" name="packName" class="form-control" placeholder="회원들에게 보일 제목을 써주세요!"><br>
+				<span id="title_msg" class="msg"></span>
+			<br>
+			
+			<label>설명</label>
+			<textarea id="content" name="packContent" class="form-control" placeholder="음원에 대한 간략한 설명을 써주세요!" rows="7"></textarea><br>
+			<span id="content_msg" class="msg"></span>
+			</div>
+			
+			
+			<div class="tag">
+			<div class="instrument">
+		  <label>Instrument</label>
+		  	 <input name='instrument' class='some_class_name' placeholder='악기를 선택해주세요!'>
+			  <script>
+			  var input = document.querySelector('input[name="instrument"]');
+			
+			  var whitelist = ["none","Drum", "Vocal", "Synth", "Brass", "Woodwinds", "Guitar", "Bass", "String", "ABSET", "Piano" ];
+			
+			  var tagify = new Tagify(input, {
+			        whitelist:whitelist,
+			        maxTags: 1,
+			        dropdown: {
+			          maxItems: 20,          
+			          classname: "tags-look", 
+			          enabled: 0,            
+			          closeOnSelect: true   
+			        }
+			      })
+			  
+			  </script>
+		  </div>
+		  
+			<div class="genre">
+		    <label>Genre</label>
+		  	 <input name='genre' class='some_class_name' placeholder='장르를 선택해주세요!' >
+			  <script>
+			  var input = document.querySelector('input[name="genre"]');
+			
+			  var whitelist = ["none","Trap", "R&B", "Soul", "Boombap", "Rock", "Jazz", "House", "Heavy Metal", "Funk", "Reggae", "Folk", "Electro", "House", "Disco", "Pop", "EDM", "Tropical House", "Drum and Bass", "Jungle"];
+			 
+			  tagify = new Tagify (input, {
+			      whitelist:whitelist,
+			      maxTags: 1,
+			      dropdown: {
+			        maxItems: 20,          
+			        classname: "tags-look", 
+			        enabled: 0,            
+			        closeOnSelect: true   
+			      }
+			    })
+			  
+			  </script>
+			</div>  
+			<br>
+					<div class="inputfile">
+					<div >
+					이미지파일
+					<input type="file" id="imgfile" name="packImg" class="form-control" style="width: 237px;">
+					<span style="font-size: 0.8em; color: red; text-align: center;">Pack Img는 한장 올려주세요!</span>
+					</div>
+					<div>
+					음원파일 
+					<input type="file" id="file" name="packFileList" class="form-control" multiple="multiple">
+					<span style="font-size: 0.8em; color: red; text-align: center;">Pack Source는 여러개 올려주세요!</span>
+					</div>
+				</div>
+			
+			</div>
+			
+		</div> <!-- container -->
+		
+		
+		
+		
+		
+		
+		
+		<div class="text-center"  style="margin-top: 90px;">
+			<button id="btnWrite" class="btn btn-outline-secondary">Upload</button>
+			<input type="reset" id="cancel" class="btn btn-outline-danger" value="cancel">
+		</div>
+		</form>
+		</div>
+		</div>
+	</c:when>
+</c:choose>
 
-
-
-
-
-
-
-<div class="text-center"  style="margin-top: 90px;">
-	<button id="btnWrite" class="btn btn-outline-secondary">Upload</button>
-	<input type="reset" id="cancel" class="btn btn-outline-danger" value="cancel">
-</div>
-</form>
-</div>
-</div>
 
 </body>
 </html>

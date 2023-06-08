@@ -298,4 +298,19 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> searchBoard(String keyword, Paging page) {
 		return boardDao.searchAll(keyword, page);
 	}
+	
+	@Override
+	public void deleteCheckBoard(int[] check) {
+		//보현작성부분
+		
+		for(int i=0; i<check.length; i++ ) {
+			Board board = new Board();
+			board.setBoardNo(check[i]);
+			boardDao.deleteCommentAll(board);
+			boardDao.deleteFile(board);
+			boardDao.delete(board);
+			
+		}
+		
+	}
 }

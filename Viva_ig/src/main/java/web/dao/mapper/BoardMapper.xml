@@ -108,5 +108,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		WHERE title LIKE #{keyword}
  	</select>
  	
+ 	<delete id="deleteCommentAll" parameterType="web.dto.Board">
+ 	DELETE FROM comments
+ 	WHERE board_no = #{boardNo}
+ 	</delete>
  	
   </mapper>

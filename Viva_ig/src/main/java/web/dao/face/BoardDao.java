@@ -133,6 +133,13 @@ public interface BoardDao {
 	 */
 	public List<Board> searchAll(String keyword, Paging page);
 
+	/**
+	 * 보현작성 
+	 * 체크박스로 글 삭제하기전에 댓글 먼저 삭제하는거
+	 * @param board
+	 */
+	public void deleteCommentAll(Board board);
+
 
 
 

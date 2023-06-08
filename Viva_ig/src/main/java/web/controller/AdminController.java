@@ -94,21 +94,62 @@ public class AdminController {
 	}
 	
 	@GetMapping("/qna/view")
-	public void noticeview(UserQuestion userQuestion,Model model) {
+	public void noticeview(UserQuestion userQuestion,AdminAnswer adminAnswer,Model model,Users users,Admin admin) {
 		
 		userQuestion = adminService.getQNo(userQuestion);
 		logger.info("{}",userQuestion);
 		
+		adminAnswer = adminService.getANo(adminAnswer);
+		logger.info("{}",adminAnswer);
+		users.setUserNo(userQuestion.getUserNo());
+		users = adminService.getUsersInfo(users);
+		
+		int process = adminService.getProcess(userQuestion);
+		logger.info("*******process의 값 : ******{}",process);
+		
+		if( process == 1) {
+			admin.setAdminNo(adminAnswer.getAdminNo());
+			admin = adminService.getAdminId(admin);
+			logger.info("*********admin의 값 :**********{}",admin);
+		}
+		
 		model.addAttribute("userQuestion",userQuestion);
+		model.addAttribute("adminAnswer",adminAnswer);
+		model.addAttribute("users",users);
+		model.addAttribute("process",process);
+		model.addAttribute("admin",admin);
+		
+	}
+	@GetMapping("/qna/question")
+	public void question(HttpSession session,Model model) {
+		logger.info("/qna/question [GET]");
+		
+		Users users = adminService.getUserInfo((int)session.getAttribute("userNo"));
+		
+		logger.info("users:{}",users);
+		model.addAttribute("users",users);
+	}
+	
+	@PostMapping("/qna/question")
+	public String questionpost(UserQuestion userQuestion,HttpSession session) {
+		logger.info("/qna/question [POST]");
+		userQuestion.setUserNo((int)session.getAttribute("userNo"));
+		adminService.writeQuestion(userQuestion);
+		
+		return "redirect:/qna/view?qNo=" + userQuestion.getqNo();
 		
 	}
 	
+	
 	@GetMapping("/qna/answer")
-	public void answer(UserQuestion userQuestion,Model model) {
+	public void answer(UserQuestion userQuestion,Model model,HttpSession session) {
 		logger.info("/qna/answer [GET]");
 		userQuestion = adminService.getQNo(userQuestion);
 		logger.info("{}",userQuestion);
+		Admin admin = adminService.getAdminInfo((int)session.getAttribute("adminNo"));
+		
 		model.addAttribute("userQuestion", userQuestion);
+		model.addAttribute("admin",admin);
 	}
 
 	
@@ -123,7 +164,7 @@ public class AdminController {
 		adminService.answerSingUp(userQuestion,adminAnswer,admin,users);
 		
 		logger.info("adminAnswer 의 값 : {}",adminAnswer);
-		return "redirect:/qna/view";
+		return "redirect:/qna/view?qNo=" + userQuestion.getqNo();
 		
 	}
 	

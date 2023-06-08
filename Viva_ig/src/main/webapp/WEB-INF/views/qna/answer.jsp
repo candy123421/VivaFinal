@@ -20,7 +20,7 @@
 	}
 	.userquestion{
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-template-columns: 100px 300px 150px 1fr 1fr;
 	width: 1200px;
 	}
 	.adminanswer{
@@ -58,7 +58,7 @@
 처리여부:${userQuestion.qProcess }
 </div>
 <div class="item">
-문의 작성일:<fmt:formatDate value="${userQuestion.qDate }" pattern="yyyy-MM-dd"/>
+문의 작성일:<fmt:formatDate value="${userQuestion.qDate }" pattern="yyyy-MM-dd [E] a hh:mm:ss"/>
 </div>
 <div class="item">
 유저 번호:${userQuestion.userNo }
@@ -77,17 +77,16 @@ ${userQuestion.qContent }
 
 <br><br>
 
-<form action="/qna/answer?qNo=${userQuestion.qNo }" method="post">
+<form action="/qna/answer" method="post">
 <div class="adminquestion">
-관리자번호 : ${adminAnswer.adminNo }
-답변번호: ${adminAnswer.aNo }
-답변일자: ${adminAnwer.aDate }
+관리자번호 : ${adminNo }
+관리자 아이디 : ${admin.adminId }
 
 
 </div>
 
 <div class="a">
-답변<hr>
+답변
 
 <textarea id="aAnswer" name="aAnswer" class="form-control" placeholder="답변을 등록해주세요!" rows="11">
 

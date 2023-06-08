@@ -153,8 +153,8 @@ $(function() {
 			<span id="title">Sound</span>
 		</div>
 		<div id="category">
-			<a class="a" href="./genre?genre=Trap"><div><span class="cate">Genre</span></div></a>
-			<a class="a" href="./inst?instrument=Drum"><div><span class="cate">Instrument</span></div></a>
+			<a class="a" href="/sound/genre"><div><span class="cate">Genre</span></div></a>
+			<a class="a" href="/sound/inst"><div><span class="cate">Instrument</span></div></a>
 			<a class="a" href="/file/fileupsource"><div><span class="cate">Upload</span></div></a>
 		</div>
 	</div>

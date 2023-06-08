@@ -30,13 +30,20 @@ $(function() {
 .cateWrap{
 	text-align: center;
 }
+#WrapTop{
+	width: 1400px;
+	margin: 0 auto;
+}
+#WrapMiddle{
+	width: 1400px;
+	margin : 0 auto;
+}
 #btn{
 	font-size: 2.5em;
 	height: 70px;
 	padding-left: 0px;
 }
 #Wrap{
-	padding: 16px;
 }
 #line{
 	width: 1300px;
@@ -94,7 +101,9 @@ a{
 	display: grid;
 	grid-template-columns : 200px 200px 200px 200px 200px;
 	grid-column-gap: 30px;
+	grid-row-gap: 30px;
 	width: 1300px;
+	place-content: center;
 }
 .packimg{
 	width: 200px;
@@ -102,6 +111,7 @@ a{
 }
 .packname{
 	font-size: 20px;
+	text-align: center;
 }
 .wavewrap{
 	display: none;
@@ -207,14 +217,19 @@ a{
 	<div id="line"></div>
 	<div id="tab">
 		<div class="cateWrap">
-			<a href="/pack/genre?genre=${genre}"><span class="cate">Source</span></a>
+			<c:if test="${empty detail }">
+				<a href="/source/inst?instrument=${inst}"><span class="cate">Source</span></a>
+			</c:if>
+			<c:if test="${not empty detail }">
+				<a href="/source/inst?detail=${detail}"><span class="cate">Source</span></a>
+			</c:if>
 		</div>
 		<div class="cateWrap">
 			<c:if test="${empty pack }">
-				<a href="/pack/genre?genre=${genre}"><span class="cate">Pack</span></a>
+				<a href="/pack/inst?genre=${cgenre}"><span class="cate">Pack</span></a>
 			</c:if>
 			<c:if test="${not empty pack }">
-				<a style="text-decoration:none; " href="/pack/genre?genre=${genre}"><span class="cate">Pack</span></a>
+				<a style="text-decoration:none;" href="/pack/inst?genre=${cgenre}"><span class="cate">Pack</span></a>
 			</c:if>			
 		</div>	
 	</div>
@@ -224,13 +239,13 @@ a{
 			<c:if test="${empty tag.genre }">
 				${tag.genre }
 			</c:if>
-			<c:if test="${not empty tag.genre && tag.genre != cgenre && not empty inst}">
+			<c:if test="${not empty tag.genre && tag.genre ne cgenre && not empty inst}">
 				<a class="tagA" href="/pack/inst?instrument=${inst}&genre=${tag.genre}"><div class="tagcover">${tag.genre}</div></a>
 			</c:if>
-			<c:if test="${not empty tag.genre && tag.genre != cgenre } ">
+			<c:if test="${not empty tag.genre && tag.genre ne cgenre} ">
 				<a class="tagA" href="/pack/inst?detail=${det}&genre=${tag.genre}"><div class="tagcover">${tag.genre}</div></a>
 			</c:if>
-			<c:if test="${empty inst }">
+			<c:if test="${empty inst && not empty tag.genre && tag.genre ne cgenre}">
 				<a class="tagA" href="/pack/inst?detail=${det}&genre=${tag.genre}"><div class="tagcover">${tag.genre}</div></a>
 			</c:if>
 			<c:if test="${not empty detail } ">

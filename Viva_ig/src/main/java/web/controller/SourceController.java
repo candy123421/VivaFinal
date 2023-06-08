@@ -32,7 +32,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired SourceService sourceService;
 	
 	@GetMapping("/source/sound")
-	public void sound(Model model) {
+	public void sound(Model model, HttpSession session) {
 		logger.info("Sound 화면 확인");
 		
 		// 최신 업로드 List 조회
@@ -49,11 +49,14 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	
 	@GetMapping("/source/genre")
-	public void genre(Tag genre, Model model, String msg) {
+	public void genre(Tag genre, Model model, String msg, HttpSession session) {
 		logger.info("Genre별 Source 접근 [GET]");
 		logger.info("장르별 카테고리 {}",genre.getGenre());
 		
 		model.addAttribute("genre", genre.getGenre());
+		
+		// 회원정보 전달
+		model.addAttribute("userNo", session.getAttribute("userNo"));
 		
 		logger.info("Tag 정보 ++++++ : {}",genre);
 		
@@ -129,11 +132,12 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	
 	
-	
 	@GetMapping("/source/inst")
-	public void inst(Tag instrument, Model model, String msg) {
+	public void inst(Tag instrument, Model model, String msg, HttpSession session) {
 //		logger.info("instrument Source 접근 [GET]");
 		logger.info("카테고리 {}",instrument);
+		
+		model.addAttribute("userNo", session.getAttribute("userNo"));
 		
 		// 세부 카테고리를 선택한 경우 악기 값이 자동으로 들어가게 해야한다
 		// 세부 카테고리의 경우 inst는 찾아내 등록, 나머지는 검색
@@ -146,13 +150,18 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 			model.addAttribute("det", res.getDetail());
 			model.addAttribute("dinst", res.getInstrument());
 			
-			List<Tag> genre = sourceService.getTagGenre(instrument);
-			List<Tag> scape = sourceService.getTagScapeforInst(instrument);
-			List<Tag> fx = sourceService.getTagFxforInst(instrument);
+			List<Tag> genre = sourceService.getTagGenre(res);
+			List<Tag> scape = sourceService.getTagScapeforInst(res);
+			List<Tag> fx = sourceService.getTagFxforInst(res);
 			
 			model.addAttribute("genre", genre);
+			model.addAttribute("cgenre", instrument.getGenre());
+			
 			model.addAttribute("scape", scape);
+			model.addAttribute("cscape", instrument.getScape());
+			
 			model.addAttribute("fx", fx);
+			model.addAttribute("cfx", instrument.getFx());
 			
 			// 음원소스 조회 [ inst, detail ] 포함
 			List<Map<String, Object>> list = sourceService.getSourceByInstDetail(instrument);
@@ -166,6 +175,8 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		
 		if(instrument.getInstrument() != null && instrument.getDetail() == null) {
 			
+			logger.info("2번 실행");
+			
 			// 태그 조회
 			List<Tag> genre = sourceService.getTagGenre(instrument);
 			List<Tag> scape = sourceService.getTagScapeforInst(instrument);
@@ -173,9 +184,18 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 			List<Tag> detail = sourceService.getTagDetailforInst(instrument);
 			
 			model.addAttribute("genre", genre);
+			model.addAttribute("cgenre", instrument.getGenre());
+			
+			model.addAttribute("inst", instrument.getInstrument());
+			
 			model.addAttribute("scape", scape);
+			model.addAttribute("cscape", instrument.getScape());
+			
 			model.addAttribute("fx", fx);
+			model.addAttribute("cfx", instrument.getFx());
+			
 			model.addAttribute("detail", detail);
+			model.addAttribute("cdetail", instrument.getDetail());
 			
 			// 음원소스 조회 [ inst ]만 포함
 			List<Map<String, Object>> list = sourceService.getSourceByInstDetail(instrument);
@@ -213,6 +233,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		model.addAttribute("detail", detail);
 		model.addAttribute("scape", scape);
 		model.addAttribute("fx", fx);
+		model.addAttribute("packNo", pack.getPackNo());
 		
 		// 팩 음원소스 세부조회 ( 음원 )
 		List<Map<String, Object>> list = sourceService.getPackByPackNo(pack.getPackNo(), tag);
@@ -325,6 +346,9 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 			List<Tag> genre = sourceService.getTagGenre(tag);
 			
 			model.addAttribute("genre", genre);
+			model.addAttribute("cgenre", tag.getGenre());
+			model.addAttribute("inst", tag.getInstrument());
+			model.addAttribute("detail", tag.getDetail());
 			
 			// Pack 조회 [ inst, detail ] 포함
 			List<Map<String, Object>> list = sourceService.getPackInfos(tag);
@@ -368,8 +392,23 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 	}
 	
 	
+	@GetMapping("/sound/genre")
+	public void soundsource() {
+		logger.info("/sound/genre 확인");
+		
+		
+		
+	}
 	
 	
+	
+	@GetMapping("/sound/inst")
+	public void soundpack() {
+		logger.info("/sound/inst 확인");
+		
+		
+		
+	}
 	
 	
 	

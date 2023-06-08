@@ -108,7 +108,7 @@
 			</script>
 			<span id="barsourcename"></span>
 			<span id="barprocess"></span>
-			<span id="bar"> | </span>
+			<span id="bar"></span>
 			<span id="barduration"></span>
 		</div>
 	</div>	

@@ -36,7 +36,14 @@ $(function() {
 	padding-left: 0px;
 }
 #Wrap{
-	padding: 16px;
+}
+#WrapTop{
+	width: 1400px;
+	margin: 0 auto;
+}
+#WrapMiddle{
+	margin: 0 auto;
+	width: 1400px;
 }
 #line{
 	width: 1300px;
@@ -73,6 +80,7 @@ $(function() {
 	padding: 2px;
 	margin-bottom: 5px;
 	margin-right: 5px;
+	overflow: hidden;
 	
 }
 .tagA{
@@ -596,7 +604,7 @@ div[data-itemtype='line']{
 					type: "get"
 					, url: "./genre/like"
 					, data: {
-						"userNo" : 1,
+						"userNo" : ${userNo},
 						"sourceNo" : sourceno
 					}
 					, dataType: "json"
@@ -630,7 +638,7 @@ div[data-itemtype='line']{
 					type :"get"
 					, url :"/cart/add"
 					, data : {
-						"userNo" : 44,
+						"userNo" : ${userNo},
 						"sourceNo" : csourceNo
 					}
 				  	, dataType :"json"

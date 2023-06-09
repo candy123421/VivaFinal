@@ -165,11 +165,19 @@ $(function() {
 	padding-top: 18px;
 	padding-bottom: 18px;
 	display: grid;
+	grid-template-areas: 'limg like cart link'
+						'cartmsg cartmsg cartmsg cartmsg';
 	grid-template-columns: 50px 50px 50px 50px; 
 	height: 60px;
 }
 div[data-itemtype='line']{
 	border-bottom: 1px solid #ccc;
+}
+.cartmsg{
+	height: 18px;
+	grid-column: span 4;
+	font-size: 12px;
+	font-weight: bold;
 }
 .cart{
 	cursor: pointer;
@@ -180,6 +188,9 @@ div[data-itemtype='line']{
 #infoline{
 	display : grid;
 	grid-template-columns: 100px 1200px
+}
+#WrapBottom{
+	height: 200px;
 }
 </style>
 <div id="Wrap">
@@ -393,6 +404,7 @@ div[data-itemtype='line']{
 				<div class="like" data-like="${list.SOURCE_NO}"><img src="../resources/icon/heart.svg" style="width: 45%"></div>
 				<div class="cart" data-cart="${list.SOURCE_NO }"><img src="../resources/icon/shopping-cart.png" style="width: 45%"></div>
 				<div><a href="./pack?packNo=${list.PACK_NO }"><img src="../resources/icon/three-dots.svg" style="width: 45%"></a></div>
+				<div class="cartmsg"></div>
 			</div>
 			
 		</c:forEach>
@@ -487,6 +499,7 @@ div[data-itemtype='line']{
 					$("#barbtn").attr("src","../resources/icon/play-circle.svg")
 				}
 				
+				
 				$("#barprocess").html("0:00")
 				$("#barduration").html("0:00")
 				$("#barsourcename").html(sourcename)
@@ -543,13 +556,13 @@ div[data-itemtype='line']{
 				$("#playWrap").css({
 					"background":"#BE2465",
 				})
-				
 				$("#playimg").attr("src","../upload/"+imgSrc)
 				$("#playimg").css("visibility","visible")
 				$("#barprocess").html("0:00")
 				$("#barduration").html("0:00")
 				$("#barsourcename").html(sourcename)
 				$("#barsourcename").attr("data-barno",btnplay)
+				
 				
 				var duration = document.querySelector("#barduration")
 				duration.textContent = timeCalculator(wave[btnplay].getDuration());
@@ -620,40 +633,20 @@ div[data-itemtype='line']{
 				  		console.log("장바구니 ajax 성공")
 				  		if(res.result == true) {
 				  			
-					  		$("#cartWrap").html('<div id="pop">장바구니에 담겼습니다!</div>')
-			  				$("#pop").css({
-					  			"background":"#BE3455",
-					  			"width":"300px",
-					  			"height":"60px",
-					  			"fontSize":"1.2em",
-					  			"top":"-300px",
-					  			"left":"800px",
-					  			"borderRadius":"5px",
-					  			"border":"2px solid #ccc",
-					  			"paddingTop":"10px"
-					  		})
+				  			$(".cartmsg").eq(cidx).text('Get Source!')
+					  		$(".cartmsg").eq(cidx).css("display","block")
 					  		
 				  		}
-				  		$("#pop").fadeOut(5000)
+				  		$(".cartmsg").eq(cidx).fadeOut(1000)
 				  	  }
 				  	, error : function(res) {
 				  		console.log("장바구니 ajax 실패")
 				  		
-					  		$("#cartWrap").html('<div id="pop">이미 장바구니에 담겨있습니다!</div>')
-			  				$("#pop").css({
-					  			"background":"#BE3455",
-					  			"width":"300px",
-					  			"height":"60px",
-					  			"fontSize":"1.2em",
-					  			"top":"-300px",
-					  			"left":"800px",
-					  			"borderRadius":"5px",
-					  			"border":"2px solid #ccc",
-					  			"paddingTop":"10px"
-					  		})
-				  		
-				  		
-				  		$("#pop").fadeOut(5000)
+					  		$(".cartmsg").eq(cidx).css("display","block")
+							$(".cartmsg").eq(cidx).text('You already have!')
+							$(".cartmsg").eq(cidx).fadeOut(1000)
+							
+				  		$(".cartmsg").eq(cidx).fadeOut(1000)
 				  	}
 				  }) // ajax End
 			  }) // click end
@@ -663,7 +656,8 @@ div[data-itemtype='line']{
 		</script> 
 	</div>
 </div>	
-	
+<div id="WrapBottom">
+</div>	
 	
 	
 	

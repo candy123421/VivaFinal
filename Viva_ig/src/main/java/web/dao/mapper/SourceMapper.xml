@@ -322,7 +322,19 @@
   	
   	
   	
-  	
+  	<select id="selectMySourcebyUserNo" parameterType="int" resultType="hashmap">
+  		SELECT ms.source_name, ms.bpm, ms.key, ms.pack_no, ms.source_no,
+		    pmg.pack_img_storedname,
+		    smg.source_img_storedname,
+		    sif.file_storedname
+		FROM Mysource ms
+		INNER JOIN packimginfo pmg on pmg.pack_no = ms.pack_no
+		INNER JOIN source s on s.source_no = ms.source_no
+		INNER JOIN sourceimginfo smg on s.source_no = smg.source_no
+		INNER JOIN sourcefileinfo sif on sif.source_no = ms.source_no
+		where ms.user_no = #{userNo}
+		Order by list_no desc
+  	</select>
   	
   	
   	

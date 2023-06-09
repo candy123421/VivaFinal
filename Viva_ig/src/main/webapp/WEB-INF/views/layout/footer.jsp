@@ -29,7 +29,6 @@
 }
 #playbar{
 	position: relative;
-/* 	pointer-events: none; */
 }
 #playimg{
 	position: absolute;

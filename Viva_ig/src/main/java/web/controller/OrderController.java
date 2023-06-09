@@ -105,8 +105,33 @@ public class OrderController {
 	
 	}
 	
+	@GetMapping("/source/redown")
+	public String redown(Model model, SourceFileInfo redown) {
+		logger.info("다시 다운로드 받는 쪽 확인");
+		
+		
+		logger.info("소스 정보 : {}", redown.getSourceNo());
+		
+		SourceFileInfo down = orderService.getFile(redown.getSourceNo());
+		
+		model.addAttribute("down", down);
+		
+		return "down";
+	}
+	
 
 	
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

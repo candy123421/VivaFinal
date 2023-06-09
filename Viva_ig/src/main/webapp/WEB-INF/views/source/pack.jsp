@@ -508,7 +508,7 @@ div[data-itemtype='line']{
 						type: "get"
 						, url: "./genre/like"
 						, data: {
-							"userNo" : 1,
+							"userNo" : ${userNo},
 							"sourceNo" : sourceno
 						}
 						, dataType: "json"
@@ -537,7 +537,7 @@ div[data-itemtype='line']{
 						type: "get",
 						url: "./pack/like",
 						data: {
-							"userNo" : 1,
+							"userNo" : ${userNo},
 							"packNo" : ${info.PACK_NO}
 						},
 						dataType: "json",
@@ -586,35 +586,15 @@ div[data-itemtype='line']{
 					  	, success : function(res) {
 					  		console.log("장바구니 ajax 성공")
 					  		if(res.result == true) {
-						  		$("#cartWrap").html('<div id="pop">장바구니에 담겼습니다!</div>')
-				  				$("#pop").css({
-						  			"background":"#BE3455",
-						  			"width":"300px",
-						  			"height":"60px",
-						  			"fontSize":"1.2em",
-						  			"top":"-300px",
-						  			"left":"800px",
-						  			"borderRadius":"5px",
-						  			"border":"2px solid #ccc",
-						  			"paddingTop":"10px"
-						  		}) 
+					  			$(".cartmsg").eq(cidx).text('Get Source!')
+						  		$(".cartmsg").eq(cidx).css("display","block")
 					  		} 
-						  $("#pop").fadeOut(5000)
+					  		 $(".cartmsg").eq(cidx).fadeOut(1000)
 					  	  }
 					  , error : function() {
-					  		$("#cartWrap").html('<div id="pop">이미 장바구니에 담겨있습니다!</div>')
-			  				$("#pop").css({
-					  			"background":"#BE3455",
-					  			"width":"300px",
-					  			"height":"60px",
-					  			"fontSize":"1.2em",
-					  			"top":"-300px",
-					  			"left":"800px",
-					  			"borderRadius":"5px",
-					  			"border":"2px solid #ccc",
-					  			"paddingTop":"10px"
-				  			})
-				  			$("#pop").fadeOut(5000)
+						  $(".cartmsg").eq(cidx).css("display","block")
+						  $(".cartmsg").eq(cidx).text('You already have!')
+						  $(".cartmsg").eq(cidx).fadeOut(1000)
 					  	  }
 					  }) // ajax End
 				  }) // click end
@@ -640,10 +620,9 @@ div[data-itemtype='line']{
 					  
 					  $.ajax({
 						  type:"get",
-// 						  url:"./all",
 						  url:"/cart/addPack",	//CartController URL
 						  data: {
-							  "userNo" : 44,	//userNo은 44로 테스트중 
+							  "userNo" : ${userNo},	//userNo은 44로 테스트중 
 							  "sourceNo" : sourceArr
 						  },
 						  dataType: "",

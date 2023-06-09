@@ -215,10 +215,22 @@ font-weight: bold;
 }
 
 #header {
-	background : #FFFFFF;
+	background: rgba(255, 255, 255, 0.77);
 	text-align: right;
 	display:block;
 }
+.fixed-top {
+	background: rgba(255, 255, 255, 0.70);
+
+}
+.headerState{
+    width: 1350px;
+    height: 40px;
+    -webkit-box-align: center;
+    align-items: center;
+    margin-inline-start: 300px;
+}
+
 #layout_content{
 	top : 100px;
 	display:block;
@@ -251,7 +263,7 @@ font-weight: bold;
 
 /*  상단 헤더의 텍스트 간의 간격 */
 .iconName{
- 	margin-right: 30px;
+ 	margin-right: 20px;
 }
 
 /*  각 기능 페이지의 상단 타이틀 */
@@ -355,16 +367,11 @@ font-weight: bold;
   </div>
 	  </div><!--  sidebar end-->
 	
-
 	
-	
-		<!--  로그인 상태에 따라 헤더 상단바의 상태도 다름 -->
-	<!--  메인페이지와 세션 완료 시, 구현해야함 -->
-	
-	<!--  헤더 : 상단 바 (장바구니, 마이소스, 마이페이지)-->
+	<!--  헤더 : 상단 바 (장바구니, 마이소스, 마이페이지, 로그인&로그아웃)-->
 	 <div class = "item" id="header">
 	  	<div class="fixed-top">
-	  		<nav class="navbar navbar-expand-lg bg-light">
+        <nav class="navbar navbar-expand-lg bg-light">
 	  			<div class="container-fluid justify-content-end">
 	  			
 	  			
@@ -391,8 +398,19 @@ font-weight: bold;
 	  	</c:when>
 	  	
 	  	<c:when test="${not empty login and login }">
-	  	
-	  	<img src="../upload/${userInfo.userProfile }" style="width: 40px; ">
+	  						<!--  여기부터 지선 작성 부분 -->
+								<!--  로그인했을때만 credit, cart, my sounds 정보가 보이도록 -->
+									<a class="header_icon" id="header_icon_credits" href="/credit/list">
+						  				<span class="iconName">1200 credits</span>
+						  			</a>
+						  			<a class="header_icon" id="header_icon_cart" href="/cart/list">
+					  					<span class="iconName">Cart</span>
+							  		</a>
+	  						  		<a class="header_icon" id="header_icon_mySouncds" href="">
+							  			<span class="iconName">My Sounds</span>
+							  		</a>
+								<!--  여기까지 지선 작성 부분 -->
+	  	<img src="../../../profile/${userProfile.STOREDNAME}" style="width: 40px; border-radius:50px;">
 		nick:<span style="font-size: 1.5em; color: red;"> ${nick }</span>님
 	  	<a href="/users/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
 	  	
@@ -402,24 +420,9 @@ font-weight: bold;
 	  </c:choose>
 	  </div>
 				
-				  	
-				  	
 				
 				</div><!--  container-fluid justify-content-end -->
 			</nav><!--  navbar end-->
-			
-			<div class="bg-white" id="header_credit_info">
-			  	<a class="header_icon" id="header_icon_credits" href="/credit/list">
-			  		<span class="iconName">1200 credits</span>
-			  	</a>
-			  					  	<a class="header_icon" id="header_icon_cart" href="/cart/list">
-				  		<span class="iconName">Cart</span>
-				  	</a>
-				
-				  	<a class="header_icon" id="header_icon_mySouncds" href="">
-				  		<span class="iconName">My Sounds</span>
-				  	</a>
-			</div>
 		
 		</div><!--  fixed-top end-->
 	</div><!--  header end-->

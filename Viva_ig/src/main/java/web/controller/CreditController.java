@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Base64.Encoder;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,25 +49,22 @@ public class CreditController {
 	@Autowired CreditService creditService;
 	
 	//로그인 기능 구현 전, userNo 알아내기 위해 임시로 만든 페이지
-	@RequestMapping("/test")
-	public String test() {
-		logger.info("credit/list - test()");
-		
-		return "/credit/test";
-	}
+//	@RequestMapping("/test")
+//	public String test() {
+//		logger.info("credit/list - test()");
+//		
+//		return "/credit/test";
+//	}
 
 	//----------------------------------------------------------------------------------------
 	//userNo 알아낸 뒤, 크레딧 목록 부르는 페이지
 	@RequestMapping("/list")
-	public void list(Credit userNo, Model model) {
+	public void list(HttpSession session, Credit userNo, Model model) {
 		logger.info("credit/list - list()");
+		logger.info("세션userNo : {}", session.getAttribute("userNo"));
 		
-		//추후, 세션값으로 회원 정보 가져올때 코드 작성해야함
-		
-		//회원번호 임시로 지정(44)
-		userNo.setUserNo(44);
+		userNo.setUserNo((int) session.getAttribute("userNo"));
 		logger.info("userno: {} ", userNo);
-		
 		
 		//1. 크레딧 전체 내역(default) 조회하기
 		List<Credit> creditList = new ArrayList<>(); 
@@ -99,9 +97,9 @@ public class CreditController {
 //----------------------------------------------------------------------------------------------------------------------
 	//토스페이먼츠 결제 페이지 이동 시 
 	@RequestMapping("/charge")
-	public void charge(Credit userNo, Model model) {
+	public void charge(HttpSession session, Credit userNo, Model model) {
 		logger.info("credit/charge - 결제 페이지 이동");
-		logger.info("userno: {} ", userNo);
+		logger.info("세션userNo : {}", session.getAttribute("userNo"));
 		
 		//orderID 로 랜덤 uuid 난수 생성하기
 //		UUID uid = UUID.randomUUID();
@@ -120,16 +118,15 @@ public class CreditController {
 		String orderId= "VIVA" + id.split("-")[2] + id.split("-")[3] + id.split("-")[4];
 		model.addAttribute("id", orderId);
 		
-		
-		
 	}
 	
 //----------------------------------------------------------------------------------------------------------------------
 	//토스페이먼츠 결제 요청 시 
 	@RequestMapping("/charging")
-	public String charging(HttpServletRequest request, ModelAndView mav) {
+	public String charging(HttpSession session, HttpServletRequest request, ModelAndView mav) {
 		logger.info("credit/charging - 결제 요청후 결제 진행 중");
-
+		logger.info("세션userNo : {}", session.getAttribute("userNo"));
+		
 		//url에 담겨서 전달되는 4가지 요소 -> 결제 승인을 위해 사용해야함.
 		String orderId = request.getParameter("orderId");
 		String paymentKey = request.getParameter("paymentKey");
@@ -213,24 +210,32 @@ public class CreditController {
 		}
 		
 		//위에서 안전하게 파싱한 jsonObject를 서비스로 넘긴다. 사실 위의 과정을 전부 서비스에서 해도 될 듯 하지만, 나는 아직 확신이 없기에. 일단 이대로 두기로. 
-		int dealNo = creditService.addPurchaseInfo(jsonObject);
+		int dealNo = creditService.addPurchaseInfo(session, jsonObject);
 		
 		logger.info("dealNo : {}", dealNo);
 
-		HttpSession session = request.getSession();
-		
+		//session 에 dealNo를 넣어둔다.
 		session.setAttribute("dealNo", dealNo);
 		
+		//url에 결제정보가 담기지 않도록 redirect 를 해준다.
 		return "redirect:/credit/chargeOk";
 	}
 	
+//-----------------------------------------------------------------------------
 	//결제 완료 시, 이동할 리다이렉트 페이지!
 	@RequestMapping("/chargeOk")
-	public void chargeOk(@SessionAttribute(value="dealNo") int dealNo) {
+	public void chargeOk(@SessionAttribute(value="dealNo") int dealNo, Model model) {
 		logger.info("credit/chargeOk - 결제 완료");
-		//크레딧 잔액 + 결제방식 + 실제 결제 금액 + 결제 승인 시각 조회해오기
 		
 		logger.info("{}", dealNo);
+		
+		//결제완료된 정보 조회해오기(크레딧 총계, 결제방법, 결제승인시간, 실제 금액)
+		Map<String,Object> info = creditService.viewChargeOkInfo(dealNo);
+		
+		//확인하기
+		logger.info("{}", info);
+		
+		model.addAttribute("info", info);
 		
 	}
 

@@ -44,7 +44,13 @@
 .first{
 	margin: 0 auto;
 }
-
+.menu{
+	width: 1050px; 
+	margin: 0 auto;
+	display: grid;
+	place-content: center;
+	padding-top: 15px;
+}
 
 </style>
 
@@ -73,34 +79,38 @@
 </div>
 <br><br>
 
-<c:if test="${process eq 1 }">
-
-	<div class="ad">
-		<div class="item">관리자번호:${adminAnswer.adminNo }</div>
-		<div class="item">관리자아이디 : ${admin.adminId }</div>
-		<div class="item">답변번호:${adminAnswer.aNo }</div>
-		<div class="item">답변일자:<fmt:formatDate value="${adminAnswer.aDate }" pattern="yyyy-MM-dd [E] a hh:mm:ss"/></div>
+	<c:if test="${process eq 1 }">
 	
+		<div class="ad">
+			<div class="item">관리자번호:${adminAnswer.adminNo }</div>
+			<div class="item">관리자아이디 : ${admin.adminId }</div>
+			<div class="item">답변번호:${adminAnswer.aNo }</div>
+			<div class="item">답변일자:<fmt:formatDate value="${adminAnswer.aDate }" pattern="yyyy-MM-dd [E] a hh:mm:ss"/></div>
+		
+		</div>
+		<div class="a">
+			답변<hr>${adminAnswer.aAnswer }
+		
+		</div>
+	
+	
+	</c:if>
+	<div class="menu">
+		<a href="/qna/list"><button class="btn btn-outline-secondary">목록</button></a>
 	</div>
-	<div class="a">
-		답변<hr>${adminAnswer.aAnswer }
+		
+	<c:choose>
+		<c:when test="${not empty adminlogin and adminlogin && process eq 1} ">
+			<span>이미 답변 완료 하셨습니다.</span>
+		</c:when>
+		
+		<c:when test="${not empty adminlogin and adminlogin && process eq 0}">
+			<div class="menu">
+				<a href="/qna/answer?qNo=${userQuestion.qNo }"><button class="btn btn-outline-secondary">답변하기 </button></a>
+			</div>
+		</c:when>
 	
-	</div>
-
-
-</c:if>
-
-<a href="/qna/list"><button class="btn btn-outline-secondary">목록</button></a>
-<c:choose>
-	<c:when test="${not empty adminlogin and adminlogin && process eq 1} ">
-		<span>이미 답변 완료 하셨습니다.</span>
-	</c:when>
-	
-	<c:when test="${not empty adminlogin and adminlogin && process eq 0}">
-		<a href="/qna/answer?qNo=${userQuestion.qNo }"><button class="btn btn-outline-secondary">답변하기 </button></a>
-	</c:when>
-
-</c:choose>
+	</c:choose>
 
 
 

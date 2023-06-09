@@ -24,7 +24,7 @@
 	<resources mapping="/boardUpload/**" location="/boardUpload/"/>
 
 	<beans:bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
-		<!--  낮은 value 값이 우선 동작 한다 -->
+		<!--  낮은 value 값이 우선 동작 한다 --> 
 		<beans:property name="order" value="0"/>
 	</beans:bean> 
 	

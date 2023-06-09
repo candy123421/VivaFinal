@@ -36,7 +36,6 @@ $(function() {
 	padding-left: 0px;
 }
 #Wrap{
-	padding: 16px;
 }
 #WrapTop{
 	width: 1400px;
@@ -265,12 +264,7 @@ a{
 			<a href="/source/genre?genre=${genre}"><span class="cate">Source</span></a>
 		</div>
 		<div class="cateWrap">
-			<c:if test="${empty pack }">
-				<a href="/pack/genre?genre=${genre}"><span class="cate">Pack</span></a>
-			</c:if>
-			<c:if test="${not empty pack }">
-				<a style="text-decoration:none; " href="/pack/genre?genre=${genre}"><span class="cate">Pack</span></a>
-			</c:if>			
+				<a class="a" href="/pack/genre?genre=${genre}"><span class="cate" style="border-bottom: 3px solid #ccc">Pack</span></a>
 		</div>	
 	</div>
 	
@@ -409,6 +403,7 @@ a{
 				$("#barduration").html("0:00")
 				$("#barsourcename").html(packname)
 				$("#barsourcename").attr("data-barno",waveno)
+				$("#next").attr("src","../resources/icon/rewind-circle.svg")
 				
 // 				음원소스 재생 시간 계산 부분
 				var duration1 = document.querySelector("#barduration")

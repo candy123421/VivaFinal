@@ -179,6 +179,10 @@ div[data-itemtype='line']{
 	box-sizing: border-box;
 	padding-top: 6px;
 }
+.a{
+	text-decoration: none;
+	color: black;
+}
 </style>
 <div id="Wrap">
 <div id="WrapTop">
@@ -324,15 +328,10 @@ div[data-itemtype='line']{
 	
 	<div id="tab">
 		<div class="cateWrap">
-			<c:if test="${empty source }">
-				<a href="/source/genre?genre=${genre}"><span class="cate">Source</span></a>
-			</c:if>
-			<c:if test="${ not empty source }">
-				<a style="text-decoration:none; text-decoration-color:#ccc;" href="/source/genre?genre=${genre}"><span class="cate">Source</span></a>
-			</c:if>
+				<a class="a" href="/source/genre?genre=${genre}"><span class="cate" style="border-bottom: 3px solid #ccc">Source</span></a>
 		</div>
 		<div class="cateWrap">
-			<a style="text-decoration:none; " href="/pack/genre?genre=${genre}"><span class="cate">Pack</span></a>
+			<a class="a" href="/pack/genre?genre=${genre}"><span class="cate">Pack</span></a>
 		</div>	
 	</div>
 	
@@ -350,7 +349,7 @@ div[data-itemtype='line']{
 			<c:if test="${empty tag.scape }">
 				${tag.scape }
 			</c:if>
-			<c:if test="${not empty tag.scape }">
+			<c:if test="${not empty tag.scape && tag.scape ne dscape}">
 				<a class="tagA" href="/source/genre?genre=${genre}&scape=${tag.scape}"><div class="tagcover">${tag.scape}</div></a> 
 			</c:if>
 		</c:forEach>
@@ -360,7 +359,7 @@ div[data-itemtype='line']{
 			<c:if test="${empty tag.detail }">
 				${tag.detail }
 			</c:if>
-			<c:if test="${not empty tag.detail }">
+			<c:if test="${not empty tag.detail && tag.detail ne ddetail }">
 				<a class="tagA" href="/source/genre?genre=${genre}&detail=${tag.detail}"><div class="tagcover">${tag.detail}</div></a> 
 			</c:if>
 		</c:forEach>
@@ -370,7 +369,7 @@ div[data-itemtype='line']{
 			<c:if test="${empty tag.fx }">
 				${tag.fx }
 			</c:if>
-			<c:if test="${not empty tag.fx }">
+			<c:if test="${not empty tag.fx && tag.detail ne dfx}">
 				<a class="tagA" href="/source/genre?genre=${genre}&fx=${tag.fx}"><div class="tagcover">${tag.fx}</div></a> 
 			</c:if>
 		</c:forEach>

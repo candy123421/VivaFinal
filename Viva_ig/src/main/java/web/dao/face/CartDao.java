@@ -49,18 +49,18 @@ public interface CartDao {
 	/**
 	 * 회원자격 확인 중, userNo 을 통해 credit TB 조회 하여 총액 구하기
 	 * 
-	 * @param userNo
+	 * @param user
 	 * @return 크레딧 총계 구하기
 	 */
-	public int selectCreditAcc(Users userNo);
+	public int selectCreditAcc(int user);
 	
 	/**
 	 * 회원자격 확인 중, 선택한 sourceNo 을 통해 sourcePrice 합계 알아내기
 	 * 
-	 * @param sourceNo
+	 * @param cart
 	 * @return 구매원하는 source 총계 
 	 */
-	public int selectSourceAmount(Source sourceNo);
+	public int selectSourceAmount(int[] cart);
 	
 	/**
 	 * credit TB에 삽입할 정보(회원번호, 금액)를 이용하여 내역 insert 하기

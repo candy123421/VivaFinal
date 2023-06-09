@@ -2,6 +2,7 @@ package web.service.face;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 import web.dto.Board;
@@ -11,15 +12,7 @@ import web.dto.Tag;
 import web.util.Paging;
 
 public interface BoardService {
-
-	/**
-	 * 페이징이 적용된 게시글 목록 조회
-	 * 
-	 * @param page - 페이징 정보 객체
-	 * @return 페이징이 적용된 게시글 목록
-	 */
-	public List<Board> list(Paging paging);
-
+	
 	/**
 	 * 게시글 목록을 위한 페이징 객체 생성
 	 * 
@@ -29,9 +22,18 @@ public interface BoardService {
 	 * 두 가지 데이터를 활용하여 페이징객체를 생성하여 반환한다
 	 * 
 	 * @param paging - curPage를 저장하고 있는 객체
+	 * @param keyword 
 	 * @return 계산이 완료된 Paging객체
 	 */
-	public Paging getPaging(Paging paging);
+	public Paging getPaging(Paging paging, String keyword);
+
+	/**
+	 * 페이징이 적용된 게시글 목록 조회
+	 * 
+	 * @param page - 페이징 정보 객체
+	 * @return 페이징이 적용된 게시글 목록
+	 */
+	public List<Board> boardList(Paging page, String userId, String keyword);
 
 	/**
 	 * 게시글 상세보기
@@ -135,6 +137,7 @@ public interface BoardService {
 	 * @param check
 	 */
 	public void deleteCheckBoard(int[] check);
+
 
 
 

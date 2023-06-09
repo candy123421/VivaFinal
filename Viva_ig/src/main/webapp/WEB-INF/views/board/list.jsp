@@ -6,18 +6,6 @@
 <c:import url="/WEB-INF/views/layout/header.jsp" />
 <script type="text/javascript">
 
-	$(document).on('click', '#btnSearch', function(e){
-	
-		e.preventDefault();
-	
-		var url = "${pageContext.request.contextPath}/board/list";
-		url = url + "?searchOption=" + $('#searchOption').val();
-		url = url + "&keyword=" + $('#keyword').val();
-	
-		location.href = url;
-		console.log(url);
-	});	
-
 // function optionChange(){ 
 	
 // 	var selectedOption = document.getElementById("category").value;
@@ -105,7 +93,6 @@ th, td {
 	padding: 10px;
 	text-align: center;
 }
-
 </style>
 
 
@@ -117,97 +104,99 @@ th, td {
 </div>
 
 <!--------------- 검색 옵션 --------------->
-<form action="./list" method="post" name="searchForm">
+<form action="./list?keyword=${keyword}" method="get" name="searchForm">
 	<div class="search_wrap">
 		<div class="search_area" style="padding-right:10px">
-			<select class="searchType" name="searchType" id="searchType">
-				<option value="title" <c:if test="${map.search_option == 'boardTitle'}">selected</c:if>>제목</option>
-				<option value="content" <c:if test="${map.search_option == 'boardContent'}">selected</c:if>>내용</option>
-				<option value="userId" <c:if test="${map.search_option == 'userId'}">selected</c:if>>작성자</option>
-				<option value="all" <c:if test="${map.search_option == 'all'}">selected</c:if>>제목+내용+작성자</option>
+			<select class="searchType" id="searchType">
+				<option>제목</option>
 			</select>
 		</div>
 		<div class="search" style="padding-right:10px">
-			<input type="text" class="keyword" name="keyword" id="keyword" value="${map.keyword}"  placeholder="키워드를 입력하세요">
-			<button class="btnSearch" name="btnSearch" id="btnSearch">검색</button>
+			<input type="text" class="keyword" name="keyword" id="keyword" placeholder="검색어를 입력하세요">
+			<button class="btnSearch" id="btnSearch">검색</button>
 		</div>
 	</div>
 </form>
+<!--------------- 검색 옵션 끝 --------------->
 
 
 
+<form action="./list" method="post" name="category">
 
-<form action="./list" method="post">
-
-<table>
-<thead>
-<tr class = "head">
-
-	<c:if test="${not empty adminlogin and adminlogin }">
-	<th><input type='checkbox'
-       name='checkall' 
-       value='selectall'
-       onclick='selectAll(this)'/> Check All</th>
-	</c:if>
-	<th>게시글 번호</th>
-	<th>카테고리
-		<select id="search_option" name="search_option" onchange="optionChange()">
-			 <c:choose>
-			 	<c:when test="${head eq '전체' }"> 
-					<option value="all">전체</option>
-					<option value="free">자유</option>
-					<option value="notice">공지</option>
-				</c:when>
-				<c:when test="${head eq '자유' }">
-					<option value="all">전체</option>
-					<option value="free">자유</option>
-					<option value="notice">공지</option>
-				</c:when>
-				<c:when test="${head eq '공지' }">
-					<option value="all">전체</option>
-					<option value="free">자유</option>
-					<option value="notice">공지</option>
-				</c:when>
-			</c:choose>
-		</select>
-	</th>
-	<th>게시글 제목</th>
-	<th>닉네임</th>
-	<th>조회수</th>
-	<th>게시글 작성일</th>
-</tr>
-</thead>
-<tbody class="body">
-<c:forEach var="boardList" items="${boardList}">
-<tr>
-	<c:if test="${not empty adminlogin and adminlogin }">
+	<table>
+	<thead>
+	<tr class = "head">
+		<c:if test="${not empty adminlogin and adminlogin }">
+			<th><input type='checkbox'
+		       name='checkall' 
+		       value='selectall'
+		       onclick='selectAll(this)'/> Check All</th>
+		</c:if>
+		<th>게시글 번호</th>
+		<th>카테고리
+			<select id="search_option" name="search_option" onchange="optionChange()">
+				 <c:choose>
+				 	<c:when test="${category eq '전체' }"> 
+						<option value="all">전체</option>
+						<option value="free">자유</option>
+						<option value="notice">공지</option>
+					</c:when>
+					<c:when test="${category eq '자유' }">
+						<option value="all">전체</option>
+						<option value="free">자유</option>
+						<option value="notice">공지</option>
+					</c:when>
+					<c:when test="${category eq '공지' }">
+						<option value="all">전체</option>
+						<option value="free">자유</option>
+						<option value="notice">공지</option>
+					</c:when>
+				</c:choose>
+			</select>
+		</th>
+		<th>게시글 제목</th>
+		<th>작성자</th>
+		<th>조회수</th>
+		<th>게시글 작성일</th>
+	</tr>
+	</thead>
+	<tbody class="body">
+		<c:forEach var="boardList" items="${boardList}">
+			<tr>
+				<c:if test="${not empty adminlogin and adminlogin }">
+					<td><input type='checkbox'
+				       name='check' 
+				       value="${boardList.boardNo }"
+				       onclick='checkSelectAll(this)'/>
+					</td>
+				</c:if>
+					<td>${boardList.boardNo }</td>
+					<td>${boardList.categoryType }</td>
+					<td><a href="./view?boardNo=${boardList.boardNo }">${boardList.boardTitle }</a></td>
+					<td>${boardList.userId}</td> 
+					<td>${boardList.boardHit }</td>
+					<td><fmt:formatDate value="${boardList.boardDate }" pattern="yyyy-MM-dd"/></td>
+			</tr>
+		</c:forEach>
+	</tbody>
+	</table>
 	
-	<td><input type='checkbox'
-       name='check' 
-       value="${boardList.boardNo }"
-       onclick='checkSelectAll(this)'/></td>
-	</c:if>
-	<td>${boardList.boardNo }</td>
-	<td>${boardList.categoryType }</td>
-	<td><a href="./view?boardNo=${boardList.boardNo }">${boardList.boardTitle }</a></td>
-	<td>sss</td> 
-	<td>${boardList.boardHit }</td>
-	<td><fmt:formatDate value="${boardList.boardDate }" pattern="yyyy-MM-dd"/></td>
-</tr>
-</c:forEach>
-</tbody>
-</table>
-
-<a href="./write"><button>게시글 작성하기</button></a>
-	<c:if test="${not empty adminlogin and adminlogin }">
+	<c:choose>
+		<c:when test="${empty login}">
+			<a href="/viva/login"><button type="button">게시글 작성하기</button></a>
+		</c:when>
+		<c:when test="${not empty login and login}">
+			<a href="./write"><button type="button" id="btnWrite" name="btnWrite">게시글 작성하기</button></a>
+		</c:when>
+	</c:choose>
 	
-		<button id="btnDelete" name = "btnDelete" class="btn btn-danger">선택삭제</button>
+	<c:if test="${not empty adminlogin and adminlogin }">
+		<button id="btnDelete" name="btnDelete" class="btn btn-danger">선택 삭제</button>
 	</c:if>
-<span class="float-end mb-3">total : ${paging.totalCount }</span>
+	
+	<span class="float-end mb-3">total : ${paging.totalCount }</span>
 </form>
 
 <c:import url="/WEB-INF/views/layout/paging.jsp" />
 
 <c:import url="/WEB-INF/views/layout/footer.jsp" />
-
-

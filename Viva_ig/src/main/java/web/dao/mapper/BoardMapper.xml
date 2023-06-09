@@ -5,20 +5,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="web.dao.face.BoardDao">	
- 	<select id="selectList" resultType="web.dto.Board" parameterType="web.util.Paging">
+  	
+  	<select id="selectCntAll" resultType="int">
+  		SELECT count(*) FROM board
+  	</select>
+
+  	<select id="selectCntAllByKeyword" parameterType="string" resultType="int">
+  		SELECT count(*) FROM board
+	  		<if test="keyword != null and keyword != ''">
+	  			WHERE board_title LIKE '%' || #{keyword} || '%' 
+	  		</if>
+  	</select>
+  
+	<select id="selectBoardList" resultType="web.dto.Board" parameterType="web.util.Paging">
 		SELECT * FROM (
 			SELECT rownum rnum, B.* FROM (
 				SELECT * FROM board
-				LEFT OUTER JOIN users
-				ON board.user_no = users.user_no
+					LEFT OUTER JOIN users ON board.user_no = users.user_no
 				ORDER BY board_no DESC
 				) B
 			) BOARD
 		WHERE rnum BETWEEN #{startNo} AND #{endNo}
   	</select>
-
-  	<select id="selectCntAll" resultType="int">
-  		SELECT count(*) FROM board
+  	
+  	<select id="selectBoardListByKeword" resultType="web.dto.Board" parameterType="java.util.Map">
+		SELECT * FROM (
+		    SELECT rownum rnum, B.* FROM (
+		        SELECT * FROM board
+					LEFT OUTER JOIN users ON board.user_no = users.user_no
+					WHERE
+						board_title LIKE '%' || #{keyword} || '%'
+					ORDER BY board_no DESC
+		        ) B
+		    ) BOARD
+		WHERE rnum BETWEEN #{paging.startNo} AND #{paging.endNo}
   	</select>
   	
   	<update id="hit" parameterType="web.dto.Board">
@@ -29,18 +49,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	
   	<select id="select" resultType="web.dto.Board" parameterType="web.dto.Board">
   		SELECT * FROM board
-		LEFT JOIN USERS
-		ON BOARD.user_no = USERS.user_no
+			LEFT JOIN USERS
+			ON BOARD.user_no = USERS.user_no
   		WHERE board_no = #{boardNo}
   	</select>
   	
-  	<insert id="insertBoard" parameterType="web.dto.Board">
+  <insert id="insertBoard" parameterType="web.dto.Board">
   		<selectKey order="BEFORE" resultType="int" keyProperty="boardNo">
   			SELECT board_seq.nextval FROM dual
   		</selectKey>
   		
   		INSERT INTO board ( board_no, board_title, board_content, board_date, category_type, board_hit, board_like, user_no )
-  		VALUES ( #{boardNo}, #{boardTitle}, #{boardContent}, sysdate, #{categoryType}, 0, 0, 1 )
+  		VALUES ( #{boardNo}, #{boardTitle}, #{boardContent}, sysdate, #{categoryType}, 0, 0, #{userNo} )
   	</insert>
   	
   	<insert id="insertFile" parameterType="web.dto.Files">

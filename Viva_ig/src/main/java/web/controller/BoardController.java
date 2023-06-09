@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,50 +40,50 @@ public class BoardController {
 	private final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
 	@GetMapping("/list")
-	public void list( Paging paging, Model model, String userNick ) {
+	public void list( Paging paging, Model model, String userId, String keyword ) {
 		logger.info("/board/list [GET]");
 		
 		//페이징 계산
-		Paging page = boardService.getPaging(paging);
-		logger.info("{}", page);
+		Paging page = boardService.getPaging(paging, keyword);
 		
 		//게시글 목록 조회
-		List<Board> boardList = boardService.list(page);
+		List<Board> boardList = boardService.boardList(page, userId, keyword);
 		
 		model.addAttribute("page", page);
 		model.addAttribute("boardList", boardList);
-		model.addAttribute("userNick", userNick);
+		model.addAttribute("userId", userId);
+		model.addAttribute("keyword", keyword);
 	}
 	
 	@PostMapping("/list")
-	public String listpost(Paging paging, Model model, String userNick, Board board,
-				@RequestParam(value="check") int[] check
-				) {
+	public String listpost(
+			Paging paging, Model model, String userId, Board board, String keyword,
+			@RequestParam(value="check") int[] check ) {
+		
 		logger.info("/board/list [Post]");
 		
 		//페이징 계산
-		Paging page = boardService.getPaging(paging);
+		Paging page = boardService.getPaging(paging, keyword);
 		logger.info("check : {}", check);
 		
 		//게시글 목록 조회
-		List<Board> boardList = boardService.list(page);
-		
+		List<Board> boardList = boardService.boardList(page, userId, keyword);
 		model.addAttribute("page", page);
 		model.addAttribute("boardList", boardList);
-		model.addAttribute("userNick", userNick);
-		
+		model.addAttribute("userId", userId);
 		model.addAttribute("category", board.getCategoryType());
-
+			
 		//관리자일때 리스트에서 선택한거 삭제가능하게 만드는거 - 보현
 		logger.info("***check의값 : ***{}",check);
 		boardService.deleteCheckBoard(check);
 		
-		
 		return "redirect:./list";
 	}
 	
+	
+	
 	@RequestMapping("/view")
-	public String view( Board viewBoard, Model model, List<MultipartFile> file ) {
+	public String view( Board viewBoard, Model model, List<MultipartFile> file, HttpSession session ) {
 		logger.info("/board/view");
 		
 		//잘못된 게시글 번호 처리
@@ -123,24 +124,14 @@ public class BoardController {
 		logger.info("컨트롤러 보드 {}", board);
 		logger.info("컨트롤러 파일 {}", file);
 		
-		//로그인
-		//session에 저장된 userId를 id에 저장
-		String id = null; 
-//		if( session.getAttribute("userid")!= null ) {
-//
-//			id = (String)session.getAttribute("userid");	  
-//			logger.info("로그인 성공"); 
-//		
-//		} else {
-//			logger.info("로그인 실패"); 
-//			return "redirect:./main"; 
-//		} 
-//
-//		model.addAttribute("userId", id);
+//		int userNo = (Integer)session.getAttribute("userNo");
+//		logger.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!{}", userNo);
+		
+//		model.addAttribute("userLogin", userId);
 		
 //		board.setBoardTitle(boardTitle);// 여기에 tilte담아야함
-//		board.setBoardContent(boardContent);
 //		board.setBoardContent(categoryType);
+//		board.setUserNo(userNo);
 		
 		boardService.write( board, file );
 		
@@ -283,21 +274,5 @@ public class BoardController {
 		return commentList;
 	}
 	
-	
-	@RequestMapping("/search")
-	public String searchBoard(Paging paging, @RequestParam("keyword") String keyword, Model model) {
-		
-		//페이징 계산
-		Paging page = boardService.getPaging(paging);
-		logger.info("{}", page);
-				
-		List<Board> searchList = boardService.searchBoard(keyword, page);
-		
-		model.addAttribute("page", page);
-		model.addAttribute("searchList", searchList);
-		
-		return "./searchResult"; // 검색 결과를 보여줄 JSP 이름
-		
-	    }
 
 }

@@ -73,16 +73,14 @@ public interface CartDao {
 	/**
 	 * 트랜잭션 중, Cart TB에서 해당 cartNo 항목을 delete 하기
 	 * 
-	 * @param cartNo - cartNo
-	 * 작성자 : 지선
+	 * @param cart - sourceNo 배열
 	 */
-	public void deletePurchasedCartItem(Cart cartNo);
+	public void deletePurchasedCartItem(int[] cart);
 
 	/**
 	 * 트랜잭션 중, SourceDown TB 에 해당 source 항목 다운로드 내역을 insert 하기
 	 * 
 	 * @param downSource - userNo, sourceNo
-	 * 작성자 : 지선
 	 */
 	public void addSourceToDownList(SourceDown downSource);
 

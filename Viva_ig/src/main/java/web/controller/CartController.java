@@ -30,7 +30,7 @@ public class CartController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired private CartService cartService;
 
-	//세션구현중~~~
+	//장바구니 세션구현 완료^_^
 	
 	//----------------------------------------------------------------------------------------
 	//로그인 기능 구현 전, userNo 알아내기 위해 임시로 만든 페이지
@@ -185,7 +185,7 @@ public class CartController {
 	//장바구니에서 항목 구매시 처리할 메소드
 	@RequestMapping("/buy")
 	public void cartBuy(HttpSession session, @RequestParam(value = "chbox[]") int[] cart, Writer out) {
-		logger.info("cart buy()");
+		logger.info("/cart/buy -  cartBuy()");
 		logger.info("세션userNo : {}", session.getAttribute("userNo"));
 		logger.info("배열:{}", cart);
 		
@@ -195,7 +195,7 @@ public class CartController {
 		//구매할 소스의 총계 구하기
 		//비교해서 구매가능한지(true, false 로 반환)
 		boolean purchase = cartService.chkCreditAcc(user, cart);
-		logger.info("{}", purchase);
+		logger.info("구매가능여부 : {}", purchase);
 		
 		if(purchase) {
 			logger.info("선택사항 구매가능!");
@@ -204,14 +204,14 @@ public class CartController {
 			//필요한거? 회원번호, cart[] 이거면 된다. (원래는 cartNo 까지 같이 갈려고 했으나, 굳이 ? 라는 생각이 들어 뺐다.)
 			boolean success = cartService.purchaseCartItem(user, cart);
 			//만약 트랜잭션이 잘 됐다면...true 가 나오겠지.. 
-//			logger.info("{}", success);
+			logger.info("{}", success);
 //		
 //			//try~catch 구문을 써주긴 해야할지 모르겠다...
-//			try {
-//				out.write("{\"result\": " + success + "}");
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
+			try {
+				out.write("{\"result\": " + success + "}");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			
 		} else {
 			logger.info("선택사항 구매 불가능!");

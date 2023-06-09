@@ -3,6 +3,8 @@ package web.service.face;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONObject;
 
 import web.dto.Credit;
@@ -42,12 +44,13 @@ public interface CreditService {
 	public void deleteDeal(Credit deal);
 
 	/**
-	 * 결제 정보를 DB에 insert하기
+	 *  결제 정보를 DB에 insert하기
 	 * 
-	 * @param jsonObject - 결제 정보 여러가지
+	 * @param session - userNo
+	 * @param jsonObject - 결제 정보 여러가지 
 	 * @return 승인된 결제 정보
 	 */
-	public int addPurchaseInfo(JSONObject jsonObject);
+	public int addPurchaseInfo(HttpSession session, JSONObject jsonObject);
 
 	/**
 	 * 결제가 완료된 정보 

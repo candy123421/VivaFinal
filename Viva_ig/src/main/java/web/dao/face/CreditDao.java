@@ -51,7 +51,7 @@ public interface CreditDao {
 	 * 트랜잭션 중, 
 	 * 크레딧 tb에 정보 insert하기
 	 * 
-	 * @param credit - userNo, amount
+	 * @param credit - deal_no, userNo, deal_date, deal_category, amount
 	 */
 	public void insertcharge(Credit credit);
 

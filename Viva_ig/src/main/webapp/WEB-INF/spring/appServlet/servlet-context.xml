@@ -17,18 +17,7 @@
 	<!-- @Transactional 어노테이션을 이용한 트랜잭션 관리 활성화 -->
 	<tx:annotation-driven/>
 	
-	<!-- 인터셉터들 설정 -->	
-	<interceptors>
-		<interceptor>
-				<mapping path="/users/**"/>
-	<!-- 			<exclude-mapping path="/interceptor/board/list"/> -->
-	<!-- 			<exclude-mapping path="/interceptor/board/noLogin"/> -->
-	
-<!-- 				<mapping path="/interceptor/board/write"/> -->
-				
-				<beans:bean class="web.interceptor.Interceptor"/>
-			</interceptor>
-	</interceptors>
+
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />

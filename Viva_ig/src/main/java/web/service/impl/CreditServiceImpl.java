@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,8 +67,9 @@ public class CreditServiceImpl implements CreditService {
 	//크레딧 tb 에 생성 해주면서, tossApi tb에 생성해줘야함
 	@Transactional
 	@Override
-	public int addPurchaseInfo(JSONObject jsonObject) {
+	public int addPurchaseInfo(HttpSession session, JSONObject jsonObject) {
 		logger.info("addPurchaseInfo()");
+		logger.info("세션userNo : {}", session.getAttribute("userNo"));
 		
 		//JSONObject 는 mybatis 에서 인식이 안되므로, 
 		//HashMap 으로 지정해서 보내줘야한다!
@@ -105,14 +108,12 @@ public class CreditServiceImpl implements CreditService {
 		//크레딧DTO 초기화
 		Credit credit = new Credit();
 
-		//dealNo 받아오기
+		//dual TB에서 dealNo 받아오기
 		int num = creditDao.selectNextDealNo();
 		logger.info("dealNo : {}", num);
+		
 		credit.setDealNo(num);
-		
-		//충전내역 만들 회원번호 설정(임시)
-		credit.setUserNo(44);
-		
+		credit.setDealNo((int)session.getAttribute("userNo"));
 		//dealCategory = 1 : 충전 설정하기
 		credit.setDealCategory(1);
 		
@@ -177,7 +178,14 @@ public class CreditServiceImpl implements CreditService {
 //		TossApi chargeOkData = creditDao.selectByTossNo(toss.getTossNo());
 		//생성된 정보를 보내줄 준비.. dealNo만.. 
 		return num;
+	}
+	
+	@Override
+	public Map<String, Object> viewChargeOkInfo(int dealNo) {
+		logger.info("viewChargeOkInfo()");
+		logger.info("{}", dealNo);
 		
 		
+		return creditDao.selectOkInfo(dealNo);
 	}
 }

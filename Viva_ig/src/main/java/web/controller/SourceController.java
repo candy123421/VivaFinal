@@ -298,13 +298,14 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		
 	}
 	
-	@GetMapping("/source/all")
-	public void cartAll(int userNo, @RequestParam(value="sourceNo[]") int[] sourceNo) {
-		logger.info("통신 확인");
-		
-		logger.info("cart 장바구니 : {}", userNo);
-		logger.info("int배열 : {}", sourceNo);
-	}
+	//CartController에서 진행할 메소드!
+//	@GetMapping("/source/all")
+//	public void cartAll(int userNo, @RequestParam(value="sourceNo[]") int[] sourceNo) {
+//		logger.info("통신 확인");
+//		
+//		logger.info("cart 장바구니 : {}", userNo);
+//		logger.info("int배열 : {}", sourceNo);
+//	}
 	
 	
 	@GetMapping("/pack/genre")

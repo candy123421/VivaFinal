@@ -391,8 +391,9 @@ font-weight: bold;
 	  	</c:when>
 	  	
 	  	<c:when test="${not empty login and login }">
+<%-- 	  	<c:when test="${login }"> --%>
 	  	
-	  	<img src="../upload/${userInfo.userProfile }" style="width: 40px; ">
+	  	<img src="../../../profile/${userProfile.STOREDNAME}" style="width: 40px; ">
 		nick:<span style="font-size: 1.5em; color: red;"> ${nick }</span>님
 	  	<a href="/users/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
 	  	

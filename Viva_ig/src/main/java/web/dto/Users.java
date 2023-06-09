@@ -19,13 +19,12 @@ public class Users {
 	private String userEmail;
 	private String userMobile;
 	private Date userJoindate;
-	private Date userOutdate;
 	private String kakaoId;
 	
 	public Users() {}
 
 	public Users(int userNo, String userId, String userPw, String userNick, String userGrade, String userName,
-			Date userBirth, String userEmail, String userMobile, Date userJoindate, Date userOutdate, String kakaoId) {
+			Date userBirth, String userEmail, String userMobile, Date userJoindate, String kakaoId) {
 		super();
 		this.userNo = userNo;
 		this.userId = userId;
@@ -37,7 +36,6 @@ public class Users {
 		this.userEmail = userEmail;
 		this.userMobile = userMobile;
 		this.userJoindate = userJoindate;
-		this.userOutdate = userOutdate;
 		this.kakaoId = kakaoId;
 	}
 
@@ -45,8 +43,8 @@ public class Users {
 	public String toString() {
 		return "Users [userNo=" + userNo + ", userId=" + userId + ", userPw=" + userPw + ", userNick=" + userNick
 				+ ", userGrade=" + userGrade + ", userName=" + userName + ", userBirth=" + userBirth + ", userEmail="
-				+ userEmail + ", userMobile=" + userMobile + ", userJoindate=" + userJoindate + ", userOutdate="
-				+ userOutdate + ", kakaoId=" + kakaoId + "]";
+				+ userEmail + ", userMobile=" + userMobile + ", userJoindate=" + userJoindate + ", kakaoId=" + kakaoId
+				+ "]";
 	}
 
 	public int getUserNo() {
@@ -129,14 +127,6 @@ public class Users {
 		this.userJoindate = userJoindate;
 	}
 
-	public Date getUserOutdate() {
-		return userOutdate;
-	}
-
-	public void setUserOutdate(Date userOutdate) {
-		this.userOutdate = userOutdate;
-	}
-
 	public String getKakaoId() {
 		return kakaoId;
 	}
@@ -144,13 +134,6 @@ public class Users {
 	public void setKakaoId(String kakaoId) {
 		this.kakaoId = kakaoId;
 	}
-
-	
-	
-	
-	
-	
-	
 	
 	
 }                               

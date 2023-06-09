@@ -156,12 +156,12 @@ public interface UsersService {
 	public void updateProfile(Users users, MultipartFile profile);
 
 	/**
-	 * 회원수정 - 프로필이 있으면 삭제하고 삽입
+	 * 회원정보 수정- 프로필사진 올리지않으면 비밀번호,닉네임만 수정
 	 * 
 	 * @param users
 	 * @param profile
 	 */
-//	public void deleteProfile(Users users, MultipartFile profile);
+	public void updateIdPw(Users users, MultipartFile profile);
 
 
 }

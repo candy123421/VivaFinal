@@ -209,6 +209,7 @@ public class UsersServiceImpl implements UsersService {
       //유저 비밀번호,닉네임 수정
       usersDao.insertUserInfo(users);
       
+      
       usersDao.deleteProfile(users.getUserNo());
       logger.info("삭제하려는 유우저 {} ", users.getUserNo());
       
@@ -221,7 +222,7 @@ public class UsersServiceImpl implements UsersService {
          storedFolder.mkdir();
       }
       
-      if ( profile.getSize() <= 0 ) {
+      if ( profile.getSize() <= 0 || "".equals(profile.getOriginalFilename())) {
     	  // 파일 크기가 0보다 작거나 같으면 종료한다
     	  return;
       }
@@ -264,12 +265,12 @@ public class UsersServiceImpl implements UsersService {
 //	  usersDao.updateUserProfile(file);
 	  usersDao.insertUserProfile(file);
 
-		
+	}
+	
+	@Override
+	public void updateIdPw(Users users, MultipartFile profile) {
+		//유저 비밀번호,닉네임 수정
+	    usersDao.insertUserInfo(users);
 	}
 
-//	@Override
-//	public void deleteProfile(Users users, MultipartFile profile) {
-//		usersDao.deleteProfile(users,profile);
-//		
-//	}
 }

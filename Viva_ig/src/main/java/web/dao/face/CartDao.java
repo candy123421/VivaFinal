@@ -49,18 +49,18 @@ public interface CartDao {
 	/**
 	 * 회원자격 확인 중, userNo 을 통해 credit TB 조회 하여 총액 구하기
 	 * 
-	 * @param userNo
+	 * @param user
 	 * @return 크레딧 총계 구하기
 	 */
-	public int selectCreditAcc(Users userNo);
+	public int selectCreditAcc(int user);
 	
 	/**
 	 * 회원자격 확인 중, 선택한 sourceNo 을 통해 sourcePrice 합계 알아내기
 	 * 
-	 * @param sourceNo
+	 * @param cart
 	 * @return 구매원하는 source 총계 
 	 */
-	public int selectSourceAmount(Source sourceNo);
+	public int selectSourceAmount(int[] cart);
 	
 	/**
 	 * credit TB에 삽입할 정보(회원번호, 금액)를 이용하여 내역 insert 하기
@@ -73,16 +73,14 @@ public interface CartDao {
 	/**
 	 * 트랜잭션 중, Cart TB에서 해당 cartNo 항목을 delete 하기
 	 * 
-	 * @param cartNo - cartNo
-	 * 작성자 : 지선
+	 * @param cart - sourceNo 배열
 	 */
-	public void deletePurchasedCartItem(Cart cartNo);
+	public void deletePurchasedCartItem(int[] cart);
 
 	/**
 	 * 트랜잭션 중, SourceDown TB 에 해당 source 항목 다운로드 내역을 insert 하기
 	 * 
 	 * @param downSource - userNo, sourceNo
-	 * 작성자 : 지선
 	 */
 	public void addSourceToDownList(SourceDown downSource);
 
@@ -109,4 +107,12 @@ public interface CartDao {
 	 * @param uploaderInc - userNo, category, amount
 	 */
 	public void uploaderIncomeCredit(Credit uploaderInc);
+
+	/**
+	 * pack 의 source 를 cart TB에 삽입한다.
+	 * 
+	 * @param cart - userNo, sourceNo
+	 */
+	public void insertPack(Cart cart);
+
 }

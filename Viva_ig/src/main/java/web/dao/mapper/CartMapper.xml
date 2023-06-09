@@ -32,14 +32,21 @@
 		where user_no = #{userNo} and source_no = #{sourceNo}
 	</select>
 	
+<!--  ====================================================================== -->	
 	<insert id="insertCartItem" parameterType="web.dto.Cart">
 		INSERT INTO cart (CART_NO, SOURCE_NO, USER_NO )
 		VALUES( cart_seq.nextval, #{sourceNo}, #{userNo})
 	</insert>
 
 <!--  ====================================================================== -->
+	<insert id="insertPack" parameterType="web.dto.Cart">
+	  	INSERT INTO CART (CART_NO, SOURCE_NO, USER_NO)
+	  	VALUES (cart_seq.nextval, #{sourceNo}, #{userNo})
+	</insert>
+
+<!--  ====================================================================== -->
 	
-	<select id="selectCreditAcc" resultType="int" parameterType="web.dto.Users">
+	<select id="selectCreditAcc" resultType="int" parameterType="int">
 		SELECT 
 	    (
 	        SELECT nvl(SUM(AMOUNT),0) FROM CREDIT
@@ -55,26 +62,36 @@
 		FROM DUAL
 	</select>
 	
-	<select id="selectSourceAmount"  resultType="int" parameterType="web.dto.Source">
-		SELECT nvl(SUM(SOURCE_PRICE),0) FROM SOURCE
-		WHERE SOURCE_NO IN (${sourceNo})
+<!-- 	<select id="selectSourceAmount"  resultType="int" parameterType="web.dto.Source"> -->
+<!-- 		SELECT nvl(SUM(SOURCE_PRICE),0) FROM SOURCE -->
+<!-- 		WHERE SOURCE_NO IN (${sourceNo}) -->
+<!-- 	</select> -->
+	
+	<select id="selectSourceAmount" parameterType="int[]" resultType="int">
+		SELECT SUM(SOURCE_PRICE) FROM source
+		WHERE source_no IN
+		<foreach item="item" collection="array" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
 	</select>
-
 
 	<!--  트랜잭션 중 -->
 	<!--  트랜잭션 중 1. 회원 크레딧 지출 -->
 	<insert id="expenditureCredit" parameterType="web.dto.Credit">
 		insert into credit (DEAL_NO, user_no, DEAL_CATEGORY, AMOUNT) 
-		values (credit_seq.nextval, #{userNo}, 2, #{amount})
+		values (credit_seq.nextval, #{userNo}, #{dealCategory}, #{amount})
 		<!--  DEAL_DATE 는 현재 DB에서 sysdatd라고 되어있는 관계로...  쿼리문에서는 제외를 해놓은 상태임! -->
 		<!--  DB에서 default CURRENT_TIMESTAMP 라고 지정해놔서 이제 신경 안써도 됨 -->
 	</insert>
 	
 
-	<!--  트랜잭션 중 2. 장바구니 항목에서 삭제 -->
-	<delete id="deletePurchasedCartItem"  parameterType="web.dto.Cart">
+	<!--  트랜잭션 중 2. 장바구니 항목에서 삭제 (배열로) -->
+	<delete id="deletePurchasedCartItem"  parameterType="int[]">
 		DELETE FROM cart
-		WHERE cart_no = #{cartNo}
+		WHERE source_no IN
+		<foreach item="item" collection="array" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
 	</delete>
 	
 	<!--  트랜잭션 중 3. 해당 음원의 다운로드 내역 추가하기 -->

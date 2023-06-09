@@ -19,9 +19,24 @@
   	select admin_no from admin where admin_id = #{adminId}
   	</select>  
   	
-  	<select id="selectQnAList" resultType="web.dto.UserQuestion" >
-  	select * from userquestion order by q_no desc
+  	<select id="selectQnACnt" resultType="int">
+  	select count(*) from userquestion
   	
+  	</select>
+  	
+  	<select id="selectQnAList" resultType="web.dto.UserQuestion" parameterType="web.util.Paging">
+  		SELECT * FROM (
+			SELECT rownum rnum, Q.* FROM (
+				select * from userquestion order by q_no desc
+			) Q
+		) USERQUESTION
+		WHERE rnum BETWEEN #{startNo } AND #{endNo }
+  	</select>
+  	
+  	<select id="selectUserQnAList" resultType="web.dto.UserQuestion" parameterType="int">
+ 		select * from userquestion  
+		where user_no = #{userNo}
+		order by q_no desc
   	</select>
   	
   	
@@ -78,6 +93,21 @@
   	select * from admin
   	where admin_no = #{adminNo}
   	</select>
+  	
+  	<select id="selectUserCnt" resultType="int">
+  	select count(*) from users
+  	</select>
 
+	<select id="selectUserList" resultType="web.dto.Users" parameterType="web.util.Paging">
+		SELECT * FROM (
+			SELECT rownum rnum, U.* FROM (
+				select * 
+				FROM users
+				ORDER BY user_no DESC
+			) U
+		) Users
+		WHERE rnum BETWEEN #{startNo } AND #{endNo }
+	
+	</select>
   	
   </mapper>

@@ -18,6 +18,7 @@ import web.dto.AdminAnswer;
 import web.dto.UserQuestion;
 import web.dto.Users;
 import web.service.face.AdminService;
+import web.util.Paging;
 
 @Controller
 public class AdminController {
@@ -67,17 +68,32 @@ public class AdminController {
 		
 	}
 	
+	
+	
 	@RequestMapping("/qna/list")
-	public void qnalist(Model model) {
+	public void qnalist(Paging paramData,Model model,HttpSession session) {
 		logger.info("/qna/list [GET]");
 		
+		//페이징 계산
+		Paging paging = adminService.getPaging( paramData );
+		logger.info("{}",paging);
+		
+		//관리자 - 문의 목록 조회 
+		List<UserQuestion> qnalist= adminService.qnalist(paging);
 		
 		
-		List<UserQuestion> qnalist= adminService.qnalist();
+		if(session.getAttribute("adminlogin") == null) {
+			
+			//회원 -문의 목록 조회
+			List<UserQuestion> userqna = adminService.userQnA((int)session.getAttribute("userNo"));
+			logger.info("**userqna 의 값:***{}",userqna);
+			model.addAttribute("userqna",userqna);
+			
+		}
 		
+		
+		model.addAttribute("paging",paging);
 		model.addAttribute("qnalist",qnalist);
-		
-		
 		
 	}
 	
@@ -167,6 +183,29 @@ public class AdminController {
 		return "redirect:/qna/view?qNo=" + userQuestion.getqNo();
 		
 	}
+	
+	@GetMapping("/admin/usergrade")
+	public void usergrade(Paging paramData,Model model ) {
+		logger.info("/admin/usergrade [get]");
+		
+		//페이징계산
+		Paging paging = adminService.getUserPaging( paramData ); 
+		
+		//회원 전체 목록 조회
+		List<Users> userlist = adminService.userlist(paging);
+		
+		model.addAttribute("paging",paging);
+		model.addAttribute("userlist",userlist);
+		
+		
+	}
+	
+	@PostMapping("/admin/usergrade")
+	public void usergradepost() {
+		logger.info("/admin/usergrade [post]");
+	}
+		
+		
 	
 
 }

@@ -23,13 +23,30 @@ public interface AdminDao {
 	 * @return 
 	 */
 	public Admin selectAdminNo(Admin admin);
+	
+	/**
+	 * 전체 QnA 수를 조회한다
+	 * @return 총 QnA 수
+	 */
+	public int selectQnACnt();
 
 	/**
-	 * QnA List 
+	 * 페이징을 적용하여 QnA 목록 조회
+	 * 
+	 * 	paging.startNo, paging.endNo를 이용하여 rownum을 조회한다
+	 * 
+	 * @param paging - 페이징 정보 객체
+	 * @return 페이징이 적용된 QnA 목록
+	 */
+	public List<UserQuestion> selectQnAList(Paging paging);
+
+	/**
+	 * list 불러올때 세션에서 가져온 userno인 애들만 불러오기
+	 * @param attribute
 	 * @return
 	 */
-	public List<UserQuestion> selectQnAList();
-
+	public List<UserQuestion> selectUserQnAList(int attribute);
+	
 	/**
 	 * QnA 상세정보 view Question
 	 * @param userQuestion
@@ -97,6 +114,25 @@ public interface AdminDao {
 	 * @return
 	 */
 	public Admin selectAdminNick(Admin admin);
+
+	/**
+	 * 전체 회원 수를 조회한다
+	 * @return 총 회원수
+	 */
+	public int selectUserCnt();
+
+	/**
+	 * 페이징을 적용하여 회원 목록 조회 
+	 * 	paging.startNo, paging.endNo를 이용하여 rownum을 조회한다
+	 * 
+	 * @param paging - 페이징 정보 객체
+	 * @return 페이징이 적용된 게시글 목록
+	 */
+	public List<Users> selectUserList(Paging paging);
+
+
+
+
 
 
 

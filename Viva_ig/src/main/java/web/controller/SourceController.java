@@ -68,8 +68,11 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		
 		model.addAttribute("inst", instrument);
 		model.addAttribute("scape", scape);
+		model.addAttribute("dscape", genre.getScape());
 		model.addAttribute("detail", detail);
+		model.addAttribute("ddetail", genre.getDetail());
 		model.addAttribute("fx", fx);
+		model.addAttribute("dfx", genre.getFx());
 		
 		logger.info("Tag : {}" , genre);
 		
@@ -83,7 +86,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 			model.addAttribute("msg", msg);
 		}
 		
-//		logger.info("장르별 음원소스 조회 : {}", list);
+		// logger.info("장르별 음원소스 조회 : {}", list);
 		model.addAttribute("list", list);
 	}
 	
@@ -203,6 +206,32 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 			model.addAttribute("list", list);
 		}
 		
+		if(instrument.getInstrument() != null && instrument.getDetail() != null) {
+			
+			logger.info("3번 실행");
+			
+			// 태그 조회
+			List<Tag> genre = sourceService.getTagGenre(instrument);
+			List<Tag> scape = sourceService.getTagScapeforInst(instrument);
+			List<Tag> fx = sourceService.getTagFxforInst(instrument);
+			
+			model.addAttribute("genre", genre);
+			model.addAttribute("cgenre", instrument.getGenre());
+			
+			
+			model.addAttribute("scape", scape);
+			model.addAttribute("cscape", instrument.getScape());
+			
+			model.addAttribute("fx", fx);
+			model.addAttribute("cfx", instrument.getFx());
+			
+			
+			// inst / detail 포함 조회
+			List<Map<String, Object>> list = sourceService.getSourceByInstDetail(instrument);
+			
+			model.addAttribute("list", list);
+		}
+		
 		// 구매이력이 있는 경우 메시지 반환
 		if( msg != null && msg.equals("already")) {
 			msg = msg.replace("already", "해당 음원을 구매하셨거나, 크레딧이 부족합니다! 마이페이지에서 확인해주세요!");
@@ -234,6 +263,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		model.addAttribute("scape", scape);
 		model.addAttribute("fx", fx);
 		model.addAttribute("packNo", pack.getPackNo());
+		model.addAttribute("pack", "pack");
 		
 		// 팩 음원소스 세부조회 ( 음원 )
 		List<Map<String, Object>> list = sourceService.getPackByPackNo(pack.getPackNo(), tag);
@@ -394,19 +424,19 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	
 	@GetMapping("/sound/genre")
-	public void soundsource() {
+	public void soundsource(Model model) {
 		logger.info("/sound/genre 확인");
 		
-		
+		model.addAttribute("genre", "genre");
 		
 	}
 	
 	
 	
 	@GetMapping("/sound/inst")
-	public void soundpack() {
+	public void soundpack(Model model) {
 		logger.info("/sound/inst 확인");
-		
+		model.addAttribute("inst", "inst");
 		
 		
 	}

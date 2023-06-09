@@ -2,17 +2,32 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<c:import url="../layout/header.jsp"/>
 <script type="text/javascript">
-
+// $(function() {
+	
+// 	$(".cate").hover(function() {
+// 		$(this).css({
+// 			'borderBottom':'3px solid #ccc'
+// 		})
+// 	})
+	
+// 	$(".cate").mouseleave(function() {
+// 		$(this).css({
+// 			'borderBottom':'none'
+// 		})
+// 	})
+		
+	
+// })
 
 </script>
 <style type="text/css">
 #Wrap{
-	padding: 16px;
 }
 #WrapTop{
 	width: 1300px;
+	margin: 0 auto;
 }
 #category{
 	display: grid;
@@ -60,6 +75,8 @@
 	grid-column-gap: 50px;
 	grid-row-gap: 30px;
 	margin-top: 20px;
+	width: 1300px;
+	margin: 0 auto;
 }
 .compo{
 	display: grid;
@@ -77,7 +94,7 @@
 	font-weight: bold;
 }
 </style>
-<c:import url="../layout/header.jsp"/>
+
 <div id="Wrap">
 	<div id="WrapTop">
 		<div style="width: 1300px;">
@@ -86,7 +103,9 @@
 			</div>
 			<div id="category">
 				<a class="a" href="/sound/genre"><div><span class="cate">Genre</span></div></a>
-				<a class="a" href="/sound/inst"><div><span class="cate" >Instrument</span></div></a>
+				<c:if test="${not empty inst}">
+					<a class="a" href="/sound/inst"><div><span class="cate" style="border-bottom: 3px solid #ccc">Instrument</span></div></a>
+				</c:if>
 				<a class="a" href="/file/fileupsource"><div><span class="cate" >Upload</span></div></a>
 			</div>
 		</div>	

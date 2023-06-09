@@ -218,18 +218,18 @@ a{
 	<div id="tab">
 		<div class="cateWrap">
 			<c:if test="${empty detail }">
-				<a href="/source/inst?instrument=${inst}"><span class="cate">Source</span></a>
+				<a href="/source/inst?instrument=${inst}"><span class="cate" >Source</span></a>
 			</c:if>
 			<c:if test="${not empty detail }">
-				<a href="/source/inst?detail=${detail}"><span class="cate">Source</span></a>
+				<a href="/source/inst?detail=${detail}"><span class="cate" >Source</span></a>
 			</c:if>
 		</div>
 		<div class="cateWrap">
-			<c:if test="${empty pack }">
-				<a href="/pack/inst?genre=${cgenre}"><span class="cate">Pack</span></a>
+			<c:if test="${empty detail }">
+				<a class="a" href="/pack/inst?instrument=${inst}"><span class="cate" style="border-bottom: 3px solid #ccc">Pack</span></a>
 			</c:if>
-			<c:if test="${not empty pack }">
-				<a style="text-decoration:none;" href="/pack/inst?genre=${cgenre}"><span class="cate">Pack</span></a>
+			<c:if test="${not empty detail }">
+				<a class="a" href="/pack/inst?detail=${detail}" style="border-bottom: 3px solid #ccc"><span class="cate">Pack</span></a>
 			</c:if>			
 		</div>	
 	</div>

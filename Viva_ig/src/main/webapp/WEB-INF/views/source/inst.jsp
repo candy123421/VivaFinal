@@ -282,10 +282,10 @@ div[data-itemtype='line']{
 <%-- 				<a href="/source/inst?instrument=${dinst}"><span class="cate">Source</span></a> --%>
 <%-- 			</c:if> --%>
 			<c:if test="${ empty inst}">
-				<a style="text-decoration:none; text-decoration-color:#ccc;" href="/source/inst?detail=${det}"><span class="cate">Source</span></a>
+				<a style="text-decoration:none; text-decoration-color:#ccc;" href="/source/inst?detail=${det}"><span class="cate" style="border-bottom: 3px solid #ccc">Source</span></a>
 			</c:if>
 			<c:if test="${ not empty inst}">
-				<a style="text-decoration:none; text-decoration-color:#ccc;" href="/source/inst?instrument=${dinst}"><span class="cate">Source</span></a>
+				<a style="text-decoration:none; text-decoration-color:#ccc;" href="/source/inst?instrument=${dinst}"><span class="cate" style="border-bottom: 3px solid #ccc">Source</span></a>
 			</c:if>
 		</div>
 		<div class="cateWrap">

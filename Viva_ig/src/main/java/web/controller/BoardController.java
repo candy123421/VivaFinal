@@ -124,14 +124,15 @@ public class BoardController {
 		logger.info("컨트롤러 보드 {}", board);
 		logger.info("컨트롤러 파일 {}", file);
 		
-//		int userNo = (Integer)session.getAttribute("userNo");
 //		logger.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!{}", userNo);
 		
 //		model.addAttribute("userLogin", userId);
 		
 //		board.setBoardTitle(boardTitle);// 여기에 tilte담아야함
 //		board.setBoardContent(categoryType);
-//		board.setUserNo(userNo);
+		
+		int userNo = (Integer)session.getAttribute("userNo");
+		board.setUserNo(userNo);
 		
 		boardService.write( board, file );
 		

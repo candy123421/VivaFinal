@@ -2,6 +2,8 @@ package web.dao.face;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import web.dto.Board;
 import web.dto.Comments;
 import web.dto.Files;
@@ -9,16 +11,6 @@ import web.dto.Tag;
 import web.util.Paging;
 
 public interface BoardDao {
-	
-	/**
-	 * 페이징을 적용하여 게시글 목록 조회
-	 * 
-	 * paging.startNo, paging.endNo를 이용하여 rownum을 조회한다
-	 * 
-	 * @param page - 페이지 정보 객체
-	 * @return 페이징이 적용된 게시글 목록
-	 */
-	public List<Board> selectList(Paging page);
 
 	/**
 	 * 전체 게시글 수를 조회한다
@@ -26,6 +18,34 @@ public interface BoardDao {
 	 * @return
 	 */
 	public int selectCntAll();
+	
+	/**
+	 * keyword로 검색한 전체 게시글 수를 조회한다
+	 * 
+	 * @param paging - 페이지 정보 객체
+	 * @param keyword - 검색어
+	 */
+	public int selectCntAllByKeyword(String keyword);
+	
+	/**
+	 * 페이징을 적용하여 게시글 목록 조회
+	 * 
+	 * paging.startNo, paging.endNo를 이용하여 rownum을 조회한다
+	 * 
+	 * @param page - 페이지 정보 객체
+	 * @param keyword  - 검색어
+	 * @return 페이징이 적용된 게시글 목록
+	 */
+	public List<Board> selectBoardList(Paging page);
+	
+	/**
+	 * 페이징을 적용하고, 키워드로 검색한 게시글 목록 조회
+	 * 
+	 * @param paging - 페이지 정보 객체
+	 * @param keyword - 검색어
+	 * @return 페이징이 적용되고, 키워드로 검색한 게시글 목록
+	 */
+	public List<Board> selectBoardListByKeword(@Param("paging") Paging page, @Param(value="keyword") String keyword);
 	
 	/**
 	 * 조회하려는 게시글의 조회수를 1 증가시킨다

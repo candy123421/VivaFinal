@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -8,6 +7,85 @@
 
 <c:import url="/WEB-INF/views/layout/header.jsp" /> 
 
+<div class="container">
+<h1>FREE BOARD View</h1>
+<hr>
+
+<c:choose>
+	<c:when test="${empty login}">
+		로그인 후 이용해 주세요!
+		<a href="/viva/login"> <button>Login</button></a>
+	</c:when>
+	  
+	<c:when test="${not empty login and login}">
+		<table class="big">
+			<tr>
+				<td class="small">글번호</td><td>${viewBoard.boardNo }</td>
+			</tr>
+			<tr>
+			 	<td class="table-info">아이디</td><td>${viewBoard.userId }</td>
+			</tr>
+			<tr>
+				<td class="small">조회수</td><td>${viewBoard.boardHit }</td>
+				<td class="small">작성일</td><td><fmt:formatDate value="${viewBoard.boardDate }" pattern="yyyy-MM-dd hh:mm" /></td>
+			</tr>
+			<tr>
+				<td class="small">제목</td><td>${viewBoard.boardTitle }</td>
+			</tr>
+			<tr>
+				<td class="small">본문</td>
+			</tr>
+			<tr>
+				<td>${viewBoard.boardContent }</td>
+			</tr>
+		</table> <!-- big end -->
+		
+		<%-- 첨부파일 --%>
+		<div class="file" >
+			<c:if test="${not empty boardFile }">
+				<c:forEach var="boardFile" items="${boardFile}">
+					<a href="./download?fileNo=${boardFile.fileNo }"></a>
+					<img src="/boardUpload/${boardFile.storedname }" alt="❤️">
+				</c:forEach>
+			</c:if>
+		</div>
+	
+		
+		<button id="btnList">목록</button>
+			<c:if test="${id eq viewBoard.userId }">
+				<button id="btnUpdate">수정</button>
+		 		<button id="btnDelete">삭제</button>
+		 	</c:if>
+	<hr>
+
+	<%-------------------- 댓글 시작 --------------------%>
+	<%---------- 댓글 작성 ----------%>
+	<div id="comment">
+		<form action="/commentWrite" method="post">
+			<input type="hidden" name="boardNo" value="${viewBoard.boardNo }">
+			<textarea id="commContent" name="commContent" placeholder="댓글을 작성하세요" rows="4" cols="100"></textarea><br>
+			<button type="button" id="btnComment">댓글 작성</button>
+		</form>
+	</div>
+	<hr>
+	
+	<%---------- 댓글 목록 ----------%>
+	<div id="commentList" class="commentList">
+		<c:forEach items="${commentList}" var="commentList">
+			<input type="hidden" name="commboardNo" value="${commentList.boardNo }">
+			<div>작성자 번호: ${commentList.userNo}</div>
+			<div>댓글 번호 : ${commentList.commNo }</div>
+	        <div>작성일: <fmt:formatDate value="${commentList.commDate}" pattern="yyyy-MM-dd hh:mm" /></div>
+			<input id="commContent-${commentList.commNo}" name="commContent" value="${commentList.commContent}"><br>
+				<button type="button" class="btnCommentUpdate" data-comm-no="${commentList.commNo}">댓글 수정</button>
+				<button type="button" class="btnCommentDelete" data-comm-no="${commentList.commNo}">댓글 삭제</button>
+				<hr>
+		</c:forEach>
+	</div>
+	</c:when>
+</c:choose>
+
+<%--------------- 댓글 javascript ---------------%>
 <script type="text/javascript">
 $(document).ready(function() {
 	
@@ -144,79 +222,8 @@ $(document).ready(function() {
 }) //$(document).ready(function() end
 
 </script>
+<%-- 댓글 끝 --%>
 
-<div class="container">
-<h1>게시글 상세보기</h1>
-<hr>
+</div><%-- .container end --%>
 
-<table class="big">
-<tr>
-	<td class="small">글번호</td><td>${viewBoard.boardNo }</td>
-</tr>
-<tr>
-<%-- 	<td class="table-info">아이디</td><td>${viewBoard.userId }</td> --%>
-	<td class="table-info">회원번호</td><td>${viewBoard.userNo }</td>
-</tr>
-<tr>
-	<td class="small">조회수</td><td>${viewBoard.boardHit }</td>
-	<td class="small">작성일</td><td><fmt:formatDate value="${viewBoard.boardDate }" pattern="yyyy-MM-dd hh:mm" /></td>
-</tr>
-<tr>
-	<td class="small">제목</td><td>${viewBoard.boardTitle }</td>
-</tr>
-<tr>
-	<td class="small">본문</td>
-</tr>
-<tr>
-	<td>${viewBoard.boardContent }</td>
-</tr>
-</table>
-
-<!-- 첨부파일 -->
-<div class="file" >
-	<c:if test="${not empty boardFile }">
-		<c:forEach var="boardFile" items="${boardFile}">
-			<a href="./download?fileNo=${boardFile.fileNo }"></a>
-			<img src="/boardUpload/${boardFile.storedname }" alt="다잘될거야~">
-		</c:forEach>
-	</c:if>
-</div>
-
-<div>
-	<button id="btnList">목록</button>
-	
-<%--  	<c:if test="${id eq viewBoard.userId }"> --%>
- 		<button id="btnUpdate">수정</button>
- 		<button id="btnDelete">삭제</button>
-<%-- 	</c:if> --%>
-</div>
-<hr>
-
-<!-------------------- 댓글 시작 -------------------->
-<!---------- 댓글 작성 ---------->
-<div id="comment">
-	<form action="/commentWrite" method="post">
-		<input type="hidden" name="boardNo" value="${viewBoard.boardNo }">
-		<textarea id="commContent" name="commContent" placeholder="댓글을 작성하세요" rows="4" cols="100"></textarea><br>
-		<button type="button" id="btnComment">댓글 작성</button>
-	</form>
-</div>
-<hr>
-
-<!---------- 댓글 목록 ---------->
-<div id="commentList" class="commentList">
-	<c:forEach items="${commentList}" var="commentList">
-		<input type="hidden" name="commboardNo" value="${commentList.boardNo }">
-		<div>작성자 번호: ${commentList.userNo}</div>
-		<div>댓글 번호 : ${commentList.commNo }</div>
-        <div>작성일: <fmt:formatDate value="${commentList.commDate}" pattern="yyyy-MM-dd hh:mm" /></div>
-		<input id="commContent-${commentList.commNo}" name="commContent" value="${commentList.commContent}"><br>
-			<button type="button" class="btnCommentUpdate" data-comm-no="${commentList.commNo}">댓글 수정</button>
-			<button type="button" class="btnCommentDelete" data-comm-no="${commentList.commNo}">댓글 삭제</button>
-			<hr>
-	</c:forEach>
-</div>
-<!-- 댓글 끝 -->
-
-</div><!-- .container end -->
 <c:import url="../layout/footer.jsp"/>

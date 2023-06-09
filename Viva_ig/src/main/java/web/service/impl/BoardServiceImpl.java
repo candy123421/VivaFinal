@@ -10,10 +10,12 @@ import java.util.UUID;
 
 import javax.servlet.ServletContext;
 
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import web.controller.BoardController;
@@ -35,22 +37,40 @@ public class BoardServiceImpl implements BoardService {
 	
 	
 	@Override
-	public List<Board> list(Paging page) {		
-		return boardDao.selectList(page);
-	}
-
-	
-	@Override
-	public Paging getPaging(Paging paging) {
+	public Paging getPaging(Paging paging, String keyword) {
+		
+		Paging page = null;
 		
 		//총 게시글 수 조회
-		int totalCount = boardDao.selectCntAll();
-		
-		//페이징 계산
-		Paging page = new Paging( totalCount, paging.getCurPage() );
-		
+		if( keyword == null ) {
+			int totalCount = boardDao.selectCntAll();
+			page = new Paging(totalCount, paging.getCurPage());			//페이징 계산
+		} else {
+			int totalCount = boardDao.selectCntAllByKeyword(keyword);
+			page = new Paging(totalCount, paging.getCurPage());			//페이징 계산
+		}
 		return page;
 	}
+	
+	@Override
+	public List<Board> boardList(Paging page,String userId, String keyword) {		
+
+		Paging paging = null;
+		
+		if( keyword == null ) {
+			int totalCount = boardDao.selectCntAll();
+			paging = new Paging(totalCount, page.getCurPage() );
+			
+			return boardDao.selectBoardList(paging);
+			
+		} else {
+			int totalCount = boardDao.selectCntAllByKeyword(keyword);
+			paging = new Paging(totalCount, page.getCurPage());
+
+			return boardDao.selectBoardListByKeword(paging, keyword);
+		}
+	}
+
 	
 	
 	@Override
@@ -66,6 +86,7 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public void write(Board board, List<MultipartFile> file) {
+		
 		
 		board.setUserNo(board.getUserNo());
 		
@@ -262,14 +283,6 @@ public class BoardServiceImpl implements BoardService {
 		boardDao.delete(board);	
 	}
 	
-	
-	
-	@Override
-	public List<Comments> viewComment(int boardNo) {
-		return boardDao.selectComment(boardNo);
-	}
-	
-	
 	@Override
 	public void deleteBoard(Board board) {
 		boardDao.delete(board);
@@ -277,20 +290,19 @@ public class BoardServiceImpl implements BoardService {
 	
 	
 	@Override
-	public void writeComment(Comments comments) {
-        System.out.println("==================================");
-		System.out.println(comments);
-		System.out.println("==================================");
-
-		boardDao.insertComment(comments);
+	public List<Comments> viewComment(int boardNo) {
+		return boardDao.selectComment(boardNo);
 	}
 	
+	@Override
+	public void writeComment(Comments comments) {
+		boardDao.insertComment(comments);
+	}
 	
 	@Override
 	public void updateComment(Comments comments) {
 		boardDao.updateComment(comments);
 	}
-	
 	
 	@Override
 	public void deleteComment(Comments comments) {

@@ -24,7 +24,7 @@
 
 <c:if test="${login}">
 <%-- <c:if test="${not empty login and login}"> --%>
-<button onclick="location.href='./login'">게시판</button>
+<button onclick="location.href='/board/list'">게시판</button>
 <button onclick="location.href='./logout'">로그아웃</button>
 <button onclick="location.href='./mypage'">마이페이지</button>
 </c:if>

@@ -12,11 +12,12 @@ public class Board {
 	private int boardHit;
 	private int boardLike;
 	private int userNo;
+	private String userId;
 	
 	public Board() {}
 
 	public Board(int boardNo, String boardTitle, String boardContent, Date boardDate, String categoryType, int boardHit,
-			int boardLike, int userNo) {
+			int boardLike, int userNo, String userId) {
 		super();
 		this.boardNo = boardNo;
 		this.boardTitle = boardTitle;
@@ -26,13 +27,14 @@ public class Board {
 		this.boardHit = boardHit;
 		this.boardLike = boardLike;
 		this.userNo = userNo;
+		this.userId = userId;
 	}
 
 	@Override
 	public String toString() {
 		return "Board [boardNo=" + boardNo + ", boardTitle=" + boardTitle + ", boardContent=" + boardContent
 				+ ", boardDate=" + boardDate + ", categoryType=" + categoryType + ", boardHit=" + boardHit
-				+ ", boardLike=" + boardLike + ", userNo=" + userNo + "]";
+				+ ", boardLike=" + boardLike + ", userNo=" + userNo + ", userId=" + userId + "]";
 	}
 
 	public int getBoardNo() {
@@ -99,7 +101,13 @@ public class Board {
 		this.userNo = userNo;
 	}
 
-	
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
 	
 }

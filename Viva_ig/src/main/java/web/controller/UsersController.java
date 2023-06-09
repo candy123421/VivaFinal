@@ -387,6 +387,8 @@ public class UsersController {
 		// 사진 storedname 만 가져온다
 		Map<String, Object> list = usersService.profileInfo(users);
 		logger.info("list:{}" , list);
+		
+		session.setAttribute("userProfile", list);
 		model.addAttribute("userProfile",list);
 		
 	}
@@ -410,13 +412,16 @@ public class UsersController {
 		Users userInfo = usersService.selectAllInfo(userNo);
 		logger.info("userInfo:{}", userInfo);
 		
+		users.setUserNo(userNo);
+		
 		model.addAttribute("userInfo",userInfo);
 		session.setAttribute("userInfo", userInfo);
 		
 //		//userno로 프로필사진정보 조회
 		// 사진 storedname 만 가져온다
 		Map<String, Object> list = usersService.profileInfo(users);
-		session.setAttribute("userProfileNo", list);
+		session.setAttribute("userProfile", list);
+		
 		model.addAttribute("userProfile", list);
 	}
 	
@@ -439,9 +444,8 @@ public class UsersController {
 		
 		//회원정보수정하기전에 fileno가 DB에 존재하면 삭제하고 업데이트/DB에 없으면 insert 시키기
 		//true를 받아서 DB에 fileno가 존재하므로 프로필사진 수정(update)
-		if(isProfileNo == true) {
+		if(isProfileNo == true && profile.getSize() > 0) {
 			logger.info("프로필사진 올린적있음");
-			
 			//회원프로필 삭제 
 //			usersService.deleteProfile(users,profile);
 			//회원정보 수정한거 삽입
@@ -449,7 +453,12 @@ public class UsersController {
 			return "redirect:./mypage";
 		
 		// false를 받아서 회원프로필사진 삽입(insert)
-		}else if(isProfileNo == false) {
+		}else if (isProfileNo == true && profile.getSize() <= 0) {
+			
+			logger.info("정보만 수정하려는 쪽");
+			usersService.updateIdPw(users,profile);
+			
+		} else if(isProfileNo == false) {
 			logger.info("프로필사진 올린적없음");
 			usersService.insertProfile(users,profile);
 			return "redirect:./mypage";
@@ -458,53 +467,20 @@ public class UsersController {
 		return "redirect:./mypage";
 	}
 	
-	//문의하기 페이지
-	@GetMapping("/question")
-	public void userQuestion(Users users, HttpSession session , Model model) {
-		logger.info("/users/question[GET]");
+	
+	@GetMapping("/delete")
+	    public void delete() {}
+	
+	@PostMapping("/delete")
+	public String deleteProc(HttpSession session) {
 		
-		session.getAttribute("userInfo");
-		session.getAttribute("id");
+		int userno = (int)session.getAttribute("userNo");
+		logger.info("delete : userNo:{}" , userno);
+		
+		usersService.deleteInfo(userno);
+		
+		return "redirect:./login";
 	}
 	
-	  @RequestMapping("/delete")
-	    public String delete(HttpSession session) {
-	    	
-	    	int userno = (int)session.getAttribute("userNo");
-	    	logger.info("delete : userNo:{}" , userno);
-	    	
-	    	usersService.deleteInfo(userno);
-	    	
-	        return "redirect:./login";
-	    }
-	
-	//회원정보 수정하기 페이지
-//	@GetMapping("/change")
-//	public void userChange(Users users, HttpSession session , Model model) {
-//		logger.info("/users/change[GET]");
-//		
-//		session.getAttribute("userInfo");
-//		session.getAttribute("id");
-//	}
-	
-
-	//문의하기 페이지
-//	@PostMapping("/question")
-//	public void questionProc( 
-//			
-//			Users users, MultipartFile file,Model model,
-//			@RequestParam(value="Q_title", required=false) String Q_title,
-//			@RequestParam(value="Q_content", required=false) String Q_content	
-//			
-//			){		
-//		logger.info("/users/question [POST]");	
-//		
-////		userQuestion.setqTitle(Q_title);// 여기에 tilte담아야함
-////		userQuestion.setqContent(Q_content);
-////	
-////		usersService.question( users, file );
-////		
-////		return "redirect:./mypage";	//게시글 목록
-//	}
 
 }

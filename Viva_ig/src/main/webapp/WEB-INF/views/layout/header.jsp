@@ -371,6 +371,7 @@ font-weight: bold;
 	<!--  헤더 : 상단 바 (장바구니, 마이소스, 마이페이지, 로그인&로그아웃)-->
 	 <div class = "item" id="header">
 	  	<div class="fixed-top">
+
 	  		<nav class="navbar navbar-expand-lg">
 	  			<div class="headerState container-fluid justify-content-end">
   				  

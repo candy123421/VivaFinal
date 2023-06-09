@@ -74,7 +74,7 @@ function validate(){
     var pwReg =/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
 		   
 	if( !pwReg.test( $("#userPw").val() ) )  {
-	      $("#userpw_msg").html("알파벳 대소문자, 숫자, 특수기호 조합으로 8~20자 이하로 작성하세요")
+	      $("#userpw_msg").html("알파벳 대소문자, 숫자, 특수기호 조합으로 8~20자 이하로 작성")
 	      return false
 	}	
 	return true;
@@ -82,6 +82,10 @@ function validate(){
 </script>
 
 <style type="text/css">
+#wrap{
+	width: 1400px;
+	margin: 0 auto;
+}
 #grid{
 	display: grid;
 	grid-template-rows: 80px
@@ -118,40 +122,41 @@ a {
 #wrap{
 	padding-left: 16px;
 }
-.contentMiddle{
-/* 	border-left: 1px solid #ccc; */
-/* 	border-right: 1px solid #ccc; */
-}
 
 /* 프로필 글자 */
 .contentSmalls{
 	font-size:26px;
-	padding:20px;
-	margin:8px;
+	margin-top: 50px;
+	margin-bottom: 50px;
 }
 
 /* 컬럼명 글자 */
 .contentSmall{
 	font-size:22px;
 	padding:2px;
-	margin:25px;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 3px solid #ccc;
+	height: 100px;
+	display: grid;
+	align-items: center;
 }
 
 /* 회원정보 글자 */
 .contentMedium{
 	font-size:22px;
 	padding:2px;
-	margin:25px;
 	text-align:end;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 3px solid #ccc;
+	height: 100px;
+	display: grid;
+	align-items: center;
 }
 
 /* 닉네임중복확인 버튼 */
 .nick_input{
 	position: absolute;
-	top: -325px;
-	right:-497px;
+	top:-379px;
+	right:-523px;
+	border-radius: 6px;
 }
 #btn{
 	top: 60px;
@@ -163,12 +168,44 @@ a {
 	position:relative;
 	z-index: 80;
 }
+#imgwrap{
+	width: 92px;
+}
+#btnWrap{
+	width: 1400px;
+	margin: 0 auto;
+	text-align: -webkit-center;
+	margin-top: 30px;
+	height: 150px;
+}
+.btna{
+	display: inline-block;
+	background-color: black;
+	color : white;
+	border-radius: 7px;
+	width: 120px;
+	height: 50px;
+}
+#fileWrap{
+	position:relative;
+}
+
+#userProfile{
+	position: absolute;
+	top:-68px;
+	right:-748px;
+}
+#userPw , #userNick{
+	border: 2px solid ;
+  	border-radius: 10px;
+}
 </style>
 
 <form action="./update" method="post" enctype="multipart/form-data">
 			
 <div id="wrap">
 	<div id="grid">
+	
 		<div id="colgrid">
 			<div class="items"><h1>마이페이지</h1></div>
 			<div class="items"><a href="./mypage">회원정보</a></div>
@@ -184,40 +221,58 @@ a {
 					<div class="contentSmalls">프로필</div>
 				<div id="colgrid3">
 					<div class="contentSmall">프로필 사진</div>
-					<div class="contentMedium"><input type="file" id="userProfile" name="profile"></div>
-					<div class="contentSmall">아이디</div>
+					<div class="contentMedium" >
+						<div id="imgwrap">
+							<img src="../../../profile/${userProfile.STOREDNAME}" style="width: 100%; border-radius: 50%; margin-left:300px;">
+								<div id="fileWrap">
+									<input type="file" id="userProfile"  accept=".jpg, .png, .gif" name="profile">
+								</div>
+						</div>
+					</div>
+					<div class="contentSmall"><div>아이디</div></div>
 					<div class="contentMedium">${userInfo.userId}</div>
 					
 					<div class="contentSmall">비밀번호</div>
-					<div class="contentMedium"><input type="password" id="userPw" name="userPw" value="${userInfo.userPw}">
-					<span id="userpw_msg" class="msg" style="color:red; font-size:12px;"></span></div>
+					<div class="contentMedium">
+						<input type="password" id="userPw" name="userPw" value="${userInfo.userPw}">
+						<div>
+							<span id="userpw_msg" class="msg" style="color:red; font-size:12px;"></span>
+						</div>
+					</div>
 					
 					<div class="contentSmall">이름</div>
 					<div class="contentMedium">${userInfo.userName}</div>
 					
 					<div class="contentSmall">닉네임</div>
-					<div class="contentMedium"><input type="text" id="userNick" name="userNick" value="${userInfo.userNick}">
-					<span id="usernick_msg" class="msg" style="color:red; font-size:12px;"></span></div>
+					<div class="contentMedium">
+						<input type="text" id="userNick" name="userNick" value="${userInfo.userNick}">
+						<div>
+							<span id="usernick_msg" class="msg" style="color:red; font-size:12px;"></span>
+						</div>
+					</div>
 						
 					<div class="contentSmall">생일</div>
-					<div class="contentMedium"><fmt:formatDate value="${userInfo.userBirth}" pattern="yyyy-MM-dd"/></div>
+					<div class="contentMedium">
+						<fmt:formatDate value="${userInfo.userBirth}" pattern="yyyy-MM-dd"/>
+					</div>
 					<div class="contentSmall">이메일</div>
 					<div class="contentMedium">${userInfo.userEmail}</div>
 					<div class="contentSmall">연락처</div>
 					<div class="contentMedium">${userInfo.userMobile}</div>
 					
-					<div id="re">
-						<button type="button" value="닉네임중복확인" class="nick_input">닉네임중복확인</button>
-					</div>
-						<div style="z-index: 20;">
-							<button id="btn">수정하기</button>	
-						<a href="./mypage"><button type="button">뒤로가기</button></a>
+						<div id="re">
+							<button type="button" value="닉네임중복확인" class="nick_input">닉네임중복확인</button>
 						</div>
+					
+					</div>
 				</div>
 			</div>	
 			<div class="contentSide"></div>	
 	</div>
-	</div>
+</div>
+<div id="btnWrap">
+	<button id="btn" class="btna" style="margin-right: 30px;">수정하기</button>	
+	<a href="./mypage"><button type="button" class="btna">뒤로가기</button></a>
 </div>
 </form>
 

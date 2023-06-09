@@ -3,7 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 
 <c:import url="../layout/header.jsp"/>  
-<style>
+<style type="text/css">
+
+#chargeOk_ment img {
+	width: 100px;
+}
 #chargeOk_ment{
 	position: absolute;
 	width: 453px;
@@ -23,7 +27,9 @@
 	
 	color: #000000;
 }
-
+h3 {
+	font-weight: 600;
+}
 .chargeOk_chargeInfo {
 	position: absolute;
 	width: 667px;
@@ -57,46 +63,44 @@ dt {
 }
 .chargeOk_redirect {
 	position: absolute;
-	width: 330px;
-	height: 72px;
-	left: 286px;
+    left: 345px;
 	top: 672px;
+	width: 100%;
+    text-align: left;
 }
 
+.chargeOk_redirect div {
+	display : inline-block;
+}
 
 #chargeRedirect {
-box-sizing: border-box;
-
-position: absolute;
-width: 330px;
-height: 54.86px;
-left: calc(50% - 330px/2 - 149px);
-top: 672px;
-
-background: #FFFFFF;
-border: 1px solid #BFBCBC;
-border-radius: 5px;
-
+	box-sizing: border-box;
+	width: 330px;
+	height: 55px;
+	background: #FFFFFF;
+	border: 2px solid #BFBCBC;
+	border-radius: 10px;
+	font-weight: 700;
+	font-size: 20px;
+	line-height: 33px;
+	align-items: center;
+	text-align: center;
+	letter-spacing: 0.29em;
+	color: #918E8E;
 }
 #creditListRedirect {
-position: absolute;
-width: 330px;
-height: 54.86px;
-left: calc(50% - 330px/2 + 280px);
-top: 672px;
-
-background: #6DB9FF;
-border-radius: 5px;
-font-weight: 700;
-font-size: 24px;
-line-height: 33px;
-display: flex;
-align-items: center;
-text-align: center;
-letter-spacing: 0.1em;
-
-color: #FFFFFF;
-
+	width: 330px;
+	height: 55px;
+	background: linear-gradient(197.94deg, #514C9C 5.28%, #653A99 16.47%, #683287 28.24%, #783487 40.56%, rgba(124, 45, 121, 0.95) 56.31%, #78377F 74.5%, #814A7D 83.79%, #8E4669 93.18%, #8E5D7A 99.18%);
+	font-weight: 700;
+	font-size: 20px;
+	line-height: 33px;
+	align-items: center;
+	text-align: center;
+	letter-spacing: 0.29em;
+	color: #FFFFFF;
+	border-radius: 10px;
+	border: 2px solid rgba(129, 74, 125, 0.6);
 }
 
 </style>
@@ -110,7 +114,7 @@ color: #FFFFFF;
 <section>
 <div id="chargeOk_ment">
 	<div>
-		<img alt="checkOk" src="/resources/icon/checkOk.svg">
+		<img alt="checkOk" src="/resources/icon/charge_ok_chk.svg">
 	</div>
 	
 <h3>크레딧 충전이<br>
@@ -118,32 +122,30 @@ color: #FFFFFF;
 </div>
 <div class="chargeOk_chargeInfo">
 	<dl>
-		<dt>크레딧 잔액</dt>
+		<dt>충전된 크레딧</dt>
 		<dd>
-			<span class="price">{크레딧}</span>
+			<span class="price">${info.AMOUNT}</span>
 			<span class="price">Credit</span>
 		</dd>
 	</dl>
 	<dl>
 		<dt>결제 방식</dt>
 		<dd>
-			<span>{카드}</span>
-			<span>{국민}</span>
-			<span>{번호}</span>
+			<span>${info.METHOD}</span>
 		</dd>
 	</dl>
 	<dl>
 		<dt>실제 결제 금액</dt>
 		<dd>
-			<span>{금액}</span>
+			<span>${info.TOTAL_AMOUNT}</span>
 			<span>원</span>
 		</dd>
 	</dl>
 </div>
 
 <div class="chargeOk_redirect">
-	<button type="button" class="btn btn-primary btn-lg" id="chargeRedirect" >추가 충전하기</button>
-	<button type="button" class="btn btn-secondary btn-lg" id="creditListRedirect">크레딧 내역 조회</button>
+	<div><button type="button" id="chargeRedirect" onClick="location.href='./charge'">추가 충전하기</button></div>
+	<div><button type="button" id="creditListRedirect" onClick="location.href='./list'">크레딧 내역 조회</button></div>
 </div>
 </section>
 

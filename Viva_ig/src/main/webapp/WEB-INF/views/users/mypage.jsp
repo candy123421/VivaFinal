@@ -5,6 +5,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <c:import url="../layout/header.jsp"/>
 <style type="text/css">
+#wrap{
+	width: 1400px;
+	margin: 0 auto;
+}
 #grid{
 	display: grid;
 	grid-template-rows: 80px
@@ -41,46 +45,53 @@ a {
 #wrap{
 	padding-left: 16px;
 }
-.contentMiddle{
-/* 	border-left: 1px solid #ccc; */
-/* 	border-right: 1px solid #ccc; */
-}
-
 /* 프로필 글자 */
 .contentSmalls{
 	font-size:26px;
-	padding:20px;
-	margin:8px;
+	margin-top: 50px;
+	margin-bottom: 50px;
 }
 
 /* 컬럼명 글자 */
 .contentSmall{
 	font-size:22px;
 	padding:2px;
-/* 	margin:25px; */
-	border-bottom: 1px solid #ccc;
+	border-bottom: 3px solid #ccc;
 	height: 100px;
+	display: grid;
+	align-items: center;
 }
 
 /* 회원정보 글자 */
 .contentMedium{
 	font-size:22px;
 	padding:2px;
-/* 	margin:25px; */
 	text-align:end;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 3px solid #ccc;
 	height: 100px;
-}
-
-#lastbtn{
-	display:flex;
-/* 	height :100vh; */
-	justify-content: center;
+	display: grid;
 	align-items: center;
 }
+
 #imgwrap{
-	width: 100px;
-	height:100px;
+	width: 92px;
+}
+#btnWrap{
+	width: 1400px;
+	margin: 0 auto;
+	text-align: -webkit-center;
+	margin-top: 30px;
+	height: 150px;
+}
+.btna{
+	display: inline-block;
+}
+#lastbtn{
+	background-color: black;
+	color : white;
+	border-radius: 7px;
+	width: 120px;
+	height: 50px;
 }
 </style>
 
@@ -102,8 +113,12 @@ a {
 					<div class="contentSmalls">프로필</div>
 				<div id="colgrid3">
 					<div class="contentSmall">프로필 사진</div>
-					<div id="imgwrap" class="contentMedium"><img src="../../../profile/${userProfile.STOREDNAME}" style="width: 100%"></div>
-					<div class="contentSmall">아이디</div>
+					<div class="contentMedium">
+						<div id="imgwrap">
+							<img src="../../../profile/${userProfile.STOREDNAME}" style="width: 100%; border-radius: 50%; margin-left:300px;">
+						</div>
+					</div>
+					<div class="contentSmall"><div>아이디</div></div>
 					<div class="contentMedium">${userInfo.userId}</div>
 					<div class="contentSmall">이름</div>
 					<div class="contentMedium">${userInfo.userName}</div>
@@ -117,16 +132,14 @@ a {
 					<div class="contentMedium">${userInfo.userMobile}</div>
 				</div>
 			</div>		
-<!-- 				<a href="./main"><button>메인으로</button></a> -->
-		<div>
-			<a href="./update"><button type="button" id="lastbtn">회원수정</button></a>
-			<a href="./delete"><button type="button" id="lastbtn">탈퇴하기</button></a>	
-		</div>
 			<div class="contentSide"></div>	
 		</div>
 	</div>
 </div>
-
+<div id="btnWrap">
+	<a class="btna" href="./update" style="margin-right: 30px;"><button type="button" id="lastbtn">회원수정</button></a>
+	<a class="btna" href="./delete"><button type="button" id="lastbtn">탈퇴하기</button></a>	
+</div>
 
 
 <c:import url="../layout/footer.jsp" />

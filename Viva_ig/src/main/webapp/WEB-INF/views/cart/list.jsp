@@ -137,6 +137,7 @@
 	<div>	
 		<label for="allCheck">전체 선택</label>
 		<button type="button" class="selectDelete_btn">선택 삭제</button>
+		<button type="button" class="selectBuy-btn">구매하기</button>
 		
 		<script>
 		 $('.selectDelete_btn').click(function(){
@@ -166,8 +167,39 @@
 			error: function() {
 				console.log("AJAX 실패")
 			}
+			});
 		});
-		});
+
+		 $('.selectBuy-btn').click(function(){
+			 console.log("선택항목 구매 clicked()")
+			 
+			//배열선언
+			var checkArr = new Array();
+			 
+			//체크박스의 name (attr)이 체크된 상태인 항목 각각에 대한 동작
+			$("input[name='chBox']:checked").each(function(){
+				
+				//밖에서 선언한 배열변수에 체크박스의 cartNo 요소를 추가해주며
+				//추가된 배열의 길이를 반환.
+				checkArr.push($(this).attr("data-source-no"));
+				console.log("배열", checkArr);
+			});
+		    
+			//ajax로 데이터 전달하기
+			$.ajax({
+		    	url : "/cart/buy",
+		    	type : "GET",
+		    	data : { chbox : checkArr },
+		    	success: function(response) {
+		    	console.log("ajax 성공");
+				location.href = "/cart/list";		                    
+			},
+			error: function() {
+				console.log("AJAX 실패")
+			}
+			});
+			 
+		 });
 		</script>
 		
 	</div>
@@ -182,7 +214,7 @@
 		    
 		      <th scope="col">
 		      	<div class="form-check">
-				  <input class="form-check-input" type="checkbox" data-cart-no="${i.CART_NO}" id="flexCheckDefault">
+				  <input class="form-check-input" type="checkbox" data-cart-no="${i.CART_NO}" data-source-no="${i.SOURCE_NO}" id="flexCheckDefault">
 				  <label class="form-check-label" for="flexCheckDefault"></label>
 			  		
 			  		<!--  전체선택 클릭에 대한 이벤트 -->
@@ -214,7 +246,7 @@
 				<tr class="cart-item"><!--  첫번째 열 시작-->
 					<td><!--  1. 체크박스 -->
 						<div class="checkBox">
-						  <input class="form-check-input chBox" type="checkbox" name="chBox" data-cart-no='${i.CART_NO}'>
+						  <input class="form-check-input chBox" type="checkbox" name="chBox" data-cart-no='${i.CART_NO}' data-source-no='${i.SOURCE_NO}'>
 							<!--  항목선택 클릭에 대한 이벤트 -->
 					  		<script>
 							$(".chBox").click(function(){
@@ -265,7 +297,7 @@
 					
 					<td class="popup"><!--  8. 항목 삭제 -->
 
-						<img data-cart-no='${i.CART_NO}' class="delete-button" alt="삭제" src="../resources/icon/X.png" width="20">
+						<img data-cart-no='${i.CART_NO}' data-source-no='${i.SOURCE_NO}' class="delete-button" alt="삭제" src="../resources/icon/X.png" width="20">
 
 								<!--  삭제 완료 후 떴다 사라지는 메시지 -->
 								<!--  html 미완성 -->
@@ -279,25 +311,32 @@
 		</table><!--  orderTable End-->
 
 		<script>
-		/*  장바구니 항목 구매 시 ajax 구현 */
+		/*  장바구니 항목 구매 시 ajax 구현() */
 		$(document).on('click', '.buy-button', function() {
-			var sourceNo = $(this).data('source-no');
-			var cartNo = $(this).data('cart-no');
+			console.log("개별항목 구매 clicked()")
+// 			var sourceNo = $(this).data('source-no');
+// 			var cartNo = $(this).data('cart-no');
+// 			console.log(cartNo);
+// 			console.log(sourceNo);
+			
+			//배열선언
+			var checkArr = new Array();
+			checkArr.push($(this).attr("data-source-no"));
+			
 			var $cartItem = $(this).closest('.cart-item'); // .cart-item을 찾아서 저장
 			
-			console.log(cartNo);
-			console.log(sourceNo);
+			console.log(checkArr);
 			console.log($cartItem);
-			
 										 
 			$.ajax({
 				url: "/cart/buy",
 				type: "GET",
-				data: {
-					"cartNo" : cartNo,
-					"sourceNo" : sourceNo
-				},
-				dataType : 'json',
+// 				data: {
+// 					"cartNo" : cartNo,
+// 					"sourceNo" : sourceNo
+// 				},
+				data : { chbox : checkArr },
+// 				dataType : 'json',
 				success: function(response) {
 					console.log("ajax 성공");
 					console.log(sourceNo);

@@ -620,6 +620,7 @@ div[data-itemtype='line']{
 				  }) // click end
 				  
 				  // Get Pack ( 전체 음원소스 장바구니 구현)
+				  // CartController 로 전달
 				  $("#getpack").click(function() {
 					  
 					  console.log("getpack 클릭")
@@ -639,9 +640,10 @@ div[data-itemtype='line']{
 					  
 					  $.ajax({
 						  type:"get",
-						  url:"./all",
+// 						  url:"./all",
+						  url:"/cart/addPack",	//CartController URL
 						  data: {
-							  "userNo" : 1,
+							  "userNo" : 44,	//userNo은 44로 테스트중 
 							  "sourceNo" : sourceArr
 						  },
 						  dataType: "",

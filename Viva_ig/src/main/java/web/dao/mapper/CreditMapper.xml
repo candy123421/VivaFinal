@@ -90,9 +90,15 @@
 		values (toss_api_seq.nextval, #{dealNo}, #{userNo}, #{orderId}, #{paymentKey}, #{method}, #{totalAmount}, #{approvedAt})
 	</insert>
 	
-	<!--  3. 트랜잭션 중, 토스 정보 조회 -->
-<!-- 	<select id="selectByTossNo" resultType="web.dto.TossApi" parameterType="int"> -->
-<!-- 		select TOSS_NO, DEAL_NO, USER_NO, ORDER_ID, PAYMENT_KEY, METHOD, TOTAL_AMOUNT, APPROVED_AT from TOSS_API  -->
-<!-- 		where toss_no = #{tossNo} -->
-<!-- 	</select> -->
+	<!--  결제 완료 후, 몇몇 정보만 추출하기 -->
+	<select id="selectOkInfo" resultType="HashMap" parameterType="int">
+		SELECT 
+			C.USER_NO, C.DEAL_NO, C.DEAL_CATEGORY, C.AMOUNT, 
+			T.METHOD, T.TOTAL_AMOUNT, T.APPROVED_AT, T.TOSS_NO
+		FROM CREDIT C
+		LEFT JOIN TOSS_API T
+ 		ON C.DEAL_NO = T.DEAL_NO
+ 		WHERE C.DEAL_NO = #{deal_no}
+	</select>
+	
 </mapper>

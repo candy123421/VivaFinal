@@ -251,9 +251,20 @@ public class CreditController {
 
 //-----------------------------------------------------------------------------
 	@RequestMapping("/exchange")
-	public void exchange(Credit userNo, Model model) {
+	public void exchange(HttpSession session, Credit userNo, Model model) {
 		logger.info("credit/exchange - exchange()");
-		logger.info("userno: {} ", userNo);
+		logger.info("세션userNo : {}", session.getAttribute("userNo"));
+		
+		
+	}
+
+	//-----------------------------------------------------------------------------
+	@RequestMapping("/exchangeOk")
+	public void exchangeOk(HttpSession session, Credit userNo, Model model) {
+		logger.info("credit/exchangeOk - exchangeOk()");
+		logger.info("세션userNo : {}", session.getAttribute("userNo"));
+		
+		
 	}
 
 	

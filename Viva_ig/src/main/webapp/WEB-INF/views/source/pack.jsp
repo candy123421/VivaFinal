@@ -579,7 +579,6 @@ div[data-itemtype='line']{
 						type :"get"
 						, url :"/cart/add"
 						, data : {
-							"userNo" : 44,
 							"sourceNo" : csourceNo
 						}
 					  	, dataType :"json"
@@ -643,7 +642,6 @@ div[data-itemtype='line']{
 // 						  url:"./all",
 						  url:"/cart/addPack",	//CartController URL
 						  data: {
-							  "userNo" : 44,	//userNo은 44로 테스트중 
 							  "sourceNo" : sourceArr
 						  },
 						  dataType: "",

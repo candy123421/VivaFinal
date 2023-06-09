@@ -18,6 +18,10 @@
 	  <script src="https://js.tosspayments.com/v1/payment-widget"></script>
 
 <style type= "text/css">
+.charge_wrap {
+	width : 1400px;
+	margin : 0 auto;
+}
 .ChargeAmountChoose {
 	height : 100px;
 	display : inline-block;
@@ -61,52 +65,6 @@ $(function() {
 })
 </script>
 
-<!-- ================================================================ -->
-
-<!--  토스페이먼츠 테스트 연동해서 시도해본 코드임 -->
-<script>
-// /* API키 ) 테스트 클라이언트 키 (외부에 노출되면 안된다고함...) */
-// var clientKey = 'test_ck_oeqRGgYO1r5XDApxvq1VQnN2Eyaz' // 상점을 특정하는 키
-
-
-// /*  TossPayments가 없으면 화면이 띄워지지를 않음. */
-// var tossPayments = TossPayments(clientKey)
-// 	console.log(clientKey); 
-//  	console.log(tossPayments); 
-	
-// <!-- // /*  '결제하기' 버튼 누르면 뜨는 결제창 function*/ -->
-// $(document).on('click', '#payment-button', function() { 
-// 	console.log("토스 클릭!!!!!") 
-  
-// //  	var $button = document.getElementById('payment-button') // 결제하기 버튼 
-
-
-// //  	button.addEventListener('click', function () { 
-
-// /*  카드 or 계좌이체 or 휴대폰소액결제 이렇게 세가지에 따라서 화면이 나오도록 구현하고 싶은데... */
-// /*  어떻게 이벤트를 걸어줘야할까.. */
-// 	tossPayments.requestPayment('카드', { 
-// // 	tossPayments.requestPayment('계좌이체', { 
-// // 	tossPayments.requestPayment('휴대폰', { 
-//  			amount: 15000, 
-// //  			orderId: 'L84sqOnguyAQ4rZYlAfl4',	//휴대폰결제승인 진행하면서 이미 결제가 이루어진 orderId 가 되어버림..
-// 			/*  뒤에 숫자 14부터 순차적으로 결제 테스트 해보는 중 */
-//  			orderId: 'L84sqOnguyAQ4rZYlAfl8', 
-//  			orderName: '크레딧 충전', 
-// 			customerName: '지또닝', 
-// 			successUrl: 'http://localhost:8888/credit/success', 
-//  			failUrl: 'http://localhost:8888/credit/fail'
-//  		})
-// //  	}) 
-// }); 
-</script>
-
-
-
-
-
-
-<!-- ================================================================ -->
 
 <div class="FunctionTitle">
    Credit
@@ -115,7 +73,7 @@ $(function() {
    <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
 </div>
 
-<section>
+<section class="charge_wrap">
 <div class="title">충전금액</div>
 
 <div class="ChargeAmountChoose">

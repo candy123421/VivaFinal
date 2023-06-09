@@ -13,6 +13,7 @@ import web.dto.AdminAnswer;
 import web.dto.UserQuestion;
 import web.dto.Users;
 import web.service.face.AdminService;
+import web.util.Paging;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -42,10 +43,27 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	@Override
-	public List<UserQuestion> qnalist() {
-		return adminDao.selectQnAList();
+	public Paging getPaging(Paging paramData) {
+		
+		//총 게시글 수 조회
+		int totalCount = adminDao.selectQnACnt();
+		
+		//페이징 계산
+		Paging paging = new Paging ( totalCount, paramData.getCurPage());
+		
+		return paging;
+	}
+	
+	
+	@Override
+	public List<UserQuestion> qnalist(Paging paging) {
+		return adminDao.selectQnAList(paging);
 	}
 
+	@Override
+	public List<UserQuestion> userQnA(int attribute) {
+		return adminDao.selectUserQnAList(attribute);
+	}
 
 	@Override
 	public UserQuestion getQNo(UserQuestion userQuestion) {
@@ -98,5 +116,20 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public Admin getAdminId(Admin admin) {
 		return adminDao.selectAdminNick(admin);
+	}
+	
+	@Override
+	public Paging getUserPaging(Paging paramData) {
+		//총 회원수 조회
+		int totalcount = adminDao.selectUserCnt();
+		//페이징 게산
+		Paging paging = new Paging(totalcount, paramData.getCurPage());
+		
+		return paging;
+	}
+	
+	@Override
+	public List<Users> userlist(Paging paging) {
+		return adminDao.selectUserList(paging);
 	}
 }

@@ -27,13 +27,35 @@ public interface AdminService {
 	 */
 	public Admin getAdminNo(Admin admin);
 
+	/**
+	 * QNA 목록을 위한 페이징 객체를 생성한다
+	 * 
+	 * 	파라미터 객체의 curPage(현재 페이지)
+	 * 	DB에서 조회한 totalCount(총 게시글 수)
+	 * 
+	 * 	두 가지 데이터를 활용하여 페이징객체를 생성하여 반환한다
+	 * 
+	 * @param paramData- curPage를 저장하고있는 객체
+	 * @return 계산이 완료된 Paging객체
+	 */
+	public Paging getPaging(Paging paramData);
 
 	/**
-	 * QnA List
-	 * @param paging
+	 * 페이징이 적용된 QnA 목록 조회
+	 * 
+	 * @param paging - 페이징 정보 객체
+	 * @return 페이징이 적용된 QnA 목록
+	 */
+	public List<UserQuestion> qnalist(Paging paging);
+	
+	/**
+	 * list 불러올때 세션에서 가져온 userno인 애들만 불러오기
+	 * @param attribute
 	 * @return
 	 */
-	public List<UserQuestion> qnalist();
+	public List<UserQuestion> userQnA(int attribute);
+	
+	
 
 	/**
 	 * QnA 상세보기 view  답변이 달렸을경우 답변 보여주기
@@ -97,6 +119,31 @@ public interface AdminService {
 	 * @return
 	 */
 	public Admin getAdminId(Admin admin);
+
+	/**
+	 * 회원 목록을 위한 페이징 객체를 생성한다
+	 * 
+	 * 	파라미터 객체의 curPage(현재 페이지)
+	 * 	DB에서 조회한 totalCount(총 회원 수)
+	 * 
+	 * 	두 가지 데이터를 활용하여 페이징객체를 생성하여 반환한다
+	 * 
+	 * @param paramData - curPage를 저장하고있는 객체
+	 * @return 계산이 완료된 Paging객체
+	 */
+	public Paging getUserPaging(Paging paramData);
+
+	/**
+	 * 페이징이 적용될 회원 목록 조회 
+	 * @param paging - 페이징 정보 객체
+	 * @return 페이징이 적용된 게시글 목록
+	 */
+	public List<Users> userlist(Paging paging);
+
+	
+
+
+
 	
 
 

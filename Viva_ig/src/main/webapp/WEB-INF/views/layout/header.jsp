@@ -371,32 +371,34 @@ font-weight: bold;
 	<!--  헤더 : 상단 바 (장바구니, 마이소스, 마이페이지, 로그인&로그아웃)-->
 	 <div class = "item" id="header">
 	  	<div class="fixed-top">
+        <nav class="navbar navbar-expand-lg bg-light">
+	  			<div class="container-fluid justify-content-end">
+	  			
+	  			
+	  				  <div class="loginstate">
+	  
+	  
+	  <c:choose>
+	  
+	  <c:when test="${empty adminlogin and empty login }">
+	  <a href="/viva/login"> <button class="btn btn-outline-secondary btn-sm">Login</button> </a>
+	  
+	  </c:when>
+	  
 
-	  		<nav class="navbar navbar-expand-lg">
-	  			<div class="headerState container-fluid justify-content-end">
-  				  
-  				  	<!--  보현 작성 부분 -->
-  				  	<!--  로그인 상태에 따른 표현 -->
-					<div class="loginstate">
-						<c:choose>
-						
-							<c:when test="${empty adminlogin and empty login }">
-								<a href="/viva/login"> <button class="btn btn-outline-secondary btn-sm">Login</button> </a>
-							
-							</c:when>
-							
-							<c:when test="${not empty adminlogin and adminlogin }">
-								<a class="header_icon" id="header_icon_profile" href="/admin/main">
-									<img class="admin_profile" src="/resources/icon/profile.svg" alt="기본프로필" class="d-inline-block align-text-top"></a>
-									<span style="font-size: 1.5em; color: red;"> ${adminNo }</span>번 Admin
-									<span style="font-size: 1.5em; color: red;"> ${adminloginid }</span>님
-								<a href="/admin/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
-							 	
-							</c:when>
-							
-							<c:when test="${not empty login and login }">
-							
-								<!--  여기부터 지선 작성 부분 -->
+	  
+	  	<c:when test="${not empty adminlogin and adminlogin }">
+		<a class="header_icon" id="header_icon_profile" href="/admin/main">
+		<img class="admin_profile" src="/resources/icon/profile.svg" alt="기본프로필" class="d-inline-block align-text-top"></a>
+		<span style="font-size: 1.5em; color: red;"> ${adminNo }</span>번 Admin
+		<span style="font-size: 1.5em; color: red;"> ${adminloginid }</span>님
+		<a href="/admin/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
+		
+	  	
+	  	</c:when>
+	  	
+	  	<c:when test="${not empty login and login }">
+	  						<!--  여기부터 지선 작성 부분 -->
 								<!--  로그인했을때만 credit, cart, my sounds 정보가 보이도록 -->
 									<a class="header_icon" id="header_icon_credits" href="/credit/list">
 						  				<span class="iconName">1200 credits</span>
@@ -408,16 +410,16 @@ font-weight: bold;
 							  			<span class="iconName">My Sounds</span>
 							  		</a>
 								<!--  여기까지 지선 작성 부분 -->
-						  	
-						  		
-								<img src="../../../profile/${userProfile.STOREDNAME}" style="width: 40px; border-radius:50px;">
-								nick:<span style="font-size: 1.5em; color: red;"> ${nick }</span>님
-								<a href="/users/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
-							
-							</c:when>
-						  
-						</c:choose>
-					 </div><!--  로그인 상태에 따른 표현 끝 ! -->
+	  	<img src="../../../profile/${userProfile.STOREDNAME}" style="width: 40px; border-radius:50px;">
+		nick:<span style="font-size: 1.5em; color: red;"> ${nick }</span>님
+	  	<a href="/users/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
+	  	
+	  	</c:when>
+	  
+	  
+	  </c:choose>
+	  </div>
+				
 				
 				</div><!--  container-fluid justify-content-end -->
 			</nav><!--  navbar end-->

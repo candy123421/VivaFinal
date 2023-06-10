@@ -288,7 +288,8 @@ font-weight: bold;
 
 /*  상단 구분선 */
 .FunctionTitleLine {
-	margin-left: 20px;
+    margin: 0 auto;
+    margin-left: 51px;
 }
 .admin_profile{
 	width: 60px;
@@ -398,18 +399,20 @@ font-weight: bold;
 	  	</c:when>
 	  	
 	  	<c:when test="${not empty login and login }">
-	  						<!--  여기부터 지선 작성 부분 -->
-								<!--  로그인했을때만 credit, cart, my sounds 정보가 보이도록 -->
-									<a class="header_icon" id="header_icon_credits" href="/credit/list">
-						  				<span class="iconName">1200 credits</span>
-						  			</a>
-						  			<a class="header_icon" id="header_icon_cart" href="/cart/list">
-					  					<span class="iconName">Cart</span>
-							  		</a>
-	  						  		<a class="header_icon" id="header_icon_mySouncds" href="">
-							  			<span class="iconName">My Sounds</span>
-							  		</a>
-								<!--  여기까지 지선 작성 부분 -->
+	  	
+			<!--  여기부터 지선 작성 부분 -->
+			<!--  로그인했을때만 credit, cart, my sounds 정보가 보이도록 -->
+				<a class="header_icon" id="header_icon_credits" href="/credit/list">
+	  				<span class="iconName"> ${headerCredit } credits</span>
+	  			</a>
+	  			<a class="header_icon" id="header_icon_cart" href="/cart/list">
+	 					<span class="iconName">Cart</span>
+		  		</a>
+				  		<a class="header_icon" id="header_icon_mySouncds" href="">
+		  			<span class="iconName">My Sounds</span>
+		  		</a>
+			<!--  여기까지 지선 작성 부분 -->
+	  	
 	  	<img src="../../../profile/${userProfile.STOREDNAME}" style="width: 40px; border-radius:50px;">
 		nick:<span style="font-size: 1.5em; color: red;"> ${nick }</span>님
 	  	<a href="/users/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>

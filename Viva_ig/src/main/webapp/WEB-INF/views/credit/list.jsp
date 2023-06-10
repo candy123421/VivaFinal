@@ -8,8 +8,12 @@
 
 <style type="text/css">
 
+.credit_list_wrap {
+	width : 1400px;
+	margin : 0 auto;
+}
+
 #CreditStatus{
-	width : 800px;
 	text-align: -webkit-center;
     position: relative;
     font-size: 30px;
@@ -28,69 +32,82 @@
    <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
 </div>
 
-<!--  코드 완성되면 지울 내용들 ↓ -->
-전체 내역 조회만 구현해놨음<br>
-선택 삭제 및 충전/사용/수익/환전 에 따른 필터 구현해야함<br>
-회원등급 : <c:if test="${grade eq '0'}"><c:out value="일반회원" /></c:if>
-<c:if test="${grade eq '1'}"><c:out value="사운드디자이너 회원" /></c:if>
-<!--  코드 완성되면 지울 내용들 ↑ -->
+<div class="credit_list_wrap">
 
+	<!--  코드 완성되면 지울 내용들 ↓ -->
+	회원등급 : <c:if test="${grade eq '0'}"><c:out value="일반회원" /></c:if>
+	<c:if test="${grade eq '1'}"><c:out value="사운드디자이너 회원" /></c:if>
+	<!--  코드 완성되면 지울 내용들 ↑ -->
+	
+	
+	<!--  회원의 크레딧 상태 보여주는 공간-->
+	<div id="CreditStatus">
+	
+		<!--  회원의 현재 크레딧 잔액 보여주기 -->	
+		<div id="MyCreditAmount">
+			<span>보유한 크레딧 : ${creditAcc } </span>
+			<a href="./charge"><button id="chargeCredit" class="charge-button">충전하기</button></a>
+		</div>
+		
+		
+		<!--  사운드디자이너일 경우 : 환전버튼 visible -->
+		<c:if test="${grade eq '1'}">
+		
+			<!--  환전크레딧조건 충족 시 : 환전버튼 active -->
+			<c:if test="${creditAcc >= 100}"><a href="./exchange">
+				<button id="exchangeCredit" class="exchange-button"><c:out value="환전하기" /></button></a>
+			</c:if>
+			<!--  환전크레딧조건 불충족 시 : 환전버튼 disabled -->
+			<c:if test="${creditAcc < 100}">
+				<a href="./exchange"><button id="exchangeCredit" class="exchange-button" disabled><c:out value="환전하기" /></button></a>
+			</c:if>
+			
+		<!--  일단은 100크레딧(1,000원) 이상일 때 환전 가능하다고 가상 제약조건 가정할거임 -->
+		</c:if>
+	</div> <!--  CreditStatus 끝 -->
+	
+	<!--  내역 조회 필터 기능 -->
+	<div>
+		<!--  1. 전체 : 디폴트 -->
+		<button class="dealCategory">전체</button>
+		<!--  2. 충전 -->
+		<button class="dealCategory">충전</button>
+		<!--  3. 구매 -->
+		<button class="dealCategory">구매</button>
+		
+		
+		<!--  4. 수익 : 업로더에게만 보이는 필터 -->
+		<!--  5. 환전 : 업로더에게만 보이는 필터 -->
+		<c:if test="${grade eq '1'}">
+			<button class="dealCategory">수익</button>
+			<button class="dealCategory">환전</button>
+		</c:if>
 
-<!--  회원의 크레딧 상태 보여주는 공간-->
-<div id="CreditStatus">
-
-	<!--  회원의 현재 크레딧 잔액 보여주기 -->	
-	<div id="MyCreditAmount">
-		<span>보유한 크레딧 : ${creditAcc } </span>
-		<a href="./charge"><button id="chargeCredit" class="charge-button">충전하기</button></a>
 	</div>
 	
+	<script type="text/javascript">
+		$(".dealCategory").click(function() {
+			console.log("카테고리 click")
+			
+			var state = $(this).html();
+			console.log(state);
+			
+			//ajax 로 해당 url 에 데이터 전송하기
+			$.ajax({
+				url : "/credit/list"
+				, type : "post"
+				, data : {state : state}
+				, success : function(result) {
+						console.log("ajax 성공!");
+						//이 코드를 꼭 써줘야 리로드 안되고, 내용물만 바뀔수 있다!
+						$('body').html(result);
+				}	
+			})
+			
+		})
+	</script>
 	
-	<!--  회원 등급 0 or 1인지에 따라 visible hidden 처리 조건문 -->
-	<!--  일반회원일 경우 : 환전버튼 hidden -->
-	<c:if test="${grade eq '0'}">
-	    <a href="./exchange"><button id="exchangeCredit" class="exchange-button" hidden="hidden"><c:out value="환전하기" /></button></a>
-	</c:if>
-	
-	
-	<!--  사운드디자이너일 경우 : 환전버튼 visible -->
-	<c:if test="${grade eq '1'}">
-	
-		<!--  환전크레딧조건 충족 시 : 환전버튼 active -->
-		<c:if test="${creditAcc >= 100}"><a href="./exchange">
-			<button id="exchangeCredit" class="exchange-button"><c:out value="환전하기" /></button></a>
-		</c:if>
-		<!--  환전크레딧조건 불충족 시 : 환전버튼 disabled -->
-		<c:if test="${creditAcc < 100}">
-			<a href="./exchange"><button id="exchangeCredit" class="exchange-button" disabled><c:out value="환전하기" /></button></a>
-		</c:if>
-		
-	<!--  일단은 100크레딧(1,000원) 이상일 때 환전 가능하다고 가상 제약조건 가정할거임 -->
-	</c:if>
-</div> <!--  CreditStatus 끝 -->
-
-<!--  내역 조회 필터 기능 -->
-<!--  1. 전체 : 디폴트 -->
-<button class="dealCategory">전체</button>
-<!--  2. 충전 -->
-<button class="dealCategory">충전</button>
-<!--  3. 구매 -->
-<button class="dealCategory">구매</button>
-<!--  4. 수익 : 업로더에게만 보이는 필터 -->
-<button class="dealCategory">수익</button>
-<!--  5. 환전 : 업로더에게만 보이는 필터 -->
-<button class="dealCategory">환전</button>
-
-<script>
-
-
-</script>
-
-
-
-<!--  내역 조회 -->
-<section id = "creditContent">
-
+	<!--  내역 조회 -->
 	<div>	
 		<label for="allCheck">전체 선택</label>
 		<button type="button" class="selectDelete_btn">선택 삭제</button>
@@ -124,11 +141,8 @@
 						//각 배열의 수에 따라 n+1 개씩 추가되어 계속해서 출력됨을 알 수 있었다.
 						//['147'] / (2) ['147', '138']/ (3) ['147', '138', '144']
 						console.log(checkArr);
-// 						removeArr.push($(this).attr("data-deal-no"));
 						
 					});
-					
-// 					var $dealItem = removeArr;
 					
 					//ajax 로 해당 url 에 데이터 전송하기
 					$.ajax({
@@ -136,17 +150,13 @@
 						//get이 없는데 냅다 post 로 써도 될랑가? => 가능하군..
 						, type : "post"
 						, data : {chbox : checkArr}
-						, success : function(result) {
-							//성공했을경우, 1반환..
-							if(result == 1) {
-								console.log("ajax 성공!");
-// 								$dealItem.remove(); // $dealItem 변수를 사용하여 항목 제거 <= 실패..ㅠㅠ 이게 좀 더 부드러운 느낌인데.. 아쉽다..
-								location.href = "/credit/list";
+						, success : function() {
+							console.log("ajax 성공!");
+							location.href = "/credit/list";
 								
-							} else {
-								//이 알람이 뜰일은 없을 것 같다... 왜냐면.. 값이 넘어오지 않을테니..
-								alert("삭제 실패");
-							}
+						},
+						error : function() {
+							console.log("AJAX 실패")
 						}
 					})
 				}
@@ -154,10 +164,10 @@
 		
 		</script>
 	</div>
-	
+		
 	<!--  테이블 내용 -->
 	<div id="order">
-		<table class="table">
+		<table  class="table">
 
 		  <!--  테이블 헤드라인 -->
 		  <thead class="table-light">
@@ -240,12 +250,9 @@
 									//여러 항목 삭제 메소드와 같이 코드를 쓰려고 굳이 한개의 항목도 배열에 넣는거다.
 									var checkArr = new Array();
 									checkArr.push($(this).attr("data-deal-no"));
-									
-// 									var dealNo = $(this).data('deal-no'); //다른 방식
 
 									var $dealItem = $(this).closest('.deal-item'); // .deal-item을 찾아서 저장
 									console.log(checkArr);
-// 									console.log(dealNo);
 									console.log($dealItem);
 								
 									//ajax 로 해당 url 에 데이터 전송하기
@@ -274,8 +281,6 @@
 			</c:forEach><!--  반복되는 항목들 end-->
 			
 		</table><!--  orderTable End-->
-
-		
 	</div>
-</section> <!--  creditContent 끝 -->	
+</div><!--  credit_list_wrap End -->
 <c:import url ="../layout/footer.jsp"/>

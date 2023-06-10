@@ -101,13 +101,13 @@ function clearInput(){
 </div>
 
 <div class="exchange_wrap"><!--  width : 1400 -->
-	<div class="exchange_title">환전크레딧</div><!--  width : 600 -->
+	<div class="exchange_title">크레딧 환전</div><!--  width : 600 -->
 	
 	
 	<form action="./exchangeOk" method="post">
 		<div class="exchange_info"><!--  width : 600 -->
 			<div><!--  width : 600-->
-			<input id="exchange_inputAmount" class="exchange_input"name="exchange_inputAmount"  placeholder="금액을 입력해주세요." type="text" ><label>credit</label><img class="delete-button" alt="지우기" src="../resources/icon/X.png" width="20" style="cursor:pointer">
+			<input id="exchange_inputAmount" class="exchange_input"name="exCredit"  placeholder="금액을 입력해주세요." type="text" ><label>credit</label><img class="delete-button" alt="지우기" src="../resources/icon/X.png" width="20" style="cursor:pointer">
 			</div>
 			<hr>
 		</div>
@@ -115,7 +115,7 @@ function clearInput(){
 		<div class="exchange_info"><!--  width : 600 -->
 			<div><!--  width : 600-->
 				
-				<select name="account_bank_id">
+				<select name="bank">
 		            <option value="">은행명을 선택하세요</option>
 		            <option value="35">경남은행</option>
 		            <option value="29">광주은행</option>
@@ -145,14 +145,14 @@ function clearInput(){
 		            <option value="45">HSBC은행</option>
 		            <option value="21">SC제일은행</option>
 				</select>
-				<input id="exchange_transfer" class="exchange_input"name="exchange_transfer"  placeholder="계좌번호를 입력해주세요." type="text" ><img class="delete-button" data-no="2" alt="지우기" src="../resources/icon/X.png" width="20" style="cursor:pointer">
+				<input id="exchange_transfer" class="exchange_input"name="accNo"  placeholder="계좌번호를 입력해주세요." type="text" ><img class="delete-button" data-no="2" alt="지우기" src="../resources/icon/X.png" width="20" style="cursor:pointer">
 			</div>
 			<hr>
 		</div>
 		
 		<div class="exchange_info"><!--  width : 600 -->
 			<div><!--  width : 600-->
-				<input id="exchange_name" class="exchange_input"name="exchange_name"  placeholder="예금주를 입력해주세요." type="text" ><img class="delete-button" data-no="3" alt="지우기" src="../resources/icon/X.png" width="20" style="cursor:pointer">
+				<input id="exchange_name" class="exchange_input"name="holder" placeholder="예금주를 입력해주세요." type="text" ><img class="delete-button" data-no="3" alt="지우기" src="../resources/icon/X.png" width="20" style="cursor:pointer">
 			</div>
 			<hr>
 		</div>

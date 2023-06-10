@@ -111,41 +111,62 @@ dt {
 <div class="FunctionTitleLine">
    <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
 </div>
-<section>
-<div id="chargeOk_ment">
+<section class="exchangeOk_wrap">
+<div id="exchangeOk_ment">
 	<div>
-		<img alt="checkOk" src="/resources/icon/charge_ok_chk.svg">
+		<img alt="exchangeOk" src="/resources/icon/charge_ok_chk.svg">
 	</div>
-	
 <h3>환전 신청이<br>
 완료되었습니다.</h3>
 </div>
-<div class="chargeOk_chargeInfo">
+<div>환전은 신청일로부터 주말, 공휴일 제외 3일 소요됩니다.</div>
+<div class="exchangeOk_chargeInfo">
 	<dl>
-		<dt>충전된 크레딧</dt>
+		<dt>환전 받을 크레딧</dt>
 		<dd>
-			<span class="price">${info.AMOUNT}</span>
+			<span class="price">${info.exAmount}</span>
 			<span class="price">Credit</span>
 		</dd>
 	</dl>
 	<dl>
-		<dt>결제 방식</dt>
+		<dt>실제 환전 금액</dt>
 		<dd>
-			<span>${info.METHOD}</span>
+			<span class="price">${info.exAmount}</span>
+			<span class="price">원</span>
 		</dd>
 	</dl>
 	<dl>
-		<dt>실제 결제 금액</dt>
+		<dt>크레딧 잔액</dt>
 		<dd>
-			<span>${info.TOTAL_AMOUNT}</span>
-			<span>원</span>
+			<span class="price">${info.exAmount}</span>
+			<span class="price">Credit</span>
+		</dd>
+	</dl>
+	<dl>
+		<dt>환전 받을 계좌</dt>
+		<dd>
+			<span>${info.bank}</span><br><span>(${info.accNo})</span>
+		</dd>
+	</dl>
+	<dl>
+		<dt>예금주</dt>
+		<dd>
+			<span>${info.holder}</span>
+		</dd>
+	</dl>
+	<dl>
+		<dt>환전 신청 일자</dt>
+		<dd>
+			<span>${info.exDate}</span>
 		</dd>
 	</dl>
 </div>
 
-<div class="chargeOk_redirect">
-	<div><button type="button" id="chargeRedirect" onClick="location.href='./charge'">추가 충전하기</button></div>
+<div class="exchangeOk_redirect">
 	<div><button type="button" id="creditListRedirect" onClick="location.href='./list'">크레딧 내역 조회</button></div>
+	
+	<!--  크레딧 총계 계산하는 로직 넣기 전까지는 얘를 오픈하지 않도록...ㅠㅠㅠ -->
+<!-- 	<div><button type="button" id="exchangeRedirect" onClick="location.href='./exchange'">추가 환전하기</button></div> -->
 </div>
 </section>
 

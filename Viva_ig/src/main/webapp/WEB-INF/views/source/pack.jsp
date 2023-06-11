@@ -414,7 +414,7 @@ div[data-itemtype='line']{
 					$("#barbtn").attr("src","../resources/icon/stop-circle.svg")
 					
 					$("#playWrap").css({
-						"background":"#BE2465",
+						"background":"linear-gradient(263.28deg, #514C9C 7.05%, #653A99 16.72%, #6E388C 25.66%, rgba(117, 37, 114, 0.76) 38.08%, rgba(174, 106, 166, 0.84) 78.14%, #8E4B6D 93.97%)",
 						"height":"80px"
 					})
 					
@@ -430,6 +430,8 @@ div[data-itemtype='line']{
 						$("#barbtn").attr("src","../resources/icon/play-circle.svg")
 					}
 					
+					$("#next").attr("src","../resources/icon/skip-start-circle.svg")
+					$("#prev").attr("src","../resources/icon/skip-end-circle.svg")
 					$("#barprocess").html("0:00")
 					$("#barduration").html("0:00")
 					$("#barsourcename").html(sourcename)
@@ -484,7 +486,7 @@ div[data-itemtype='line']{
 					
 					// 플레이바 설정
 					$("#playWrap").css({
-						"background":"#BE2465",
+						"background":"linear-gradient(263.28deg, #514C9C 7.05%, #653A99 16.72%, #6E388C 25.66%, rgba(117, 37, 114, 0.76) 38.08%, rgba(174, 106, 166, 0.84) 78.14%, #8E4B6D 93.97%)",
 						"height":"80px"
 					})
 					
@@ -496,7 +498,9 @@ div[data-itemtype='line']{
 					$("#barduration").html("0:00")
 					$("#barsourcename").html(sourcename)
 					$("#barsourcename").attr("data-barno",btnplay)
-					
+					$("#next").attr("src","../resources/icon/skip-start-circle.svg")
+					$("#prev").attr("src","../resources/icon/skip-end-circle.svg")
+						
 					var duration = document.querySelector("#barduration")
 					duration.textContent = timeCalculator(wave[btnplay].getDuration());
 					
@@ -573,13 +577,6 @@ div[data-itemtype='line']{
 					})
 				  })
 				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
 				  // 장바구니 구현
 				  var carts = document.querySelectorAll("div[data-cart]");
 				  
@@ -632,7 +629,6 @@ div[data-itemtype='line']{
 						  
 					  }
 					  
-					  console.log("배열?",sourceArr)
 					  
 					  $.ajax({
 						  type:"get",

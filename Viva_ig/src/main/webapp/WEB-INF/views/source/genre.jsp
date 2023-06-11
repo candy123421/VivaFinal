@@ -510,7 +510,7 @@ div[data-itemtype='line']{
 				$("#barbtn").attr("src","../resources/icon/stop-circle.svg")
 				
 				$("#playWrap").css({
-					"background":"#BE2465",
+					"background":"linear-gradient(263.28deg, #514C9C 7.05%, #653A99 16.72%, #6E388C 25.66%, rgba(117, 37, 114, 0.76) 38.08%, rgba(174, 106, 166, 0.84) 78.14%, #8E4B6D 93.97%)",
 					"height":"80px"
 				})
 				
@@ -584,7 +584,7 @@ div[data-itemtype='line']{
 				
 				// 플레이바 설정
 				$("#playWrap").css({
-					"background":"#BE2465",
+					"background":"linear-gradient(263.28deg, #514C9C 7.05%, #653A99 16.72%, #6E388C 25.66%, rgba(117, 37, 114, 0.76) 38.08%, rgba(174, 106, 166, 0.84) 78.14%, #8E4B6D 93.97%)",
 					"height":"80px"
 				})
 				

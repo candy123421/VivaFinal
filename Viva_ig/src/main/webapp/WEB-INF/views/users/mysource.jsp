@@ -286,34 +286,10 @@ div[data-itemtype='line'] {
 					
 					
 	 			})
-				
-				  
-				  
-				  
 			</script>
 			
 			
 		
 		</div>
 	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
 <c:import url="../layout/footer.jsp" />

@@ -15,11 +15,13 @@
 #title{
 	font-size: 40px;
 }
-#Wrap{
-	padding: 16px;
-}
 #WrapTop{
-	width: 1300px;
+	width: 1400px;
+	margin: 0 auto;
+}
+#WrapMiddle{
+	width: 1400px;
+	margin: 0 auto;
 }
 .cate{
 	color: black;

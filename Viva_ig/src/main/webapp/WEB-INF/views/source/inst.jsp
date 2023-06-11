@@ -189,9 +189,6 @@ div[data-itemtype='line']{
 	display : grid;
 	grid-template-columns: 100px 1200px
 }
-#WrapBottom{
-	height: 200px;
-}
 </style>
 <div id="Wrap">
 	<div id="WrapTop">
@@ -487,6 +484,7 @@ div[data-itemtype='line']{
 				
 				$("#playWrap").css({
 					"background":"#BE2465",
+					"height":"80px"
 				})
 				
 				// 플레이바 구현
@@ -499,6 +497,7 @@ div[data-itemtype='line']{
 					$("#barbtn").attr("src","../resources/icon/play-circle.svg")
 				}
 				
+				$("#addheight").css("height","100px")
 				
 				$("#barprocess").html("0:00")
 				$("#barduration").html("0:00")
@@ -552,9 +551,12 @@ div[data-itemtype='line']{
 			    $(".tr").eq(btnplay).html('<img src="../resources/icon/stop-circle.svg" style="width:30%">')
 				$("#barbtn").attr("src","../resources/icon/stop-circle.svg")
 				
+				$("#addheight").css("height","100px")
+				
 				// 플레이바 설정
 				$("#playWrap").css({
 					"background":"#BE2465",
+					"height":"80px"
 				})
 				$("#playimg").attr("src","../upload/"+imgSrc)
 				$("#playimg").css("visibility","visible")
@@ -656,48 +658,7 @@ div[data-itemtype='line']{
 		</script> 
 	</div>
 </div>	
-<div id="WrapBottom">
-</div>	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+<div id="addheight"></div>	
 </div><!-- Wrap END -->
-
-
-
 
 <c:import url="../layout/footer.jsp"/>

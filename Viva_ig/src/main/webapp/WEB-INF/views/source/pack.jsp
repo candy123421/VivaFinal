@@ -138,14 +138,21 @@ $(function() {
 .icons{
 	text-align: center;
 	padding-top: 18px;
-	padding-bottom: 18px;
 	display: grid;
+	grid-template-areas: 'limg like cart link'
+						'cartmsg cartmsg cartmsg cartmsg';
 	grid-template-columns: 50px 50px 50px 50px; 
 	height: 60px;
 }
 #SourceWrap{
 	display: grid;
 	grid-template-columns: 80px 80px 400px 80px 80px 80px 300px 200px;
+}
+.cartmsg{
+	height: 18px;
+	grid-column: span 4;
+	font-size: 12px;
+	font-weight: bold;
 }
 .th{
 	border-bottom: 1px solid #ccc;
@@ -323,9 +330,12 @@ div[data-itemtype='line']{
 					<div class="like" data-like="${list.SOURCE_NO}"><img src="../resources/icon/heart.svg" style="width: 45%"></div>
 					<div class="cart" data-cart="${list.SOURCE_NO }"><img src="../resources/icon/shopping-cart.png" style="width: 45%"></div>
 					<div><a href="./pack?packNo=${list.PACK_NO }"><img src="../resources/icon/three-dots.svg" style="width: 45%"></a></div>
+					<div class="cartmsg"></div>
 				</div>
 			
 			</c:forEach>
+	
+			<div id="addheight"></div>
 	
 			<script type="text/javascript">
 				//음원소스 시간 계산기
@@ -405,7 +415,10 @@ div[data-itemtype='line']{
 					
 					$("#playWrap").css({
 						"background":"#BE2465",
+						"height":"80px"
 					})
+					
+					$("#addheight").css("height","100px")
 					
 					// 플레이바 구현
 					$("#playimg").attr("src","../upload/"+imgSrc)
@@ -472,7 +485,10 @@ div[data-itemtype='line']{
 					// 플레이바 설정
 					$("#playWrap").css({
 						"background":"#BE2465",
+						"height":"80px"
 					})
+					
+					$("#addheight").css("height","100px")
 					
 					$("#playimg").attr("src","../upload/"+imgSrc)
 					$("#playimg").css("visibility","visible")
@@ -579,7 +595,7 @@ div[data-itemtype='line']{
 						type :"get"
 						, url :"/cart/add"
 						, data : {
-							"userNo" : 44,
+							"userNo" : ${userNo},
 							"sourceNo" : csourceNo
 						}
 					  	, dataType :"json"
@@ -620,12 +636,12 @@ div[data-itemtype='line']{
 					  
 					  $.ajax({
 						  type:"get",
-						  url:"/cart/addPack",	//CartController URL
+						  url:"/cart/addPack",	
 						  data: {
-							  "userNo" : ${userNo},	//userNo은 44로 테스트중 
+							  "userNo" : ${userNo},
 							  "sourceNo" : sourceArr
 						  },
-						  dataType: "",
+						  dataType: "json",
 						  success : function() {
 							console.log("ajax 성공")  
 						  },

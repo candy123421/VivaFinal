@@ -29,9 +29,8 @@ public class OrderController {
 		logger.info("source : {}",source);
 		
 		
-		session.getAttribute("userno");
+		session.getAttribute("userNo");
 		Users user = new Users();
-//		user.setUserNo((int)session.getAttribute("userNo"));
 		
 		// 구매 크레딧 이상 가지고 있는지 확인
 		boolean chkCredit = orderService.checkCredit(user);
@@ -108,7 +107,6 @@ public class OrderController {
 	@GetMapping("/source/redown")
 	public String redown(Model model, SourceFileInfo redown) {
 		logger.info("다시 다운로드 받는 쪽 확인");
-		
 		
 		logger.info("소스 정보 : {}", redown.getSourceNo());
 		

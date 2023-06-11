@@ -511,7 +511,10 @@ div[data-itemtype='line']{
 				
 				$("#playWrap").css({
 					"background":"#BE2465",
+					"height":"80px"
 				})
+				
+				$("#addheight").css("height","100px")
 				
 				// 플레이바 구현
 				$("#playimg").attr("src","../upload/"+imgSrc)
@@ -523,10 +526,14 @@ div[data-itemtype='line']{
 					$("#barbtn").attr("src","../resources/icon/play-circle.svg")
 				}
 				
+				$("#next").attr("src","../resources/icon/skip-start-circle.svg")
+				$("#prev").attr("src","../resources/icon/skip-end-circle.svg")
+				$("#addheight").css("height","100px")
 				$("#barprocess").html("0:00")
 				$("#barduration").html("0:00")
 				$("#barsourcename").html(sourcename)
 				$("#barsourcename").attr("data-barno",waveno)
+				
 				
 // 				음원소스 재생 시간 계산 부분
 				var duration1 = document.querySelector("#barduration")
@@ -578,7 +585,10 @@ div[data-itemtype='line']{
 				// 플레이바 설정
 				$("#playWrap").css({
 					"background":"#BE2465",
+					"height":"80px"
 				})
+				
+				$("#addheight").css("height","100px")
 				
 				$("#playimg").attr("src","../upload/"+imgSrc)
 				$("#playimg").css("visibility","visible")
@@ -586,6 +596,8 @@ div[data-itemtype='line']{
 				$("#barduration").html("0:00")
 				$("#barsourcename").html(sourcename)
 				$("#barsourcename").attr("data-barno",btnplay)
+				$("#next").attr("src","../resources/icon/skip-start-circle.svg")
+				$("#prev").attr("src","../resources/icon/skip-end-circle.svg")
 				
 				var duration = document.querySelector("#barduration")
 				duration.textContent = timeCalculator(wave[btnplay].getDuration());

@@ -32,9 +32,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -349,5 +349,30 @@ public class CreditController {
 	        e.printStackTrace();
 	    }
 	}
+	
+	@RequestMapping("/toss")
+	public void toss(HttpSession session, int cash,  Writer out) {
+		logger.info("credit/toss - toss()");
+		logger.info("세션userNo : {}", session.getAttribute("userNo"));
+		logger.info("결제 금액 {} ", cash);
+		
+		if(cash >1000 ) {
+			
+		    // 삭제 성공 여부에 따라 응답 데이터 설정
+		    try {
+		        out.write("{\"result\": " + cash + "}");
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
+		
+		}
+		
+	}
+	
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+	//여기서부터 관리자 관리페이지로!
+//	@RequestMapping("/admin")
+
 	
 }

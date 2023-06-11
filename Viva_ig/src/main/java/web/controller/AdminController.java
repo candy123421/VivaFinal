@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import web.dto.Admin;
 import web.dto.AdminAnswer;
+import web.dto.ExchangeInfo;
 import web.dto.UserQuestion;
 import web.dto.Users;
 import web.service.face.AdminService;
@@ -203,6 +204,19 @@ public class AdminController {
 	@PostMapping("/admin/usergrade")
 	public void usergradepost() {
 		logger.info("/admin/usergrade [post]");
+	}
+	
+	
+//===========================================================
+	//환전 관리
+	@RequestMapping("/admin/credit")
+	public void exchange(HttpSession session, ExchangeInfo exchange) {
+		logger.info("/admin/credit - exchange()");
+		
+		
+		
+		
+		
 	}
 		
 		

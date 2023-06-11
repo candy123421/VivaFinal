@@ -5,6 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
 
 <c:import url="../layout/header.jsp"/>   
+<!--  카테고리를 클릭했을 때, 그에 해당하는 카테고리의 색상이 변해있고,, 아래의 내용만 새로고침하고 싶으나, ajax 를 너무 몰라서 도저히 안되겠다.. ㅠ-->
 
 <style type="text/css">
 
@@ -17,11 +18,126 @@
 	text-align: -webkit-center;
     position: relative;
     font-size: 30px;
+  	align-items:center;
+  	vertical-align:middle;
+  	
+  	margin-top : 20px;
+  	margin-bottom : 50px;
 }
 
 #MyCreditAmount {
-	border : 1px solid gray;
-    display: inline-block;
+    width: 582px;
+    height: 125px;
+    background: rgba(251, 251, 251, 0.5);
+	mix-blend-mode: normal;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 10px;
+	  
+	display:inline-block;
+  	text-align:center;
+    
+}
+#MyCreditAmount div {
+	width: 480px;
+    height: 70px;
+  	margin : 0 auto;
+  	padding-top: 30px;
+
+}
+#MyCreditAmount button {	/*  충전하기 버튼 */
+	width: 158px;
+	height: 63px;
+
+	background: #6DB9FF;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 30px;
+	border : none;
+	color : white;
+	margin-left: 20px;
+	font-size : 25px;
+}
+#exchangeCredit {
+	width: 158px;
+	height: 63px;
+/* 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
+	border: 2px solid rgba(105, 100, 100, 0.5);
+	border-radius: 30px;
+	color : rgba(105, 100, 100, 0.5);
+	font-size : 25px;
+	margin-left: 20px;
+	
+}
+/*  ====================================== */
+.dealCategory {
+	box-sizing: border-box;
+	
+	width: 59px;
+	height: 35px;
+	
+	background: rgba(255, 255, 255, 0.01);
+	border: 2px solid rgba(105, 100, 100, 0.5);
+	border-radius: 27px;
+	
+	margin-bottom: 15px;
+	color: #7D7A7A;
+}
+.dealCategory:hover{
+	box-sizing: border-box;
+	
+	width: 59px;
+	height: 35px;
+
+	background: #000000;
+	border: 2px solid rgba(105, 100, 100, 0.5);
+	border-radius: 27px;
+	margin-bottom: 15px;
+	color: #FFFFFF;
+	
+}
+.dealCategory:active{
+	box-sizing: border-box;
+	
+	width: 59px;
+	height: 35px;
+
+	background: #000000;
+	border: 2px solid rgba(105, 100, 100, 0.5);
+	border-radius: 27px;
+	margin-bottom: 15px;
+	color: #FFFFFF;
+	
+}
+/*  ====================================== */
+#credit_select_row {
+	padding-bottom : 10px;
+}
+#credit_select_row button {
+	margin-left : 10px;
+	border: 3px solid transparent;
+	border-radius: 27px;
+	background : transparent;
+	padding : 5px;
+}
+#credit_select_row button:hover, #credit_select_row button.active {
+	margin-left : 10px;
+	border: 3px solid transparent;
+	border-radius: 27px;
+	background : transparent;
+	padding : 5px;
+}
+
+
+/*  ====================================== */
+.popup img{
+	cursor : pointer;
+}
+/*  ====================================== */
+.table>:not(caption)>*>* {
+    padding: 1.5rem 2.5rem;
+}
+
+th {
+	font-size:22px;
 }
 </style>
 
@@ -45,8 +161,10 @@
 	
 		<!--  회원의 현재 크레딧 잔액 보여주기 -->	
 		<div id="MyCreditAmount">
-			<span>보유한 크레딧 : ${creditAcc } </span>
+			<div>
+			<span>보유한 크레딧  :  ${creditAcc } </span>
 			<a href="./charge"><button id="chargeCredit" class="charge-button">충전하기</button></a>
+			</div>
 		</div>
 		
 		
@@ -92,6 +210,7 @@
 			var state = $(this).html();
 			console.log(state);
 			
+			
 			//ajax 로 해당 url 에 데이터 전송하기
 			$.ajax({
 				url : "/credit/list"
@@ -101,14 +220,18 @@
 						console.log("ajax 성공!");
 						//이 코드를 꼭 써줘야 리로드 안되고, 내용물만 바뀔수 있다!
 						$('body').html(result);
-				}	
+				}, 
+		        error: function (request, status, error) {
+		            console.log("ajax 실패");
+		        },        
+
 			})
 			
 		})
 	</script>
 	
 	<!--  내역 조회 -->
-	<div>	
+	<div id="credit_select_row">	
 		<label for="allCheck">전체 선택</label>
 		<button type="button" class="selectDelete_btn">선택 삭제</button>
 		
@@ -261,16 +384,13 @@
 										, type : "post"
 										, data : {chbox : checkArr}
 										, success : function(result) {
-											if(result == 1) {
+											
 												console.log("ajax 성공");
 												$dealItem.remove(); // $dealItem 변수를 사용하여 항목 제거
-											}else {
-												//이 알람이 뜰일은 없을 것 같다... 왜냐면.. 값이 넘어오지 않을테니..
-												alert("삭제 실패");
 											}
-										}
-									})
-								}
+											
+										})
+									}
 							});
 							</script>
 								

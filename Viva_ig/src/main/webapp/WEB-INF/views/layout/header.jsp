@@ -245,7 +245,7 @@ font-weight: bold;
 .header_icon {
 	/* position: absolute; */
 	
-	font-family: 'Bahnschrift';
+/* 	font-family: 'Bahnschrift'; */
 	font-style: normal;
 	font-weight: 700;
 	font-size: 25px;
@@ -414,7 +414,8 @@ font-weight: bold;
 			<!--  여기까지 지선 작성 부분 -->
 	  	
 	  	<img src="../../../profile/${userProfile.STOREDNAME}" style="width: 40px; border-radius:50px;">
-		nick:<span style="font-size: 1.5em; color: red;"> ${nick }</span>님
+<%-- 		nick:<span style="font-size: 1.5em; color: red;"> ${nick }</span>님 --%>
+		<span style="font-size: 1.5em;" class="header_icon"> ${nick }</span>님
 	  	<a href="/users/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
 	  	
 	  	</c:when>

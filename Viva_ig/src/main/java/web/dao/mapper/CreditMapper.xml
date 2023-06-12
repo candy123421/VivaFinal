@@ -23,6 +23,17 @@
 		order by deal_date desc
 	</select>
 	
+	<!--  크레딧 카테고리 분류 -->
+	<!--  조건 : 회원번호, visible 상태인것만 -->
+	<select id="selectCategoryList" resultType="web.dto.Credit" parameterType="web.dto.Credit">
+		SELECT deal_no, user_no, deal_date, deal_category, amount 
+		FROM credit
+		where user_no = #{userNo}
+			and deal_category = #{dealCategory}
+			and DEAL_STATUS = 'VISIBLE'
+		order by deal_date desc
+	</select>
+	
 	<!--  크레딧 필터에 따른 조회결과 - 충전/구매/수익/환전 -->
 	<!--  조건 : 회원번호, visible, 거래유형 -->
 	<select id="selectCreditList" resultType="web.dto.Credit" parameterType="web.dto.Credit">
@@ -100,5 +111,30 @@
  		ON C.DEAL_NO = T.DEAL_NO
  		WHERE C.DEAL_NO = #{deal_no}
 	</select>
+
+<!--  ================================================================= -->
+	<!--  크레딧에 환전 정보 입력 -->
+	<insert id="insertExchangeCredit" parameterType="web.dto.Credit">
+		insert into credit (DEAL_NO, user_no, DEAL_CATEGORY, AMOUNT) 
+		values (#{dealNo}, #{userNo}, #{dealCategory}, #{amount})
+	</insert>	
+	
+	<!--  환전 정보 -->
+	<insert id="insertExchangeInfo" parameterType="web.dto.ExchangeInfo">
+  		<selectKey order="BEFORE" resultType="int" keyProperty="exNo">
+  			SELECT EXCHANGEINFO_seq.nextval FROM dual
+  		</selectKey>
+		INSERT INTO EXCHANGEINFO (EX_NO,HOLDER,BANK,ACC_NO,USER_NO,EX_AMOUNT, deal_no) 
+		VALUES (#{exNo}, #{holder}, #{bank}, #{accNo}, #{userNo}, #{exAmount}, #{dealNo})
+	</insert>	
+	
+	<!--  입력 완료된 환전 정보 조회하기 -->
+	<select id="selectExchangeInfo" resultType="web.dto.ExchangeInfo">
+		SELECT ex_no, holder, bank, acc_no, user_no, ex_amount, ex_date, adm_transfer, deal_no 
+		FROM exchangeinfo WHERE deal_no = #{dealNo}
+	
+	</select>
+	
+	
 	
 </mapper>

@@ -239,9 +239,68 @@ th {
 		<c:if test="${not empty adminlogin and adminlogin }">
 			<button id="btnDelete" name="btnDelete" class="btn btn-danger">선택 삭제</button>
 		</c:if>
+
+		<th>게시글 번호</th>
+		<th>카테고리
+			<select class="filterSelect" name="search_option" >
+						<option value="all">전체</option>
+						<option value="free">자유</option>
+						<option value="notice">공지</option>
+			</select>
+			
+			<script>
+			var filterSelect = $(".filterSelect") // jQuery 
+
+			filterSelect.on("change", function(e) {
+				e.preventDefault();.
+				console.log("변화감지..!");
+			    
+			    var status = this.options[this.selectedIndex].value;
+			    console.log("status : ", status);
+			    
+			    $.ajax({
+			    	url: "/board/list",
+			    	type : "GET",
+			    	data : {categoryType : status},
+			    	success : function() {
+			    		console.log("ajax 성공");
+			    	}
+			    })
+			});
+			</script>
+		</th>
+		<th>게시글 제목</th>
+		<th>작성자</th>
+		<th>조회수</th>
+		<th>게시글 작성일</th>
+	</tr>
+	</thead>
+	<tbody class="body">
+		<c:forEach var="boardList" items="${boardList}">
+			<tr>
+				<c:if test="${not empty adminlogin and adminlogin }">
+					<td><input type='checkbox'
+				       name='check' 
+				       value="${boardList.boardNo }"
+				       onclick='checkSelectAll(this)'/>
+					</td>
+				</c:if>
+					<td>${boardList.boardNo }</td>
+					<td>${boardList.categoryType }</td>
+					<td><a href="./view?boardNo=${boardList.boardNo }">${boardList.boardTitle }</a></td>
+					<td>${boardList.userId}</td> 
+					<td>${boardList.boardHit }</td>
+					<td><fmt:formatDate value="${boardList.boardDate }" pattern="yyyy-MM-dd"/></td>
+			</tr>
+		</c:forEach>
+	</tbody>
+	</table>
+
 	</div> 
 </form>	
-	
+
+
+
 
 
 <c:import url="/WEB-INF/views/layout/paging.jsp" />

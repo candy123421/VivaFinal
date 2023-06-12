@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,14 +30,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import web.dto.Credit;
-import web.dto.TossApi;
+import web.dto.ExchangeInfo;
 import web.dto.Users;
 import web.service.face.CreditService;
 
@@ -59,18 +62,35 @@ public class CreditController {
 	//----------------------------------------------------------------------------------------
 	//userNo 알아낸 뒤, 크레딧 목록 부르는 페이지
 	@RequestMapping("/list")
-	public void list(HttpSession session, Credit userNo, Model model) {
+	public void list(HttpSession session, Credit userNo, Model model, String state) {
 		logger.info("credit/list - list()");
 		logger.info("세션userNo : {}", session.getAttribute("userNo"));
+		logger.info("카테고리 클릭 시:{}", state);
+		
 		
 		userNo.setUserNo((int) session.getAttribute("userNo"));
 		logger.info("userno: {} ", userNo);
 		
-		//1. 크레딧 전체 내역(default) 조회하기
+		//1. 크레딧 전체 내역(default) 조회하기 + state 로 
 		List<Credit> creditList = new ArrayList<>(); 
-		creditList = creditService.getCreditList(userNo);
-		logger.info("조회내역:{}", creditList);
-		model.addAttribute("list", creditList);
+
+		//1-1. 크레딧 전체 내역(default) -null or 다시 '전체' 클릭했을 경우
+		if(state == null || "전체".equals(state)) {
+			
+			//Credit userNo 만 매개변수로.
+			creditList = creditService.getCreditList(userNo);
+			logger.info("조회내역:{}", creditList);
+			model.addAttribute("list", creditList);
+		
+		//1-2. 크레딧 필터된 내역 
+		}else if (state !=null) {
+			logger.info("카테고리 클릭했다.");
+			
+			//Credit userNo과 카테고리까지 매개변수로
+			creditList = creditService.clickCategoryList(userNo, state);
+			logger.info("조회내역:{}", creditList);
+			model.addAttribute("list", creditList);
+		}
 		
 		//2.크레딧 총계 보내주기
 		//회원 크레딧 잔액 구하기 (DB 조회 결과 null 일 경우 0 으로 반환)
@@ -93,6 +113,7 @@ public class CreditController {
 		//문제는 이런 방식으로는 (String은 view로 전달 안되는가? Object 타입만 전달이 가능한가?) null 이 들어가 있어서 해결이 안된다,,,ㅠ
 		//=> model.getAttribute()괄호 안에 따옴표까지 포함해서 써야 출력이 되는거다!!!!
 	}
+	
 
 //----------------------------------------------------------------------------------------------------------------------
 	//토스페이먼츠 결제 페이지 이동 시 
@@ -239,7 +260,6 @@ public class CreditController {
 		
 	}
 
-	
 	//결제 실패 시, 이동할 리다이렉트 페이지!
 	@RequestMapping("/fail")
 	public void fail(Credit userNo, Model model) {
@@ -250,56 +270,68 @@ public class CreditController {
 	
 
 //-----------------------------------------------------------------------------
-	@RequestMapping("/exchange")
-	public void exchange(Credit userNo, Model model) {
+	@GetMapping("/exchange")
+	public void exchange(HttpSession session, Credit userNo, Model model) {
 		logger.info("credit/exchange - exchange()");
-		logger.info("userno: {} ", userNo);
+		logger.info("세션userNo : {}", session.getAttribute("userNo"));
+		
+	}
+
+	//-----------------------------------------------------------------------------
+	//사용자가 입력한 환전 정보를 받아오는 곳 (post 로 전송했음)
+	@RequestMapping("/exchangeOk")
+	public void exchangeOk(HttpSession session, ExchangeInfo exchange, int exCredit, Model model) {
+		logger.info("credit/exchangeOk - exchangeOk()");
+		logger.info("세션userNo : {}", session.getAttribute("userNo"));
+		
+		logger.info("신청한 크레딧 : {}", exCredit);
+		logger.info("예금주 : {}", exchange.getHolder());
+		logger.info("은행명 : {}", exchange.getBank());
+		logger.info("계좌번호 : {}", exchange.getAccNo());
+		
+		exchange.setExAmount(exCredit*10);
+		exchange.setUserNo((int)session.getAttribute("userNo"));
+		
+		logger.info("환전요청정보 : {}", exchange);
+		
+		//받은 정보 DB에 입력하기
+		ExchangeInfo result = creditService.addExchangeInfo(exCredit, exchange);
+		
+		logger.info("환전신청완료 : {} ", result);
+		
+		model.addAttribute("info", result);
 	}
 
 	
 //-----------------------------------------------------------------------------
-	//크레딧 내역에서 X표 눌러서 한 항목씩 삭제하는 url
-	@ResponseBody
+	//크레딧 내역에서 X표 눌러서 삭제하는 url (선택 항목 + 개별)
 	@RequestMapping("/delete")
-	//스프링 반환값을 int 로 준적은 처음인데... 이렇게 해도 되는걸까? 확신없음..ㅠ
-	public int delete(
-			//ajax로 넘어온 chbox[] 배열을 List<String> 에 담겠다는거임.
-			//만약 앞에 @RequestParam(value = "chbox[]") 를 생략하면, 
-			//No primary or single public constructor found for interface java.util.List - and no default constructor found either 
-			//에러가 뜸!!!
-			//이유는 원래 스프링이 알아서 바인딩 해주는 아이이나, 기본 생성자가 없는 모델객체인 List<String> 에는 자동으로 바인딩해줄 조건이 없는거임.
-			@RequestParam(value = "chbox[]") List<String> chArr, Credit deal
-			) throws Exception {
-			
+	//스프링 반환값을 int 로 준적은 처음인데... 이렇게 해도 되는걸까? 확신없음..ㅠ => 되긴됨..
+	//ajax로 넘어온 chbox[] 배열을 List<String> 에 담겠다는거임.
+	//만약 앞에 @RequestParam(value = "chbox[]") 를 생략하면, 
+	//No primary or single public constructor found for interface java.util.List - and no default constructor found either 
+	//에러가 뜸!!!
+	//이유는 원래 스프링이 알아서 바인딩 해주는 아이이나, 기본 생성자가 없는 모델객체인 List<String> 에는 자동으로 바인딩해줄 조건이 없는거임.
+	public void delete(HttpSession session, @RequestParam(value = "chbox[]") int[] creditNo, Credit deal, Writer out) throws Exception {
 		logger.info("credit/delete - delete()");
-		logger.info("삭제요청항목 : {}", chArr);
+		logger.info("세션userNo : {}", session.getAttribute("userNo"));
+		logger.info("배열:{}", creditNo);
 		
-		//추후, 세션값으로 회원 정보 가져올때 코드 작성해야함
-		
-		//회원번호 임시로 지정(44)
-		deal.setUserNo(44);
+		deal.setUserNo((int) session.getAttribute("userNo"));
 		
 		//성공적으로 끝날지에 대한 결과값
-		int result = 0;
-		
-		//dealNo 선언과 동시에 초기화
-		int dealNo = 0;
+		boolean success = false;
 		
 		//배열로 담아온 dealNo를 하나씩 꺼내어 Credit TB에 set 해주기
-		//추후, 세션 종료 여부를 위해 if 문으로 걸러주는거임. 근데 현재는 그냥 44를 담아놓은 Credit deal 로 써놓음
 		if(deal !=null) {
-			logger.info("세션유지중(추후 개발)");
 
-			for(String i : chArr) {
-				//setDealNo을 하려면, int 형으로 넣어야하는데 우리는 String 값으로 받아왔으니,
-				//위에서 만들어주 int dealNo 이라는 그릇에다가 parseInt한 값을 담아서 한번에 set을 해줘야한다.
-				dealNo = Integer.parseInt(i);
-				deal.setDealNo(dealNo);
+			for(int i : creditNo) {
+				deal.setDealNo(i);
 				logger.info("잘 담김? :{}", deal );
 				//하나씩 출력되면서 잘 담긴것을 확인할 수 있음
 				//하지만 for each 문 밖에서 확인하면, 단 하나의 항목만 출력된것을 확인할 수 있음.
 				//그러므로, 출력도, service로 넘길 메소드도 for each 문 안에서 하나씩 진행될수 있도록 넣어줘야함.
-				creditService.deleteDeal(deal);
+				success= creditService.deleteDeal(deal);
 			}
 			logger.info("성공적으로 update");
 			//위의 구문이 성공적으로 끝날 시에...
@@ -307,10 +339,42 @@ public class CreditController {
 			//물론 이 코드가 없더라도 카트가 삭제되지 않고 에이젝스의 error를 이용해 구분할 수 있지만, 
 			//컨트롤러보다 더 깊은 Service와 DAO를 거쳐 쿼리문이 실행되는걸 막을 수 있습니다.
 			//뭔말이야? 이해안됨
-			result = 1;
 			
 		}
-		return result;
+		
+	    // 삭제 성공 여부에 따라 응답 데이터 설정
+	    try {
+	        out.write("{\"result\": " + success + "}");
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
+	
+	@RequestMapping("/toss")
+	public void toss(HttpSession session, int cash,  String method, Writer out) {
+		logger.info("credit/toss - toss()");
+		logger.info("세션userNo : {}", session.getAttribute("userNo"));
+		logger.info("결제 금액 {} ", cash);
+		logger.info("결제 방식 {} ", method);
+		
+//		JSONObject json = new JSONObject();
+//            json.put("cash", cash);
+//            json.put("method", method);
+
+			
+	    // 삭제 성공 여부에 따라 응답 데이터 설정
+	    try {
+		    out.write("{\"result\": " + cash + "}");
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+		
+	}
+	
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+	//여기서부터 관리자 관리페이지로!
+//	@RequestMapping("/admin")
+
 	
 }

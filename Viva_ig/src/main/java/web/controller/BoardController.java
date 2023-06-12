@@ -93,8 +93,6 @@ public class BoardController {
 		return "redirect:./list";
 	}
 	
-	
-	
 	@RequestMapping("/view")
 	public String view( Board viewBoard, Model model, List<MultipartFile> file, HttpSession session, Comments comments ) {
 		logger.info("/board/view");

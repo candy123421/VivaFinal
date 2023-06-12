@@ -3,76 +3,75 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 
 <c:import url="../layout/header.jsp"/>  
-
 <style type="text/css">
-
-#chargeOk_wrap {
+.exchangeOk_wrap {
 	width:1400px;
 	margin : 0 auto;
 }
-
-#chargeOk_ment img {	/*  상단 체크 */
-	width: 100px;
-    padding: 15px;
-}
-#chargeOk_ment{
-	width: 453px;
-	height: 237px;
-	margin: 0 auto;
-	font-family: 'Noto Sans';
-	font-style: normal;
-	font-weight: 700;
-	font-size: 31px;
-	line-height: 42px;
-	align-items: center;
+#exchangeOk_ment {
 	text-align: center;
-	letter-spacing: 0.1em;
-    margin-top: 67px;
-	
-	color: #000000;
-}
-h3 {
 	font-weight: 600;
 }
-.chargeOk_chargeInfo {
-	font-size : 20px;
-	width: 667px;
-	height: 242px;
-    padding: 35px;
+#exchangeOk_ment img{	/*  상단 체크 */
+	width : 100px;
+	padding:15px;
+}
+#exchangeOk_ment div:first-child {
+	    width: 100px;
     margin: 0 auto;
+}
+.exchangeOk_wrap div:nth-child(2) {
+	font-size: 23px;
+    font-weight: 900;
+    text-align: center; 
+}
+
+.exchangeOk_chargeInfo {	/*  환전 완료된  정보 */
+	font-size: 20px;
+    margin: 0 auto;
+    text-align: center;
+	width: 619px;
+    height: 454px;
+
 	background: rgba(251, 251, 251, 0.5);
 	mix-blend-mode: normal;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-	border-radius: 5px;
-	margin-bottom: 75px;
+	border-radius: 10px;
 }
 
-.chargeOk_chargeInfo dl {
+.exchangeOk_chargeInfo dl {
 	display : flex;
 	flex-direction : row;
 	align-items: flex-start;
 	overflow : hidden;
 	width : 100%;
-	padding : 10px 0px 10px;
+	padding : 10px 20px 10px;
 	letter-spacing : -0.5px;
 }
 
-.chargeOk_chargeInfo dt {
-	width: 204px;
-	height : 100%;
+.exchangeOk_chargeInfo dt {
+	width: 200px;
 }
 
 .price {
 	font-weight : 900;
 }
 .chargeOk_redirect {
-	width: 666px;
+	position: absolute;
+    left: 345px;
+	top: 672px;
+	width: 100%;
     text-align: left;
-    margin : 0 auto;
 }
 
 .chargeOk_redirect div {
 	display : inline-block;
+}
+
+.exchangeOk_redirect div:first-child {
+    margin: 0 auto;
+    width: 330px;
+    margin-top: 70px;
 }
 
 #chargeRedirect {
@@ -114,43 +113,68 @@ h3 {
    <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
 </div>
 
-<div id="chargeOk_wrap">
 
-	<div id="chargeOk_ment">
+<section class="exchangeOk_wrap">
+	<div id="exchangeOk_ment">
 		<div>
-			<img alt="checkOk" src="/resources/icon/charge_ok_chk.svg">
+			<img alt="exchangeOk" src="/resources/icon/charge_ok_chk.svg">
 		</div>
 		
-	<h3>크레딧 충전이<br>
+	<h3>환전 신청이<br>
 	완료되었습니다.</h3>
 	</div>
-	<div class="chargeOk_chargeInfo">
+	
+	
+	<div>환전은 신청일로부터 주말, 공휴일 제외 3일 소요됩니다.</div>
+	
+	<div class="exchangeOk_chargeInfo">
 		<dl>
-			<dt>충전된 크레딧</dt>
+			<dt>환전 받을 크레딧</dt>
 			<dd>
-				<span class="price">${info.AMOUNT}</span>
+				<span class="price">${info.exAmount}</span>
 				<span class="price">Credit</span>
 			</dd>
 		</dl>
 		<dl>
-			<dt>결제 방식</dt>
+			<dt>실제 환전 금액</dt>
 			<dd>
-				<span>${info.METHOD}</span>
+				<span class="price">${info.exAmount}</span>
+				<span class="price">원</span>
 			</dd>
 		</dl>
 		<dl>
-			<dt>실제 결제 금액</dt>
+			<dt>크레딧 잔액</dt>
 			<dd>
-				<span>${info.TOTAL_AMOUNT}</span>
-				<span>원</span>
+				<span class="price">${info.exAmount}</span>
+				<span class="price">Credit</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>환전 받을 계좌</dt>
+			<dd>
+				<span>${info.bank}</span><br><span>(${info.accNo})</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>예금주</dt>
+			<dd>
+				<span>${info.holder}</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>환전 신청 일자</dt>
+			<dd>
+				<span>${info.exDate}</span>
 			</dd>
 		</dl>
 	</div>
 	
-	<div class="chargeOk_redirect">
-		<div><button type="button" id="chargeRedirect" onClick="location.href='./charge'">추가 충전하기</button></div>
+	<div class="exchangeOk_redirect">
 		<div><button type="button" id="creditListRedirect" onClick="location.href='./list'">크레딧 내역 조회</button></div>
+		
+		<!--  크레딧 총계 계산하는 로직 넣기 전까지는 얘를 오픈하지 않도록...ㅠㅠㅠ -->
+	<!-- 	<div><button type="button" id="exchangeRedirect" onClick="location.href='./exchange'">추가 환전하기</button></div> -->
 	</div>
-</div>
+</section>
 
 <c:import url ="../layout/footer.jsp"/> 

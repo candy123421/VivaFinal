@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 
 import web.dto.Credit;
+import web.dto.ExchangeInfo;
 import web.dto.TossApi;
 import web.dto.Users;
 
@@ -21,6 +22,15 @@ public interface CreditService {
 	 */
 	public List<Credit> getCreditList(Credit userNo);
 
+	/**
+	 * 카테고리 클릭했을 때의 크레딧 내역
+	 * 
+	 * @param userNo - userNo
+	 * @param state - "구매, 충전, 수익, 환전 " 에 대한 분류
+	 * @return 해당되는 카테고리의 Credit 내역 전체
+	 */
+	public List<Credit> clickCategoryList(Credit userNo, String state);
+	
 	/**
 	 * userNo 을 통해 credit TB 조회 하여 총액 구하기
 	 * 
@@ -40,8 +50,9 @@ public interface CreditService {
 	 * 크레딧 내역 삭제 (hidden 으로 변경)
 	 * 
 	 * @param deal - userNo, dealNo
+	 * @return 성공시 true
 	 */
-	public void deleteDeal(Credit deal);
+	public boolean deleteDeal(Credit deal);
 
 	/**
 	 *  결제 정보를 DB에 insert하기
@@ -59,6 +70,18 @@ public interface CreditService {
 	 * @return HashMap 형태의 조회된 정보
 	 */
 	public Map<String, Object> viewChargeOkInfo(int dealNo);
+
+	/**
+	 * 크레딧 TB에 환정 정보 생성하기
+	 * 환전 정보 DB에 입력하기
+	 * 
+	 * @param exCredit - 크레딧 액수
+	 * @param exchange - userNo, 예금주, 은행, 계좌, 금액
+	 * @return 환전 정보 입력 완료된 정보 
+	 */
+	public ExchangeInfo addExchangeInfo(int exCredit, ExchangeInfo exchange);
+	
+
 
 
 }

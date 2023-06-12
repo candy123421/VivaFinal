@@ -70,7 +70,7 @@ public class CartServiceImpl implements CartService {
 //======================================================================================================
 	//여기서 int 배열을 하나씩 꺼내어 userNo과 짝지어준다.
 	@Override
-	public void addPack(int userNo, int[] source) throws Exception {
+	public boolean addPack(int userNo, int[] source) throws Exception {
 		logger.info("addPack()");
 		logger.info("userNo:{}", userNo);
 	    logger.info("source[]: {}", source);
@@ -97,6 +97,8 @@ public class CartServiceImpl implements CartService {
 			result = 1;
 		}
 		logger.info("pack 장바구니 추가 성공!");
+		
+		return true;
 	}
 //======================================================================================================
 	

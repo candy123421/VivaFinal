@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import web.dao.face.CreditDao;
 import web.dto.Credit;
+import web.dto.ExchangeInfo;
 import web.dto.TossApi;
 import web.dto.Users;
 import web.service.face.CreditService;
@@ -41,6 +42,31 @@ public class CreditServiceImpl implements CreditService {
 	}
 
 	@Override
+	public List<Credit> clickCategoryList(Credit userNo, String state) {
+		logger.info("clickCategoryList()");
+		
+		//state에 따른 분류 확인하기 (컨트롤러에서부터 "전체" 에 대한 건 걸러져서 옴)
+		if("충전".equals(state)) {
+			logger.info("충전 카테고리");
+			userNo.setDealCategory(1);
+			
+		} else if("구매".equals(state)) {
+			logger.info("구매 카테고리");
+			userNo.setDealCategory(2);
+
+		} else if("수익".equals(state)) {
+			logger.info("수익 카테고리");
+			userNo.setDealCategory(3);
+
+		} else if("환전".equals(state)) {
+			logger.info("환전 카테고리");
+			userNo.setDealCategory(4);
+		}
+		
+		return creditDao.selectCategoryList(userNo);
+	}
+
+	@Override
 	public String chkUserGrade(Users user) {
 		logger.info("chkUserGrade()");
 		return creditDao.selectUserGrade(user);
@@ -55,10 +81,10 @@ public class CreditServiceImpl implements CreditService {
 	
 	
 	@Override
-	public void deleteDeal(Credit deal) {
+	public boolean deleteDeal(Credit deal) {
 		logger.info("deleteDeal()");
 		
-		creditDao.deleteDeal(deal);
+		return creditDao.deleteDeal(deal);
 		
 	}
 
@@ -113,7 +139,7 @@ public class CreditServiceImpl implements CreditService {
 		logger.info("dealNo : {}", num);
 		
 		credit.setDealNo(num);
-		credit.setDealNo((int)session.getAttribute("userNo"));
+		credit.setUserNo((int)session.getAttribute("userNo"));
 		//dealCategory = 1 : 충전 설정하기
 		credit.setDealCategory(1);
 		
@@ -187,5 +213,33 @@ public class CreditServiceImpl implements CreditService {
 		
 		
 		return creditDao.selectOkInfo(dealNo);
+	}
+
+//============================================================================
+	//입력한 환전정보
+	@Override
+	public ExchangeInfo addExchangeInfo(int exCredit, ExchangeInfo exchange) {
+		logger.info("addExchangeInfo()");
+		
+		//우선... 크레딧 TB에 생성을 먼저 해줘야한다.
+		Credit credit = new Credit();
+
+		//정보를 조회하기 위해 deal_no을 미리 받아오기.(dual TB에서)
+		int num = creditDao.selectNextDealNo();
+		
+		credit.setDealNo(num);
+		credit.setAmount(exCredit);
+		credit.setDealCategory(4);	//환전
+		credit.setUserNo(exchange.getUserNo());
+		
+		creditDao.insertExchangeCredit(credit);
+		
+		exchange.setDealNo(num);
+		
+		creditDao.insertExchangeInfo(exchange);
+		
+		logger.info("환전정보 입력 완료 ㅎㅎ : {}", exchange);
+		
+		return creditDao.selectExchangeInfo(exchange);
 	}
 }

@@ -99,9 +99,9 @@
 	select source_seq.nextval from dual
 	</selectKey>
     insert into source
-   (source_no, source_price, tag_no, pack_no, user_no)
+   (source_no,source_name,source_price, tag_no, pack_no, user_no)
    values
-   (#{sourceNo} ,30, #{tagNo} , #{packNo} , 1)
+   (#{sourceNo},#{sourceName} ,30, #{tagNo} , #{packNo} , #{userNo})
    </insert>
    
    

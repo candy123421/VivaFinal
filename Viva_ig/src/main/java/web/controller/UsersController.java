@@ -4,7 +4,6 @@ package web.controller;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -24,8 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import web.dto.Credit;
 import web.dto.UserProfile;
 import web.dto.Users;
+import web.service.face.CreditService;
 import web.service.face.KakaoService;
 import web.service.face.MailSendService;
 import web.service.face.UsersService;
@@ -39,6 +40,7 @@ public class UsersController {
 	@Autowired UsersService usersService;
 	@Autowired KakaoService kakaoService; 
 	@Autowired MailSendService mailService;
+	@Autowired CreditService creditService;
 	
 	@GetMapping("/login")
 	public void login() {
@@ -103,6 +105,7 @@ public class UsersController {
 	           
     }
 	
+	//credit 총계도 보여주기 위해서 credit Sevice 를 임포트할게요! - 지선
 	@PostMapping("/login")
 	public String loginProcess(Users users, HttpSession session
 			,HttpServletRequest request
@@ -133,6 +136,13 @@ public class UsersController {
 			session.setAttribute("id", users.getUserId());
 			session.setAttribute("nick", usersService.getNick(users));
 			session.setAttribute("userNo", getUserNo.getUserNo());
+			
+			
+			//***************크레딧 잔액 저장하기******************** (지선 작성)
+			Credit creditAcc = new Credit();
+			creditAcc.setUserNo(getUserNo.getUserNo());
+			session.setAttribute("headerCredit", creditService.selectCreditAcc(creditAcc));
+			
 			
 			//rememberId는 체크박스 name이다
 			//아이디 저장 체크박스가 체크되어있으면 쿠키저장

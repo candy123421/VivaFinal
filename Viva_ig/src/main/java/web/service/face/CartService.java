@@ -61,9 +61,10 @@ public interface CartService {
 	 * 
 	 * @param userNo
 	 * @param source - sourceNo 배열
+	 * @return true - 1
 	 * @throws Exception 
 	 */
-	public void addPack(int userNo, int[] source) throws Exception;
+	public boolean addPack(int userNo, int[] source) throws Exception;
 
 
 

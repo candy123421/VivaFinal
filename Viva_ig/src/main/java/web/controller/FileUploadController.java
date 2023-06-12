@@ -3,6 +3,8 @@ package web.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -196,10 +198,12 @@ public class FileUploadController {
 			Pack pack,
 			MultipartFile packImg,
 			Source source,
-			List<MultipartFile> packFileList
-//			List<SourceFileInfo> sourceInfoList,
+			List<MultipartFile> packFileList,
+			HttpSession session
 			) {
 		logger.info("/file/fileuppack [Post]");
+		
+		source.setUserNo((int)session.getAttribute("userNo"));
 		
 		//Tag Json 파싱하기 
 		JSONParser jsonParser = new JSONParser();

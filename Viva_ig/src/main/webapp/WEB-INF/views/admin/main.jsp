@@ -17,8 +17,12 @@
 </style>
 </head>
 <body>
-<h1>Admin Main</h1>
-<hr>
+<div class="FunctionTitle">
+   Viva Admin Main
+</div>
+<div class="FunctionTitleLine1">
+   <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg" style="margin-top:15px; margin-bottom: 15px; width:1400px;">
+</div>
 <c:if test="${empty adminlogin }">
 Admin은 로그인을 해주세요
 <a href="./login"><button class="btn btn-outline-secondary">Login</button></a>
@@ -32,6 +36,9 @@ Admin은 로그인을 해주세요
 <a href="./logout"><button class="btn btn-outline-secondary">Logout</button></a>
 <a href="/board/list"><button class="btn btn-outline-secondary">Board</button></a>
 <a href="/qna/list"><button class="btn btn-outline-secondary">Q&A</button></a>
+<a href="/admin/credit"><button class="btn btn-outline-secondary">Credit</button></a>
+<a href="/admin/usergrade"><button class="btn btn-outline-secondary">User</button></a>
+
 
 </c:if>
 

@@ -168,7 +168,7 @@ public class CartController {
 	//지금까지 했던 방식과 다르게, 배열을 값을 serviceImpl까지 끌고가서 map 으로 userno과 짝지어줄것임. 
 	//컨트롤러에서 for each 문을 쓰니 성능 낭비가 있을것 같음(물론 우리의 데이터는 적지만!)
 	@GetMapping("/addPack")
-	public void addPack(HttpSession session, @RequestParam(value="sourceNo[]") int[] source) throws Exception {
+	public void addPack(HttpSession session, @RequestParam(value="sourceNo[]") int[] source, Writer out) throws Exception {
 		logger.info("/cart/addPack - addPack()");
 		logger.info("세션userNo : {}", session.getAttribute("userNo"));
 		int userno = (int) session.getAttribute("userNo");
@@ -176,9 +176,18 @@ public class CartController {
 		logger.info("int배열 : {}", source);
 		
 		//수행해야할 코드는 서비스로 넘기기
-		cartService.addPack(userno, source);
+		boolean success = cartService.addPack(userno, source);
 		
 		logger.info("addPack 완전히 성공확인!");
+		
+		if(success) {
+			try {
+				out.write("{\"result\": " + success + "}");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			logger.info("jsp로 true 값일 때만 전송 완료!");
+		}
 	}
 	
 	//--------------------------------------------------------------------

@@ -1,5 +1,7 @@
 package web.controller;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import web.dto.Board;
 import web.dto.Comments;
 import web.dto.Files;
+import web.dto.Likes;
+import web.dto.SourceLike;
 import web.dto.Tag;
 import web.dto.Users;
 import web.service.face.BoardService;
@@ -40,38 +44,47 @@ public class BoardController {
 	private final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
 	@GetMapping("/list")
-	public void list( Paging paging, Model model, String userId, String keyword ) {
+	public void list( Paging paging, Board board, Model model, String userId, String keyword, String categoryType ) {
 		logger.info("/board/list [GET]");
 		
+		logger.info("CCCCCCCCCCCCCCCCCCCCCCategoryType {}", categoryType);
+		if (categoryType == null) {
+		    categoryType = "all";
+		}
+		
 		//페이징 계산
-		Paging page = boardService.getPaging(paging, keyword);
+		Paging page = boardService.getPaging(paging, keyword, categoryType);
 		
 		//게시글 목록 조회
-		List<Board> boardList = boardService.boardList(page, userId, keyword);
+		List<Board> boardList = boardService.boardList(page, userId, keyword, categoryType);
 		
 		model.addAttribute("page", page);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("userId", userId);
 		model.addAttribute("keyword", keyword);
+		model.addAttribute("categoryType", board.getCategoryType());
+		
+		logger.info("ccccccccccccccccccccccccategoryType {}", categoryType);
+
 	}
 	
 	@PostMapping("/list")
 	public String listpost(
-			Paging paging, Model model, String userId, Board board, String keyword,
+			Paging paging, Model model, String userId, Board board, String keyword, String categoryType,
 			@RequestParam(value="check") int[] check ) {
 		
 		logger.info("/board/list [Post]");
 		
 		//페이징 계산
-		Paging page = boardService.getPaging(paging, keyword);
+		Paging page = boardService.getPaging(paging, keyword, categoryType);
 		logger.info("check : {}", check);
 		
 		//게시글 목록 조회
-		List<Board> boardList = boardService.boardList(page, userId, keyword);
+		List<Board> boardList = boardService.boardList(page, userId, keyword, categoryType);
 		model.addAttribute("page", page);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("userId", userId);
-		model.addAttribute("category", board.getCategoryType());
+		model.addAttribute("categoryType", board.getCategoryType());
 			
 		//관리자일때 리스트에서 선택한거 삭제가능하게 만드는거 - 보현
 		logger.info("***check의값 : ***{}",check);
@@ -80,11 +93,11 @@ public class BoardController {
 		return "redirect:./list";
 	}
 	
-	
-	
 	@RequestMapping("/view")
-	public String view( Board viewBoard, Model model, List<MultipartFile> file, HttpSession session ) {
+	public String view( Board viewBoard, Model model, List<MultipartFile> file, HttpSession session, Comments comments ) {
 		logger.info("/board/view");
+		
+		logger.info("BBBBBBBBBBBBBBBBBBboardcontent {}", viewBoard.getBoardContent());
 		
 		//잘못된 게시글 번호 처리
 		if( viewBoard.getBoardNo() < 1 ) {
@@ -108,8 +121,10 @@ public class BoardController {
 		int boardNo = viewBoard.getBoardNo();
 		logger.info("boardNo {}", boardNo);
 		
-		List<Comments> commentList = boardService.viewComment(boardNo);
+		List<Comments> commentList = boardService.viewComment(comments);
 		model.addAttribute("commentList", commentList);
+		
+		logger.info("bbbbbbbbbbbbbbbbbbbbbboardcontent {}", viewBoard.getBoardContent());
 
 		return "board/view";
 	}		
@@ -119,22 +134,16 @@ public class BoardController {
 	public void write() {}
 	
 	@PostMapping("/write")
-	public String writeProc( Board board, @RequestParam(required=false) List<MultipartFile> file, Model model, HttpSession session ){		
+	public String write( Board writeBoard, @RequestParam(required=false) List<MultipartFile> file, Model model, HttpSession session ){		
 		logger.info("/board/write [POST]");	
-		logger.info("컨트롤러 보드 {}", board);
+		logger.info("컨트롤러 보드 {}", writeBoard);
 		logger.info("컨트롤러 파일 {}", file);
 		
-//		logger.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!{}", userNo);
-		
-//		model.addAttribute("userLogin", userId);
-		
-//		board.setBoardTitle(boardTitle);// 여기에 tilte담아야함
-//		board.setBoardContent(categoryType);
-		
 		int userNo = (Integer)session.getAttribute("userNo");
-		board.setUserNo(userNo);
+		writeBoard.setUserNo(userNo);
 		
-		boardService.write( board, file );
+		boardService.write( writeBoard, file );
+		model.addAttribute("컨트롤러 보드 {} writeBoard", writeBoard);
 		
 		return "redirect:./list";	//게시글 목록
 	}
@@ -150,43 +159,88 @@ public class BoardController {
 	}
 	
 	
+	
 	@GetMapping("/update")
-	public String update( Board board, Model model ) {
-		
+	public String update( Board updateBoard, Model model ) {
+		logger.info("update[GET] -> Controller 도착! {}");
+
 		//잘못된 게시글 번호 처리
-		if( board.getBoardNo() < 1 ) {
+		if( updateBoard.getBoardNo() < 1 ) {
 			return "redirect:/board/list";
 		}
 		
 		//수정할 게시글의 상세보기
-		board = boardService.view(board);
-		model.addAttribute("updateBoard", board);
+		updateBoard = boardService.view(updateBoard);
+		model.addAttribute("updateBoard", updateBoard);
 		
 		//첨부파일 정보 모델값 전달
-		List<Files> boardFile = boardService.getAttachFile(board);
-		
+		List<Files> boardFile = boardService.getAttachFile(updateBoard);
 		model.addAttribute("boardFile", boardFile);
-		
-		logger.info("BoardController - update [GET] {}", boardFile);
 			
 		return "board/update";
 	}
 	
 	@PostMapping("/update")
-	    public String updateProc(Board board, List<MultipartFile> file) {
-	        
+	    public String update(Board updateBoard, List<MultipartFile> file, Model model) {
+		logger.info("update[POST] -> Controller 도착! {}");
+
+		updateBoard.getBoardNo();
+		
 		//게시글+첨부파일 수정
-		boardService.update(board, file);
-	        
-	    return "redirect:./view?boardNo=" + board.getBoardNo();
+		boardService.update(updateBoard, file);
+		model.addAttribute("updateBoard", updateBoard);
+		
+		//첨부파일 정보 모델값 전달
+		List<Files> boardFile = boardService.getAttachFile(updateBoard);
+		model.addAttribute("boardFile", boardFile);
+		
+	    return "redirect:./view?boardNo=" + updateBoard.getBoardNo();
 	    }
+
+		
 	
 	@RequestMapping("/delete")
-	public String delete( Board board ) {
-		boardService.delete(board);
+	public String delete( Board board, Comments comments, HttpSession session ) {
+		
+		int userNo = (Integer)session.getAttribute("userNo");
+		board.setUserNo(userNo);
+		
+		boardService.delete(board, comments);
+		
+		logger.info("CDCDCDCDCDCDCDCDCDCDCDCD comments {}", comments);
 		
 		return "redirect:./list";
 	}
+	
+	@GetMapping("/like")
+	@ResponseBody
+	public void likeBoard(Likes like, Board board, Writer out) {
+		logger.info("좋아요 정보 : {}", like);
+		
+		
+		boolean result = boardService.checkLike(like);
+
+		if (result == false) {
+			boardService.boardLike(like);
+			try {
+				out.write("{\"result\":true}");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else if (result == true) {
+			boardService.boardReverseLike(like); 
+			try {
+				out.write("{\"result\":false}");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		logger.info("LLLLLLLLLLLLLLLLLLLLllike like - boardNo {}", like.getBoardNo());
+		logger.info("LLLLLLLLLLLLLLLLLLLLllike like - userNo {}", like.getUserNo());
+		logger.info("bbbbbbbbbbbbbbbbbbbbboard board - boardNo {}", board.getBoardNo());
+	}
+	
 	
 	@GetMapping("/commentView")
 	@ResponseBody
@@ -199,7 +253,7 @@ public class BoardController {
 		//댓글 조회
 		int boardNo = viewBoard.getBoardNo();
 		
-		List<Comments> commentList = boardService.viewComment(boardNo);
+		List<Comments> commentList = boardService.viewComment(comments);
 		model.addAttribute("commentList", commentList);
 		
 		return commentList;
@@ -210,17 +264,12 @@ public class BoardController {
 	public List<Comments> commentWrite(
 			
 			@RequestParam("boardNo") int boardNo, 
-			@RequestParam("commContent") String commContent, 
+			@RequestParam("commContent") String commContent, Comments comments,
 			Model model) {
 		
-		//Comments 객체 생성 및 데이터 설정
-	    Comments comments = new Comments();
-	    comments.setBoardNo(boardNo);
-	    comments.setCommContent(commContent);
-	    
 	    boardService.writeComment(comments);
 	    
-	    List<Comments> commentList = boardService.viewComment(boardNo);
+	    List<Comments> commentList = boardService.viewComment(comments);
 	    model.addAttribute("commentList", commentList);
 	    
 	    return commentList;
@@ -229,32 +278,25 @@ public class BoardController {
 	
 	@PostMapping("/commentUpdate")
 	@ResponseBody
-	public List<Comments> commentUpdate(Board viewBoard, Comments comments, Model model) {
+	public List<Comments> commentUpdate(Comments comments, Model model) {
 		
-		//Comments 객체 생성 및 데이터 설정
-	    Comments comment = new Comments();
-//	    comments.setBoardNo(comment.getBoardNo());
-//	    comments.setCommNo(comment.getCommNo());
-//	    comments.setCommContent(comment.getCommContent());
-	    comments.setBoardNo(viewBoard.getBoardNo());
-	    comments.setCommNo(comments.getCommNo());
-	    comments.setCommContent(comments.getCommContent());
-
+		logger.info("@@@@@@@@@@@@ commentUpdate()");
+		
+	    logger.info("$$$$$$$$$$$$$$$$$$comments {}", comments);
+	    
 		boardService.updateComment(comments);
 		
-		//댓글 조회
-		int boardNo = viewBoard.getBoardNo();
-		
 		//수정된 댓글 리스트 조회
-	    List<Comments> commentList = boardService.viewComment(boardNo);
-	    model.addAttribute("commentList", commentList);
+	    List<Comments> commentList = boardService.viewComment(comments);
+//	    model.addAttribute("commentList", commentList);
 	    
 //		return "redirect:./view?boardNo=" + board.getBoardNo();
 	    return commentList;
+//		return null;
 	}
 
 	
-	@PostMapping("/commentDelete")
+	@RequestMapping("/commentDelete")
 	@ResponseBody
 	public List<Comments> commentDelete(Board viewBoard, Comments comments, Model model) {
 			
@@ -262,15 +304,18 @@ public class BoardController {
 	    Comments comment = new Comments();
 	    comment.setBoardNo(viewBoard.getBoardNo());
 	    comment.setCommNo(comments.getCommNo());
+	    
+	    logger.info("cocococococococcoco Comment - boardNo {}", viewBoard.getBoardNo());
+	    logger.info("cccccccccoooooooooo Comments - boardNo {}", comments.getBoardNo());
+	    logger.info("ccccccccccccccccccc Comments - commNo {}", comments.getCommNo() );
 
-		boardService.deleteComment(comments);
+		boardService.deleteComment(comment);
 
 		//댓글 조회
 		int boardNo = viewBoard.getBoardNo();
 		
 		//수정된 댓글 리스트 조회
-	    List<Comments> commentList = boardService.viewComment(boardNo);
-	    model.addAttribute("commentList", commentList);
+	    List<Comments> commentList = boardService.viewComment(comments);
 	    
 		return commentList;
 	}

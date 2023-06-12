@@ -4,7 +4,6 @@ package web.controller;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -24,8 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import web.dto.Credit;
 import web.dto.UserProfile;
 import web.dto.Users;
+import web.service.face.CreditService;
 import web.service.face.KakaoService;
 import web.service.face.MailSendService;
 import web.service.face.SourceService;
@@ -41,17 +42,21 @@ public class UsersController {
 	@Autowired KakaoService kakaoService; 
 	@Autowired MailSendService mailService;
 	@Autowired SourceService sourceService;
+	@Autowired CreditService creditService;
 	
 	@GetMapping("/login")
 	public void login() {
 		logger.info("/login [GET]");
 	}
 	
-	//임시로 만든 main페이지
-	@RequestMapping("/main")
-	public void kakaoLogin() {
-		logger.info("users/main [GET]");
-	}
+//	//main페이지
+//	@GetMapping("/")
+//	public void main(HttpSession session) {
+//		logger.info("users/main [GET]");
+//		
+//		int userNo = (int)session.getAttribute("userNo");
+//		logger.info("마이페이지 : {}" , userNo);
+//	}
 	
 	@GetMapping("/kakaologin")
 	   public String kakaoLogin(
@@ -88,7 +93,7 @@ public class UsersController {
 		      logger.info("유저번호 : {}",num);
 	          session.setAttribute("userNo", num);
         	   
-        	   return "/users/main";
+        	   return "/";
            }else {
         	   //카카오 ID가 DB에 없으면 로그인처음이므로 카카오 회원가입으로 보내서 추가회원정보 받기
         	   logger.info("회원 정보 조회 여부 : {}",kakaoIdCheck);
@@ -102,6 +107,7 @@ public class UsersController {
 	           
     }
 	
+	//credit 총계도 보여주기 위해서 credit Sevice 를 임포트할게요! - 지선
 	@PostMapping("/login")
 	public String loginProcess(Users users, HttpSession session
 			,HttpServletRequest request
@@ -120,6 +126,11 @@ public class UsersController {
 			//유저 번호 가져오기
 			Users getUserNo = usersService.getNo(users);
 			
+			String storedname = usersService.selectStoredName(getUserNo.getUserNo());
+			session.setAttribute("userProfile", storedname);
+			
+			logger.info("storedname : {}" , storedname);
+			
 			//세션에 true값 저장
 			session.setAttribute("login", loginResult);
 			
@@ -127,6 +138,14 @@ public class UsersController {
 			session.setAttribute("id", users.getUserId());
 			session.setAttribute("nick", usersService.getNick(users));
 			session.setAttribute("userNo", getUserNo.getUserNo());
+			
+			
+			//***************크레딧 잔액 저장하기******************** (지선 작성)
+			Credit creditAcc = new Credit();
+			creditAcc.setUserNo(getUserNo.getUserNo());
+			session.setAttribute("headerCredit", creditService.selectCreditAcc(creditAcc));
+			
+			
 			//rememberId는 체크박스 name이다
 			//아이디 저장 체크박스가 체크되어있으면 쿠키저장
 			if(rememberId(rememberId)) {
@@ -139,8 +158,7 @@ public class UsersController {
 				response.addCookie(cookie);
 			}
 			
-			
-			return "redirect:./main";
+			return "redirect:/";
 			
 		} else {	//로그인 실패시
 			logger.info("로그인 실패");
@@ -157,7 +175,6 @@ public class UsersController {
 		return rememberId;
 	}
 
-
 	// 발급받은 토큰을 만료시켜 로그아웃 시킨다
    // 리턴은 메인페이지로
     @RequestMapping("/logout")
@@ -170,7 +187,7 @@ public class UsersController {
     	// 세션 삭제
         session.invalidate();
         logger.info("logout() - 로그아웃 성공");
-        return "redirect:./main";
+        return "redirect:/";
     }
 
 
@@ -242,7 +259,7 @@ public class UsersController {
 		
 		usersService.kakaojoin(users);
 		
-		return "redirect:./main";
+		return "redirect:/";
 	}
 
 	//아이디 중복 검사
@@ -276,6 +293,25 @@ public class UsersController {
 		
 		//result가 1이면 DB에 닉네임 존재
 		if(result != 0) {
+			return "fail";	//중복 닉네임 존재
+		}else {
+			return "success";	//중복 닉네임 없음
+		}
+	}
+	//회원정보 수정 - 닉네임 중복검사
+	@RequestMapping("/userNickChk2")
+	@ResponseBody
+	public String userNickChk2(Users users, HttpSession session ) {
+		
+		logger.info("userNickChk입니다");
+		users.setUserNo((int)session.getAttribute("userNo"));
+		
+		boolean result = usersService.updateNickCheck(users);
+		
+		logger.info("결과값 {} " , result);
+		
+		//result가 1이면 DB에 닉네임 존재
+		if(!result) {
 			return "fail";	//중복 닉네임 존재
 		}else {
 			return "success";	//중복 닉네임 없음
@@ -385,14 +421,7 @@ public class UsersController {
 		
 		model.addAttribute("userInfo",userInfo);
 		
-		//userno로 프로필사진정보 조회
-		// 사진 storedname 만 가져온다
-		Map<String, Object> list = usersService.profileInfo(users);
-		logger.info("list:{}" , list);
-		
-		session.setAttribute("userProfile", list);
-		model.addAttribute("userProfile",list);
-		
+		session.getAttribute("userProfile");
 	}
 	
 	//마이페이지
@@ -400,11 +429,13 @@ public class UsersController {
 	public void userInfoProc(Users users, HttpSession session , Model model) {
 		logger.info("/users/mypage[POST]");
 		
+		session.getAttribute("userProfile");
+
 	}
 
 	//회원정보수정 페이지
 	@GetMapping("/update")
-	public void userupdate(Users users, HttpSession session , Model model, UserProfile userProfile ) {
+	public void userupdate(Users users, HttpSession session , Model model) {
 		logger.info("/users/update[GET]");
 		
 		//로그인했을 때 유저 번호 세션에 저장한거 userNo라는 변수에 저장
@@ -416,22 +447,17 @@ public class UsersController {
 		
 		users.setUserNo(userNo);
 		
-		model.addAttribute("userInfo",userInfo);
 		session.setAttribute("userInfo", userInfo);
-		
-//		//userno로 프로필사진정보 조회
-		// 사진 storedname 만 가져온다
-		Map<String, Object> list = usersService.profileInfo(users);
-		session.setAttribute("userProfile", list);
-		
-		model.addAttribute("userProfile", list);
+		session.getAttribute("userProfile");
+
+		logger.info("userprofile:{}", session.getAttribute("userProfile"));
 	}
 	
 	//회원정보수정 페이지
 	@PostMapping("/update")
-	public String userupdateProc(Users users, HttpSession session , UserProfile userProfile,Model model, MultipartFile profile) {
+	public String userupdateProc(Users users, HttpSession session,Model model, MultipartFile profile) {
 		logger.info("/users/update[POST]");
-		
+
 		//userno 가져오기
 		int userNo = (int)session.getAttribute("userNo");
 		users.setUserNo(userNo);
@@ -450,19 +476,29 @@ public class UsersController {
 			logger.info("프로필사진 올린적있음");
 			//회원프로필 삭제 
 //			usersService.deleteProfile(users,profile);
+			
 			//회원정보 수정한거 삽입
 			usersService.updateProfile(users,profile);
+
+			// 프로필 조회해서 가져오기
+			String storedName = usersService.selectStoredName(userNo);
+			session.setAttribute("userProfile", storedName);
+			
 			return "redirect:./mypage";
 		
 		// false를 받아서 회원프로필사진 삽입(insert)
 		}else if (isProfileNo == true && profile.getSize() <= 0) {
-			
 			logger.info("정보만 수정하려는 쪽");
 			usersService.updateIdPw(users,profile);
 			
 		} else if(isProfileNo == false) {
 			logger.info("프로필사진 올린적없음");
 			usersService.insertProfile(users,profile);
+			
+			// 새로 올린 프로필을 조회해서 다시 세션에 등록 시킨다
+			String storedName = usersService.selectStoredName(userNo);
+			session.setAttribute("userProfile", storedName);
+			
 			return "redirect:./mypage";
 		}
 		

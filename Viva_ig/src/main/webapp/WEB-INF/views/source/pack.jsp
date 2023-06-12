@@ -653,19 +653,9 @@ div[data-itemtype='line']{
 				  
 				  
 				  
-				  
-				  
-				  
-				  
 				  $(".already").fadeOut(2500)
 			</script>
-	
-	
-	
-	
 	</div>
-
-
 </div>
 
 

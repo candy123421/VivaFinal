@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import web.dto.Board;
 import web.dto.Comments;
 import web.dto.Files;
+import web.dto.Likes;
 import web.dto.Tag;
 import web.util.Paging;
 
@@ -25,7 +26,7 @@ public interface BoardService {
 	 * @param keyword 
 	 * @return 계산이 완료된 Paging객체
 	 */
-	public Paging getPaging(Paging paging, String keyword);
+	public Paging getPaging(Paging paging, String keyword, String categoryType);
 
 	/**
 	 * 페이징이 적용된 게시글 목록 조회
@@ -33,7 +34,7 @@ public interface BoardService {
 	 * @param page - 페이징 정보 객체
 	 * @return 페이징이 적용된 게시글 목록
 	 */
-	public List<Board> boardList(Paging page, String userId, String keyword);
+	public List<Board> boardList(Paging page, String userId, String keyword, String categoryType);
 
 	/**
 	 * 게시글 상세보기
@@ -49,7 +50,7 @@ public interface BoardService {
 	 * @param board - 게시글 정보 DTO
 	 * @param file - 첨부파일 정보 DTO
 	 */
-	public void write(Board board, List<MultipartFile> file);
+	public void write(Board writeBoard, List<MultipartFile> file);
 
 	/**
 	 * 게시글 번호를 이용하여 업로드된 파일 정보를 조회한다
@@ -74,29 +75,54 @@ public interface BoardService {
 	 * @param board - 게시글 정보 객체
 	 * @param file - 파일업로드 객체
 	 */
-	public void update(Board board, List<MultipartFile> file);
+	public void update(Board updateBoard, List<MultipartFile> file);
 
 	/**
 	 * 게시글 + 첨부파일 삭제 처리
 	 * 
 	 * @param board - 삭제할 게시글의 번호
+	 * @param comments 
 	 */
-	public void delete(Board board);
+	public void delete(Board board, Comments comments);
 
+	/**
+	 * 게시글 좋아요 확인
+	 * 
+	 * @param like - 좋아요를 누른 객체 정보
+	 * @return - 조회된 행 수
+	 */
+	public boolean checkLike(Likes like);
+	
+	/**
+	 * 게시글 좋아요 삽입
+	 * 
+	 * @param like - 좋아요를 누른 객체 정보
+	 */
+	public void boardLike(Likes like);
+
+	/**
+	 * 게시글 좋아요 삭제
+	 * 
+	 * @param like - 좋아요를 누른 객체 정보
+	 */
+	public void boardReverseLike(Likes like);
+
+	
 	/**
 	 * 댓글 조회하기 
 	 * 
-	 * @param boardNo - 댓글 조회할 게시글의 번호
-	 * @return
+	 * @param comments - 댓글 번호
+	 * @return 댓글 번호로 조회한 댓글 DTO
 	 */
-	public List<Comments> viewComment(int boardNo);
+	public List<Comments> viewComment(Comments comments);
 
 	/**
-
 	 * 관리자가 /board/list에서 선택한애들 삭제하도록
 	 * @param board
 	 */
 	public void deleteBoard(Board board);
+	
+
   
 	/**
 	 * 댓글 작성하기
@@ -105,13 +131,12 @@ public interface BoardService {
 	 * @param boardNo - 댓글 작성할 게시글 번호(를 가지고 있는 DTO)
 	 */
 	public void writeComment(Comments comments);
-//	public List<Comments> writeComment(Comments comments);
 	
 	
 	/**
 	 * 댓글 수정하기
 	 * 
-	 * @param board - 댓글 수정할 게시글 번호(를 가지고 있는 DTO)
+	 * @param comments - 댓글 번호, 게시글 번호, 댓글 내용을 가지고 있는 DTO)
 	 */
 	public void updateComment(Comments comments);
 
@@ -137,9 +162,6 @@ public interface BoardService {
 	 * @param check
 	 */
 	public void deleteCheckBoard(int[] check);
-
-
-
 
 
 

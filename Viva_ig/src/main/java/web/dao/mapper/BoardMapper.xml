@@ -9,6 +9,59 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<select id="selectCntAll" resultType="int">
   		SELECT count(*) FROM board
   	</select>
+  	
+  	<select id="selectCntFree" resultType="int">
+  		SELECT count(*) FROM board
+  		WHERE category_type = 'free'
+  	</select>
+  	
+  	<select id="selectCntQna" resultType="int">
+  		SELECT count(*) FROM board
+  		WHERE category_type = 'qna'
+  	</select>
+  	
+  	<select id="selectCntByCategory" resultType="int">
+  		SELECT count(*) FROM board
+  		WHERE category_type = #{categoryType}
+	</select>
+  
+	<select id="selectAllBoardList" resultType="web.dto.Board" parameterType="web.util.Paging">
+		SELECT * FROM (
+	        SELECT rownum rnum, B.* FROM (
+	            SELECT * FROM board
+	                LEFT OUTER JOIN users ON board.user_no = users.user_no
+	            WHERE (category_type = #{categoryType, jdbcType=VARCHAR, javaType=java.lang.String, typeHandler=org.apache.ibatis.type.StringTypeHandler}
+	                OR (#{categoryType, jdbcType=VARCHAR, javaType=java.lang.String, typeHandler=org.apache.ibatis.type.StringTypeHandler} IS NULL
+	                    AND 'all' = 'all'))
+	            ORDER BY board_no DESC
+	        ) B
+	    )
+	    WHERE rnum BETWEEN #{startNo} AND #{endNo}
+	</select>
+
+    <select id="selectFreeBoardList" resultType="web.dto.Board" parameterType="web.util.Paging">
+		SELECT * FROM (
+			SELECT rownum rnum, B.*  FROM (
+				SELECT * FROM board
+					LEFT OUTER JOIN users ON board.user_no = users.user_no
+					WHERE category_type = 'free'
+					ORDER BY board_no DESC
+				) B
+			)
+		WHERE rnum BETWEEN #{startNo} AND #{endNo}
+	</select>
+
+    <select id="selectQnaBoardList" resultType="web.dto.Board" parameterType="web.util.Paging">
+		SELECT * FROM (
+			SELECT rownum rnum, B.* FROM (
+				SELECT * FROM board
+					LEFT OUTER JOIN users ON board.user_no = users.user_no
+				WHERE category_type = 'qna'
+				ORDER BY board_no DESC
+			) B
+		  )
+		WHERE rnum BETWEEN #{startNo} AND #{endNo}
+	</select>
 
   	<select id="selectCntAllByKeyword" parameterType="string" resultType="int">
   		SELECT count(*) FROM board
@@ -16,30 +69,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	  			WHERE board_title LIKE '%' || #{keyword} || '%' 
 	  		</if>
   	</select>
-  
-	<select id="selectBoardList" resultType="web.dto.Board" parameterType="web.util.Paging">
-		SELECT * FROM (
-			SELECT rownum rnum, B.* FROM (
-				SELECT * FROM board
-					LEFT OUTER JOIN users ON board.user_no = users.user_no
-				ORDER BY board_no DESC
-				) B
-			) BOARD
-		WHERE rnum BETWEEN #{startNo} AND #{endNo}
-  	</select>
   	
-  	<select id="selectBoardListByKeword" resultType="web.dto.Board" parameterType="java.util.Map">
+  	<select id="selectAllBoardListByKeyword" resultType="web.dto.Board" parameterType="java.util.Map">
 		SELECT * FROM (
 		    SELECT rownum rnum, B.* FROM (
 		        SELECT * FROM board
 					LEFT OUTER JOIN users ON board.user_no = users.user_no
-					WHERE
-						board_title LIKE '%' || #{keyword} || '%'
+					WHERE board_title LIKE '%' || #{keyword} || '%'
 					ORDER BY board_no DESC
 		        ) B
 		    ) BOARD
 		WHERE rnum BETWEEN #{paging.startNo} AND #{paging.endNo}
   	</select>
+  	
+  	<select id="selectFreeBoardListByKeyword" resultType="web.dto.Board" parameterType="java.util.Map">
+	    SELECT * FROM (
+	        SELECT rownum rnum, B.* FROM (
+	            SELECT * FROM board
+	            	LEFT OUTER JOIN users ON board.user_no = users.user_no
+	           	 	WHERE board_title LIKE '%' || #{keyword} || '%'
+					AND category_type = 'free'
+					ORDER BY board_no DESC
+				) B
+			) BOARD
+	    WHERE rnum BETWEEN #{paging.startNo} AND #{paging.endNo}
+	</select>
+  	
+  	<select id="selectQnaBoardListByKeyword" resultType="web.dto.Board" parameterType="java.util.Map">
+	    SELECT * FROM (
+	        SELECT rownum rnum, B.* FROM (
+	            SELECT * FROM board
+	            	LEFT OUTER JOIN users ON board.user_no = users.user_no
+	           	 	WHERE board_title LIKE '%' || #{keyword} || '%'
+					AND category_type = 'qna'
+					ORDER BY board_no DESC
+				) B
+			) BOARD
+	    WHERE rnum BETWEEN #{paging.startNo} AND #{paging.endNo}
+	</select>
   	
   	<update id="hit" parameterType="web.dto.Board">
   		UPDATE board
@@ -97,6 +164,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		WHERE board_no = #{boardNo}
   	</delete>
   	
+  	<select id="selectByLike" parameterType="web.dto.Likes" resultType="int">
+  		SELECT count(*) result FROM LIKES
+  		WHERE user_no = #{userNo} and board_no = #{boardNo}
+  	</select>
+  	
+  	<insert id="insertBoardLike" parameterType="web.dto.Likes">
+  		INSERT INTO LIKES(BOARD_NO, USER_NO)
+  		VALUES(#{boardNo}, #{userNo})
+  	</insert>
+  	
+  	<delete id="deleteBoardLike" parameterType="web.dto.Likes">
+  		DELETE LIKES
+  		WHERE board_no = #{boardNo} and USER_NO = #{userNo}
+  	</delete>
+  	
   	<select id="selectComment" resultType="web.dto.Comments" parameterType="int">
   		SELECT COMM_NO, COMM_CONTENT, COMM_DATE, BOARD_NO, USER_NO
   		FROM Comments
@@ -111,9 +193,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	</insert>
   	
   	<update id="updateComment" parameterType="web.dto.Comments">
-  		<selectKey order="BEFORE" resultType="int" keyProperty="commNo">
-  			SELECT comments_seq.nextval FROM dual
-  		</selectKey>
 	  		UPDATE comments
 	  		SET COMM_NO = #{commNo}
 	  			, COMM_CONTENT = #{commContent}

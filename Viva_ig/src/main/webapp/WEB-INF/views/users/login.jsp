@@ -62,31 +62,85 @@ html{
 	height :100vh;
 	justify-content: center;
 	align-items: center;
-	background-color:#FFD0AF; 
+/*  지선 수정*/
+	background: linear-gradient(166.25deg, #514C9C 9.17%, #653A99 30.43%, #78377F 51.28%, #881E51 84.23%);
 }
 
-/* .boxcolor{ */
-/* 	border-radius: 7px; */
-/* } */
+/*  viva 로고 부분 */
+.login_wrap_part {
+	width : 606px;
+	height: 638px;
+	background: linear-gradient(360deg, #FFFFFF 0%, rgba(255, 255, 255, 0.89) 136.89%);
+	border-radius: 10px;
 
-input{
-	border:2px solid; 
-	border-radius: 5px;
+
+/*  viva 로고 부분 */
+.login_wrap_part {
+	width : 606px;
+	height: 638px;
+	background: linear-gradient(360deg, #FFFFFF 0%, rgba(255, 255, 255, 0.89) 136.89%);
+	border-radius: 10px;
+
+}
+/*  내용 적는 흰 박스 부분 */
+form {
+	width : 530px;
+	margin: 0 auto;
+  	padding-top: 100px;
 }
 
+input {
+	border:none;
+	background: transparent;
+}
+input:focus {
+	outline:none;
+}
+/*  내용 적는 흰 박스 부분 */
+form {
+	width : 530px;
+	margin: 0 auto;
+  	padding-top: 100px;
+}
+
+input {
+ 	border:none; 
+ 	background: transparent; 
+}
+  
+input:focus {
+	outline:none;
+}
+
+#login_wrap_logo {
+    margin: 0 auto;
+    width: 250px;
+}
+#login_wrap_logo img {
+    width: 250px;
+}
+/*  form 내부 각 요소 한줄씩에 대한 설정 */
 .select{
- 	width: 300px;
- 	margin: 20px;
+	margin : 0 auto;
+	padding-bottom : 30px;
+}
+
+.select img {
+	width : 527px;
+	height : 54px;
+	cursor : pointer;
 }
  
 .select input[type=text]{
-	width: 300px;
+	width: 380px;
 	height: 35px;
+	float : right;
 
 } 
 .select input[type=password]{
-	width: 300px;
+	width: 380px;
 	height: 35px;
+	float : right;
 
 } 
 
@@ -98,62 +152,82 @@ input{
 	height: 50px;
 }
 
-#kakao{
-	width: 310px;
-	height: 50px;
-}
 
 .noline{
 	 text-decoration-line: none;
+	 color: #575555;
 }
+/*  아이디 찾기 + 비밀번호 찾기 줄 */
+#find_id_pw {
+	width : 208px;
+	margin : 0 auto;
+
+}
+
+/*  체크박스 + 아이디 저장 줄 */
+#auto_id_save { 
+	width : 115px;
+    margin-right: 274px;
+    margin-bottom: 45px;
+}
+button {
+ 	border : none;
+ 	background : transparent;
+ 	
+}
+
+
 </style>
 
 </head>
 <body>
+<div id="login_wrap">
+	<div id="login_wrap_logo"><a href="/"><img class="layout_logo" src="/resources/icon/viva_icon_final.svg"></a></div><br>
+	
+	<div class="login_wrap_part" id="login_input">
+		<form action="./login" method="post">
 
-<form action="./login" method="post">
-
-	<h3 style="text-align:center; font-size:30px; color:#E57733;">Viva</h3><br>
-	
-	
-	<div class="select">
-	
-		<label for="userId" ></label>
-		<input type="text" class="boxcolor" id="userId" name="userId" value="${cookie.id.value}" placeholder="아이디">
-		<span id="userid_msg" class="msg" style="color:red"></span>
-	</div>
-		
-	<div class="select">
-		<label for="userPw" ></label>
-		<input type="password" class="boxcolor" id="userPw" name="userPw" placeholder="비밀번호">
-		<span id="userpw_msg" class="msg" style="color:red"></span>
-	
-	</div>
-	
-	<div class="select">
-		 <label for="rememberId"></label>
-        <input type="checkbox" name="rememberId" id="rememberId" ${empty cookie.id.value ? "":"checked" }/>
-		아이디 저장
-	</div>
+      <div class="select">
+				<label for="userId" >ID</label>
+				<input type="text" class="boxcolor" id="userId" name="userId" value="${cookie.id.value}" placeholder="아이디">
+				<span id="userid_msg" class="msg" style="color:red"></span>
+			</div>
+				
+			<div class="select">
+				<label for="userPw" >PASSWORD</label>
+				<input type="password" class="boxcolor" id="userPw" name="userPw" placeholder="비밀번호">
+				<span id="userpw_msg" class="msg" style="color:red"></span>
 			
-	<div class="select">
-		<button id="btn">로그인</button>
-	</div>
-	
-	<div class="select">
-        <a href="https://kauth.kakao.com/oauth/authorize?client_id=709641586592b61e7e148fb086efd03f&redirect_uri=http://localhost:8888/users/kakaologin&response_type=code">
-			<img id="kakao" src="/resources/img/kakao_login_medium_wide.png">
-        </a>
-   </div>
+			</div>
+			
+			<div class="select" id="auto_id_save">
+				 <label for="rememberId"></label>
+		        <input type="checkbox" name="rememberId" id="rememberId" ${empty cookie.id.value ? "":"checked" }/>
+				아이디 저장
+			</div>
+					
+			<div class="select click_button"> <!--  일반 로그인 버튼 -->
+<!-- 				<button id="btn">로그인</button> -->
+				<button><img src="/resources/icon/new_login_btn.svg"></button>
+			</div>
+			
+			<div class="select click_button"> <!--  카카오 로그인 버튼 -->
+		        <a href="https://kauth.kakao.com/oauth/authorize?client_id=709641586592b61e7e148fb086efd03f&redirect_uri=http://localhost:8888/users/kakaologin&response_type=code">
+		<!-- 			<img id="kakao" src="/resources/img/kakao_login_medium_wide.png"> -->
+					<img id="kakao" src="/resources/icon/new_kakao_login_btn.svg">
+		        </a>
+		   </div>
+			<div class="select click_button"> <!--  회원가입 버튼 -->
+				<a href="./join" class="noline"><img src="/resources/icon/new_join_us_btn.svg"></a>
+				
+		   </div>
+			<div class="select" id="find_id_pw">
+				<a href="./idcheck" class="noline">아이디 찾기 | </a>
+				<a href="./pwcheck" class="noline">비밀번호 찾기</a>
+			</div>
 		
-	<div class="select">
-		<a href="./idcheck" class="noline">아이디 찾기 | </a>
-		<a href="./pwcheck" class="noline">비밀번호 찾기 | </a>
-		<a href="./join" class="noline">회원가입</a>
+		</form>
 	</div>
-
-</form>
-
+</div>
 </body>
 </html>
-

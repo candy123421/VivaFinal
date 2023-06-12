@@ -410,7 +410,7 @@ font-weight: bold;
 							  			<span class="iconName">My Sounds</span>
 							  		</a>
 								<!--  여기까지 지선 작성 부분 -->
-	  	<img src="../../../profile/${userProfile.STOREDNAME}" style="width: 40px; border-radius:50px;">
+	  	<a href="/users/mypage"><img src="<%=request.getContextPath() %>/profile/${userProfile}" style="width: 40px; border-radius:50px;"></a>
 		nick:<span style="font-size: 1.5em; color: red;"> ${nick }</span>님
 	  	<a href="/users/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
 	  	

@@ -39,15 +39,15 @@ $(function(){
 		
 		$.ajax({
 			type:"get",
-			url: " /users/userNickChk",
+			url: " /users/userNickChk2",
 			data : data,
 			success: function(result){
 				//
-				if(result != "fail"){
+				if(result != "fail" ){
 					isNickCheck=true;
 					//중복아이디가 없어서 사용가능한 닉네임입니다
 					$("#usernick_msg").html("사용가능한 닉네임입니다");
-				}else{
+				}else {
 					isNickCheck=false;
 					//중복닉네임이므로 '닉네임 이미 존재합니다' 띄우기
 					$("#usernick_msg").html("이미 존재하는 닉네임입니다");
@@ -223,7 +223,7 @@ a {
 					<div class="contentSmall">프로필 사진</div>
 					<div class="contentMedium" >
 						<div id="imgwrap">
-							<img src="../../../profile/${userProfile.STOREDNAME}" style="width: 100%; border-radius: 50%; margin-left:300px;">
+							<img src="<%=request.getContextPath() %>/profile/${userProfile}" style="width: 100%; border-radius: 50%; margin-left:300px;">
 								<div id="fileWrap">
 									<input type="file" id="userProfile"  accept=".jpg, .png, .gif" name="profile">
 								</div>

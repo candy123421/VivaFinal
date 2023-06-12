@@ -103,8 +103,8 @@ a {
 			<div class="items"><a href="./mypage">회원정보</a></div>
 			<div class="items"><a href="">내가 쓴글</a></div>
 			<div class="items"><a href="">내 음원</a></div>
-			<div class="items"><a href="">결제내역</a></div>
-			<div class="items"><a href="./question">문의하기</a></div>
+			<div class="items"><a href="/credit/list">결제내역</a></div>
+			<div class="items"><a href="/qna/list">문의하기</a></div>
 		</div>	
 		
 		<div id="colgrid2">
@@ -115,7 +115,7 @@ a {
 					<div class="contentSmall">프로필 사진</div>
 					<div class="contentMedium">
 						<div id="imgwrap">
-							<img src="../../../profile/${userProfile.STOREDNAME}" style="width: 100%; border-radius: 50%; margin-left:300px;">
+							<img src="<%=request.getContextPath() %>/profile/${userProfile}" style="width: 100%; border-radius: 50%; margin-left:300px;">
 						</div>
 					</div>
 					<div class="contentSmall"><div>아이디</div></div>

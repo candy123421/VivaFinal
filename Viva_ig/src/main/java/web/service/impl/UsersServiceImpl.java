@@ -272,5 +272,33 @@ public class UsersServiceImpl implements UsersService {
 		//유저 비밀번호,닉네임 수정
 	    usersDao.insertUserInfo(users);
 	}
+	
+	@Override
+	public String selectStoredName(int userNo) {
+		return usersDao.selectStoredName(userNo);
+	}
+	
+@Override
+	public boolean updateNickCheck(Users users) {
+
+		//DB 닉네임 확인
+		String checkNick = usersDao.selectUpdateNick(users);
+		// 내가 입력한 닉네임
+		String nick = users.getUserNick();
+		// DB에 닉네임 존재하는지 1,0 반환
+		int res = usersDao.checkUserNick(users); 
+		
+		//내가 입력한 값이 db에 없으면 true - 수정 가능(중복 아님)
+		//내가 입력한 값이랑 DB에 있는 값이 같으면 (닉네임 중복임)
+		//- 이미 내 닉네임 - true처리 해야함
+		if(checkNick.equals(nick) || !checkNick.equals(nick) && res <= 0) {
+			return true;
+		//내가 입력한 값이 DB에 있으면 false - 닉네임 수정안돼
+		}else if(res>0) {
+			return false;
+		}
+		return false;
+			
+	}
 
 }

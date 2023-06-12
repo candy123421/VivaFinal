@@ -163,5 +163,20 @@ public interface UsersService {
 	 */
 	public void updateIdPw(Users users, MultipartFile profile);
 
+	/**
+	 * 프로필사진 가져오기
+	 * 
+	 * @param userNo
+	 */
+	public String selectStoredName(int userNo);
+
+	/**
+	 * 회원정보 수정 - 닉네임중복검사
+	 * 
+	 * @param users
+	 * @return
+	 */
+	public boolean updateNickCheck(Users users);
+
 
 }

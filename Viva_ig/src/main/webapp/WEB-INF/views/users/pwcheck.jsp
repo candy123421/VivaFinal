@@ -15,7 +15,7 @@ html{
 	height :100vh;
 	justify-content: center;
 	align-items: center;
-	background-color:#FFD0AF;
+ 	background: linear-gradient(166.25deg, #514C9C 9.17%, #653A99 30.43%, #78377F 51.28%, #881E51 84.23%);
 }
 
 input{ 
@@ -50,6 +50,7 @@ input{
 
 .noline{
 	 text-decoration-line: none;
+	 color:#0000CD;
 }
 
 /* 이메일 @.com 뒤에꺼 버튼 */
@@ -71,6 +72,14 @@ input{
 
 #mail-check-warn , #userid_msg{
 	color:red;
+}
+/*  viva 로고 부분 */
+#login_wrap_logo {
+    margin: 0 auto;
+    width: 250px;
+}
+#login_wrap_logo img {
+    width: 250px;
 }
 </style>
 
@@ -217,47 +226,51 @@ $(function(){
 </head>
 <body>
 
-	<h3 style="text-align:center; font-size:30px; color:#E57733	;">Viva</h3><br>
+<div id="login_wrap">
+	<div id="login_wrap_logo"><a href="/"><img class="layout_logo" src="/resources/icon/viva_icon_final.svg"></a></div><br>
 	
+	<div class="login_wrap_part" id="login_input">	
 <!-- 	<input type="hidden" id="compare" value="0"> -->
 	
-	<div class="select">
-		<label for="userId">아이디</label>
-		<input type="text"  id="userId" name="userId" class="name_bord2">
-		<span id="userid_msg" class="msg"></span>
-	</div>
-	
-	<div class="select">
-		<label for="userEmail">이메일</label>
-		<input class="userEmail" type="text"  id="userEmail" name="userEmail" placeholder="이메일 인증을 해주세요">
-		<select class="form-controll" id="userEmail2" name="userEmail2">
-			<option>@naver.com</option>
-			<option>@daum.net</option>
-			<option>@gmail.com</option>
-			<option>@hanmail.com</option>
-			<option>@yahoo.co.kr</option>
-		</select>
-		<div class="mail-check-box">
-			<input class="mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled" maxlength="6">
+		<div class="select">
+			<label for="userId">아이디</label>
+			<input type="text"  id="userId" name="userId" class="name_bord2">
+			<span id="userid_msg" class="msg"></span>
 		</div>
 		
-		<div class="input-group-addon">
-			<button type="button" class="btn-btn-primary" id="mail-Check-Btn">인증코드전송</button>
+		<div class="select">
+			<label for="userEmail">이메일</label>
+			<input class="userEmail" type="text"  id="userEmail" name="userEmail" placeholder="이메일 인증을 해주세요">
+			<select class="form-controll" id="userEmail2" name="userEmail2">
+				<option>@naver.com</option>
+				<option>@daum.net</option>
+				<option>@gmail.com</option>
+				<option>@hanmail.com</option>
+				<option>@yahoo.co.kr</option>
+			</select>
+			<div class="mail-check-box">
+				<input class="mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled" maxlength="6">
+			</div>
+			
+			<div class="input-group-addon">
+				<button type="button" class="btn-btn-primary" id="mail-Check-Btn">인증코드전송</button>
+			</div>
+			
+			<div>
+				<span id="mail-check-warn" class="msg"></span>
+			</div>
 		</div>
 		
-		<div>
-			<span id="mail-check-warn" class="msg"></span>
+		<div class="select">
+			<button id="pw_check" class="auth" disabled="disabled">비밀번호 변경하기</button>
 		</div>
-	</div>
-	
-	<div class="select">
-		<button id="pw_check" class="auth" disabled="disabled">비밀번호 변경하기</button>
-	</div>
+			
+		<div class="select" style=font-size:12px;>아이디를 찾으시겠습니까?
+			<a href="./idcheck" class="noline">아이디 찾기 | </a>
+			<a href="./login" class="noline">뒤로가기</a>
+		</div>
 		
-	<div class="select" style=font-size:12px;>아이디를 찾으시겠습니까?
-		<a href="./idcheck" class="noline">아이디 찾기 | </a>
-		<a href="./login" class="noline">뒤로가기</a>
 	</div>
-	
+</div>	
 </body>
 </html>

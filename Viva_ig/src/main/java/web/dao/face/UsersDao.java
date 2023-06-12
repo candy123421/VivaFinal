@@ -177,6 +177,20 @@ public interface UsersDao {
 	 */
 	public void deleteProfile(int userNo);
 
-	
+	/**
+	 * 메인 프로필사진 저장
+	 * 
+	 * @param userNo
+	 * @return 
+	 */
+	public String selectStoredName(int userNo);
+
+	/**
+	 * 회원정보 수정 - 닉네임 중복검사를 위해 닉네임 가져오기
+	 * 
+	 * @param users
+	 * @return 
+	 */
+	public String selectUpdateNick(Users users);
 
 }

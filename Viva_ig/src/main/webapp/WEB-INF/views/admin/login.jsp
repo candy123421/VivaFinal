@@ -19,8 +19,12 @@
 
 </head>
 <body>
-<h1>Admin Login</h1>
-<hr>
+<div class="FunctionTitle">
+   Viva Admin Login
+</div>
+<div class="FunctionTitleLine1">
+   <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg" style="margin-top:15px; margin-bottom: 15px; width:1400px;">
+</div>
 <br>
 <form action="./login" method="post">
 <div class="text-center" style="margin-left: 555px;">

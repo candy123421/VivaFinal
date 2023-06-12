@@ -15,6 +15,7 @@ public class Paging {
 	private int endNo;		//화면에 보이는 게시글의 끝 번호
 	
 	private String keyword;	//검색 기준이 되는 검색 타입(옵션)
+	private String categoryType;
 
 	
 	//디폴트 생성자 - 페이징 계산이 완료되지 않는다
@@ -82,18 +83,15 @@ public class Paging {
 		startNo = (curPage-1) * listCount + 1;
 		endNo = curPage * listCount;
 	}
-	
 
-	
 	@Override
 	public String toString() {
 		return "Paging [curPage=" + curPage + ", totalCount=" + totalCount + ", listCount=" + listCount + ", totalPage="
 				+ totalPage + ", pageCount=" + pageCount + ", startPage=" + startPage + ", endPage=" + endPage
-				+ ", startNo=" + startNo + ", endNo=" + endNo + ", keyword=" + keyword + "]";
+				+ ", startNo=" + startNo + ", endNo=" + endNo + ", keyword=" + keyword + ", categoryType="
+				+ categoryType + "]";
 	}
 
-	
-	
 	public int getCurPage() {
 		return curPage;
 	}
@@ -174,5 +172,13 @@ public class Paging {
 		this.keyword = keyword;
 	}
 
+	public String getCategoryType() {
+		return categoryType;
+	}
+
+	public void setCategoryType(String categoryType) {
+		this.categoryType = categoryType;
+	}
+	
 	
 }

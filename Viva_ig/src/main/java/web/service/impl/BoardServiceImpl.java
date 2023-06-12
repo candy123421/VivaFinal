@@ -3,6 +3,7 @@ package web.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import web.dao.face.BoardDao;
 import web.dto.Board;
 import web.dto.Comments;
 import web.dto.Files;
+import web.dto.Likes;
 import web.dto.Tag;
 import web.service.face.BoardService;
 import web.util.Paging;
@@ -37,7 +39,7 @@ public class BoardServiceImpl implements BoardService {
 	
 	
 	@Override
-	public Paging getPaging(Paging paging, String keyword) {
+	public Paging getPaging(Paging paging, String keyword, String categoryType) {
 		
 		Paging page = null;
 		
@@ -53,26 +55,135 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<Board> boardList(Paging page,String userId, String keyword) {		
-
-		Paging paging = null;
+	public List<Board> boardList(Paging page,String userId, String keyword, String categoryType) {	
 		
-		if( keyword == null ) {
-			int totalCount = boardDao.selectCntAll();
-			paging = new Paging(totalCount, page.getCurPage() );
-			
-			return boardDao.selectBoardList(paging);
-			
-		} else {
-			int totalCount = boardDao.selectCntAllByKeyword(keyword);
-			paging = new Paging(totalCount, page.getCurPage());
-
-			return boardDao.selectBoardListByKeword(paging, keyword);
+		List<Board> boardList;
+		int totalCount;
+	    Paging paging = new Paging(page.getTotalCount(), page.getCurPage());
+		    
+		    if (keyword == null || keyword.isEmpty()) {
+		        if (categoryType == null || categoryType.equals("all")) {
+		            totalCount = boardDao.selectCntAll();
+		            boardList = boardDao.selectAllBoardList(paging);
+		            
+		        } else if (categoryType.equals("free")) {
+		            totalCount = boardDao.selectCntFree();
+		            boardList = boardDao.selectFreeBoardList(paging);
+		            
+		        } else if (categoryType.equals("qna")) {
+		            totalCount = boardDao.selectCntQna();
+		            boardList = boardDao.selectQnaBoardList(paging);
+		            
+		        } else {
+		            totalCount = 0; // 예시로 0으로 처리
+		            boardList = Collections.emptyList(); // 예시로 빈 리스트 반환
+		        }
+		    } else {
+		        if (categoryType == null || categoryType.equals("all")) {
+		            totalCount = boardDao.selectCntAllByKeyword(keyword);
+		            boardList = boardDao.selectAllBoardListByKeyword(paging, keyword);
+		            
+		        } else if (categoryType.equals("free")) {
+		            totalCount = boardDao.selectCntFreeByKeyword(keyword);
+		            boardList = boardDao.selectFreeBoardListByKeyword(paging, keyword);
+		            
+		        } else if (categoryType.equals("qna")) {
+		            totalCount = boardDao.selectCntQnaByKeyword(keyword);
+		            boardList = boardDao.selectQnaBoardListByKeyword(paging, keyword);
+		            
+		        } else {
+		            totalCount = 0; // 예시로 0으로 처리
+		            boardList = Collections.emptyList(); // 예시로 빈 리스트 반환
+		        }
+		    }
+		    
+		    page.setTotalCount(totalCount);
+		    return boardList;
 		}
-	}
 
+
+//		List<Board> boardList;
+//		Paging paging = null;
+//		
+//		if (keyword == null) {
+//		    int totalCount;
+//		    if (categoryType == null || categoryType.equals("all")) {
+//		        totalCount = boardDao.selectCntAll();
+//		    } else if (categoryType.equals("free")) {
+//		        totalCount = boardDao.selectCntFree();
+//		    } else if (categoryType.equals("qna")) {
+//		        totalCount = boardDao.selectCntQna();
+//		    } else {
+//		        // Handle invalid categoryType or return an appropriate count
+//		        totalCount = 0; // 예시로 0으로 처리
+//		    }
+//
+//		    paging = new Paging(totalCount, page.getCurPage());
+//
+//		    if (categoryType == null || categoryType.equals("all")) {
+//		        boardList = boardDao.selectAllBoardList(paging);
+//		        
+//		    } else if (categoryType.equals("free")) {
+//		        boardList = boardDao.selectFreeBoardList(paging);
+//		        
+//		    } else if (categoryType.equals("qna")) {
+//		        if (keyword != null) {
+//		            totalCount = boardDao.selectCntAllByKeyword(keyword);
+//		            paging = new Paging(totalCount, page.getCurPage());
+//		            boardList = boardDao.selectAllBoardListByKeyword(paging, keyword);
+//		            
+//		        } else {
+//		            boardList = boardDao.selectQnaBoardList(paging);
+//		        }
+//		    } else {
+//		        boardList = Collections.emptyList(); // 예시로 빈 리스트 반환
+//		    }
+//		} else {
+//			
+//		    int totalCount;
+//		    if (categoryType == null || categoryType.equals("all")) {
+//		        totalCount = boardDao.selectCntAllByKeyword(keyword);
+//		    } else if (categoryType.equals("free")) {
+//		        totalCount = boardDao.selectCntFreeByKeyword(keyword);
+//		    } else if (categoryType.equals("qna")) {
+//		        totalCount = boardDao.selectCntQnaByKeyword(keyword);
+//		    } else {
+//		        // Handle invalid categoryType or return an appropriate count
+//		        totalCount = 0; // 예시로 0으로 처리
+//		    }
+//
+//		    paging = new Paging(totalCount, page.getCurPage());
+//
+//		    if (categoryType == null || categoryType.equals("all")) {
+//		        boardList = boardDao.selectAllBoardListByKeyword(paging, keyword);
+//		    } else if (categoryType.equals("free")) {
+//		        boardList = boardDao.selectFreeBoardListByKeyword(paging, keyword);
+//		    } else if (categoryType.equals("qna")) {
+//		        boardList = boardDao.selectQnaBoardListByKeyword(paging, keyword);
+//		    } else {
+//		        boardList = Collections.emptyList(); // 예시로 빈 리스트 반환
+//		    }
+//		}
+//		return boardList = boardDao.selectAllBoardList(paging);
+//	}
+		
 	
 	
+//		//키워드 검색
+//		if( keyword == null ) {
+//			int totalCount = boardDao.selectCntAll();
+//			paging = new Paging(totalCount, page.getCurPage() );
+//			
+//			return boardDao.selectBoardList(paging);
+//			
+//		} else {
+//			int totalCount = boardDao.selectCntAllByKeyword(keyword);
+//			paging = new Paging(totalCount, page.getCurPage());
+//
+//			return boardDao.selectBoardListByKeword(paging, keyword);
+//		}
+		
+
 	@Override
 	public Board view(Board viewBoard) {
 		
@@ -85,18 +196,17 @@ public class BoardServiceImpl implements BoardService {
 	
 	
 	@Override
-	public void write(Board board, List<MultipartFile> file) {
+	public void write(Board writeBoard, List<MultipartFile> file) {
 		
+		writeBoard.setUserNo(writeBoard.getUserNo());
 		
-		board.setUserNo(board.getUserNo());
-		
-		if("".equals( board.getBoardTitle() ) ) {
-			board.setBoardTitle("제목 없음");
+		if("".equals( writeBoard.getBoardTitle() ) ) {
+			writeBoard.setBoardTitle("제목 없음");
 		}
 		
-		boardDao.insertBoard( board );
+		boardDao.insertBoard( writeBoard );
 		
-		logger.info("BoardServiceImpl - board {}", board);
+		logger.info("BoardServiceImpl - board {}", writeBoard);
 		logger.info("BoardServiceImpl - file {}", file);
 	
 		//----------------------------------------------
@@ -154,11 +264,11 @@ public class BoardServiceImpl implements BoardService {
 			      
 			    //첨부한 파일 삽입(파일 정보)
 				Files boardFile = new Files();
-				boardFile.setBoardNo( board.getBoardNo() );
+				boardFile.setBoardNo( writeBoard.getBoardNo() );
 				boardFile.setFilesize( file.size());
 				boardFile.setOriginname(originName);
 				boardFile.setStoredname(storedName);
-				boardFile.setFileDate(board.getBoardDate());
+				boardFile.setFileDate(writeBoard.getBoardDate());
 				
 				fileList.add(boardFile);
 				}		
@@ -182,116 +292,177 @@ public class BoardServiceImpl implements BoardService {
 	
 
 	@Override
-	public void update(Board board, List<MultipartFile> file) {
+	public void update(Board updateBoard, List<MultipartFile> file) {
 		
-		if( "".equals( board.getBoardTitle() ) ) {
-			board.setBoardTitle("(제목없음)");
+		logger.info("uuuuuuuuuuuuuuuuuuuuuuuupdateBoard {}", updateBoard);
+		logger.info(";;;;;;;;;;;;;;;;;;;;;;;updateBoard - boardNo {}", updateBoard.getBoardNo());
+
+		
+		if( "".equals( updateBoard.getBoardTitle() ) ) {
+			updateBoard.setBoardTitle("(제목없음)");
 		}
-		boardDao.update(board);
 		
-		logger.info("~~~~~~~~~~boardServiceImpl {}", board);
+		//게시글에 연결되어있는 기존의 모든 첨부파일 정보를 삭제한다
+		boardDao.deleteFile(updateBoard);
+		
+		//게시글 수정
+		logger.info("''''''''''''''''''''''''''''updateBoard.setBoardNo(boardNo){}", updateBoard.getBoardNo() );
+		int boardNo;
+		logger.info("uuuuuuuuuuuuuuuuUPDATE BOARD {}", updateBoard);
+		boardDao.update(updateBoard);
+		
+		logger.info("~~~~~~~~~~boardServiceImpl {}", updateBoard);
 		
 		//-------------------------------------------------------
 		
-		//빈 파일인 경우
-				//파일이 없을 때 파일 삽입하는 메소드 처리되지 않도록 
-				for( MultipartFile mpf : file ) {
-					if( mpf.getSize() <= 0 ) {	
-						logger.info("0보다 작음, 처리 중단");
-						return;
-					}
-				}
-				
-				logger.info("@@@@@@@@@@@boardServiceImpl {}", file);
-					
-				List<Files> fileList = new ArrayList<>();
 
-				//파일이 저장될 경로 - RealPath - 톰캣 서버 배포 위치
-				String storedPath = context.getRealPath("boardUpload");
-				logger.info("storedPath : {}", storedPath);
+		//빈 파일인 경우
+		//파일이 없을 때 파일 삽입하는 메소드 처리되지 않도록 
+//		if (file == null || file.isEmpty()) {
+//	        logger.info("파일이 null이거나 비어있습니다. 처리 중단");
+//	        continue;
+//	    }
+		for (MultipartFile mpf : file) {
+		    if (mpf.getSize() <= 0) {
+		        logger.info("파일의 크기가 0보다 작습니다");
+		        continue;
+		    }
+		}
 				
-				//upload폴더가 존재하지 않으면 생성한다
-				File storedFolder = new File(storedPath);
-				if( !storedFolder.exists() ) {
+		logger.info("@@@@@@@@@@@boardServiceImpl {}", file);
+					
+			List<Files> fileList = new ArrayList<>();
+
+			//파일이 저장될 경로 - RealPath - 톰캣 서버 배포 위치
+			String storedPath = context.getRealPath("boardUpload");
+			logger.info("storedPath : {}", storedPath);
+				
+			//upload폴더가 존재하지 않으면 생성한다
+			File storedFolder = new File(storedPath);
+			if( !storedFolder.exists() ) {
 					storedFolder.mkdir();
+			}
+				
+			logger.info("###################boardServiceImpl {}", file);
+				
+			for( int i=0; i<file.size(); i++ ) {	
+				if (file.get(i) == null || file.get(i).isEmpty()) {
+					logger.info("파일이 null이거나 비어있습니다.");
+					continue; // 파일이 null인 경우 건너뛰기
 				}
-				
-				logger.info("###################boardServiceImpl {}", file);
-				
-				for( int i=0; i<file.size(); i++ ) {	
-					 if (file.get(i) == null) {
-					        continue; // 파일이 null인 경우 건너뛰기
-					    }
 							
 				File uploadFile = null;
 				
-					//파일이 저장될 이름 생성하기
-					String originName = ( file.get(i)).getOriginalFilename();						//원본 파일명
-					String storedName = originName + UUID.randomUUID().toString().split("-")[4];	//UUID추가
-					logger.info("storedName : {}", storedName);
+				//파일이 저장될 이름 생성하기
+				String originName = ( file.get(i)).getOriginalFilename();						//원본 파일명
+				String storedName = originName + UUID.randomUUID().toString().split("-")[4];	//UUID추가
+				logger.info("storedName : {}", storedName);
 					
-					//실제 저장될 파일 정보 객체
-					uploadFile = new File(storedFolder, storedName);
+				//실제 저장될 파일 정보 객체
+				uploadFile = new File(storedFolder, storedName);
 					
-				      //-> 중복 이름 검증 코드 do while
-				      //이름이 있으면 다시 만들어라 -> 이름이 없으면 빠져나오기
+				//-> 중복 이름 검증 코드 do while
+				//이름이 있으면 다시 만들어라 -> 이름이 없으면 빠져나오기
 							
-					logger.info("$$$$$$$$$$$$$$$$$$boardServiceImpl {}", file);
+				logger.info("$$$$$$$$$$$$$$$$$$boardServiceImpl {}", file);
 
 					try {
-							 //업로드된 파일을 upload폴더에 저장하기
-					         //여기서 저장
-							file.get(i).transferTo(uploadFile);
+						//업로드된 파일을 upload폴더에 저장하기
+						//여기서 저장
+						file.get(i).transferTo(uploadFile);
 							logger.info("다중 파일 업로드 성공!");
 						} catch (IllegalStateException | IOException e) {
 							logger.info("다중 파일 업로드 실패!");
 							e.printStackTrace();
 						} 
-						//----------------------------------------------
 							
 						logger.info("++++++++++++++++BoardServiceImpl {}", file);	
 						//DB에 기록할 정보 객체
 					      
 					    //첨부한 파일 삽입(파일 정보)
 						Files boardFile = new Files();
-						boardFile.setBoardNo( board.getBoardNo() );
-						boardFile.setFilesize( file.size());
+						boardFile.setBoardNo( updateBoard.getBoardNo() );
+//						boardFile.setFilesize( file.size());
+						fileList.size();
 						boardFile.setOriginname(originName);
 						boardFile.setStoredname(storedName);
-						boardFile.setFileDate(board.getBoardDate());
+						boardFile.setFileDate(updateBoard.getBoardDate());
 						
 						fileList.add(boardFile);
+//						boardDao.insertFile(fileList);
 						}		
-				logger.info("%%%%%%%%%%%%%%%%boardServiceImpl {}", file);
+					logger.info("%%%%%%%%%%%%%%%%boardServiceImpl {}", file);
 						
-					//게시글에 연결되어있는 기존의 모든 첨부파일 정보를 삭제한다
-					boardDao.deleteFile(board);
 	
-					for( Files files : fileList ) {
-							boardDao.insertFile(files);
-						}
+//					for( Files files : fileList ) {
+//							
+//						}
+					for (Files files : fileList) {
+					    boardDao.insertFile(files);
+					}
+
 						
-						
-						logger.info("^^^^^^^^^^^^^^^^boardServiceImpl {}", file);
+					logger.info("^^^^^^^^^^^^^^^^boardServiceImpl {}", file);
 	}
 
 
 	@Override
-	public void delete(Board board) {
+	public void delete(Board board, Comments comments) {
 		
+		//게시글 댓글 삭제 (댓글 있는 게시글 삭제 시, 게시글 댓글 먼저 삭제를 위함)
+		//Comments 객체 생성 및 데이터 설정
+	    Comments comment = new Comments();
+	    comment.setCommNo(comments.getCommNo());
+	    comment.setCommContent(comments.getCommContent());
+	    comment.setCommDate(comments.getCommDate());
+	    comment.setBoardNo(comments.getBoardNo());
+	    comment.setUserNo(board.getUserNo());
+		
+		boardDao.deleteComment(comment);
+		
+		logger.info("CCCCCCCCCCCCCCCCCCCCCCCCcomments :  {}", comments);
+		logger.info("CCCCCCCCCCCCCCCCCCCCCCCCcomment :  {}", comment);
+		logger.info("DDDDDDDDDDDDDDDDDDDDDDDDDelete comment-boardNo {}", comments.getBoardNo());//값 받아옴
+		logger.info("DDDDDDDDDDDDDDDDDDDDDDDDDelete comment-userNo {}", comments.getUserNo());	//값 못받아옴
+		logger.info("DDDDDDDDDDDDDDDDDDDDDDDDDelete board-userNo {}", board.getUserNo());		//값 받아옴
+
+		//게시글 파일 삭제
 		boardDao.deleteFile(board);
+		
+		//게시글 삭제
 		boardDao.delete(board);	
 	}
 	
 	@Override
 	public void deleteBoard(Board board) {
+		
 		boardDao.delete(board);
 	}
 	
+	@Override
+	public boolean checkLike(Likes like) {
+		
+		int result = boardDao.selectByLike(like);
+		
+		if( result > 0 ) {
+			return true;
+		}
+		return false;
+	}
 	
 	@Override
-	public List<Comments> viewComment(int boardNo) {
-		return boardDao.selectComment(boardNo);
+	public void boardLike(Likes like) {
+		boardDao.insertBoardLike(like);
+	}
+	
+	@Override
+	public void boardReverseLike(Likes like) {
+		boardDao.deleteBoardLike(like);
+	}
+	
+	@Override
+	public List<Comments> viewComment(Comments comments) {
+		return boardDao.selectComment(comments);
 	}
 	
 	@Override
@@ -306,13 +477,8 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public void deleteComment(Comments comments) {
-		
-		System.out.println("==========================");
-		System.out.println(comments);
-		System.out.println("==========================");
 		boardDao.deleteComment(comments);
 	}
-
 	
 	@Override
 	public List<Board> searchBoard(String keyword, Paging page) {
@@ -322,14 +488,12 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void deleteCheckBoard(int[] check) {
 		//보현작성부분
-		
 		for(int i=0; i<check.length; i++ ) {
 			Board board = new Board();
 			board.setBoardNo(check[i]);
 			boardDao.deleteCommentAll(board);
 			boardDao.deleteFile(board);
 			boardDao.delete(board);
-			
 		}
 		
 	}

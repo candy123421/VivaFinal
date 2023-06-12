@@ -3,7 +3,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<div>
+
+<div class="paging">
 	<ul class="pagination pagination-sm justify-content-center">
 
 	<%-- 첫 페이지로 이동 --%>

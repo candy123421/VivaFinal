@@ -26,6 +26,16 @@
 	border-radius: 10px;
 
 }
+.qt{
+	border: 2px #ffd4de  solid;
+	width: 1100px;
+	margin: 0 auto;
+	 border-radius: 10px;
+	 background: #fef6fc;
+	 margin-bottom: 20px;
+
+
+}
 .t{
 	display: grid;
 	grid-template-columns: 100px 160px 150px 100px 150px 300px;
@@ -39,10 +49,12 @@
 	width: 1200px;
 	margin: 0 auto;
 	margin-left: 330px;
+	margin-bottom: 15px;
 }
 
 .first{
 	margin: 0 auto;
+	
 }
 .menu{
 	width: 1050px; 
@@ -51,6 +63,35 @@
 	place-content: center;
 	padding-top: 15px;
 }
+#titleWrap{
+	width: 1400px;
+	margin: 0 auto;
+	font-size: 2.5rem;
+	font-weight: bold;
+	margin-bottom: 30px;
+}
+
+	.list{
+	background: rgba(255, 255, 255, 0.01);
+	border: 2px solid #F88080;
+	border-radius: 10px;
+	width:80px;
+	height:40px;
+	transition: all 0.4s;
+	color: #F88080;
+	}
+	.list:focus{
+	outline: none;
+	}
+
+	.list:hover{
+	background: linear-gradient(270deg, rgba(255, 194, 137, 0.929575) 4.09%, rgba(255, 43, 91, 0.812201) 99.99%, #4200FF 100%);
+	width:80px;
+	height:40px;
+	color: white;
+	}
+
+
 
 </style>
 
@@ -59,8 +100,14 @@
 
 </head>
 <body >
-<h1>QnA view</h1>
-<hr>
+<div id="titleWrap">
+<div class="FunctionTitle">
+   Viva QnA View
+</div>
+<div class="FunctionTitleLine1">
+   <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg" style="margin-top:15px; margin-bottom: 15px; width:1400px;">
+</div>
+</div>
 <div class = first>
 	<div class="t">
 		<div class="item">유저 번호:${userQuestion.userNo }</div>
@@ -68,14 +115,18 @@
 		<div class="item">유저 아이디:${users.userId }</div>
 		<div class="item">문의번호:${userQuestion.qNo}</div>
 		<div class="item">처리여부:${userQuestion.qProcess }</div>
-		<div class="item">문의 작성일:<fmt:formatDate value="${userQuestion.qDate }" pattern="yyyy-MM-dd [E] a hh:mm:ss"/></div>
+		<div class="item">문의 작성일:<fmt:formatDate value="${userQuestion.qDate }" pattern="yyyy-MM-dd [E] a hh:mm"/></div>
 	</div><br>
 
-	
+
+<div class="qt">
+	문의 제목: ${userQuestion.qTitle }
+</div>
 
 <div class="q">
-	문의제목: ${userQuestion.qTitle }<hr>
-	문의내용<hr>${userQuestion.qContent }</div>
+	
+	문의 내용 : <br>
+	${userQuestion.qContent }</div>
 </div>
 <br><br>
 
@@ -85,18 +136,19 @@
 			<div class="item">관리자번호:${adminAnswer.adminNo }</div>
 			<div class="item">관리자아이디 : ${admin.adminId }</div>
 			<div class="item">답변번호:${adminAnswer.aNo }</div>
-			<div class="item">답변일자:<fmt:formatDate value="${adminAnswer.aDate }" pattern="yyyy-MM-dd [E] a hh:mm:ss"/></div>
+			<div class="item">답변일자:<fmt:formatDate value="${adminAnswer.aDate }" pattern="yyyy-MM-dd [E] a hh:mm"/></div>
 		
 		</div>
 		<div class="a">
-			답변<hr>${adminAnswer.aAnswer }
+			답변 : <br> 
+			${adminAnswer.aAnswer }
 		
 		</div>
 	
 	
 	</c:if>
 	<div class="menu">
-		<a href="/qna/list"><button class="btn btn-outline-secondary">목록</button></a>
+		<a href="/qna/list"><button class="list">목록</button></a>
 	</div>
 		
 	<c:choose>
@@ -106,7 +158,7 @@
 		
 		<c:when test="${not empty adminlogin and adminlogin && process eq 0}">
 			<div class="menu">
-				<a href="/qna/answer?qNo=${userQuestion.qNo }"><button class="btn btn-outline-secondary">답변하기 </button></a>
+				<a href="/qna/answer?qNo=${userQuestion.qNo }"><button class="list">답변하기 </button></a>
 			</div>
 		</c:when>
 	

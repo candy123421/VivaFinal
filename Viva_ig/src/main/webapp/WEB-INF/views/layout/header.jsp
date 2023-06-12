@@ -420,6 +420,20 @@ font-weight: bold;
 	  	</c:when>
 	  	
 	  	<c:when test="${not empty login and login }">
+	  						<!--  여기부터 지선 작성 부분 -->
+								<!--  로그인했을때만 credit, cart, my sounds 정보가 보이도록 -->
+									<a class="header_icon" id="header_icon_credits" href="/credit/list">
+						  				<span class="iconName">1200 credits</span>
+						  			</a>
+						  			<a class="header_icon" id="header_icon_cart" href="/cart/list">
+					  					<span class="iconName">Cart</span>
+							  		</a>
+	  						  		<a class="header_icon" id="header_icon_mySouncds" href="">
+							  			<span class="iconName">My Sounds</span>
+							  		</a>
+								<!--  여기까지 지선 작성 부분 -->
+	  	<a href="/users/mypage"><img src="<%=request.getContextPath() %>/profile/${userProfile}" style="width: 40px; border-radius:50px;"></a>
+		nick:<span style="font-size: 1.5em; color: red;"> ${nick }</span>님
 	  	
 			<!--  여기부터 지선 작성 부분 -->
 			<!--  로그인했을때만 credit, cart, my sounds 정보가 보이도록 -->

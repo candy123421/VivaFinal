@@ -65,9 +65,14 @@ html{
 /*  지선 수정*/
 	background: linear-gradient(166.25deg, #514C9C 9.17%, #653A99 30.43%, #78377F 51.28%, #881E51 84.23%);
 }
-/* .boxcolor{ */
-/* 	border-radius: 7px; */
-/* } */
+
+/*  viva 로고 부분 */
+.login_wrap_part {
+	width : 606px;
+	height: 638px;
+	background: linear-gradient(360deg, #FFFFFF 0%, rgba(255, 255, 255, 0.89) 136.89%);
+	border-radius: 10px;
+
 
 /*  viva 로고 부분 */
 .login_wrap_part {
@@ -91,6 +96,21 @@ input {
 input:focus {
 	outline:none;
 }
+/*  내용 적는 흰 박스 부분 */
+form {
+	width : 530px;
+	margin: 0 auto;
+  	padding-top: 100px;
+}
+
+input {
+ 	border:none; 
+ 	background: transparent; 
+}
+  
+input:focus {
+	outline:none;
+}
 
 #login_wrap_logo {
     margin: 0 auto;
@@ -98,7 +118,6 @@ input:focus {
 }
 #login_wrap_logo img {
     width: 250px;
-	
 }
 /*  form 내부 각 요소 한줄씩에 대한 설정 */
 .select{
@@ -133,10 +152,6 @@ input:focus {
 	height: 50px;
 }
 
-/* #kakao{ */
-/* 	width: 310px; */
-/* 	height: 50px; */
-/* } */
 
 .noline{
 	 text-decoration-line: none;
@@ -171,11 +186,8 @@ button {
 	
 	<div class="login_wrap_part" id="login_input">
 		<form action="./login" method="post">
-		
-			
-			
-			<div class="select">
-			
+
+      <div class="select">
 				<label for="userId" >ID</label>
 				<input type="text" class="boxcolor" id="userId" name="userId" value="${cookie.id.value}" placeholder="아이디">
 				<span id="userid_msg" class="msg" style="color:red"></span>
@@ -219,4 +231,3 @@ button {
 </div>
 </body>
 </html>
-

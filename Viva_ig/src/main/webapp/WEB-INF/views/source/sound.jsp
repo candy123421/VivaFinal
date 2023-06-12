@@ -64,12 +64,12 @@
 	width: 1300px;
 	margin: auto;
 }
-#next{
+#next1{
 	top: 64px;
 	right: 40px;
 	z-index: 5;
 }
-#prev{
+#prev1{
 	top: 64px;
 	left: -65px;
 }
@@ -107,8 +107,8 @@ $(function() {
 		slidesToShow: 5,
 		slidesToScroll: 1,
 		arrows: true,
-		prevArrow: $("#prev"),
-		nextArrow: $("#next"),
+		prevArrow: $("#prev1"),
+		nextArrow: $("#next1"),
 		autoplay: true,
 		autoplaySpeed: 3000
 	})
@@ -151,7 +151,7 @@ $(function() {
 </script>
 <div id="Wrap">
 	<div id="WrapTop">
-		<div style="width:1300px; border-bottom:1px solid #ccc;">
+		<div style="width:1400px; border-bottom:1px solid #ccc;">
 			<span id="title">Sound</span>
 		</div>
 		<div id="category">
@@ -166,7 +166,7 @@ $(function() {
 		</div>
 		
 		<div class="slideContent">
-			<div id="prev" class="slickbtn"><img src="../resources/icon/chevron-left.svg"></div>
+			<div id="prev1" class="slickbtn"><img src="../resources/icon/chevron-left.svg"></div>
 			<div class="content">
 				<c:forEach items="${list}" var="list">
 						<div class="show">
@@ -183,7 +183,7 @@ $(function() {
 						</div>
 				</c:forEach>
 			</div>
-			<div id="next" class="slickbtn"><img src="../resources/icon/chevron-right.svg"></div>
+			<div id="next1" class="slickbtn"><img src="../resources/icon/chevron-right.svg"></div>
 		</div>
 		
 		<div class="midtitle">

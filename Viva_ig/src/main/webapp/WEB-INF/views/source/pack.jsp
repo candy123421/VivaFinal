@@ -430,8 +430,8 @@ div[data-itemtype='line']{
 						$("#barbtn").attr("src","../resources/icon/play-circle.svg")
 					}
 					
-					$("#next").attr("src","../resources/icon/skip-start-circle.svg")
-					$("#prev").attr("src","../resources/icon/skip-end-circle.svg")
+					$("#next").attr("src","../resources/icon/skip-end-circle.svg")
+					$("#prev").attr("src","../resources/icon/skip-start-circle.svg")
 					$("#barprocess").html("0:00")
 					$("#barduration").html("0:00")
 					$("#barsourcename").html(sourcename)
@@ -498,8 +498,8 @@ div[data-itemtype='line']{
 					$("#barduration").html("0:00")
 					$("#barsourcename").html(sourcename)
 					$("#barsourcename").attr("data-barno",btnplay)
-					$("#next").attr("src","../resources/icon/skip-start-circle.svg")
-					$("#prev").attr("src","../resources/icon/skip-end-circle.svg")
+					$("#next").attr("src","../resources/icon/skip-end-circle.svg")
+					$("#prev").attr("src","../resources/icon/skip-start-circle.svg")
 						
 					var duration = document.querySelector("#barduration")
 					duration.textContent = timeCalculator(wave[btnplay].getDuration());

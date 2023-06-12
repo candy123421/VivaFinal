@@ -418,8 +418,8 @@ a{
 				$("#barduration").html("0:00")
 				$("#barsourcename").html(packname)
 				$("#barsourcename").attr("data-barno",waveno)
-				$("#next").attr("src","../resources/icon/skip-start-circle.svg")
-				$("#prev").attr("src","../resources/icon/skip-end-circle.svg")
+				$("#next").attr("src","../resources/icon/skip-end-circle.svg")
+				$("#prev").attr("src","../resources/icon/skip-start-circle.svg")
 				
 // 				음원소스 재생 시간 계산 부분
 				var duration1 = document.querySelector("#barduration")

@@ -29,7 +29,7 @@
 	}
 	.t{
 	display: grid;
-	grid-template-columns: 100px 150px 150px 200px 1fr;
+	grid-template-columns: 150px 250px 150px ;
 	width: 1200px;
 	}
 	.ad{
@@ -43,8 +43,14 @@
 	#content{
 	height: 360px;
 	resize: none;
-	
 	}
+	#titleWrap{
+	width: 1400px;
+	margin: 0 auto;
+	font-size: 2.5rem;
+	font-weight: bold;
+	margin-bottom: 30px;
+}
 
 
 
@@ -75,9 +81,10 @@ $(function(){
 
 </head>
 <body>
-<h1>QnA Question</h1>
-<hr>
-
+<div id="titleWrap">
+	Viva QnA View
+		<img class="FunctionTilteLine" src="../resources/icon/Line.svg" style="margin-top:15px; margin-bottom: 15px; width:1300px;">
+</div>
 <form action="/qna/question" method="post">
 <div class="q">
 	<div class="t">
@@ -87,7 +94,7 @@ $(function(){
 	</div>
 <div>
 <hr> 
-	<div style="text-align: center">문의 제목</div> <hr>
+	<div style="text-align: center;">문의 제목</div> <hr>
 		<input type="text" id="title" name="qTitle" class="form-control" placeholder="문의 제목을 입력해주세요!">
 	</div>
 <br>

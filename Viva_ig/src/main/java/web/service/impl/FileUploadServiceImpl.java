@@ -183,15 +183,18 @@ public class FileUploadServiceImpl implements FileUploadService{
 		
 		//----------------------------------------------------------------------------
 		
-		//pack 의 source 정보 insert(source_no,source_name,bpm,key,source_price,tag_no,pack_no,user_no,source_time)
-		source.setTagNo(tag.getTag_no());
-		source.setPackNo(pack.getPackNo());
-		fileUploadDao.PackSourceInsert(source);
+
 
 
 		
 		//packFileList를 for문으로 돌린다 List이기떄문에 
 		for (int i = 0; i < packFileList.size(); i++) {
+			
+			//pack 의 source 정보 insert(source_no,source_name,bpm,key,source_price,tag_no,pack_no,user_no,source_time)
+			source.setTagNo(tag.getTag_no());
+			source.setPackNo(pack.getPackNo());
+			source.setSourceName(packFileList.get(i).getOriginalFilename());
+			fileUploadDao.PackSourceInsert(source);
 			
 		
 				//빈 파일일 경우

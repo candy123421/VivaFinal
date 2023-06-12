@@ -3,10 +3,12 @@ package web.dao.face;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.multipart.MultipartFile;
 
 import web.dto.Board;
 import web.dto.Comments;
 import web.dto.Files;
+import web.dto.Likes;
 import web.dto.Tag;
 import web.util.Paging;
 
@@ -15,38 +17,114 @@ public interface BoardDao {
 	/**
 	 * 전체 게시글 수를 조회한다
 	 * 
-	 * @return
+	 * @return 전체 게시글의 갯수
 	 */
 	public int selectCntAll();
 	
 	/**
-	 * keyword로 검색한 전체 게시글 수를 조회한다
+	 * 자유 게시글 수를 조회한다
 	 * 
-	 * @param paging - 페이지 정보 객체
-	 * @param keyword - 검색어
+	 * @return 자유 게시글의 갯수
 	 */
-	public int selectCntAllByKeyword(String keyword);
+	public int selectCntFree();
 	
 	/**
-	 * 페이징을 적용하여 게시글 목록 조회
+	 * 공지 게시글 수를 조회한다
+	 * 
+	 * @return 공지 게시글의 갯수
+	 */
+	public int selectCntQna();
+	
+	/**
+	 * 페이징을 적용하여 모든 게시글 목록 조회
 	 * 
 	 * paging.startNo, paging.endNo를 이용하여 rownum을 조회한다
 	 * 
 	 * @param page - 페이지 정보 객체
 	 * @param keyword  - 검색어
-	 * @return 페이징이 적용된 게시글 목록
+	 * @return 페이징이 적용된 모든 게시글 목록
 	 */
-	public List<Board> selectBoardList(Paging page);
+	public List<Board> selectAllBoardList(Paging page);
+	
+	/**
+	 * 페이징을 적용하여 자유 게시글 목록 조회
+	 * 
+	 * paging.startNo, paging.endNo를 이용하여 rownum을 조회한다
+	 * 
+	 * @param paging - 페이지 정보 객체
+	 * @return 페이징이 적용된 자유게시글 목록
+	 */
+	public List<Board> selectFreeBoardList(Paging paging);
+
+	/**
+	 * 페이징을 적용하여 공지 게시글 목록 조회
+	 * 
+	 * paging.startNo, paging.endNo를 이용하여 rownum을 조회한다
+	 * 
+	 * @param paging - 페이지 정보 객체
+	 * @return 페이징이 적용된 공지게시글 목록
+	 */
+	public List<Board> selectQnaBoardList(Paging paging);
+	
+	/**
+	 * categoryType을 기준으로 하는 개시글 갯수
+	 * 
+	 * @param categoryType - categoryType 정보
+	 * @return
+	 */
+	public int selectCntByCategory(String categoryType);
+
+	/**
+	 * keyword로 검색한 전체 게시글 수를 조회한다
+	 * 
+	 * @param keyword - 검색어
+	 * @return keyword가 들어간 전체 게시글 갯수
+	 */
+	public int selectCntAllByKeyword(String keyword);
+	
+	/**
+	 * keyword로 검색한 자유 게시글 수를 조회한다
+	 * 
+	 * @param keyword - 검색어
+	 * @return keyword가 들어간 자유 게시글 갯수
+	 */
+	public int selectCntFreeByKeyword(String keyword);
+
+	/**
+	 * keyword로 검색한 공지 게시글 수를 조회한다
+	 * 
+	 * @param keyword - 검색어
+	 * @return keyword가 들어간 공지 게시글 갯수
+	 */
+	public int selectCntQnaByKeyword(String keyword);
+
+	/**
+	 * 페이징을 적용하고, 키워드로 검색한 게시글 목록 조회
+	 * 
+	 * @param paging - 페이지 정보 객체
+	 * @param keyword - 검색어
+	 * @return 페이징이 적용되고, 키워드로 검색한 전체 게시글 목록
+	 */
+	public List<Board> selectAllBoardListByKeyword(@Param("paging") Paging page, @Param(value="keyword") String keyword);
 	
 	/**
 	 * 페이징을 적용하고, 키워드로 검색한 게시글 목록 조회
 	 * 
 	 * @param paging - 페이지 정보 객체
 	 * @param keyword - 검색어
-	 * @return 페이징이 적용되고, 키워드로 검색한 게시글 목록
+	 * @return 페이징이 적용되고, 키워드로 검색한 자유 게시글 목록
 	 */
-	public List<Board> selectBoardListByKeword(@Param("paging") Paging page, @Param(value="keyword") String keyword);
-	
+	public List<Board> selectFreeBoardListByKeyword(@Param("paging") Paging page, @Param(value="keyword") String keyword);
+
+	/**
+	 * 페이징을 적용하고, 키워드로 검색한 게시글 목록 조회
+	 * 
+	 * @param paging - 페이지 정보 객체
+	 * @param keyword - 검색어
+	 * @return 페이징이 적용되고, 키워드로 검색한 공지 게시글 목록
+	 */
+	public List<Board> selectQnaBoardListByKeyword(@Param("paging") Paging page, @Param(value="keyword") String keyword);
+
 	/**
 	 * 조회하려는 게시글의 조회수를 1 증가시킨다
 	 * 
@@ -67,7 +145,7 @@ public interface BoardDao {
 	 * 
 	 * @param board - 삽입할 게시글 정보
 	 */
-	public void insertBoard(Board board);
+	public void insertBoard(Board writeBoard);
 
 	/**
 	 * 첨부파일 정보를 삽입한다
@@ -75,6 +153,7 @@ public interface BoardDao {
 	 * @param boardFile - 삽입할 첨부파일 정보
 	 */
 	public void insertFile(Files boardFile);
+//	public void insertFile(List<MultipartFile> file);
 
 	/**
 	 * 게시글 번호를 이용하여 첨부파일 정보를 조회한다
@@ -97,7 +176,7 @@ public interface BoardDao {
 	 * 
 	 * @param board - 수정할 내용을 가진 게시글 객체
 	 */
-	public void update(Board board);
+	public void update(Board updateBoard);
 	
 	/**
 	 * 게시글을 참조하고 있는 모든 첨부파일을 삭제한다
@@ -114,12 +193,34 @@ public interface BoardDao {
 	public void delete(Board board);
 
 	/**
+	 * 게시글 좋아요 확인 
+	 * 
+	 * @param like - 좋아요를 누른 객체 정보
+	 * @return - 조회된 행 수
+	 */
+	public int selectByLike(Likes like);
+	
+	/**
+	 * 게시글 좋아요 삽입
+	 * 
+	 * @param like - 좋아요를 누른 객체 정보
+	 */
+	public void insertBoardLike(Likes like);
+
+	/**
+	 * 게시글 좋아요 삭제
+	 * 
+	 * @param like - 좋아요를 누른 객체 정보
+	 */
+	public void deleteBoardLike(Likes like);
+
+	/**
 	 * 댓글 조회하기
 	 * 
-	 * @param boardNo - 조회할 댓글의 게시글 번호
+	 * @param comments - 조회할 댓글의 게시글 번호
 	 * @return
 	 */
-	public List<Comments> selectComment(int boardNo);
+	public List<Comments> selectComment(Comments comments);
 
 	/**
 	 * 댓글 작성하기
@@ -133,7 +234,7 @@ public interface BoardDao {
 	/**
 	 * 댓글 수정하기
 	 * 
-	 * @param board - 댓글 작성할 게시글 번호(를 가지고 있는 DTO)
+	 * @param comment - 댓글번호, 게시글번호, 댓글 내용을 가지고 있는 DTO)
 	 */
 	public void updateComment(Comments comment);
 
@@ -159,7 +260,6 @@ public interface BoardDao {
 	 * @param board
 	 */
 	public void deleteCommentAll(Board board);
-
 
 
 

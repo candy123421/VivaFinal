@@ -348,7 +348,7 @@ font-weight: bold;
       <div class="menu"><i class="fa fa-globe"></i><a class="subCategory">Community</a><i class="fa fa-chevron-down"></i></div>
       <ul class="submenu">
         <li><a href="/board/list">Free Board</a></li>
-        <li><a href="">Hot</a></li>
+        <li><a href="/boardnotice/list">Notice Board</a></li>
       </ul>
     </li>
     

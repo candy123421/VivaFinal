@@ -4,58 +4,53 @@
 
 <c:import url="../layout/header.jsp"/>  
 <style type="text/css">
-
-#chargeOk_ment img {
-	width: 100px;
+.exchangeOk_wrap {
+	width:1400px;
+	margin : 0 auto;
 }
-#chargeOk_ment{
-	position: absolute;
-	width: 453px;
-	height: 271px;
-	left: 427px;
-	top: 185px;
-	
-	font-family: 'Noto Sans';
-	font-style: normal;
-	font-weight: 700;
-	font-size: 31px;
-	line-height: 42px;
-	display: flex;
-	align-items: center;
+#exchangeOk_ment {
 	text-align: center;
-	letter-spacing: 0.1em;
-	
-	color: #000000;
-}
-h3 {
 	font-weight: 600;
 }
-.chargeOk_chargeInfo {
-	position: absolute;
-	width: 667px;
-	height: 242px;
-	left: 345px;
-	top: 387px;
+#exchangeOk_ment img{	/*  상단 체크 */
+	width : 100px;
+	padding:15px;
+}
+#exchangeOk_ment div:first-child {
+	    width: 100px;
+    margin: 0 auto;
+}
+.exchangeOk_wrap div:nth-child(2) {
+	font-size: 23px;
+    font-weight: 900;
+    text-align: center; 
+}
+
+.exchangeOk_chargeInfo {	/*  환전 완료된  정보 */
+	font-size: 20px;
+    margin: 0 auto;
+    text-align: center;
+	width: 619px;
+    height: 454px;
+
 	background: rgba(251, 251, 251, 0.5);
 	mix-blend-mode: normal;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-	border-radius: 5px;
+	border-radius: 10px;
 }
 
-dl {
+.exchangeOk_chargeInfo dl {
 	display : flex;
 	flex-direction : row;
 	align-items: flex-start;
 	overflow : hidden;
 	width : 100%;
-	padding : 10px 0px 10px;
+	padding : 10px 20px 10px;
 	letter-spacing : -0.5px;
 }
 
-dt {
-	width : 100px; 
-	height : 100%;
-	line-height : 19px;
+.exchangeOk_chargeInfo dt {
+	width: 200px;
 }
 
 .price {
@@ -71,6 +66,12 @@ dt {
 
 .chargeOk_redirect div {
 	display : inline-block;
+}
+
+.exchangeOk_redirect div:first-child {
+    margin: 0 auto;
+    width: 330px;
+    margin-top: 70px;
 }
 
 #chargeRedirect {
@@ -111,63 +112,69 @@ dt {
 <div class="FunctionTitleLine">
    <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
 </div>
-<section class="exchangeOk_wrap">
-<div id="exchangeOk_ment">
-	<div>
-		<img alt="exchangeOk" src="/resources/icon/charge_ok_chk.svg">
-	</div>
-<h3>환전 신청이<br>
-완료되었습니다.</h3>
-</div>
-<div>환전은 신청일로부터 주말, 공휴일 제외 3일 소요됩니다.</div>
-<div class="exchangeOk_chargeInfo">
-	<dl>
-		<dt>환전 받을 크레딧</dt>
-		<dd>
-			<span class="price">${info.exAmount}</span>
-			<span class="price">Credit</span>
-		</dd>
-	</dl>
-	<dl>
-		<dt>실제 환전 금액</dt>
-		<dd>
-			<span class="price">${info.exAmount}</span>
-			<span class="price">원</span>
-		</dd>
-	</dl>
-	<dl>
-		<dt>크레딧 잔액</dt>
-		<dd>
-			<span class="price">${info.exAmount}</span>
-			<span class="price">Credit</span>
-		</dd>
-	</dl>
-	<dl>
-		<dt>환전 받을 계좌</dt>
-		<dd>
-			<span>${info.bank}</span><br><span>(${info.accNo})</span>
-		</dd>
-	</dl>
-	<dl>
-		<dt>예금주</dt>
-		<dd>
-			<span>${info.holder}</span>
-		</dd>
-	</dl>
-	<dl>
-		<dt>환전 신청 일자</dt>
-		<dd>
-			<span>${info.exDate}</span>
-		</dd>
-	</dl>
-</div>
 
-<div class="exchangeOk_redirect">
-	<div><button type="button" id="creditListRedirect" onClick="location.href='./list'">크레딧 내역 조회</button></div>
+
+<section class="exchangeOk_wrap">
+	<div id="exchangeOk_ment">
+		<div>
+			<img alt="exchangeOk" src="/resources/icon/charge_ok_chk.svg">
+		</div>
+		
+	<h3>환전 신청이<br>
+	완료되었습니다.</h3>
+	</div>
 	
-	<!--  크레딧 총계 계산하는 로직 넣기 전까지는 얘를 오픈하지 않도록...ㅠㅠㅠ -->
-<!-- 	<div><button type="button" id="exchangeRedirect" onClick="location.href='./exchange'">추가 환전하기</button></div> -->
-</div>
+	
+	<div>환전은 신청일로부터 주말, 공휴일 제외 3일 소요됩니다.</div>
+	
+	<div class="exchangeOk_chargeInfo">
+		<dl>
+			<dt>환전 받을 크레딧</dt>
+			<dd>
+				<span class="price">${info.exAmount}</span>
+				<span class="price">Credit</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>실제 환전 금액</dt>
+			<dd>
+				<span class="price">${info.exAmount}</span>
+				<span class="price">원</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>크레딧 잔액</dt>
+			<dd>
+				<span class="price">${info.exAmount}</span>
+				<span class="price">Credit</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>환전 받을 계좌</dt>
+			<dd>
+				<span>${info.bank}</span><br><span>(${info.accNo})</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>예금주</dt>
+			<dd>
+				<span>${info.holder}</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>환전 신청 일자</dt>
+			<dd>
+				<span>${info.exDate}</span>
+			</dd>
+		</dl>
+	</div>
+	
+	<div class="exchangeOk_redirect">
+		<div><button type="button" id="creditListRedirect" onClick="location.href='./list'">크레딧 내역 조회</button></div>
+		
+		<!--  크레딧 총계 계산하는 로직 넣기 전까지는 얘를 오픈하지 않도록...ㅠㅠㅠ -->
+	<!-- 	<div><button type="button" id="exchangeRedirect" onClick="location.href='./exchange'">추가 환전하기</button></div> -->
+	</div>
 </section>
 
 <c:import url ="../layout/footer.jsp"/> 

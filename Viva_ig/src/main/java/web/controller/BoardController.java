@@ -40,15 +40,28 @@ public class BoardController {
 	private final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
 	@GetMapping("/list")
-	public void list( Paging paging, Model model, String userId, String keyword ) {
+	public void list( Paging paging, Model model, Board board, String userId, String keyword ) {
 		logger.info("/board/list [GET]");
-		
+		logger.info("카테고리 : {} ", board.getCategoryType());
+
+		if("all".equals(board.getCategoryType())) {
+			logger.info("전체 게시판");
+
+		} else if ("free".equals(board.getCategoryType())){
+			logger.info("자유게시판");
+			
+		} else if ("notice".equals(board.getCategoryType())) {
+			logger.info("공지게시판");
+			
+			
+		}
+
 		//페이징 계산
 		Paging page = boardService.getPaging(paging, keyword);
-		
+
 		//게시글 목록 조회
 		List<Board> boardList = boardService.boardList(page, userId, keyword);
-		
+
 		model.addAttribute("page", page);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("userId", userId);
@@ -79,8 +92,6 @@ public class BoardController {
 		
 		return "redirect:./list";
 	}
-	
-	
 	
 	@RequestMapping("/view")
 	public String view( Board viewBoard, Model model, List<MultipartFile> file, HttpSession session ) {

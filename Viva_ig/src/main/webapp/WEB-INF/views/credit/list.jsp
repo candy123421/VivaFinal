@@ -38,13 +38,13 @@
     
 }
 #MyCreditAmount div {
-	width: 480px;
-    height: 70px;
+	width: 547px;
+    height: 137px;
   	margin : 0 auto;
   	padding-top: 30px;
 
 }
-#MyCreditAmount button {	/*  충전하기 버튼 */
+#chargeCredit  {	/*  충전하기 버튼 */
 	width: 158px;
 	height: 63px;
 
@@ -56,13 +56,12 @@
 	margin-left: 20px;
 	font-size : 25px;
 }
-#exchangeCredit {
+#exchangeCredit {	/*  환전하기 버튼 */
 	width: 158px;
 	height: 63px;
 /* 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
 	border: 2px solid rgba(105, 100, 100, 0.5);
 	border-radius: 30px;
-	color : rgba(105, 100, 100, 0.5);
 	font-size : 25px;
 	margin-left: 20px;
 	

@@ -134,25 +134,32 @@ th, td {
 		</c:if>
 		<th>게시글 번호</th>
 		<th>카테고리
-			<select id="search_option" name="search_option" onchange="optionChange()">
-				 <c:choose>
-				 	<c:when test="${category eq '전체' }"> 
+			<select class="filterSelect" name="search_option" >
 						<option value="all">전체</option>
 						<option value="free">자유</option>
 						<option value="notice">공지</option>
-					</c:when>
-					<c:when test="${category eq '자유' }">
-						<option value="all">전체</option>
-						<option value="free">자유</option>
-						<option value="notice">공지</option>
-					</c:when>
-					<c:when test="${category eq '공지' }">
-						<option value="all">전체</option>
-						<option value="free">자유</option>
-						<option value="notice">공지</option>
-					</c:when>
-				</c:choose>
 			</select>
+			
+			<script>
+			var filterSelect = $(".filterSelect") // jQuery 
+
+			filterSelect.on("change", function(e) {
+				e.preventDefault();.
+				console.log("변화감지..!");
+			    
+			    var status = this.options[this.selectedIndex].value;
+			    console.log("status : ", status);
+			    
+			    $.ajax({
+			    	url: "/board/list",
+			    	type : "GET",
+			    	data : {categoryType : status},
+			    	success : function() {
+			    		console.log("ajax 성공");
+			    	}
+			    })
+			});
+			</script>
 		</th>
 		<th>게시글 제목</th>
 		<th>작성자</th>
@@ -196,6 +203,8 @@ th, td {
 	
 	<span class="float-end mb-3">total : ${paging.totalCount }</span>
 </form>
+
+
 
 <c:import url="/WEB-INF/views/layout/paging.jsp" />
 

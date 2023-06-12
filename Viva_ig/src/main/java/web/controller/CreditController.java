@@ -351,21 +351,23 @@ public class CreditController {
 	}
 	
 	@RequestMapping("/toss")
-	public void toss(HttpSession session, int cash,  Writer out) {
+	public void toss(HttpSession session, int cash,  String method, Writer out) {
 		logger.info("credit/toss - toss()");
 		logger.info("세션userNo : {}", session.getAttribute("userNo"));
 		logger.info("결제 금액 {} ", cash);
+		logger.info("결제 방식 {} ", method);
 		
-		if(cash >1000 ) {
+//		JSONObject json = new JSONObject();
+//            json.put("cash", cash);
+//            json.put("method", method);
+
 			
-		    // 삭제 성공 여부에 따라 응답 데이터 설정
-		    try {
-		        out.write("{\"result\": " + cash + "}");
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		    }
-		
-		}
+	    // 삭제 성공 여부에 따라 응답 데이터 설정
+	    try {
+		    out.write("{\"result\": " + cash + "}");
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 		
 	}
 	

@@ -113,7 +113,7 @@ public class CreditServiceImpl implements CreditService {
 		logger.info("dealNo : {}", num);
 		
 		credit.setDealNo(num);
-		credit.setDealNo((int)session.getAttribute("userNo"));
+		credit.setUserNo((int)session.getAttribute("userNo"));
 		//dealCategory = 1 : 충전 설정하기
 		credit.setDealCategory(1);
 		

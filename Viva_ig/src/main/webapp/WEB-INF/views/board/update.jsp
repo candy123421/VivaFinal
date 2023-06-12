@@ -9,25 +9,36 @@
 <!-- 스마트 에디터 2 로드 -->
 <script type="text/javascript" src="/resources/se2/js/service/HuskyEZCreator.js"></script>
 
-<script type="text/javascript">
-function submitContents(elClickedObj) {
-	oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", [])	
-	try {
-		elClickedObj.form.submit();
-	} catch(e) {}
+<style>
+.categoryType {
+	width: 200px;
+	height: 35px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-radius: 10px;
 }
+</style>
+
+<script type="text/javascript">
+// function submitContents(elClickedObj) {
+// 	oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", [])	
+// 	try {
+// 		elClickedObj.form.submit();
+// 	} catch(e) {}
+// }
 
 $(document).ready(function() {
 	$("#btnUpdate").click(function() {
-		submitContents($("#btnUpdate"))
 		
-		$("form").submit
+		console.log("#btnUpdate");
+// 		submitContents($("#btnUpdate"))
+		
+		$("form").submit()
+		$(".formclass").submit()
+		
+		console.log("#btnUpdate");
 	})
-})
-</script>
-
-<script type="text/javascript">
-$(document).ready(function() {
+	
 	$("#cancel").click(function() {
 		history.go(-1)
 	})
@@ -45,55 +56,77 @@ $(document).ready(function() {
 })
 </script>
 
-<div class="container">
-<h1>글 수정</h1>
-<hr>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <h2 class="text-center">게시글 수정</h2><p>&nbsp;</p>
+        
+        <form action="./update" method="post" class="formclass" enctype="multipart/form-data">
+        
+            <div class="table table-responsive">
+<!-- 				<table class="table table-striped"> -->
+				<table class="table">
+					<tr>
+						<td class="danger">카테고리</td>
+					    <td >
+					        <td>
+								<select name="categoryType" class="categoryType">
+									<option value="free">자유</option>
+									<c:if test="${not empty adminlogin and adminlogin }">
+										<option value="공지">공지</option>
+									</c:if>
+									<option value="qna">질문</option>
+								</select>
+					        </td>
+					    </td>
+					</tr>
+		            <tr>
+						<input type="hidden" name="boardNo" value="${updateBoard.boardNo}">
+		                <td class="danger">작성자</td>
+		                <td>${id}</td>
+		            </tr>
+		            <tr>
+		                <td class="danger">제목</td>
+		                <td colspan="3"><input type="text" class="form-control" id="boardTitle" name="boardTitle" value="${updateBoard.boardTitle }"></td>
+		            </tr>
+		             
+		            <tr>
+		                <td class="danger">글내용</td>
+		                <td colspan="3"><textarea class="form-control" id="boardContent" name="boardContent" style="height: 400px;">${updateBoard.boardContent }</textarea></td>
+		            </tr>
+		            
+		            <tr>
+			            <td class="filesBox">
+			            
+			            	<!-- 여기 주석 처리 했었음 -->
+<!-- 							<div id="originFile"> -->
+<%-- 							<a href="./download?fileNo=${boardFile.fileNo}">${boardFile.originName }</a> --%>
+<!-- 							<span id="deleteFile">X</span> -->
+<!-- 							</div> -->
+							
+							
+							<td id="newFile">
+								<label class="form-label" for="file">새로운 첨부파일</label>
+								<input type="file" id="file" name="file" class="form-control" multiple="multiple">
+								<span>** 새로운 파일로 첨부하면 기존 파일은 삭제됩니다</span>
+							</td>
+						</td>
+					</tr>
+		            <tr>  
+		                <td colspan="4" class="text-center">
+<!-- 		                    <input type="submit" value="글수정" class="btn btn-warning"> -->
+		                    <button type="button" value="글 수정" id="btnUpdate" name="btnUpdate">글 수정</button>
+		                </td>
+		            </tr>
+				</table>
+            </div> <!-- table table-responsive -->
+            
+        </form>   
+    </div>
+	</div>
+</div><!-- wrap end -->
 
-<div class="box">
-
-<form action="./update" method="post" enctype="multipart/form-data">
-
-<input type="hidden" name="boardNo" value="${updateBoard.boardNo}">
-
-<div class="big">
-	<label class="middel" for="write">작성자 회원번호</label>
-	<input type="text" id="userNo" value="${updateBoard.userNo}" class="small" readonly="readonly">
-</div>
-
-<div class="big">
-	<label class="middel" for="title">제목</label>
-	<input type="text" id="boardTitle" name="boardTitle" class="small" value="${updateBoard.boardTitle }">
-</div>
-
-<div class="big">
-	<label class="middel" for="content">본문</label>
-	<input type="text" id="boardContent" name="boardContent" class="small" value="${updateBoard.boardContent }">
-</div>
-
-<div class="filesBox">
-	<div id="fileBox">
-			 <%-- <div id="originFile">
-				<a href="./download?fileNo=${boardFile.fileNo}">${boardFile.originName }</a>
-				<span id="deleteFile">X</span>
-			</div> --%>
-	
-			<div id="newFile">
-				<hr>
-				<label class="form-label" for="file">새로운 첨부파일</label>
-				<input type="file" id="file" name="file" class="form-control" multiple="multiple">
-				<small>** 새로운 파일로 첨부하면 기존 파일은 삭제됩니다</small>
-			</div>
-		</div>
-</div>
-
-<div class="buttons">
-	<button class="button" id="btnUpdate">수정하기</button>
-	<input type="reset" id="cancel" class="btn" value="취소">
-</div>
-</form>
-
-</div>
-
+<!-- 
 <script type="text/javascript">
 var oEditors = [];
 nhn.husky.EZCreator.createInIFrame({
@@ -103,36 +136,6 @@ nhn.husky.EZCreator.createInIFrame({
 	, fCreator: "createSEditor2"
 })
 </script>
-
-
-<!---------- 댓글 시작 ---------->
-<!----- 댓글 작성 ----->
-<div id="comment">
-	<form action="/commentWrite" method="post">
-<%--      <c:if test="${sessionScope.userNo != null }"> --%>
-	<input type="hidden" name="boardNo" value="${boardNo }">
-	<textarea id="commentContent" name="commentContent" placeholder="댓글을 작성하세요" rows="5" cols="50"></textarea><br>
-	<button type="button" id="btnComment">댓글 작성</button>
-<%--      </c:if> --%>
-	</form>
-</div>
-
-<div id="comments">
-	<div class="commentList">
-		<c:forEach items="${commentList}" var="commentList">
-		    <div>
-		      <div>
-		      작성자 : ${commentList.userNo}<br />
-		      작성일 :  <fmt:formatDate value="${commentList.commDate}" pattern="yyyy-MM-dd" />
-              </div>
-              <p>${commentList.commContent}</p>
-		     </div>
-		 </c:forEach>   
-	</div>
-</div>
-
-<!-- 댓글 끝 -->
-
-</div><!-- .container end -->
+ -->
 
 <c:import url="/WEB-INF/views/layout/footer.jsp" />

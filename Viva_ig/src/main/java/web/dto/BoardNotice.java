@@ -4,69 +4,68 @@ import java.util.Date;
 
 public class BoardNotice {
 	
-	private int oticeNo;
-	private String oticeTitle;
-	private String oticeContent;
-	private Date oticeDate;
-	private int dminNo;
+	private int noticeNo;
+	private String noticeTitle;
+	private String noticeContent;
+	private Date noticeDate;
+	private int adminNo;
 	
 	public BoardNotice() {	}
 
-	public BoardNotice(int oticeNo, String oticeTitle, String oticeContent, Date oticeDate, int dminNo) {
+	public BoardNotice(int noticeNo, String noticeTitle, String noticeContent, Date noticeDate, int adminNo) {
 		super();
-		this.oticeNo = oticeNo;
-		this.oticeTitle = oticeTitle;
-		this.oticeContent = oticeContent;
-		this.oticeDate = oticeDate;
-		this.dminNo = dminNo;
+		this.noticeNo = noticeNo;
+		this.noticeTitle = noticeTitle;
+		this.noticeContent = noticeContent;
+		this.noticeDate = noticeDate;
+		this.adminNo = adminNo;
 	}
 
 	@Override
 	public String toString() {
-		return "BoardNotice [oticeNo=" + oticeNo + ", oticeTitle=" + oticeTitle + ", oticeContent=" + oticeContent
-				+ ", oticeDate=" + oticeDate + ", dminNo=" + dminNo + "]";
+		return "BoardNotice [noticeNo=" + noticeNo + ", noticeTitle=" + noticeTitle + ", noticeContent=" + noticeContent
+				+ ", noticeDate=" + noticeDate + ", adminNo=" + adminNo + "]";
 	}
 
-	public int getOticeNo() {
-		return oticeNo;
+	public int getNoticeNo() {
+		return noticeNo;
 	}
 
-	public void setOticeNo(int oticeNo) {
-		this.oticeNo = oticeNo;
+	public void setNoticeNo(int noticeNo) {
+		this.noticeNo = noticeNo;
 	}
 
-	public String getOticeTitle() {
-		return oticeTitle;
+	public String getNoticeTitle() {
+		return noticeTitle;
 	}
 
-	public void setOticeTitle(String oticeTitle) {
-		this.oticeTitle = oticeTitle;
+	public void setNoticeTitle(String noticeTitle) {
+		this.noticeTitle = noticeTitle;
 	}
 
-	public String getOticeContent() {
-		return oticeContent;
+	public String getNoticeContent() {
+		return noticeContent;
 	}
 
-	public void setOticeContent(String oticeContent) {
-		this.oticeContent = oticeContent;
+	public void setNoticeContent(String noticeContent) {
+		this.noticeContent = noticeContent;
 	}
 
-	public Date getOticeDate() {
-		return oticeDate;
+	public Date getNoticeDate() {
+		return noticeDate;
 	}
 
-	public void setOticeDate(Date oticeDate) {
-		this.oticeDate = oticeDate;
+	public void setNoticeDate(Date noticeDate) {
+		this.noticeDate = noticeDate;
 	}
 
-	public int getDminNo() {
-		return dminNo;
+	public int getAdminNo() {
+		return adminNo;
 	}
 
-	public void setDminNo(int dminNo) {
-		this.dminNo = dminNo;
+	public void setAdminNo(int adminNo) {
+		this.adminNo = adminNo;
 	}
-	
-	
+
 
 }

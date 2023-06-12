@@ -1,11 +1,100 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
 <c:import url="/WEB-INF/views/layout/header.jsp" /> 
+
+<!-- 
+<script>
+  var empty = true;
+  var boardFile = 'example.jpg';
+
+  if (empty) {
+    document.getElementById('board').style.display = 'none';
+  } else {
+    document.getElementById('board').style.display = 'block';
+  }
+  
+  var boardContent = "<p>게시글 내용</p>";
+  document.getElementById('boardContentContainer').innerHTML = boardContent;
+</script>
+ -->
+
+<style>
+
+.container {
+/* 	width : 1400px; */
+	margin : 0 auto:
+	height: 100%;
+}
+
+.file-container {
+  width: 100%;
+  height: 200px; /* 설정한 공간의 높이 */
+  overflow: hidden;
+  display: ${empty boardFile ? 'none' : 'block'};
+}
+
+.file {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#btnUpdate, #btnDelete, #btnList {
+	width: 55px;
+	height: 35px;
+	border-radius: 10px;
+	background: #873286;
+	color: white;
+	text-align: center;
+}
+
+#commContent {
+	width: 700px;
+	height: 100px;
+	margin-bottom: 10px;
+	border-radius: 10px;
+}
+
+#btnComment {
+	width: 100px;
+	height: 35px;
+	margin-left: 600px;
+	border-radius: 10px;
+	background: #873286;
+	color: white;
+}
+
+#commContent- {
+	border: 1px solid grey;
+	border-radius: 10px;
+}
+
+input[name="commListContent"] {
+	width: 700px;
+	height: 80px;
+    border: 1px solid grey;
+    border-radius: 10px;
+}
+
+.btnCommentUpdate, .btnCommentDelete {
+	width: 100px;
+	height: 35px;
+	border-radius: 10px;
+	background: #873286;
+	color: white;
+}
+
+.like{
+	cursor: pointer;
+}
+
+</style>
 
 <div class="container">
 <h1>FREE BOARD View</h1>
@@ -18,77 +107,123 @@
 	</c:when>
 	  
 	<c:when test="${not empty login and login}">
-		<table class="big">
-			<tr>
-				<td class="small">글번호</td><td>${viewBoard.boardNo }</td>
-			</tr>
-			<tr>
-			 	<td class="table-info">아이디</td><td>${viewBoard.userId }</td>
-			</tr>
-			<tr>
-				<td class="small">조회수</td><td>${viewBoard.boardHit }</td>
-				<td class="small">작성일</td><td><fmt:formatDate value="${viewBoard.boardDate }" pattern="yyyy-MM-dd hh:mm" /></td>
-			</tr>
-			<tr>
-				<td class="small">제목</td><td>${viewBoard.boardTitle }</td>
-			</tr>
-			<tr>
-				<td class="small">본문</td>
-			</tr>
-			<tr>
-				<td>${viewBoard.boardContent }</td>
-			</tr>
-		</table> <!-- big end -->
-		
-		<%-- 첨부파일 --%>
-		<div class="file" >
-			<c:if test="${not empty boardFile }">
+	<div class="container">
+	     <div class="row row1">
+	      <table class="table">
+	        <tr>
+	         <th width=20% class="text-center warning">게시글 번호</th>
+	         <td width=20% class="text-center">${viewBoard.boardNo }</td>
+			<th width=20% class="text-center warning">조회수</th>
+	         <td width=20% class="text-center">${viewBoard.boardHit}</td>
+	        </tr>
+	        <tr>
+	         <th width=20% class="text-center warning">아이디</th>
+	         <td width=20% class="text-center">${viewBoard.userId }</td>
+			<th width=20% class="text-center warning">작성일</th>
+	         <td width=20% class="text-center"><fmt:formatDate value="${viewBoard.boardDate }" pattern="yyyy-MM-dd hh:mm" /></td>
+	        </tr>
+	        <tr>
+	         <th width=20% class="text-center warning" style="height: 50px;">제목</th>
+	         <td colspan="3" style="height: 50px;">${viewBoard.boardTitle }</td>
+	        </tr>
+	        <tr>
+	          <td colspan="4" class="text-left" valign="top" height="200">
+				<div class="content">${viewBoard.boardContent }</div>
+	          </td>
+	        </tr>
+	        <tr>
+	        	<td colspan="4" class="text-left" valign="top" height="50">
+	        	<div class="like" data-like="${viewBoard.boardLike}"><img src="../resources/icon/heart.svg" style="width:30px;"></div>
+	        </tr>
+	        <tr>
+				<c:if test="${id eq viewBoard.userId }">
+	          <td colspan="4" class="btnList">
+		            <button id="btnUpdate">수정</button>
+		            <button id="btnDelete">삭제</button>
+	          </td>
+				</c:if>
+	        </tr>
+	      </table>
+	     </div>
+	</div>
+	<!---------- 첨부파일 ---------->
+	<div class="file-container">
+		<c:if test="${not empty boardFile }">
+			<div class="file" >
 				<c:forEach var="boardFile" items="${boardFile}">
-					<a href="./download?fileNo=${boardFile.fileNo }"></a>
-					<img src="/boardUpload/${boardFile.storedname }" alt="❤️">
+					<a href="./download?fileNo=${boardFile.fileNo }">${boardFile.fileNo}</a>
+					<img src="/boardUpload/${boardFile.storedname }" alt="❤️"><hr>
+					<hr>
 				</c:forEach>
-			</c:if>
-		</div>
-	
+			</div>
+		</c:if>
+	</div>
 		
-		<button id="btnList">목록</button>
-			<c:if test="${id eq viewBoard.userId }">
-				<button id="btnUpdate">수정</button>
-		 		<button id="btnDelete">삭제</button>
-		 	</c:if>
-	<hr>
-
-	<%-------------------- 댓글 시작 --------------------%>
-	<%---------- 댓글 작성 ----------%>
+	<!-------------------- 댓글 시작 -------------------->
+	<!---------- 댓글 작성 ---------->
 	<div id="comment">
 		<form action="/commentWrite" method="post">
 			<input type="hidden" name="boardNo" value="${viewBoard.boardNo }">
-			<textarea id="commContent" name="commContent" placeholder="댓글을 작성하세요" rows="4" cols="100"></textarea><br>
+			<div>${viewBoard.userId}</div>
+			<input id="commContent" name="commContent" placeholder=" 댓글을 작성하세요" rows="4" cols="100"><br>
 			<button type="button" id="btnComment">댓글 작성</button>
 		</form>
 	</div>
 	<hr>
 	
-	<%---------- 댓글 목록 ----------%>
+	<!---------- 댓글 목록 ---------->
 	<div id="commentList" class="commentList">
 		<c:forEach items="${commentList}" var="commentList">
-			<input type="hidden" name="commboardNo" value="${commentList.boardNo }">
-			<div>작성자 번호: ${commentList.userNo}</div>
-			<div>댓글 번호 : ${commentList.commNo }</div>
-	        <div>작성일: <fmt:formatDate value="${commentList.commDate}" pattern="yyyy-MM-dd hh:mm" /></div>
-			<input id="commContent-${commentList.commNo}" name="commContent" value="${commentList.commContent}"><br>
-				<button type="button" class="btnCommentUpdate" data-comm-no="${commentList.commNo}">댓글 수정</button>
-				<button type="button" class="btnCommentDelete" data-comm-no="${commentList.commNo}">댓글 삭제</button>
-				<hr>
+<%-- 			<div type="hidden" name="commboardNo" value="${commentList.boardNo }"></div> --%>
+			<div type="hidden" name="commboardNo" value="${viewBoard.boardNo }"></div>
+			<div type="hidden" value="${commentList.commNo }"></div>
+			<div id="comm-userId">${viewBoard.userId}</div>
+			<input id="commContent-${commentList.commNo}" name="commListContent" value="${commentList.commContent}" readonly="readonly"><br>
+				<c:if test="${id eq viewBoard.userId }">
+					<button type="button" class="btnCommentUpdate" data-comm-no="${commentList.commNo}">댓글 수정</button>
+					<button type="button" class="btnCommentDelete" data-comm-no="${commentList.commNo}">댓글 삭제</button>
+	       		</c:if>
+	        <div name="writeDate"><fmt:formatDate value="${commentList.commDate}" pattern="yyyy-MM-dd hh:mm" /></div>
+			<hr>
 		</c:forEach>
 	</div>
 	</c:when>
 </c:choose>
-
-<%--------------- 댓글 javascript ---------------%>
-<script type="text/javascript">
-$(document).ready(function() {
 	
+<script type="text/javascript">
+
+$(document).ready(function() {
+		
+	<!-------------------- 좋아요 시작 -------------------->
+	//좋아요 구현
+	var likes = document.querySelectorAll("div[data-like]");
+	
+	$(".like").click(function() {
+		
+		var idx = $(".like").index(this)					// 인덱스 변수
+		var boardno = likes[idx].getAttribute('data-like')	// boardNo 변수
+		var userno = ${viewBoard.userNo}					// userNo 변수
+
+		$.ajax({
+			type: "GET"
+			, url: "./like"
+			, data: { "userNo" : userno, "boardNo" : boardno }
+			, dataType: "json"
+			, success: function( res ) {
+				
+				if(res.result == true) {
+					$(".like").eq(idx).html('<img src="../resources/icon/heart-fill.svg" style="width:45!">')
+					
+				} else if (res.result == false) {
+					$(".like").eq(idx).html('<img src="../resources/icon/heart.svg" style="width:45!">')
+				}
+			} //success end
+		}) //ajax end
+	}) //like end
+	<!-------------------- 좋아요 끝 -------------------->
+
+	
+	<!-------------------- 게시글 버튼 시작 -------------------->
 	//게시글 상세보기 - 목록으로 돌아가기
 	$("#btnList").click(function() {
 		location.href = "./list";
@@ -103,46 +238,35 @@ $(document).ready(function() {
 	$("#btnDelete").click(function() {
 		location.href="./delete?boardNo=${viewBoard.boardNo}";
 	}) 
+	<!-------------------- 게시글 버튼 끝 -------------------->
 	
 	
+	<!-------------------- 댓글 시작 -------------------->
 	//댓글 작성 ajax
 	$("#btnComment").click(function() {
-		//var contextPath = '<%= request.getContextPath() %>';
 		var commContent=$("#commContent").val();	//댓글 내용
 		var boardNo = "${board.boardNo}";			//게시물 번호
-		//var param="commentContent" + commentContent + "&boardNo" + boardNo;
 
 		$.ajax({
 			type: "post",
 			url: "/board/commentWrite",
 			data: {commContent: commContent, boardNo: boardNo},
 			success: function(result) {
-				
-		        /* var commentHtml = '';
-		        for (var i=0; i<result.length; i++) {
-		            commentHtml += '<p>' + result[i].commContent + '</p>';
-		        } */
-					
 		        if (result.length > 0) {
-	                /* $("#commentList").html(commentHtml); */
 	                $("#commentList").html(result);
 	                alert("댓글이 작성되었습니다.");
 	                location.reload(); // 페이지 새로고침
 	            } else {
 	                alert("댓글 작성에 실패했습니다.");
 	            }
-	          
-	            $('#commentList').val('');
-	            // DOM 조작 함수호출 등 가능
+	            $('#commentList').val('');	// DOM 조작 함수호출 등 가능
 	        },
             error: function() {
-                //Ajax 요청 실패 시 처리할 동작
                 alert("댓글 작성에 실패했습니다.");
             }
 		}); //ajax end
 	}); //$("#btnComment").click(function() end
 
-			
 			
 	//댓글 조회 ajax - 초기 페이지 로딩시 댓글 불러오기
 	$(function(){
@@ -166,28 +290,23 @@ $(document).ready(function() {
 	} //function viewComment() end
 	
 	
-	
 	//댓글 수정 ajax
 	 $(document).on("click", ".btnCommentUpdate", function() {
-		var boardNo = $("#boardNo").val();
-// 		var commNo = "${comments.commNo}";
-// 		var commContent=$("#commContent").val();	//댓글 내용
+		 //새로 입력할 댓글 창 보여주기
+		var newComm = prompt('댓글을 새로 입력해주세요');
+		var boardNo = "${board.boardNo}";
 		var commNo = $(this).data("comm-no");
-        var commContent = $("#commContent-" + commNo).val();
 		
-	    //서버로 수정할 댓글의 내용과 댓글 번호를 전달하여 처리하는 Ajax 요청 추가
 	    $.ajax({
 	        type: 'POST',
 	        url: "/board/commentUpdate",
-	        data: { boardNo: boardNo, commNo: commNo, commContent: commContent },
+	        data: { boardNo: boardNo, commNo: commNo, commContent: newComm },
 	        success: function(result) {
-	            // 수정 성공 시에 대한 처리 로직 작성
-	            // 예: 댓글 수정이 성공하면 새로운 내용으로 업데이트
-				alert("댓글이 수정되었습니다.");
+	            console.log("AJAX 댓글 수정 성공!")
+ 				alert("댓글이 수정되었습니다.");
 				location.reload(); // 페이지 새로고침
 	        },
 	        error: function(error) {
-	            // 수정 실패 시에 대한 처리 로직 작성
 	        	alert("댓글 수정에 실패했습니다.");
 	        }
 	    });  //$.ajax end
@@ -219,11 +338,15 @@ $(document).ready(function() {
 	        }
 	    }); //$.ajax end
 	}); //$("#btnCommentDelete").click(function() end
+	<!-------------------- 댓글 끝 -------------------->
 }) //$(document).ready(function() end
 
 </script>
-<%-- 댓글 끝 --%>
 
-</div><%-- .container end --%>
+	<div class="btnList" style="text-align: center;">
+		<button id="btnList">목록</button>
+	</div>    
+
+</div><!-- .container end -->
 
 <c:import url="../layout/footer.jsp"/>

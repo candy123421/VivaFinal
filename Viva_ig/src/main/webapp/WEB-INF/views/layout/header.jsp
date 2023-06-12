@@ -294,6 +294,27 @@ font-weight: bold;
 	width: 60px;
 	height: 36px;
 }
+.login{
+	background: rgba(255, 255, 255, 0.01);
+	border: 2px solid #9E66A4;
+	border-radius: 10px;
+	width:60px;
+	height: 33px;
+	transition: all 0.4s;
+	color: #9E66A4;
+}
+.login:focus{
+	outline: none;
+}
+
+.login:hover{
+	background: linear-gradient(208.73deg, #4C469F -24.94%, #7857A2 24.61%, rgba(190, 52, 85, 0.9) 90.77%, #9E66A4 101.89%);
+	border: 2px solid #9E66A4;
+	border-radius: 10px;
+	width:60px;
+	color: white;
+}
+
 </style>
 
 </head>
@@ -381,7 +402,7 @@ font-weight: bold;
 	  <c:choose>
 	  
 	  <c:when test="${empty adminlogin and empty login }">
-	  <a href="/viva/login"> <button class="btn btn-outline-secondary btn-sm">Login</button> </a>
+	  <a href="/viva/login"> <button class="login">Login</button> </a>
 	  
 	  </c:when>
 	  
@@ -392,7 +413,7 @@ font-weight: bold;
 		<img class="admin_profile" src="/resources/icon/profile.svg" alt="기본프로필" class="d-inline-block align-text-top"></a>
 		<span style="font-size: 1.5em; color: red;"> ${adminNo }</span>번 Admin
 		<span style="font-size: 1.5em; color: red;"> ${adminloginid }</span>님
-		<a href="/admin/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
+		<a href="/admin/logout"><button class="login">Logout</button></a>
 		
 	  	
 	  	</c:when>
@@ -412,7 +433,7 @@ font-weight: bold;
 								<!--  여기까지 지선 작성 부분 -->
 	  	<img src="../../../profile/${userProfile.STOREDNAME}" style="width: 40px; border-radius:50px;">
 		nick:<span style="font-size: 1.5em; color: red;"> ${nick }</span>님
-	  	<a href="/users/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
+	  	<a href="/users/logout"><button class="login">Logout</button></a>
 	  	
 	  	</c:when>
 	  

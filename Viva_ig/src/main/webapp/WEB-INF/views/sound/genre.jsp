@@ -26,7 +26,11 @@
 #Wrap{
 }
 #WrapTop{
-	width: 1300px;
+	width: 1400px;
+	margin: 0 auto;
+}
+#WrapMiddle{
+	width: 1400px;
 	margin: 0 auto;
 }
 #category{
@@ -98,7 +102,7 @@
 	color: black;
 }
 #GridWrap{
-	width: 1300px;
+	width: 1400px;
 	margin: 0 auto;
 }
 </style>
@@ -189,33 +193,5 @@
 	
 	
 	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <c:import url="../layout/footer.jsp"/>

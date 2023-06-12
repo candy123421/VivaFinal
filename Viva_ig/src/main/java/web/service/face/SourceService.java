@@ -266,6 +266,15 @@ public interface SourceService {
 	 */
 	public List<Tag> getPackInfosInst(Tag tag);
 
+	/**
+	 * 로그인 된 회원이 가지고 있는 
+	 * 나의 음원소스 정보를 모두 조회한다
+	 * 
+	 * @param userNo - 마이페이지에서 접속한 회원
+	 * @return - 음원소스 조회 결과
+	 */
+	public List<Map<String, Object>> getMySource(int userNo);
+
 
 	
 

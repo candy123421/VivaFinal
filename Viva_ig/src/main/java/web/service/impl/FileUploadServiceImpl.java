@@ -183,9 +183,6 @@ public class FileUploadServiceImpl implements FileUploadService{
 		
 		//----------------------------------------------------------------------------
 		
-
-
-
 		
 		//packFileList를 for문으로 돌린다 List이기떄문에 
 		for (int i = 0; i < packFileList.size(); i++) {
@@ -195,7 +192,6 @@ public class FileUploadServiceImpl implements FileUploadService{
 			source.setPackNo(pack.getPackNo());
 			source.setSourceName(packFileList.get(i).getOriginalFilename());
 			fileUploadDao.PackSourceInsert(source);
-			
 		
 				//빈 파일일 경우
 				if( packFileList.get(i).getSize() <= 0) {

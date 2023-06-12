@@ -21,7 +21,7 @@
 #playWrap{
 	width: 100%;
 	padding-left: 250px;
-	height: 80px;
+/* 	height: 80px; */
 	position: fixed;
 	bottom: 0px;
 	color: white;
@@ -29,7 +29,6 @@
 }
 #playbar{
 	position: relative;
-/* 	pointer-events: none; */
 }
 #playimg{
 	position: absolute;
@@ -42,7 +41,7 @@
 #barbtn{
 	position: absolute;
 	top: 23px;
-	left: 493px;
+	left: 440px;
 	width: 35px;
 	z-index: 100;
 }
@@ -72,7 +71,13 @@
 #next{
 	position: absolute;
 	top: 23px;
-	left: 452px;
+	left: 480px;
+	width: 35px;
+}
+#prev{
+	position: absolute;
+	top: 23px;
+	left: 400px;
 	width: 35px;
 }
 </style>
@@ -83,6 +88,7 @@
 			<img id="playimg" src="">
 			<img id="barbtn"src="">
 			<img id="next"src="">
+			<img id="prev"src="">
 			<script type="text/javascript">
 			
 				// 음원소스 시간 계산기
@@ -126,39 +132,45 @@
 				})
 				
 				$("#next").hover(function() {
-					$("#rewind").css("cursor","pointer")
+					$("#next").css("cursor","pointer")
 				})
 				
-				
+				$("#prev").hover(function() {
+					$("#prev").css("cursor","pointer")
+				})
 				
 				$("#next").click(function() {
 					
 					var idx = Number(1)
 					var cur =  Number($("#barsourcename").attr('data-barno'))
-					
+							
 					for(var i=0; i<wave.length; i++) {
-						wave[i].pause()
+						wave[i].stop()
 					}
 					
 					
 					if(wave[cur].isPlaying() == true) {
-						wave[cur].pause()
+						wave[cur].stop()
+						$(".tr").eq(cur).html('<img src="../resources/icon/stop-circle.svg" style="width:30%">')
+						
 						wave[cur+idx].play()
+						$(".tr").eq(cur+idx).html('<img src="../resources/icon/stop-circle.svg" style="width:30%">')
 						
 					} else if(wave[cur].isPlaying() == false){
 						wave[cur+idx].play()
+						$(".tr").eq(cur+idx).html('<img src="../resources/icon/stop-circle.svg" style="width:30%">')
+						$(".tr").eq(cur).html('<img src="../resources/icon/play-circle.svg" style="width:30%">')
 					}
 					
 					
 					$("#barprocess").html("0:00")
 					$("#barduration").html("0:00")
-					
 					$("#barsourcename").attr("data-barno",cur+idx)
 					
 					var cname = $(".packname").eq(cur+idx).attr("data-packname")
 					$("#barsourcename").html( cname )
 					
-					var cimg = $(".packimg").eq(cur+idx).attr("data-img")
+					var cimg = $(".trimg").eq(cur+idx).attr("data-img")
 					$("#playimg").attr("src","../upload/"+cimg)
 					
 					
@@ -178,6 +190,61 @@
 					
 				})
 				
+				$("#prev").click(function() {
+					
+					var idx = Number(1)
+					var cur =  Number($("#barsourcename").attr('data-barno'))
+					console.log("idx == prev", idx)
+					console.log("cur == prev", cur)
+					
+					// 첫 번쨰 트랙에서 사용한 경우 즉시 return 중지
+					if( idx > cur ) {
+						return
+					}
+					
+					for(var i=0; i<wave.length; i++) {
+						wave[i].stop()
+					}
+					
+					
+					if(wave[cur].isPlaying() == true) {
+						wave[cur].stop()
+						$(".tr").eq(cur).html('<img src="../resources/icon/play-circle.svg" style="width:30%">')
+						
+						wave[cur-idx].play()
+						$(".tr").eq(cur-idx).html('<img src="../resources/icon/stop-circle.svg" style="width:30%">')
+						
+					} else if(wave[cur].isPlaying() == false){
+						wave[cur-idx].play()
+						$(".tr").eq(cur-idx).html('<img src="../resources/icon/stop-circle.svg" style="width:30%">')
+						$(".tr").eq(cur).html('<img src="../resources/icon/play-circle.svg" style="width:30%">')
+					}
+					
+					
+					$("#barprocess").html("0:00")
+					$("#barduration").html("0:00")
+					$("#barsourcename").attr("data-barno",cur-idx)
+					
+					var cname = $(".packname").eq(cur-idx).attr("data-packname")
+					$("#barsourcename").html( cname )
+					
+					var cimg = $(".trimg").eq(cur-idx).attr("data-img")
+					$("#playimg").attr("src","../upload/"+cimg)
+					
+ 					//음원소스 재생 시간 계산 부분
+					var duration5 = document.querySelector("#barduration")
+					duration5.textContent = timeCalculator(wave[cur-idx].getDuration());
+					
+					var current5 = document.querySelector("#barprocess")
+					wave[cur-idx].on("audioprocess", function(e) {
+						
+						current5.textContent = timeCalculator(wave[cur-idx].getCurrentTime());
+						
+					})
+					
+					$("#barbtn").attr("src","../resources/icon/stop-circle.svg")
+					
+				})
 				
 				
 			</script>

@@ -170,15 +170,19 @@
   	
   	
   	<select id="selectLikePackForSound" resultType="hashmap">
-		SELECT  p.pack_name, p.pack_no,
-		    (SELECT count(*) FROM pack_like where pack_no = p.pack_no ) rec,
-		    p.tag_no,
-		    (SELECT genre FROM tag where p.tag_no = tag_no)genre,
-		    pmg.pack_img_storedname
-		FROM pack p
-		INNER join packimginfo pmg on p.pack_no = pmg.pack_no
-        where rownum <![CDATA[<=]]> 10
-		order by rec desc
+		SELECT * FROM (
+    		SELECT
+	        (SELECT count(*) FROM pack_like where pack_no = p.pack_no ) rec, 
+	        p.pack_name, 
+	        p.pack_no, 
+	        p.tag_no, 
+	        (SELECT genre FROM tag where p.tag_no = tag_no)genre, 
+	        pmg.pack_img_storedname 
+    	FROM pack p 
+    	INNER join packimginfo pmg on p.pack_no = pmg.pack_no 
+    	order by rec desc
+		) DATA
+		where rownum <![CDATA[<=]]> 10
   	</select>
   	
   	
@@ -303,7 +307,7 @@
 		INNER JOIN SOURCEFILEINFO sif on sif.source_no = s.source_no
 		INNER JOIN PACKIMGINFO pif on pif.pack_no = p.pack_no
 		WHERE 1=1 
-		    and lower(sif.file_storedname) Like '%main%'
+		    and lower(sif.file_originname) Like '%main%'
 		    
 		<if test="genre != null and !genre.equals('')">
 		    and t.genre = #{genre}
@@ -322,7 +326,18 @@
   	
   	
   	
-  	
+  	<select id="selectMySourcebyUserNo" parameterType="int" resultType="hashmap">
+  		SELECT DISTINCT ms.source_name, ms.bpm, ms.key, ms.pack_no, ms.source_no,
+		    pmg.pack_img_storedname,
+		    smg.source_img_storedname,
+		    sif.file_storedname
+		FROM Mysource ms
+		INNER JOIN packimginfo pmg on pmg.pack_no = ms.pack_no
+		INNER JOIN source s on s.source_no = ms.source_no
+		INNER JOIN sourceimginfo smg on s.source_no = smg.source_no
+		INNER JOIN sourcefileinfo sif on sif.source_no = ms.source_no
+		where ms.user_no = #{userNo}
+  	</select>
   	
   	
   	

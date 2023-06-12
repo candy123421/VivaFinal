@@ -12,7 +12,22 @@ $(function() {
 			'color':'white'
 		})
 	})
+	
 	$(".tagcover").mouseout(function() {
+		$(this).css({
+			'background':'white',
+			'color':'black'
+		})
+	})
+	
+	$(".packname").hover(function() {
+		$(this).css({
+			'background':'lightgrey',
+			'color':'black'
+		})
+	})
+	
+	$(".packname").mouseout(function() {
 		$(this).css({
 			'background':'white',
 			'color':'black'
@@ -106,7 +121,7 @@ a{
 	width: 1300px;
 	place-content: center;
 }
-.packimg{
+.trimg{
 	width: 200px;
 	height: 200px;
 }
@@ -279,7 +294,6 @@ a{
 		</c:forEach>
 	</div>
 
-</div><!-- WrapTop End -->
 <div id="WrapMiddle">
 	<div id="infoline"><div class="cate">Result : ${list.size()}</div>
 		<c:if test="${not empty msg}">
@@ -291,14 +305,13 @@ a{
 		<div id="grid">
 			<c:forEach items="${list }" var="list">
 				<div class="content">
-					<div class="packimg" data-img="${list.PACK_IMG_STOREDNAME }" ><img src="../upload/${list.PACK_IMG_STOREDNAME }" style="width: 100%"></div>
+					<div class="trimg" data-img="${list.PACK_IMG_STOREDNAME }" ><img src="../upload/${list.PACK_IMG_STOREDNAME }" style="width: 100%"></div>
 					<a href="/source/pack?packNo=${list.PACK_NO }"><div class="packname" data-no="${list.PACK_NO }" data-packname="${list.PACK_NAME }" data-name="${list.FILE_STOREDNAME }">${list.PACK_NAME }</div></a>
 					<div class="wavewrap"><div id="wave${list.PACK_NO }"></div>
 					</div>
 				</div>
 			</c:forEach>
 		</div>
-	
 	</div>
 
 			
@@ -345,32 +358,32 @@ a{
 			}
 		
 			// 마우스 오버, 플레이 버튼
-			$(".packimg").hover(function() {
+			$(".trimg").hover(function() {
 				
-				var idx = $(".packimg").index(this)
+				var idx = $(".trimg").index(this)
 				
-				$(".packimg").eq(idx).css("cursor","pointer")
+				$(".trimg").eq(idx).css("cursor","pointer")
 				
 			})
 			
 			// 이미지 누를 시 재생	
-			$(".packimg").click(function() {
+			$(".trimg").click(function() {
 				
 				//console.log($(".trwave").index(this))
 				// 음원소스 위치 알아내기
-				var waveno = $(".packimg").index(this)
+				var waveno = $(".trimg").index(this)
 				
 				// 이미지 위치 알아내기
 				var imgno = $(".tr").index(this)
 				
-				var imgSrc = $(".packimg").eq(waveno).attr('data-img')
+				var imgSrc = $(".trimg").eq(waveno).attr('data-img')
 				
 				var packname = $(".packname").eq(waveno).attr('data-packname')
 				
 				if(wave[waveno].isPlaying() == true) {
 					wave[waveno].pause()
 					console.log("제어문 동작 하는거지?")
-				    $("#barbtn").attr("src","../resources/icon/stop-circle.svg")
+				    $("#barbtn").attr("src","../resources/icon/play-circle.svg")
 				    
 				    return
 				}
@@ -387,9 +400,11 @@ a{
 				
 				// 플레이바 구현
 				$("#playWrap").css({
-					"background":"#BE2465",
+					"background":"linear-gradient(263.28deg, #514C9C 7.05%, #653A99 16.72%, #6E388C 25.66%, rgba(117, 37, 114, 0.76) 38.08%, rgba(174, 106, 166, 0.84) 78.14%, #8E4B6D 93.97%)",
+					"height":"80px"
 				})
 				
+				$("#addheight").css("height","100px")
 				$("#playimg").attr("src","../upload/"+imgSrc)
 				$("#playimg").css("visibility","visible")
 				
@@ -403,7 +418,8 @@ a{
 				$("#barduration").html("0:00")
 				$("#barsourcename").html(packname)
 				$("#barsourcename").attr("data-barno",waveno)
-				$("#next").attr("src","../resources/icon/rewind-circle.svg")
+				$("#next").attr("src","../resources/icon/skip-end-circle.svg")
+				$("#prev").attr("src","../resources/icon/skip-start-circle.svg")
 				
 // 				음원소스 재생 시간 계산 부분
 				var duration1 = document.querySelector("#barduration")
@@ -423,5 +439,6 @@ a{
 
 
 </div> <!-- Wrap Middle End -->
+<div id="addheight"></div>
 </div> <!-- Wrap End -->
 <c:import url="../layout/footer.jsp"/>

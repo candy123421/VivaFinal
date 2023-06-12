@@ -29,6 +29,7 @@ import web.dto.Users;
 import web.service.face.CreditService;
 import web.service.face.KakaoService;
 import web.service.face.MailSendService;
+import web.service.face.SourceService;
 import web.service.face.UsersService;
 
 @Controller
@@ -40,6 +41,7 @@ public class UsersController {
 	@Autowired UsersService usersService;
 	@Autowired KakaoService kakaoService; 
 	@Autowired MailSendService mailService;
+	@Autowired SourceService sourceService;
 	@Autowired CreditService creditService;
 	
 	@GetMapping("/login")
@@ -517,6 +519,162 @@ public class UsersController {
 		
 		return "redirect:./login";
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@GetMapping("/mysource")
+	public void mysource(HttpSession session, Model model) {
+		logger.info("내가 가진 음원 소스");
+		
+		// 내가 가진 음원소스 조회
+		// 로그인 된 회원의 정보를 통해서 가져온다
+		List<Map<String, Object>> list = sourceService.getMySource((int)session.getAttribute("userNo"));
+		
+		model.addAttribute("list", list);
+		
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 }

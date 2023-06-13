@@ -10,17 +10,10 @@
 $(function(){
 	  //체크박스가 체크되어있지 않으면 버튼 클릭 불가 -> '체크해주세요' 알림 띄우기
 	  $('#btn').click(function(event) {
-// 		    if (!$('#out').is(':checked')) {
-// 		      event.preventDefault();
-// 		 	    alert("탈퇴 동의 체크가 필요합니다");
-// 		    }
-		  if (confirm("~~하시겠습니까?") == true){ 
-			   //true는 확인버튼을 눌렀을 때 코드 작성
-			   console.log("완료되었습니다.");
-			 }else{
-			   // false는 취소버튼을 눌렀을 때, 취소됨
-			   console.log("취소되었습니다");
-			 }
+		    if (!$('#out').is(':checked')) {
+		      event.preventDefault();
+		 	    alert("탈퇴 동의 체크가 필요합니다");
+		    }
 	  });
 })
 </script>

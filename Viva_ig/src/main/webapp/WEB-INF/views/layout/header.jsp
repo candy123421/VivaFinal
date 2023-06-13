@@ -403,7 +403,7 @@ font-weight: bold;
 	  <c:choose>
 	  
 	  <c:when test="${empty adminlogin and empty login }">
-	  <a href="/viva/login"> <button class="login">Login</button> </a>
+	  <a href="/users/login"> <button class="login">Login</button> </a>
 	  
 	  </c:when>
 	  
@@ -420,11 +420,11 @@ font-weight: bold;
 	  	</c:when>
 	  	
 	  	<c:when test="${not empty login and login }">
-	  						
+
 			<!--  여기부터 지선 작성 부분 -->
 			<!--  로그인했을때만 credit, cart, my sounds 정보가 보이도록 -->
 				<a class="header_icon" id="header_icon_credits" href="/credit/list">
-	  				<span class="iconName"> ${headerCredit } credits</span>
+	  				<span class="iconName" id="headerCreditStatus"> ${headerCredit } credits</span>
 	  			</a>
 	  			<a class="header_icon" id="header_icon_cart" href="/cart/list">
 	 					<span class="iconName">Cart</span>
@@ -433,10 +433,11 @@ font-weight: bold;
 		  			<span class="iconName">My Sounds</span>
 		  		</a>
 			<!--  여기까지 지선 작성 부분 -->
-	  	
+	  	<a href="/users/mypage" style="text-decoration: none;">
 	  	<img src="../../../profile/${userProfile}" style="width: 40px; border-radius:50px;">
-		<span style="font-size: 1.5em;" class="header_icon"> ${nick }</span>님
-	  	<a href="/users/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
+		<span style="font-size: 1.5em;" class="header_icon"> ${nick }</span></a>님
+	  	<a href="/users/logout"><button class="login">Logout</button></a>
+
 	  	
 	  	</c:when>
 	  

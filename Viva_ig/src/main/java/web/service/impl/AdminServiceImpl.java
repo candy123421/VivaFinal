@@ -132,4 +132,16 @@ public class AdminServiceImpl implements AdminService {
 	public List<Users> userlist(Paging paging) {
 		return adminDao.selectUserList(paging);
 	}
+	
+	@Override
+	public void checkUser(int[] check) {
+		
+		for(int i=0; i<check.length; i++) {
+			
+			Users users = new Users();
+			users.setUserNo(check[i]);
+			adminDao.updateUserGrade(users);
+		}
+		
+	}
 }

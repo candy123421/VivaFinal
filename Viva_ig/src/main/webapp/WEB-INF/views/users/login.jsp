@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script type="text/javascript">
 
@@ -68,14 +69,15 @@ html{
 
 /*  viva 로고 부분 */
 .login_wrap_part {
-   width : 606px;
-   height: 638px;
-   background: linear-gradient(360deg, #FFFFFF 0%, rgba(255, 255, 255, 0.89) 136.89%);
-   border-radius: 10px;
+	width : 606px;
+	height: 638px;
+	background: linear-gradient(360deg, #FFFFFF 0%, rgba(255, 255, 255, 0.89) 136.89%);
+	border-radius: 10px;
 
 }
 /*  내용 적는 흰 박스 부분 */
 form {
+
    width : 530px;
    margin: 0 auto;
      padding-top: 100px;
@@ -84,7 +86,6 @@ form {
 input {
     border:none; 
     background: transparent; 
-
 }
 input:focus {
    outline:none;
@@ -119,8 +120,7 @@ input:focus {
    width: 380px;
    height: 35px;
    float : right;
-
-} 
+}
 
 #btn{
    background-color: black;
@@ -157,6 +157,10 @@ button {
     background : transparent;
     
 }
+#loginbtns{
+	width:520px;
+}
+
 </style>
 
 </head>

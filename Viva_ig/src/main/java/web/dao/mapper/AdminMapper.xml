@@ -109,5 +109,13 @@
 		WHERE rnum BETWEEN #{startNo } AND #{endNo }
 	
 	</select>
+	
+	<update id="updateUserGrade" parameterType="int" >
+	update users
+	set user_grade = 0
+	where user_no = #{userNo}
+	</update>
+
+	
   	
   </mapper>

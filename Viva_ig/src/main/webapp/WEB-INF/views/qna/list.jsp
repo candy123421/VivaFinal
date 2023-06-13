@@ -78,10 +78,7 @@
 </div>
 	  <c:choose>
 	  
-	  <c:when test="${empty adminlogin and empty login }">
-	  로그인 후 이용해주세요!
-	  <a href="/viva/login"> <button class="btn btn-outline-secondary btn-sm">Login</button> </a>
-	  </c:when>
+
 	  
 	  
 	  

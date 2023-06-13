@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Base64.Encoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -31,10 +32,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -245,13 +245,20 @@ public class CreditController {
 //-----------------------------------------------------------------------------
 	//결제 완료 시, 이동할 리다이렉트 페이지!
 	@RequestMapping("/chargeOk")
-	public void chargeOk(@SessionAttribute(value="dealNo") int dealNo, Model model) {
+	public void chargeOk(HttpSession session, @SessionAttribute(value="dealNo") int dealNo, Model model) {
 		logger.info("credit/chargeOk - 결제 완료");
 		
 		logger.info("{}", dealNo);
 		
 		//결제완료된 정보 조회해오기(크레딧 총계, 결제방법, 결제승인시간, 실제 금액)
 		Map<String,Object> info = creditService.viewChargeOkInfo(dealNo);
+		
+		
+		//***************크레딧 잔액 리로드 하기******************** 
+		//CreditService 임포트 필수!
+		Credit creditAcc = new Credit();
+		creditAcc.setUserNo((int)session.getAttribute("userNo"));
+		session.setAttribute("headerCredit", creditService.selectCreditAcc(creditAcc));
 		
 		//확인하기
 		logger.info("{}", info);
@@ -289,8 +296,8 @@ public class CreditController {
 		logger.info("은행명 : {}", exchange.getBank());
 		logger.info("계좌번호 : {}", exchange.getAccNo());
 		
-		exchange.setExAmount(exCredit*10);
 		exchange.setUserNo((int)session.getAttribute("userNo"));
+		exchange.setExAmount(exCredit*10);	//크레딧 액수 *10 = 실제 금액
 		
 		logger.info("환전요청정보 : {}", exchange);
 		
@@ -298,6 +305,12 @@ public class CreditController {
 		ExchangeInfo result = creditService.addExchangeInfo(exCredit, exchange);
 		
 		logger.info("환전신청완료 : {} ", result);
+		
+		//***************크레딧 잔액 리로드 하기******************** 
+		//CreditService 임포트 필수!
+		Credit creditAcc = new Credit();
+		creditAcc.setUserNo((int)session.getAttribute("userNo"));
+		session.setAttribute("headerCredit", creditService.selectCreditAcc(creditAcc));
 		
 		model.addAttribute("info", result);
 	}
@@ -350,8 +363,10 @@ public class CreditController {
 	    }
 	}
 	
+	
 	@RequestMapping("/toss")
-	public void toss(HttpSession session, int cash,  String method, Writer out) {
+	@ResponseBody	//ResoponseBody 를 쓰지 않으면 view name 을 찾아간다. 왜냐면 항상 viewResolver 가 뷰네임을 찾으러 가기에.  그리고 return 값을 내가 원하는 타입으로 보내줄수 있다!
+	public Map<String, Object> toss(HttpSession session, int cash,  String method) {
 		logger.info("credit/toss - toss()");
 		logger.info("세션userNo : {}", session.getAttribute("userNo"));
 		logger.info("결제 금액 {} ", cash);
@@ -362,13 +377,33 @@ public class CreditController {
 //            json.put("method", method);
 
 			
-	    // 삭제 성공 여부에 따라 응답 데이터 설정
-	    try {
-		    out.write("{\"result\": " + cash + "}");
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
+//	    // 삭제 성공 여부에 따라 응답 데이터 설정
+//	    try {
+////		    out.write("{\"result\": " + cash +",\"result2\":"+ method +"}");
+//		    out.write("{\"result\": " + method + "}");
+//	    } catch (IOException e) {
+//	        e.printStackTrace();
+//	    }
 		
+		if("card".equals(method)) {
+			logger.info("카드로 변환");
+			method = "카드";
+
+		} else if("phone".equals(method)) {
+			logger.info("휴대폰으로 변환");
+			method = "휴대폰";
+		
+		} else if("transfer".equals(method)) {
+			logger.info("계좌이체로 변환");
+			method = "계좌이체";
+			
+		}
+	    Map<String, Object> paramMap = new HashMap<>();
+	    
+	    paramMap.put("cash", cash);
+	    paramMap.put("method", method);
+	    
+	    return paramMap;
 	}
 	
 //-----------------------------------------------------------------------------

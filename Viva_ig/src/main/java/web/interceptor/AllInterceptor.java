@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-public class Interceptor implements HandlerInterceptor  {
+public class AllInterceptor implements HandlerInterceptor  {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -22,14 +22,15 @@ public class Interceptor implements HandlerInterceptor  {
 	    	//세션 객체
 			HttpSession session = request.getSession();
 			
-			if( (boolean)session.getAttribute("login") == false ||  session.getAttribute("login") == null) {
+			if(session.getAttribute("loginCheck") == null) {
 				logger.info(" >> 접속 불가 : 비로그인 상태");
 				
-				response.sendRedirect("/users/Login");
+				response.sendRedirect("/users/login");
 				
 				//컨트롤러 접근 금지
 				return false;
-			}else if( (boolean)session.getAttribute("login") ) {
+				
+			}else if((boolean)session.getAttribute("loginCheck") ) {
 			// 2. 로그인 상태
 			//컨트롤러 접근 허용
 			logger.info(" >> 접속 허용 : 로그인 상태");

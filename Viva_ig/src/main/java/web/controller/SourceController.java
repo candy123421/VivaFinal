@@ -13,15 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import web.dto.Pack;
 import web.dto.PackLike;
 import web.dto.SourceFileInfo;
 import web.dto.SourceLike;
 import web.dto.Tag;
+import web.service.face.BoardService;
 import web.service.face.SourceService;
+import web.util.Paging;
 
 @Controller
 public class SourceController {
@@ -49,7 +49,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	
 	@GetMapping("/source/genre")
-	public void genre(Tag genre, Model model, String msg, HttpSession session) {
+	public void genre(Tag genre, Model model, String msg, HttpSession session, String curPage) {
 		logger.info("Genre별 Source 접근 [GET]");
 		logger.info("장르별 카테고리 {}",genre.getGenre());
 		
@@ -76,8 +76,9 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		
 		logger.info("Tag : {}" , genre);
 		
+		
 		// 음원소스 조회
-		List<Map<String, Object>> list = sourceService.getSourceByGenre(genre);
+		List<Map<String, Object>> list = sourceService.getSourceByGenre(genre, session);
 		
 		// 구매이력이 있는 경우 메시지 반환
 		if( msg != null && msg.equals("already")) {
@@ -167,7 +168,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 			model.addAttribute("cfx", instrument.getFx());
 			
 			// 음원소스 조회 [ inst, detail ] 포함
-			List<Map<String, Object>> list = sourceService.getSourceByInstDetail(instrument);
+			List<Map<String, Object>> list = sourceService.getSourceByInstDetail(res, session);
 			
 			model.addAttribute("list", list);
 		}
@@ -201,7 +202,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 			model.addAttribute("cdetail", instrument.getDetail());
 			
 			// 음원소스 조회 [ inst ]만 포함
-			List<Map<String, Object>> list = sourceService.getSourceByInstDetail(instrument);
+			List<Map<String, Object>> list = sourceService.getSourceByInstDetail(instrument, session);
 			
 			model.addAttribute("list", list);
 		}
@@ -218,6 +219,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 			model.addAttribute("genre", genre);
 			model.addAttribute("cgenre", instrument.getGenre());
 			
+			model.addAttribute("det", instrument.getDetail());
 			
 			model.addAttribute("scape", scape);
 			model.addAttribute("cscape", instrument.getScape());
@@ -227,7 +229,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 			
 			
 			// inst / detail 포함 조회
-			List<Map<String, Object>> list = sourceService.getSourceByInstDetail(instrument);
+			List<Map<String, Object>> list = sourceService.getSourceByInstDetail(instrument, session);
 			
 			model.addAttribute("list", list);
 		}

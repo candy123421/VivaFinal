@@ -221,7 +221,7 @@ div[data-itemtype='line']{
 		<li><a class="dropdown-item" href="/source/genre?genre=Electro">Electro</a></li>
 		<li><a class="dropdown-item" href="/source/genre?genre=House">House</a></li>
 		<li><a class="dropdown-item" href="/source/genre?genre=house">house</a></li>
-		<li><a class="dropdown-item" href="/source/genre?genre=disco">Disco</a></li>
+		<li><a class="dropdown-item" href="/source/genre?genre=Disco">Disco</a></li>
 		
 		
 		<li><a class="dropdown-item disabled">Pop</a></li>
@@ -425,7 +425,14 @@ div[data-itemtype='line']{
 			
 			<div class="icons" data-itemtype="line">
 				<div class="limg"><a href="./download?sourceNo=${list.SOURCE_NO }"><img src="../resources/icon/plus-circle.svg" style="width: 45%"></a></div>
-				<div class="like" data-like="${list.SOURCE_NO}"><img src="../resources/icon/heart.svg" style="width: 45%"></div>
+				<div class="like" data-like="${list.SOURCE_NO}">
+					<c:if test="${list.CNT > 0 }">
+						<img src="../resources/icon/heart-fill.svg" style="width: 45%">
+					</c:if>
+					<c:if test="${list.CNT <= 0 }">
+						<img src="../resources/icon/heart.svg" style="width: 45%">
+					</c:if>
+				</div>
 				<div class="cart" data-cart="${list.SOURCE_NO }"><img src="../resources/icon/shopping-cart.png" style="width: 45%"></div>
 				<div class="link"><a href="./pack?packNo=${list.PACK_NO }"><img src="../resources/icon/three-dots.svg" style="width: 45%"></a></div>
 				<div class="cartmsg"></div>

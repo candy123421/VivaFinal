@@ -19,6 +19,7 @@ import web.dto.SourceFileInfo;
 import web.dto.SourceLike;
 import web.dto.Tag;
 import web.service.face.SourceService;
+import web.util.Paging;
 
 @Service
 public class SourceServiceImpl implements SourceService{
@@ -134,8 +135,44 @@ public class SourceServiceImpl implements SourceService{
 	}
 
 	@Override
-	public List<Map<String, Object>> getSourceByGenre(Tag genre) {
-		return sourceDao.selectSourceByGenre(genre);
+	public List<Map<String, Object>> getSourceByGenre(Tag genre, HttpSession session) {
+		
+		Map<String, Object> list = new HashMap();
+		
+		if( genre.getDetail() != null) {
+			
+			logger.info("detail 로 들어옴");
+			list.put("genre", genre.getGenre());
+			list.put("userNo", session.getAttribute("userNo"));
+			list.put("detail", genre.getDetail());
+			
+		} else if( genre.getInstrument() != null) {
+			
+			logger.info("inst 로 들어옴");
+			list.put("genre", genre.getGenre());
+			list.put("userNo", session.getAttribute("userNo"));
+			list.put("instrument", genre.getInstrument());
+			
+		} else if( genre.getFx() != null) {
+			
+			logger.info("Fx 로 들어옴");
+			list.put("genre", genre.getGenre());
+			list.put("userNo", session.getAttribute("userNo"));
+			list.put("fx", genre.getFx());
+			
+		} else if( genre.getScape() != null ) {
+			
+			logger.info("Fx 로 들어옴");
+			list.put("genre", genre.getGenre());
+			list.put("userNo", session.getAttribute("userNo"));
+			list.put("scape", genre.getScape());
+			
+		}
+		
+		list.put("genre", genre.getGenre());
+		list.put("userNo", session.getAttribute("userNo"));
+		
+		return sourceDao.selectSourceByGenre(list);
 	}
 
 	@Override
@@ -299,8 +336,54 @@ public class SourceServiceImpl implements SourceService{
 	}
 
 	@Override
-	public List<Map<String, Object>> getSourceByInstDetail(Tag instrument) {
-		return sourceDao.selectSourceByInstDetail(instrument);
+	public List<Map<String, Object>> getSourceByInstDetail(Tag instrument, HttpSession session) {
+		
+		Map<String, Object> list = new HashMap();
+		
+		if( instrument.getGenre() != null ) {
+			
+			logger.info("Genre 로 들어옴");
+			list.put("genre", instrument.getGenre());
+			list.put("instrument", instrument.getInstrument());
+			list.put("userNo", session.getAttribute("userNo"));
+			list.put("detail", instrument.getDetail());
+			
+		} else if( instrument.getScape() != null) {
+			
+			logger.info("이젠 scape 로 들어옴");
+			list.put("detail", instrument.getDetail());
+			list.put("userNo", session.getAttribute("userNo"));
+			list.put("instrument", instrument.getInstrument());
+			list.put("scape", instrument.getScape());
+			
+		} else if ( instrument.getFx() != null) {
+			
+			logger.info("이젠 Fx 로 들어옴");
+			list.put("fx", instrument.getFx());
+			list.put("userNo", session.getAttribute("userNo"));
+			list.put("instrument", instrument.getInstrument());
+			list.put("detail", instrument.getDetail());
+			
+		} else if ( instrument.getInstrument() != null && instrument.getDetail() != null) {
+			
+			logger.info("detail 분류에서 태그 선택한 경우");
+			list.put("userNo", session.getAttribute("userNo"));
+			list.put("instrument", instrument.getInstrument());
+			list.put("detail", instrument.getDetail());
+			
+			if( instrument.getScape() != null) {
+				list.put("scape", instrument.getScape());
+			}
+			if( instrument.getFx() != null) {
+				list.put("fx", instrument.getFx());
+			}
+			
+			
+		}
+		
+		logger.info("inst Tag : {} ", instrument);
+		
+		return sourceDao.selectSourceByInstDetail(list);
 	}
 
 	@Override
@@ -426,15 +509,6 @@ public class SourceServiceImpl implements SourceService{
 	public List<Map<String, Object>> getMySource(int userNo) {
 		return sourceDao.selectMySourcebyUserNo(userNo);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

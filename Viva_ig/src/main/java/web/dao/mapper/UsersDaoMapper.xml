@@ -114,6 +114,15 @@
 		WHERE user_no = #{userNo}
 	</delete>
 	
+	<select id="selectStoredName" resultType="String" parameterType="int">
+		SELECT storedname FROM UserProfile
+		WHERE user_no = #{userNo}
+	</select>
+	
+	<select id="selectUpdateNick" resultType="String" parameterType="web.dto.Users">
+		SELECT user_nick FROM users
+		WHERE user_no = #{userNo}
+	</select>
 	
 	
 	

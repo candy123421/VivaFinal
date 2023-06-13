@@ -57,7 +57,6 @@ $(function(){
 		}
 	})
 	
-	
 	//이름을 입력하지 않고 넘어갈 경우(필수 정보입니다 띄우기)
 	$("#userName").blur(function(){
 		if($("#userName").val()==''){
@@ -67,14 +66,6 @@ $(function(){
 		}
 	})
 	
-	//생년월일을 입력하지 않고 넘어갈 경우(필수 정보입니다 띄우기)
-// 	$("#userBirth").blur(function(){
-// 		if($("#userBirth").val()==''){
-// 			$("#userbirth_msg").html("필수정보입니다")
-// 		}else{
-// 			$("#userbirth_msg").html("")
-// 		}
-// 	})
 })
 //----------------------------------------------------------------------------------------
 
@@ -182,7 +173,104 @@ function compare_check(){
 	return true
 }
 
+//아이디 중복 검사
+$(function(){
+		//아이디 중복체크를 하지않으면 false
+		var isIdCheck = false;
+		//닉네임 중복체크를 하지않으면 false
+		var isNickCheck = false;
 
+	//아이디 중복체크 버튼을 누르면
+	$(".id_input").on("click", function(){
+		
+		var userId = $("#userId").val();
+		var data = {userId : userId}
+
+		if(userId == ''){
+			$('#userid_msg').html("아이디를 입력해주세요")
+			return
+		}
+		//회원가입시 아이디 중복검사
+		$.ajax({
+			type:"get",
+			url: " /users/userIdChk",
+			data : data,
+			success: function(result){
+				//
+				if(result != "fail"){
+					isIdCheck=true;
+					//중복아이디가 없어서 사용가능한 아이디입니다
+					$(".id_input1").css("display","inline-block");
+					//span input2는 안보이게
+					$(".id_input2").css("display","none");
+				}else{
+					isIdCheck=false;
+					//중복아이디이므로 '아이디가 이미 존재합니다' 띄우기
+					$(".id_input1").css("display","none");
+					$(".id_input2").css("display","inline-block");
+				}
+				
+			}
+		})
+		
+	})
+	
+	//닉네임 중복 검사
+	$(".nick_input").on("click", function(){
+	//console.log("keyup 테스트");
+	
+		var userNick = $("#userNick").val();
+		var data = {userNick : userNick}
+
+		if(userNick == ''){
+			$('#usernick_msg').html("닉네임을 입력해주세요")
+			return
+		}
+		
+		$.ajax({
+			type:"get",
+			url: " /users/userNickChk",
+			data : data,
+			success: function(result){
+				//
+				if(result != "fail"){
+					isNickCheck=true;					
+					//중복닉네임 없어서 사용가능한 닉네임입니다
+					$(".nick_input1").css("display","inline-block");
+					//span input2는 안보이게
+					$(".nick_input2").css("display","none");
+				}else{
+					isNickCheck=false;					
+					//중복닉네임이므로 '닉네임 이미 존재합니다' 띄우기
+					$(".nick_input1").css("display","none");
+					$(".nick_input2").css("display","inline-block");
+				}
+				
+			}
+		})
+	})
+	
+	//아이디 ,닉네임 중복이면 submit불가
+	 $('#btn').click(function() {
+	     if(!isIdCheck){
+	         alert('아이디 중복검사를 확인해주세요.');
+	         return false;
+	      }else{
+	         return true;
+	      }
+
+	})
+	//아이디 ,닉네임 중복이면 submit불가
+	 $('#btn').click(function() {
+	     if(!isNickCheck){
+	         alert('닉네임 중복검사를 확인해주세요.');
+	         return false;
+	      }else{
+	         return true;
+	      }
+
+	})
+})
 </script>
 <style type="text/css">
 
@@ -191,18 +279,18 @@ html{
 	height :100vh;
 	justify-content: center;
 	align-items: center;
-/* 	background-color:#FFD0AF; */
+	background: linear-gradient(166.25deg, #514C9C 9.17%, #653A99 30.43%, #78377F 51.28%, #881E51 84.23%);
 }
 
 input{ 
 	border:2px solid; 
-/*  	border-bottom: 2px solid; */
 	border-radius: 5px;
  }
 
 .select{
  	width: 420px;
  	margin: 15px;
+ 	position:relative;
 }
 
 /* 로그인창으로(뒤로가기)  */
@@ -210,7 +298,9 @@ input{
 	position: fixed;
 	bottom: 40px;
     text-decoration-line: none;
-    margin-left:450px;
+    margin-left:480px;
+    margin-bottom:110px;
+    color:white;
 }
  
 .select input[type=text]{
@@ -235,80 +325,137 @@ input{
 	height: 35px;
 }
 
-.msg{
+.msg, #mail-check-warn{
 	color:red;
+}
+#chk_btn{
+	padding:0px 0px 0px 0px;
 }
 
 * {
     font-size: 16px;
     font-family: Consolas, sans-serif;
 }
+/* 중복아이디 존재하지 않으면 */
+.id_input1{
+	color:green;
+	display:none;
+}
+
+/* 중복아이디 존재한다면 */
+.id_input2{
+	color:red;
+	display:none;
+}
+/* 중복닉네임 존재하지 않으면 */
+.nick_input1{
+	color:green;
+	display:none;
+}
+
+/* 중복닉네임 존재한다면 */
+.nick_input2{
+	color:red;
+	display:none;
+}
+/* 아이디중복확인 버튼 */
+.id_input{
+	position: absolute;
+	top: 30px;
+	right: -120px;
+	border-radius:7px;
+}
+/*  viva 로고 부분 */
+#login_wrap_logo {
+    margin: 0 auto;
+    width: 250px;
+}
+#login_wrap_logo img {
+    width: 250px;
+}
+/* 닉네임중복확인 버튼 */
+.nick_input{
+	position: absolute;
+	top: 27px;
+	right: -145px;
+	border-radius:7px;
+}
+
 </style>
 
 </head>
 <body>
 
-<form action="./kakaojoin" method="post">
-
-	<h3 style="text-align:center; font-size:30px; color:#E57733	;">Viva</h3><br>
+<div id="login_wrap">
+	<div id="login_wrap_logo"><a href="/"><img class="layout_logo" src="/resources/icon/viva_icon_final.svg"></a></div><br>
 	
-	<div class="select">
-		<label for="userId" >아이디</label><br>
-		<input type="text"  id="userId" name="userId"  placeholder="6자 이상, 20자 이하의 영문자,숫자만 가능">
-		<span id="userid_msg" class="msg"></span>
-	</div>
+	<div class="login_wrap_part" id="login_input">
+		<form action="./kakaojoin" method="post">
 		
-	<div class="select">
-		<label for="userPw">비밀번호</label>
-		<input type="text"  id="userPw" name="userPw" placeholder="알파벳 대소문자, 숫자, 특수기호 조합으로 8~20자">
-		<span id="userpw_msg" class="msg"></span>
+			<div class="select">
+				<label for="userId" style="color:white;" >아이디</label><br>
+				<input type="text"  id="userId" name="userId"  placeholder="6자 이상, 20자 이하의 영문자,숫자만 가능">
+				<span id="userid_msg" class="msg"></span>
+				<button type="button" value="ID중복확인" class="id_input">ID중복확인</button>
+				<span class="id_input1">사용 가능한 아이디입니다.</span>
+				<span class="id_input2">아이디가 이미 존재합니다.</span>
+			</div>
+				
+			<div class="select">
+				<label for="userPw" style="color:white;">비밀번호</label>
+				<input type="text"  id="userPw" name="userPw" placeholder="알파벳 대소문자, 숫자, 특수기호 조합으로 8~20자">
+				<span id="userpw_msg" class="msg"></span>
+			</div>
+			
+			<div class="select">
+				<label for="userpw_check" style="color:white;">비밀번호 재확인</label>
+				<input type="text"  id="userpw_check" name="userpw_check" >
+				<span id="userpwcheck_error" class="msg"></span>
+			</div>
+			
+			<div class="select">
+				<label for="userName" style="color:white;">이름</label>
+				<input type="text"  id="userName" name="userName">
+				<span id="username_msg" class="msg"></span>
+			</div>
+			
+			<div class="select">
+				<label for="userBirth" style="color:white;">생년월일</label>
+				 <input type="date"  id="userBirth" name="userBirth" required="required">
+		<!-- 			<input type="text" name="userBirth" placeholder="YYYY/MM/DD" > -->
+				<span id="userbirth_msg" class="msg"></span>
+			</div>
+			
+			<div class="select">
+				<label for="userNick" style="color:white;">닉네임</label>
+				<input type="text"  id="userNick" name="userNick" required="required">
+				<span id="usernick_msg" class="msg"></span>
+				<button type="button" value="닉네임중복확인" class="nick_input">닉네임중복확인</button>
+				<span class="nick_input1">사용 가능한 닉네임입니다.</span>
+				<span class="nick_input2">닉네임이 이미 존재합니다.</span>
+			</div>
+			
+			<div class="select">
+				<label for="userEmail" style="color:white;">이메일</label>
+				<input class="useremail" type="email"  id="userEmail" name="userEmail" required="required">
+				<span id="useremail_msg" class="msg"></span>
+			</div>
+			
+			<div class="select">
+				<label for="userMobile" style="color:white;">휴대전화</label>
+				<input type="text"  id="userMobile" name="userMobile" pattern="[0-9]+" placeholder="ex)01099999999" required="required">
+				<span id="usermobile_msg" class="msg"></span>
+			</div>
+			
+			<div class="select">
+				<button id="btn">가입하기</button>
+			</div>
+			
+			<a href="./login" class="hre">뒤로가기</a>
+		
+		</form>
 	</div>
-	
-	<div class="select">
-		<label for="userpw_check">비밀번호 재확인</label>
-		<input type="text"  id="userpw_check" name="userpw_check" >
-		<span id="userpwcheck_error" class="msg"></span>
-	</div>
-	
-	<div class="select">
-		<label for="userName">이름</label>
-		<input type="text"  id="userName" name="userName">
-		<span id="username_msg" class="msg"></span>
-	</div>
-	
-	<div class="select">
-		<label for="userBirth">생년월일</label>
-		 <input type="date"  id="userBirth" name="userBirth" required="required">
-<!-- 			<input type="text" name="userBirth" placeholder="YYYY/MM/DD" > -->
-		<span id="userbirth_msg" class="msg"></span>
-	</div>
-	
-	<div class="select">
-		<label for="userNick">닉네임</label>
-		<input type="text"  id="userNick" name="userNick" required="required">
-		<span id="usernick_msg" class="msg"></span>
-	</div>
-	
-	<div class="select">
-		<label for="userEmail">이메일</label>
-		<input class="useremail" type="email"  id="userEmail" name="userEmail" required="required">
-		<span id="useremail_msg" class="msg"></span>
-	</div>
-	
-	<div class="select">
-		<label for="userMobile">휴대전화</label>
-		<input type="text"  id="userMobile" name="userMobile" pattern="[0-9]+" placeholder="ex)01099999999" required="required">
-		<span id="usermobile_msg" class="msg"></span>
-	</div>
-	
-	<div class="select">
-		<button id="btn">가입하기</button>
-	</div>
-	
-	<a href="./login" class="hre">뒤로가기</a>
-
-</form>
-
+</div>
 </body>
 </html>
 

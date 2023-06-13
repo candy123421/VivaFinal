@@ -149,6 +149,21 @@ a{
 				<img class="img" src="../resources/img/banner4.jpg" style="height: 300px">
 				<img class="img" src="../resources/img/banner7.jpg" style="height: 300px">
 				<img class="img" src="../resources/img/banner8.jpg" style="height: 300px">
+				<img class="img" src="../resources/img/1.png" style="height: 300px">
+				<img class="img" src="../resources/img/2.png" style="height: 300px">
+				<img class="img" src="../resources/img/3.png" style="height: 300px">
+				<img class="img" src="../resources/img/4.png" style="height: 300px">
+				<img class="img" src="../resources/img/5.png" style="height: 300px">
+				<img class="img" src="../resources/img/6.png" style="height: 300px">
+				<img class="img" src="../resources/img/7.png" style="height: 300px">
+				<img class="img" src="../resources/img/8.png" style="height: 300px">
+				<img class="img" src="../resources/img/9.png" style="height: 300px">
+				<img class="img" src="../resources/img/10.png" style="height: 300px">
+				<img class="img" src="../resources/img/11.png" style="height: 300px">
+				<img class="img" src="../resources/img/12.png" style="height: 300px">
+				<img class="img" src="../resources/img/13.png" style="height: 300px">
+				<img class="img" src="../resources/img/14.png" style="height: 300px">
+				<img class="img" src="../resources/img/15.png" style="height: 300px">
 			</div>
 		</div>
 	</div>
@@ -177,7 +192,14 @@ a{
 				<c:forEach var="rank" items="${rank}" varStatus="idx">
 				<div class="rank">
 					<div class="rankimg">
-						<a href="/source/pack?packNo=${rank.PACK_NO}"><img src="../upload/${rank.PACK_IMG_STOREDNAME }" style="width: 100%"></a>
+						<a href="/source/pack?packNo=${rank.PACK_NO}">
+						<c:if test="${not empty rank.PACK_IMG_STOREDNAME }">
+							<img src="../upload/${rank.PACK_IMG_STOREDNAME }" style="width: 100%">
+						</c:if>
+						<c:if test="${empty rank.PACK_IMG_STOREDNAME }">
+							<img src="../resources/img/default-image.webp" style="width: 100%">
+						</c:if>
+						</a>
 					</div>
 					<div class="ranknum">
 						${idx.count}
@@ -192,14 +214,6 @@ a{
 				</c:forEach>
 			</div>
 		</div>
-		
-		
-		
-		
-		
-		
-		
-		
 	</div>
 </div>
 <c:import url ="./layout/footer.jsp"/>

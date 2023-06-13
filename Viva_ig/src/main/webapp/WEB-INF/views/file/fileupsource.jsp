@@ -20,6 +20,20 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
 <script type="text/javascript">
 $(function(){
+	
+	$(document).ready(function() {
+		$("#cancel").click(function() {
+			history.go(-1)
+		})
+
+		//form이 있는데 굳이 또 쓰는이유를 잘모르겠어용
+// 		$("#btnWrite").click(function() {
+// 			submitContents($("#btnWrite"))
+			
+// 			$("form").submit();
+// 		})
+	})
+	
 // 	bpm focus시 출력
 	$("#bpm").focus(function(){
 		$("#bpm_msg").html("")
@@ -204,6 +218,48 @@ $(function(){
 	margin-left: 50px;
 	}
 	
+		.upload{
+	background: rgba(255, 255, 255, 0.01);
+	border: 2px solid #9E66A4;
+	border-radius: 10px;
+	width:70px;
+	height:40px;
+	transition: all 0.4s;
+	color: #9E66A4;
+	}
+	.upload:focus{
+	outline: none;
+	}
+
+	.upload:hover{
+	background: linear-gradient(208.73deg, #4C469F -24.94%, #7857A2 24.61%, rgba(190, 52, 85, 0.9) 90.77%, #9E66A4 101.89%);
+	border: 2px solid #9E66A4;
+	border-radius: 10px;
+	width:70px;
+	height:40px;
+	color: white;
+	}
+	
+	.cancel{
+	background: rgba(255, 255, 255, 0.01);
+	border: 2px solid #F88080;
+	border-radius: 10px;
+	width:70px;
+	height:40px;
+	transition: all 0.4s;
+	color: #F88080;
+	}
+	.cancel:focus{
+	outline: none;
+	}
+
+	.cancel:hover{
+
+background: linear-gradient(270deg, rgba(245, 174, 108, 0.929575) 4.09%, rgba(255, 43, 91, 0.812201) 99.99%, #4200FF 100%);
+	color: white;
+	}
+
+	
 
 	
 /* ------------------------------------------------ */
@@ -255,15 +311,15 @@ $(function(){
 	</c:when>
 	
 	
-	<c:when test="${not empty login and login }">
+	<c:when test="${login or adminlogin}">
 	<div class=body>
 <!-- container : div안에있는것들 다 가운데 -->
 <div id="containerid" class="container" >
 <h2> 자신만의 Source로 세상을 움직여주세요!</h2>
 <div class="guide">
-Pack을 올리기전에 <a href="/file/guide">가이드</a>를 확인해주세요!
+Source를 올리기전에 <a href="/file/guide">가이드</a>를 확인해주세요!
 </div>
-<hr>
+	<img class="FunctionTilteLine" src="../resources/icon/Line.svg" style="margin-top:15px; margin-bottom: 15px; width:1300px;">
 <a class="source" href="/file/fileupsource">Source</a> 
 <a class="pack" href="/file/fileuppack"> Pack</a> 
 
@@ -612,8 +668,8 @@ Pack을 올리기전에 <a href="/file/guide">가이드</a>를 확인해주세�
 
 
 <div class="text-center">
-	<button id="btnWrite" class="btn btn-outline-secondary">Upload</button>
-	<button id="btnCancel" class="btn btn-outline-danger">Cancel</button>
+	<button id="btnWrite" class="upload">Upload</button>
+			<input type="reset" id="cancel" class="cancel" value="Cancel">
 </div>
 </form>
 </div>

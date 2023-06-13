@@ -123,7 +123,7 @@ html{
 	height :100vh;
 	justify-content: center;
 	align-items: center;
-	background-color:#FFD0AF;
+ 	background: linear-gradient(166.25deg, #514C9C 9.17%, #653A99 30.43%, #78377F 51.28%, #881E51 84.23%);
 }
 
 input{ 
@@ -161,38 +161,53 @@ input{
 
 .noline{
 	 text-decoration-line: none;
+	 color:wheat;
+}
+/*  viva 로고 부분 */
+#login_wrap_logo {
+    margin: 0 auto;
+    width: 250px;
+}
+#login_wrap_logo img {
+    width: 250px;
+}
+input::placeholder {
+ 	 color:black;
 }
 </style>
 
 </head>
 <body>
-
-<form action="./pwchange" method="post">
-	<h3 style="text-align:center; font-size:30px; color:#E57733	;">Viva</h3><br>
+<div id="login_wrap">
+	<div id="login_wrap_logo"><a href="/"><img class="layout_logo" src="/resources/icon/viva_icon_final.svg"></a></div><br>
 	
-	<input type="hidden" name="userNo" value="${userNo}">
-
-	<div class="select">
-		<label for="userPw">변경할 비밀번호</label>
-		<input type="text"  id="userPw" name="userPw">
-		<span id="userpw_msg" class="msg"></span>
+	<div class="login_wrap_part" id="login_input">
+		<form action="./pwchange" method="post">
+			<input type="hidden" name="userNo" value="${userNo}">
+		
+			<div class="select">
+<!-- 				<label for="userPw">변경할 비밀번호</label> -->
+				<input type="text"  id="userPw" name="userPw" placeholder="변경할 비밀번호">
+				<span id="userpw_msg" class="msg"></span>
+			</div>
+			
+			<div class="select">
+<!-- 				<label for="userpw_check">비밀번호 재확인</label> -->
+				<input type="text"  id="userpw_check" name="userpw_check" placeholder="비밀번호 재확인">
+				<span id="userpwcheck_msg" class="msg"></span>
+			</div>
+			
+			<div class="select">
+				<button id="btn">변경하기</button>
+			</div>
+			
+			<div class="select" style="font-size:12px; color:white;">아이디를 찾으시겠습니까?
+				<a href="./idcheck" class="noline">아이디 찾기 | </a>
+				<a href="./login" class="noline">뒤로가기</a>
+			</div>
+			
+		</form>
 	</div>
-	
-	<div class="select">
-		<label for="userpw_check">비밀번호 재확인</label>
-		<input type="text"  id="userpw_check" name="userpw_check">
-		<span id="userpwcheck_msg" class="msg"></span>
-	</div>
-	
-	<div class="select">
-		<button id="btn">변경하기</button>
-	</div>
-	
-	<div class="select" style=font-size:12px;>아이디를 찾으시겠습니까?
-		<a href="./idcheck" class="noline">아이디 찾기 | </a>
-		<a href="./login" class="noline">뒤로가기</a>
-	</div>
-	
-</form>
+</div>
 </body>
 </html>

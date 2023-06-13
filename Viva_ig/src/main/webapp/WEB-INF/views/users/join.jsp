@@ -253,7 +253,7 @@ $(function(){
 	//아이디 ,닉네임 중복이면 submit불가
 	 $('#btn').click(function() {
 	     if(!isIdCheck){
-	         alert('아이디가 중복되었습니다.');
+	         alert('아이디 중복검사를 확인해주세요.');
 	         return false;
 	      }else{
 	         return true;
@@ -263,7 +263,7 @@ $(function(){
 	//아이디 ,닉네임 중복이면 submit불가
 	 $('#btn').click(function() {
 	     if(!isNickCheck){
-	         alert('닉네임이 중복되었습니다.');
+	         alert('닉네임 중복검사를 확인해주세요.');
 	         return false;
 	      }else{
 	         return true;
@@ -391,7 +391,8 @@ html{
 	height :100vh;
 	justify-content: center;
 	align-items: center;
- 	background-color:#FFD0AF; 
+ 	background: linear-gradient(166.25deg, #514C9C 9.17%, #653A99 30.43%, #78377F 51.28%, #881E51 84.23%);
+ 	
 }
 
 input{ 
@@ -410,7 +411,9 @@ input{
 	position: fixed;
 	bottom: 40px;
     text-decoration-line: none;
-    margin-left:450px;
+    margin-left:480px;
+    margin-bottom:110px;
+    color:white;
 }
  
 .select input[type=text]{
@@ -475,6 +478,7 @@ input{
 	position: absolute;
 	top: 30px;
 	right: -120px;
+	border-radius:7px;
 }
 /* 이메일 @.com 뒤에꺼 버튼 */
 .form-controll{
@@ -487,104 +491,117 @@ input{
 	position: absolute;
 	top: 27px;
 	right: -145px;
+	border-radius:7px;
 }
 .btn-btn-primary{
 	position: absolute;
 	top: 71px;
 	right:101px;
+	border-radius:7px;
 }
 .mail-check-input{
 	margin-top:10px;
 }
 
+/*  viva 로고 부분 */
+#login_wrap_logo {
+    margin: 0 auto;
+    width: 250px;
+}
+#login_wrap_logo img {
+    width: 250px;
+}
 </style>
 
 </head>
 <body>
 
-<form action="./join" method="post">
+<div id="login_wrap">
+	<div id="login_wrap_logo"><a href="/"><img class="layout_logo" src="/resources/icon/viva_icon_final.svg"></a></div><br>
+	
+	<div class="login_wrap_part" id="login_input">
+		<form action="./join" method="post">
 
-	<h3 style="text-align:center; font-size:30px; color:#E57733;">Viva</h3><br>
-	
-	<div class="select">
-		<label for="userId" >아이디</label><br>
-		<input type="text"  id="userId" name="userId"  placeholder="6자 이상, 20자 이하의 영문자,숫자만 가능">
-		<span id="userid_msg" class="msg"></span>
-		<button type="button" value="ID중복확인" class="id_input">ID중복확인</button>
-		<span class="id_input1">사용 가능한 아이디입니다.</span>
-		<span class="id_input2">아이디가 이미 존재합니다.</span>
+			<div class="select">
+				<label for="userId" style="color:white;">아이디</label><br>
+				<input type="text"  id="userId" name="userId"  placeholder="6자 이상, 20자 이하의 영문자,숫자만 가능">
+				<span id="userid_msg" class="msg"></span>
+				<button type="button" value="ID중복확인" class="id_input">ID중복확인</button>
+				<span class="id_input1">사용 가능한 아이디입니다.</span>
+				<span class="id_input2">아이디가 이미 존재합니다.</span>
+			</div>
+				
+			<div class="select">
+				<label for="userPw" style="color:white;">비밀번호</label>
+				<input type="text"  id="userPw" name="userPw" placeholder="알파벳 대소문자, 숫자, 특수기호 조합으로 8~20자">
+				<span id="userpw_msg" class="msg"></span>
+			</div>
+			
+			<div class="select">
+				<label for="userpw_check" style="color:white;">비밀번호 재확인</label>
+				<input type="text"  id="userpw_check" name="userpw_check" >
+				<span id="userpwcheck_error" class="msg"></span>
+			</div>
+			
+			<div class="select">
+				<label for="userName" style="color:white;">이름</label>
+				<input type="text"  id="userName" name="userName">
+				<span id="username_msg" class="msg"></span>
+			</div>
+			
+			<div class="select">
+				<label for="userBirth" style="color:white;">생년월일</label>
+				 <input type="date"  id="userBirth" name="userBirth" required="required">
+				<span id="userbirth_msg" class="msg"></span>
+			</div>
+			
+			<div class="select">
+				<label for="userNick" style="color:white;">닉네임</label>
+				<input type="text"  id="userNick" name="userNick" required="required">
+				<span id="usernick_msg" class="msg"></span>
+				<button type="button" value="닉네임중복확인" class="nick_input">닉네임중복확인</button>
+				<span class="nick_input1">사용 가능한 닉네임입니다.</span>
+				<span class="nick_input2">닉네임이 이미 존재합니다.</span>
+			</div>
+			
+			<div class="select">
+				<label for="userEmail" style="color:white;">이메일</label>
+				<input class="userEmail" type="text"  id="userEmail1" name="userEmail1" placeholder="이메일" required="required">
+				<select class="form-controll" id="userEmail2" name="userEmail2">
+					<option value="@naver.com">@naver.com</option>
+					<option value="@daum.net">@daum.net</option>
+					<option value="@gmail.com">@gmail.com</option>
+					<option value="@hanmail.com">@hanmail.com</option>
+					<option value="@yahoo.co.kr">@yahoo.co.kr</option>
+				</select>
+				<input type="hidden" id="userEmail" name="userEmail">
+				<div class="mail-check-box">
+					<input class="mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled" maxlength="6">
+				</div>
+				
+				<div class="input-group-addon">
+					<button type="button" class="btn-btn-primary" id="mail-Check-Btn">인증코드전송</button>
+				</div>
+				
+				<div>
+					<span id="mail-check-warn" class="msg"></span>
+				</div>
+			</div>	
+			
+			<div class="select">
+				<label for="userMobile">휴대전화</label>
+				<input type="text"  id="userMobile" name="userMobile" pattern="[0-9]+" placeholder="ex)01099999999" required="required">
+				<span id="usermobile_msg" class="msg"></span>
+			</div>
+			
+			<div class="select">
+				<button id="btn">가입하기</button>
+			</div>
+			
+			<a href="./login" class="hre">뒤로가기</a>
+		</form>
 	</div>
-		
-	<div class="select">
-		<label for="userPw">비밀번호</label>
-		<input type="text"  id="userPw" name="userPw" placeholder="알파벳 대소문자, 숫자, 특수기호 조합으로 8~20자">
-		<span id="userpw_msg" class="msg"></span>
-	</div>
-	
-	<div class="select">
-		<label for="userpw_check">비밀번호 재확인</label>
-		<input type="text"  id="userpw_check" name="userpw_check" >
-		<span id="userpwcheck_error" class="msg"></span>
-	</div>
-	
-	<div class="select">
-		<label for="userName">이름</label>
-		<input type="text"  id="userName" name="userName">
-		<span id="username_msg" class="msg"></span>
-	</div>
-	
-	<div class="select">
-		<label for="userBirth">생년월일</label>
-		 <input type="date"  id="userBirth" name="userBirth" required="required">
-		<span id="userbirth_msg" class="msg"></span>
-	</div>
-	
-	<div class="select">
-		<label for="userNick">닉네임</label>
-		<input type="text"  id="userNick" name="userNick" required="required">
-		<span id="usernick_msg" class="msg"></span>
-		<button type="button" value="닉네임중복확인" class="nick_input">닉네임중복확인</button>
-		<span class="nick_input1">사용 가능한 닉네임입니다.</span>
-		<span class="nick_input2">닉네임이 이미 존재합니다.</span>
-	</div>
-	
-	<div class="select">
-		<label for="userEmail">이메일</label>
-		<input class="userEmail" type="text"  id="userEmail1" name="userEmail1" placeholder="이메일" required="required">
-		<select class="form-controll" id="userEmail2" name="userEmail2">
-			<option value="@naver.com">@naver.com</option>
-			<option value="@daum.net">@daum.net</option>
-			<option value="@gmail.com">@gmail.com</option>
-			<option value="@hanmail.com">@hanmail.com</option>
-			<option value="@yahoo.co.kr">@yahoo.co.kr</option>
-		</select>
-		<input type="hidden" id="userEmail" name="userEmail">
-		<div class="mail-check-box">
-			<input class="mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled" maxlength="6">
-		</div>
-		
-		<div class="input-group-addon">
-			<button type="button" class="btn-btn-primary" id="mail-Check-Btn">인증코드전송</button>
-		</div>
-		
-		<div>
-			<span id="mail-check-warn" class="msg"></span>
-		</div>
-	</div>	
-	
-	<div class="select">
-		<label for="userMobile">휴대전화</label>
-		<input type="text"  id="userMobile" name="userMobile" pattern="[0-9]+" placeholder="ex)01099999999" required="required">
-		<span id="usermobile_msg" class="msg"></span>
-	</div>
-	
-	<div class="select">
-		<button id="btn">가입하기</button>
-	</div>
-	
-	<a href="./login" class="hre">뒤로가기</a>
-
-</form>
+</div>
 
 </body>
 </html>

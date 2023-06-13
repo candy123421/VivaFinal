@@ -247,6 +247,9 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 	public void pack(Model model, Pack pack, Tag tag, String msg, HttpSession session, PackLike like) {
 		logger.info("pack 세부 페이지 [Get]");
 		
+		// 회원정보 전달
+		model.addAttribute("userNo", session.getAttribute("userNo"));
+		
 		// 팩 정보 조회 ( 이름, 설명, 사진 )
 		Map<String, Object> info = sourceService.getPackInfo(pack.getPackNo());
 		
@@ -276,7 +279,6 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		model.addAttribute("like", cnt);
 		
 		// 좋아요 이력 조회
-		session.setAttribute("userNo", 1);
 		boolean pLike = sourceService.tracePackLike(session, pack);
 		if (pLike == true) {
 			model.addAttribute("pLike", pLike);
@@ -361,9 +363,11 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	
 	@GetMapping("/pack/inst")
-	public void sourcepackinst(Tag tag, Model model) {
+	public void sourcepackinst(Tag tag, Model model, HttpSession session) {
 		logger.info("팩 악기 접속 확인");
 		logger.info("tag : {}",tag);
+		// 회원정보 전달
+		model.addAttribute("userNo", session.getAttribute("userNo"));
 		
 		if(tag.getInstrument() == null || tag.getDetail() != null) {
 			
@@ -438,18 +442,6 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		logger.info("/sound/inst 확인");
 		model.addAttribute("inst", "inst");
 		
-		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

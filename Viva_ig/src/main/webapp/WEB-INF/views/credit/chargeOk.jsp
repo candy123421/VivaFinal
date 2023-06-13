@@ -3,27 +3,31 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 
 <c:import url="../layout/header.jsp"/>  
+
 <style type="text/css">
 
-#chargeOk_ment img {
+#chargeOk_wrap {
+	width:1400px;
+	margin : 0 auto;
+}
+
+#chargeOk_ment img {	/*  상단 체크 */
 	width: 100px;
+    padding: 15px;
 }
 #chargeOk_ment{
-	position: absolute;
 	width: 453px;
-	height: 271px;
-	left: 427px;
-	top: 185px;
-	
+	height: 237px;
+	margin: 0 auto;
 	font-family: 'Noto Sans';
 	font-style: normal;
 	font-weight: 700;
 	font-size: 31px;
 	line-height: 42px;
-	display: flex;
 	align-items: center;
 	text-align: center;
 	letter-spacing: 0.1em;
+    margin-top: 67px;
 	
 	color: #000000;
 }
@@ -31,18 +35,19 @@ h3 {
 	font-weight: 600;
 }
 .chargeOk_chargeInfo {
-	position: absolute;
+	font-size : 20px;
 	width: 667px;
 	height: 242px;
-	left: 345px;
-	top: 387px;
+    padding: 35px;
+    margin: 0 auto;
 	background: rgba(251, 251, 251, 0.5);
 	mix-blend-mode: normal;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 	border-radius: 5px;
+	margin-bottom: 75px;
 }
 
-dl {
+.chargeOk_chargeInfo dl {
 	display : flex;
 	flex-direction : row;
 	align-items: flex-start;
@@ -52,21 +57,18 @@ dl {
 	letter-spacing : -0.5px;
 }
 
-dt {
-	width : 100px; 
+.chargeOk_chargeInfo dt {
+	width: 204px;
 	height : 100%;
-	line-height : 19px;
 }
 
 .price {
 	font-weight : 900;
 }
 .chargeOk_redirect {
-	position: absolute;
-    left: 345px;
-	top: 672px;
-	width: 100%;
+	width: 666px;
     text-align: left;
+    margin : 0 auto;
 }
 
 .chargeOk_redirect div {
@@ -111,42 +113,44 @@ dt {
 <div class="FunctionTitleLine">
    <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
 </div>
-<section>
-<div id="chargeOk_ment">
-	<div>
-		<img alt="checkOk" src="/resources/icon/charge_ok_chk.svg">
+
+<div id="chargeOk_wrap">
+
+	<div id="chargeOk_ment">
+		<div>
+			<img alt="checkOk" src="/resources/icon/charge_ok_chk.svg">
+		</div>
+		
+	<h3>크레딧 충전이<br>
+	완료되었습니다.</h3>
+	</div>
+	<div class="chargeOk_chargeInfo">
+		<dl>
+			<dt>충전된 크레딧</dt>
+			<dd>
+				<span class="price">${info.AMOUNT}</span>
+				<span class="price">Credit</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>결제 방식</dt>
+			<dd>
+				<span>${info.METHOD}</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>실제 결제 금액</dt>
+			<dd>
+				<span>${info.TOTAL_AMOUNT}</span>
+				<span>원</span>
+			</dd>
+		</dl>
 	</div>
 	
-<h3>크레딧 충전이<br>
-완료되었습니다.</h3>
+	<div class="chargeOk_redirect">
+		<div><button type="button" id="chargeRedirect" onClick="location.href='./charge'">추가 충전하기</button></div>
+		<div><button type="button" id="creditListRedirect" onClick="location.href='./list'">크레딧 내역 조회</button></div>
+	</div>
 </div>
-<div class="chargeOk_chargeInfo">
-	<dl>
-		<dt>충전된 크레딧</dt>
-		<dd>
-			<span class="price">${info.AMOUNT}</span>
-			<span class="price">Credit</span>
-		</dd>
-	</dl>
-	<dl>
-		<dt>결제 방식</dt>
-		<dd>
-			<span>${info.METHOD}</span>
-		</dd>
-	</dl>
-	<dl>
-		<dt>실제 결제 금액</dt>
-		<dd>
-			<span>${info.TOTAL_AMOUNT}</span>
-			<span>원</span>
-		</dd>
-	</dl>
-</div>
-
-<div class="chargeOk_redirect">
-	<div><button type="button" id="chargeRedirect" onClick="location.href='./charge'">추가 충전하기</button></div>
-	<div><button type="button" id="creditListRedirect" onClick="location.href='./list'">크레딧 내역 조회</button></div>
-</div>
-</section>
 
 <c:import url ="../layout/footer.jsp"/> 

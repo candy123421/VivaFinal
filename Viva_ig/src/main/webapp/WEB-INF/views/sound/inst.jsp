@@ -26,7 +26,7 @@
 #Wrap{
 }
 #WrapTop{
-	width: 1300px;
+	width: 1400px;
 	margin: 0 auto;
 }
 #category{
@@ -200,46 +200,8 @@
 						<a class="a" href="/source/inst?detail=Pizzicato"><div class="text">Pizzicato</div></a>
 					</div>
 				</div>
-				
-				
-				
-				
-				
 			</div>
-			
 		</div>	
-	
-	
-	
-	
 	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <c:import url="../layout/footer.jsp"/>

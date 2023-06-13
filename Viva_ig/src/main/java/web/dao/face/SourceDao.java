@@ -224,6 +224,15 @@ public interface SourceDao {
 	 */
 	public List<Map<String, Object>> selectPackInfos(Tag tag);
 
+	/**
+	 * 로그인 된 회원이 가지고 있는
+	 * 음원소스를 DB에서 조회한다
+	 * 
+	 * @param userNo - 조회를 요청한 회원정보
+	 * @return - 조회 결과
+	 */
+	public List<Map<String, Object>> selectMySourcebyUserNo(int userNo);
+
 	
 
 

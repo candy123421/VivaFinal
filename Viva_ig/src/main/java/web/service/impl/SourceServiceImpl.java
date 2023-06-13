@@ -421,6 +421,11 @@ public class SourceServiceImpl implements SourceService{
 	public List<Tag> getPackInfosInst(Tag tag) {
 		return sourceDao.selectTagByInstDetail(tag);
 	}
+
+	@Override
+	public List<Map<String, Object>> getMySource(int userNo) {
+		return sourceDao.selectMySourcebyUserNo(userNo);
+	}
 	
 	
 	

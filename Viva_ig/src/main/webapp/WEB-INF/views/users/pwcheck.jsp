@@ -15,7 +15,7 @@ html{
 	height :100vh;
 	justify-content: center;
 	align-items: center;
-	background-color:#FFD0AF;
+ 	background: linear-gradient(166.25deg, #514C9C 9.17%, #653A99 30.43%, #78377F 51.28%, #881E51 84.23%);
 }
 
 input{ 
@@ -50,19 +50,21 @@ input{
 
 .noline{
 	 text-decoration-line: none;
+	 color:wheat;
 }
 
 /* 이메일 @.com 뒤에꺼 버튼 */
 .form-controll{
 	position: absolute;
-	top: 31px;
+	top: 9px;
  	right:  -133px; 
 }
 
 .btn-btn-primary{
 	position: absolute;
-	top: 71px;
+	top: 48px;
 	right:18px;
+	border-radius:7px;
 }
 
 .mail-check-input{
@@ -71,6 +73,17 @@ input{
 
 #mail-check-warn , #userid_msg{
 	color:red;
+}
+/*  viva 로고 부분 */
+#login_wrap_logo {
+    margin: 0 auto;
+    width: 250px;
+}
+#login_wrap_logo img {
+    width: 250px;
+}
+input::placeholder {
+ 	 color:black;
 }
 </style>
 
@@ -85,11 +98,11 @@ $(function(){
 	})
 	
 	$('#mail-Check-Btn').click(function() {
-		const email = $('#userEmail').val() + $('#userEmail2').val(); // 이메일 주소값 얻어오기!
+		const email = $('#userEmail1').val() + $('#userEmail2').val(); // 이메일 주소값 얻어오기!
 		console.log('완성된 이메일 : ' + email); // 이메일 오는지 확인
 		const checkInput = $('.mail-check-input') // 인증번호 입력하는곳 
 		
-		var userEmail = $("#userEmail").val();
+		var userEmail = $("#userEmail1").val();
 		
 		if( userEmail == '' ) {
 			$('#mail-check-warn').html("이메일을 입력해주세요")
@@ -133,7 +146,7 @@ $(function(){
 					$resultMsg.css('color','green');
 					$('#mail-Check-Btn').attr('disabled',true);
 					$('#pw_check').attr('disabled',false);
-					$('#userEmail').attr('readonly',true);
+					$('#userEmail1').attr('readonly',true);
 					$('#userEmail2').attr('readonly',true);
 					$('#userEmail2').attr('onFocus', 'this.initialSelect = this.selectedIndex');
 			        $('#userEmail2').attr('onChange', 'this.selectedIndex = this.initialSelect');
@@ -171,20 +184,22 @@ $(function(){
     //비밀번호 찾기를 눌렀을 때 ajax를 이용하여 DB에 아이디, 이메일이 존재하면 pwchange 페이지로 넘기기
 	$("#pw_check").on("click", function(){
 		var userId = $("#userId").val();
-		var userEmail = $("#userEmail").val();
+		var Email1 = $("#userEmail1").val();
+		const email = $('#userEmail1').val() + $('#userEmail2').val(); // 이메일 주소값 얻어오기!
+		console.log('완성된 이메일2 : ' + email); // 이메일 오는지 확인
+		
+		console.log(userId)
+		console.log(email)
 		
 		if( userId == '' ) {
 			$('#userid_msg').html("아이디를 입력해주세요")
 			return
 		}
 		
-		if( userEmail == '' ) {
+		if( Email1 == '' ) {
 			$('#mail-check-warn').html("이메일을 입력해주세요")
 			return
 		}
-		
-		console.log(userId)
-		console.log(userEmail)
 		
 		//비밀번호 찾기시 아이디과 이메일 존재여부 확인
 		$.ajax({
@@ -192,7 +207,7 @@ $(function(){
 			url: " /users/checkIdEmail",
 			data : {
 				"userId":userId,
-				"userEmail":userEmail
+				"userEmail":email
 			},
 			dataType : "json",
 			success:function(res){
@@ -217,47 +232,53 @@ $(function(){
 </head>
 <body>
 
-	<h3 style="text-align:center; font-size:30px; color:#E57733	;">Viva</h3><br>
+<div id="login_wrap">
+	<div id="login_wrap_logo"><a href="/"><img class="layout_logo" src="/resources/icon/viva_icon_final.svg"></a></div><br>
 	
+	<div class="login_wrap_part" id="login_input">	
 <!-- 	<input type="hidden" id="compare" value="0"> -->
 	
-	<div class="select">
-		<label for="userId">아이디</label>
-		<input type="text"  id="userId" name="userId" class="name_bord2">
-		<span id="userid_msg" class="msg"></span>
-	</div>
-	
-	<div class="select">
-		<label for="userEmail">이메일</label>
-		<input class="userEmail" type="text"  id="userEmail" name="userEmail" placeholder="이메일 인증을 해주세요">
-		<select class="form-controll" id="userEmail2" name="userEmail2">
-			<option>@naver.com</option>
-			<option>@daum.net</option>
-			<option>@gmail.com</option>
-			<option>@hanmail.com</option>
-			<option>@yahoo.co.kr</option>
-		</select>
-		<div class="mail-check-box">
-			<input class="mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled" maxlength="6">
+		<div class="select">
+<!-- 			<label for="userId">아이디</label> -->
+			<input type="text"  id="userId" name="userId" class="name_bord2" placeholder="아이디">
+			<span id="userid_msg" class="msg"></span>
 		</div>
 		
-		<div class="input-group-addon">
-			<button type="button" class="btn-btn-primary" id="mail-Check-Btn">인증코드전송</button>
+		<div class="select">
+<!-- 			<label for="userEmail">이메일</label> -->
+			<input class="userEmail" type="text"  id="userEmail1" name="userEmail1" placeholder="이메일 인증을 해주세요">
+			<select class="form-controll" id="userEmail2" name="userEmail2">
+				<option>@naver.com</option>
+				<option>@daum.net</option>
+				<option>@gmail.com</option>
+				<option>@hanmail.com</option>
+				<option>@yahoo.co.kr</option>
+			</select>
+			<input type="hidden" id="userEmail" name="userEmail">
+			
+			<div class="mail-check-box">
+				<input class="mail-check-input" placeholder="인증번호 6자리 입력!" disabled="disabled" maxlength="6">
+			</div>
+			
+			<div class="input-group-addon">
+				<button type="button" class="btn-btn-primary" id="mail-Check-Btn">인증코드전송</button>
+			</div>
+			
+			<div>
+				<span id="mail-check-warn" class="msg"></span>
+			</div>
 		</div>
 		
-		<div>
-			<span id="mail-check-warn" class="msg"></span>
+		<div class="select">
+			<button id="pw_check" class="auth" disabled="disabled">비밀번호 변경하기</button>
 		</div>
-	</div>
-	
-	<div class="select">
-		<button id="pw_check" class="auth" disabled="disabled">비밀번호 변경하기</button>
-	</div>
+			
+		<div class="select" style="font-size:12px; color:white;">아이디를 찾으시겠습니까?
+			<a href="./idcheck" class="noline">아이디 찾기 | </a>
+			<a href="./login" class="noline">뒤로가기</a>
+		</div>
 		
-	<div class="select" style=font-size:12px;>아이디를 찾으시겠습니까?
-		<a href="./idcheck" class="noline">아이디 찾기 | </a>
-		<a href="./login" class="noline">뒤로가기</a>
 	</div>
-	
+</div>	
 </body>
 </html>

@@ -157,6 +157,49 @@ $(function(){
 	margin-left: 0px;
 	}
 	
+	.upload{
+	background: rgba(255, 255, 255, 0.01);
+	border: 2px solid #9E66A4;
+	border-radius: 10px;
+	width:70px;
+	height:40px;
+	transition: all 0.4s;
+	color: #9E66A4;
+	}
+	.upload:focus{
+	outline: none;
+	}
+
+	.upload:hover{
+	background: linear-gradient(208.73deg, #4C469F -24.94%, #7857A2 24.61%, rgba(190, 52, 85, 0.9) 90.77%, #9E66A4 101.89%);
+	border: 2px solid #9E66A4;
+	border-radius: 10px;
+	width:70px;
+	height:40px;
+	color: white;
+	}
+	
+	.cancel{
+	background: rgba(255, 255, 255, 0.01);
+	border: 2px solid #F88080;
+	border-radius: 10px;
+	width:70px;
+	height:40px;
+	transition: all 0.4s;
+	color: #F88080;
+	}
+	.cancel:focus{
+	outline: none;
+	}
+
+	.cancel:hover{
+	background: linear-gradient(270deg, rgba(255, 194, 137, 0.929575) 4.09%, rgba(255, 43, 91, 0.812201) 99.99%, #4200FF 100%);
+	width:70px;
+	height:40px;
+	color: white;
+	}
+
+	
 
 	
 /* ------------------------------------------------ */
@@ -193,6 +236,10 @@ $(function(){
   background: lightyellow;
   border-color: gold;
 }
+
+
+
+
   </style>
 
 
@@ -210,7 +257,7 @@ $(function(){
 
 
 
-	<c:when test="${not empty login and login}">
+	<c:when test="${login or adminlogin}">
 			
 		<div class=body>
 		<!-- container : div안에있는것들 다 가운데 -->
@@ -219,7 +266,7 @@ $(function(){
 		<div class="guide">
 		Pack을 올리기전에 <a href="/file/guide">가이드</a>를 확인해주세요!
 		</div>
-		<hr>
+			<img class="FunctionTilteLine" src="../resources/icon/Line.svg" style="margin-top:15px; margin-bottom: 15px; width:1300px;">
 		<a class="source" href="/file/fileupsource">Source</a> 
 		<a class="pack" href="/file/fileuppack"> Pack</a> 
 		
@@ -315,8 +362,8 @@ $(function(){
 		
 		
 		<div class="text-center"  style="margin-top: 90px;">
-			<button id="btnWrite" class="btn btn-outline-secondary">Upload</button>
-			<input type="reset" id="cancel" class="btn btn-outline-danger" value="cancel">
+			<button id="btnWrite" class="upload">Upload</button>
+			<input type="reset" id="cancel" class="cancel" value="Cancel">
 		</div>
 		</form>
 		</div>

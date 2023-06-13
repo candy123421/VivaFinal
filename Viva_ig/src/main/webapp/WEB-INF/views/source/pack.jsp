@@ -138,14 +138,21 @@ $(function() {
 .icons{
 	text-align: center;
 	padding-top: 18px;
-	padding-bottom: 18px;
 	display: grid;
+	grid-template-areas: 'limg like cart link'
+						'cartmsg cartmsg cartmsg cartmsg';
 	grid-template-columns: 50px 50px 50px 50px; 
 	height: 60px;
 }
 #SourceWrap{
 	display: grid;
 	grid-template-columns: 80px 80px 400px 80px 80px 80px 300px 200px;
+}
+.cartmsg{
+	height: 18px;
+	grid-column: span 4;
+	font-size: 12px;
+	font-weight: bold;
 }
 .th{
 	border-bottom: 1px solid #ccc;
@@ -323,9 +330,12 @@ div[data-itemtype='line']{
 					<div class="like" data-like="${list.SOURCE_NO}"><img src="../resources/icon/heart.svg" style="width: 45%"></div>
 					<div class="cart" data-cart="${list.SOURCE_NO }"><img src="../resources/icon/shopping-cart.png" style="width: 45%"></div>
 					<div><a href="./pack?packNo=${list.PACK_NO }"><img src="../resources/icon/three-dots.svg" style="width: 45%"></a></div>
+					<div class="cartmsg"></div>
 				</div>
 			
 			</c:forEach>
+	
+			<div id="addheight"></div>
 	
 			<script type="text/javascript">
 				//음원소스 시간 계산기
@@ -404,8 +414,11 @@ div[data-itemtype='line']{
 					$("#barbtn").attr("src","../resources/icon/stop-circle.svg")
 					
 					$("#playWrap").css({
-						"background":"#BE2465",
+						"background":"linear-gradient(263.28deg, #514C9C 7.05%, #653A99 16.72%, #6E388C 25.66%, rgba(117, 37, 114, 0.76) 38.08%, rgba(174, 106, 166, 0.84) 78.14%, #8E4B6D 93.97%)",
+						"height":"80px"
 					})
+					
+					$("#addheight").css("height","100px")
 					
 					// 플레이바 구현
 					$("#playimg").attr("src","../upload/"+imgSrc)
@@ -417,6 +430,8 @@ div[data-itemtype='line']{
 						$("#barbtn").attr("src","../resources/icon/play-circle.svg")
 					}
 					
+					$("#next").attr("src","../resources/icon/skip-end-circle.svg")
+					$("#prev").attr("src","../resources/icon/skip-start-circle.svg")
 					$("#barprocess").html("0:00")
 					$("#barduration").html("0:00")
 					$("#barsourcename").html(sourcename)
@@ -471,8 +486,11 @@ div[data-itemtype='line']{
 					
 					// 플레이바 설정
 					$("#playWrap").css({
-						"background":"#BE2465",
+						"background":"linear-gradient(263.28deg, #514C9C 7.05%, #653A99 16.72%, #6E388C 25.66%, rgba(117, 37, 114, 0.76) 38.08%, rgba(174, 106, 166, 0.84) 78.14%, #8E4B6D 93.97%)",
+						"height":"80px"
 					})
+					
+					$("#addheight").css("height","100px")
 					
 					$("#playimg").attr("src","../upload/"+imgSrc)
 					$("#playimg").css("visibility","visible")
@@ -480,7 +498,9 @@ div[data-itemtype='line']{
 					$("#barduration").html("0:00")
 					$("#barsourcename").html(sourcename)
 					$("#barsourcename").attr("data-barno",btnplay)
-					
+					$("#next").attr("src","../resources/icon/skip-end-circle.svg")
+					$("#prev").attr("src","../resources/icon/skip-start-circle.svg")
+						
 					var duration = document.querySelector("#barduration")
 					duration.textContent = timeCalculator(wave[btnplay].getDuration());
 					
@@ -508,7 +528,7 @@ div[data-itemtype='line']{
 						type: "get"
 						, url: "./genre/like"
 						, data: {
-							"userNo" : 1,
+							"userNo" : ${userNo},
 							"sourceNo" : sourceno
 						}
 						, dataType: "json"
@@ -537,7 +557,7 @@ div[data-itemtype='line']{
 						type: "get",
 						url: "./pack/like",
 						data: {
-							"userNo" : 1,
+							"userNo" : ${userNo},
 							"packNo" : ${info.PACK_NO}
 						},
 						dataType: "json",
@@ -557,13 +577,6 @@ div[data-itemtype='line']{
 					})
 				  })
 				  
-				  
-				  
-				  
-				  
-				  
-				  
-				  
 				  // 장바구니 구현
 				  var carts = document.querySelectorAll("div[data-cart]");
 				  
@@ -579,42 +592,22 @@ div[data-itemtype='line']{
 						type :"get"
 						, url :"/cart/add"
 						, data : {
-							"userNo" : 44,
+							"userNo" : ${userNo},
 							"sourceNo" : csourceNo
 						}
 					  	, dataType :"json"
 					  	, success : function(res) {
 					  		console.log("장바구니 ajax 성공")
 					  		if(res.result == true) {
-						  		$("#cartWrap").html('<div id="pop">장바구니에 담겼습니다!</div>')
-				  				$("#pop").css({
-						  			"background":"#BE3455",
-						  			"width":"300px",
-						  			"height":"60px",
-						  			"fontSize":"1.2em",
-						  			"top":"-300px",
-						  			"left":"800px",
-						  			"borderRadius":"5px",
-						  			"border":"2px solid #ccc",
-						  			"paddingTop":"10px"
-						  		}) 
+					  			$(".cartmsg").eq(cidx).text('Get Source!')
+						  		$(".cartmsg").eq(cidx).css("display","block")
 					  		} 
-						  $("#pop").fadeOut(5000)
+					  		 $(".cartmsg").eq(cidx).fadeOut(1000)
 					  	  }
 					  , error : function() {
-					  		$("#cartWrap").html('<div id="pop">이미 장바구니에 담겨있습니다!</div>')
-			  				$("#pop").css({
-					  			"background":"#BE3455",
-					  			"width":"300px",
-					  			"height":"60px",
-					  			"fontSize":"1.2em",
-					  			"top":"-300px",
-					  			"left":"800px",
-					  			"borderRadius":"5px",
-					  			"border":"2px solid #ccc",
-					  			"paddingTop":"10px"
-				  			})
-				  			$("#pop").fadeOut(5000)
+						  $(".cartmsg").eq(cidx).css("display","block")
+						  $(".cartmsg").eq(cidx).text('You already have!')
+						  $(".cartmsg").eq(cidx).fadeOut(1000)
 					  	  }
 					  }) // ajax End
 				  }) // click end
@@ -636,17 +629,15 @@ div[data-itemtype='line']{
 						  
 					  }
 					  
-					  console.log("배열?",sourceArr)
 					  
 					  $.ajax({
 						  type:"get",
-// 						  url:"./all",
-						  url:"/cart/addPack",	//CartController URL
+						  url:"/cart/addPack",	
 						  data: {
-							  "userNo" : 44,	//userNo은 44로 테스트중 
+							  "userNo" : ${userNo},
 							  "sourceNo" : sourceArr
 						  },
-						  dataType: "",
+						  dataType: "json",
 						  success : function() {
 							console.log("ajax 성공")  
 						  },
@@ -662,19 +653,9 @@ div[data-itemtype='line']{
 				  
 				  
 				  
-				  
-				  
-				  
-				  
 				  $(".already").fadeOut(2500)
 			</script>
-	
-	
-	
-	
 	</div>
-
-
 </div>
 
 

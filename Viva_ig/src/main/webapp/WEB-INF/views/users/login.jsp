@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script type="text/javascript">
 
@@ -73,14 +74,6 @@ html{
 	background: linear-gradient(360deg, #FFFFFF 0%, rgba(255, 255, 255, 0.89) 136.89%);
 	border-radius: 10px;
 
-
-/*  viva 로고 부분 */
-.login_wrap_part {
-	width : 606px;
-	height: 638px;
-	background: linear-gradient(360deg, #FFFFFF 0%, rgba(255, 255, 255, 0.89) 136.89%);
-	border-radius: 10px;
-
 }
 /*  내용 적는 흰 박스 부분 */
 form {
@@ -90,24 +83,10 @@ form {
 }
 
 input {
-	border:none;
-	background: transparent;
-}
-input:focus {
-	outline:none;
-}
-/*  내용 적는 흰 박스 부분 */
-form {
-	width : 530px;
-	margin: 0 auto;
-  	padding-top: 100px;
-}
-
-input {
- 	border:none; 
+  	border:none;  
  	background: transparent; 
+	border-bottom: 1px solid black;
 }
-  
 input:focus {
 	outline:none;
 }
@@ -126,20 +105,20 @@ input:focus {
 }
 
 .select img {
-	width : 527px;
-	height : 54px;
+	width : 532px;
+	height : 53px;
 	cursor : pointer;
 }
  
 .select input[type=text]{
 	width: 380px;
-	height: 35px;
+	height: 22px;
 	float : right;
 
 } 
 .select input[type=password]{
 	width: 380px;
-	height: 35px;
+	height: 22px;
 	float : right;
 
 } 
@@ -151,7 +130,6 @@ input:focus {
 	width: 310px;
 	height: 50px;
 }
-
 
 .noline{
 	 text-decoration-line: none;
@@ -176,7 +154,9 @@ button {
  	
 }
 
-
+#loginbtns{
+	width:520px;
+}
 </style>
 
 </head>
@@ -186,8 +166,9 @@ button {
 	
 	<div class="login_wrap_part" id="login_input">
 		<form action="./login" method="post">
-
-      <div class="select">
+		
+			<div class="select">
+			
 				<label for="userId" >ID</label>
 				<input type="text" class="boxcolor" id="userId" name="userId" value="${cookie.id.value}" placeholder="아이디">
 				<span id="userid_msg" class="msg" style="color:red"></span>
@@ -208,7 +189,7 @@ button {
 					
 			<div class="select click_button"> <!--  일반 로그인 버튼 -->
 <!-- 				<button id="btn">로그인</button> -->
-				<button><img src="/resources/icon/new_login_btn.svg"></button>
+				<button><img id="loginbtns" src="/resources/icon/new_login_btn.svg"></button>
 			</div>
 			
 			<div class="select click_button"> <!--  카카오 로그인 버튼 -->

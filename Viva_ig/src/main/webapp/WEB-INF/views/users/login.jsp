@@ -105,7 +105,6 @@ input:focus {
 }
 
 .select img {
-
    width : 527px;
    height : 54px;
    cursor : pointer;
@@ -158,7 +157,6 @@ button {
     background : transparent;
     
 }
-
 #loginbtns{
 	width:520px;
 }
@@ -168,7 +166,6 @@ button {
 </head>
 <body>
 <div id="login_wrap">
-
    <div id="login_wrap_logo"><a href="/"><img class="layout_logo" src="/resources/icon/viva_icon_final.svg"></a></div><br>
    
    <div class="login_wrap_part" id="login_input">

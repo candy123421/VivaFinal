@@ -398,7 +398,14 @@ div[data-itemtype='line']{
 			
 			<div class="icons" data-itemtype="line">
 				<div><a href="./download?inst=true&sourceNo=${list.SOURCE_NO }"><img src="../resources/icon/plus-circle.svg" style="width: 45%"></a></div>
-				<div class="like" data-like="${list.SOURCE_NO}"><img src="../resources/icon/heart.svg" style="width: 45%"></div>
+				<div class="like" data-like="${list.SOURCE_NO}">
+					<c:if test="${list.CNT <= 0 }">
+						<img src="../resources/icon/heart.svg" style="width: 45%">
+					</c:if>
+					<c:if test="${list.CNT > 0 }">
+						<img src="../resources/icon/heart-fill.svg" style="width: 45%">
+					</c:if>
+				</div>
 				<div class="cart" data-cart="${list.SOURCE_NO }"><img src="../resources/icon/shopping-cart.png" style="width: 45%"></div>
 				<div><a href="./pack?packNo=${list.PACK_NO }"><img src="../resources/icon/three-dots.svg" style="width: 45%"></a></div>
 				<div class="cartmsg"></div>

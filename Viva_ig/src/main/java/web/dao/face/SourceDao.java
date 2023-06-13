@@ -42,10 +42,10 @@ public interface SourceDao {
 	/**
 	 * 클라이언트가 선택한 장르를 토대로 음원소스 정보를 조회한다
 	 * 
-	 * @param genre - 클라이언트가 선택한 태그(장르 + @ )
+	 * @param list - 클라이언트가 선택한 태그(장르 + @ )
 	 * @return - 선택한 장르의 음원소스 집합
 	 */
-	public List<Map<String, Object>> selectSourceByGenre(Tag genre);
+	public List<Map<String, Object>> selectSourceByGenre(Map<String, Object> list);
 
 	/**
 	 * DB에 Like를 삽입한다
@@ -113,10 +113,10 @@ public interface SourceDao {
 	 * 음원소스 조회 결과를 반환한다
 	 *
 	 * 
-	 * @param instrument - inst / inst,Detail 이 들어있는 객체
+	 * @param list - inst / inst,Detail 이 들어있는 객체
 	 * @return - 조회 결과
 	 */
-	public List<Map<String, Object>> selectSourceByInstDetail(Tag instrument);
+	public List<Map<String, Object>> selectSourceByInstDetail(Map<String, Object> list);
 
 	/**
 	 * Sound 초기 화면의 최신 업로드 순의 Pack 정보 10개를 가져온다
@@ -232,8 +232,6 @@ public interface SourceDao {
 	 * @return - 조회 결과
 	 */
 	public List<Map<String, Object>> selectMySourcebyUserNo(int userNo);
-
-	
 
 
 

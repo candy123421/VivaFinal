@@ -11,6 +11,7 @@ import web.dto.Source;
 import web.dto.SourceFileInfo;
 import web.dto.SourceLike;
 import web.dto.Tag;
+import web.util.Paging;
 
 public interface SourceService {
 
@@ -51,9 +52,10 @@ public interface SourceService {
 	 * 클라이언트가 선택한 장르의 음원소스 정보를 모두 가져온다
 	 * 
 	 * @param genre - 클라이언트가 선택한 장르
+	 * @param session 
 	 * @return - 장르별 음원소스의 집합
 	 */
-	public List<Map<String, Object>> getSourceByGenre(Tag genre);
+	public List<Map<String, Object>> getSourceByGenre(Tag genre, HttpSession session);
 
 	/**
 	 * Like를 추가, 클라이언트가 좋아요를 눌렀을 때
@@ -124,9 +126,10 @@ public interface SourceService {
 	 * 음원소스 리스트를 불러온다
 	 * 
 	 * @param instrument - inst 또는 inst,Detail 만 담겨있는 객체
+	 * @param session 
 	 * @return - 조건에 맞는 음원소스 조회 결과
 	 */
-	public List<Map<String, Object>> getSourceByInstDetail(Tag instrument);
+	public List<Map<String, Object>> getSourceByInstDetail(Tag instrument, HttpSession session);
 
 	/**
 	 * Souud 화면에서 최신 팩 정보를 가져온다
@@ -275,8 +278,6 @@ public interface SourceService {
 	 */
 	public List<Map<String, Object>> getMySource(int userNo);
 
-
-	
 
 
 }

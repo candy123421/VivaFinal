@@ -26,11 +26,12 @@
 	  	WHERE GENRE = #{genre}
   	</select>
   
-  	<select id="selectSourceByGenre" parameterType="String" resultType="hashmap">
+  	<select id="selectSourceByGenre" parameterType="map" resultType="hashmap">
 		SELECT distinct s.source_no, s.source_name, s.bpm, s.key, s.source_time,
-			t.tag_no, t.genre, 
+		    t.tag_no, t.genre, 
 		    p.pack_no, pi.pack_img_storedname, pi.pack_img_originname,
 		    sf.file_originname, sf.file_storedname,
+		    (SELECT count(*) FROM source_like sl where s.source_no = sl.source_no and sl.user_no= #{userNo}) cnt,
 		    sif.source_img_originname, sif.source_img_storedname
 		FROM source S
 		INNER JOIN tag t on s.tag_no = t.tag_no
@@ -127,26 +128,27 @@
   		</if>
   	</select>
   	
-  	<select id="selectSourceByInstDetail" parameterType="web.dto.Tag" resultType="hashmap">
+  	<select id="selectSourceByInstDetail" parameterType="map" resultType="hashmap">
   		SELECT distinct s.source_no, s.source_name, s.bpm, s.key, s.source_time,
-        t.tag_no, t.genre, t.instrument,
-        p.pack_no, pi.pack_img_storedname, pi.pack_img_originname,
-        sf.file_originname, sf.file_storedname,
-        sif.source_img_storedname
+		    t.tag_no, t.genre, 
+		    p.pack_no, pi.pack_img_storedname, pi.pack_img_originname,
+		    sf.file_originname, sf.file_storedname,
+		    (SELECT count(*) FROM source_like sl where s.source_no = sl.source_no and sl.user_no= #{userNo}) cnt,
+		    sif.source_img_originname, sif.source_img_storedname
 		FROM source S
-		INNER JOIN tag t on s.tag_no = t.tag_no
-		INNER JOIN pack p on s.pack_no = p.pack_no 
-		INNER JOIN packimginfo pi on p.pack_no = pi.pack_no
-		INNER JOIN sourcefileinfo sf on s.source_no = sf.source_no
-		INNER JOIN sourceimginfo sif on s.source_no = sif.source_no
-		WHERE 1=1 
+			INNER JOIN tag t on s.tag_no = t.tag_no
+			INNER JOIN pack p on s.pack_no = p.pack_no 
+			INNER JOIN packimginfo pi on p.pack_no = pi.pack_no
+			INNER JOIN sourcefileinfo sf on s.source_no = sf.source_no
+			INNER JOIN sourceimginfo sif on s.source_no = sif.source_no
+		WHERE t.instrument = #{instrument}
+		
+		<if test="genre != null and !genre.equals('')">
+			AND t.genre = #{genre}
+		</if>
 		
 		<if test="detail != null and !detail.equals('')">
 			AND t.detail = #{detail}
-		</if>
-		
-		<if test="instrument != null and !instrument.equals('')">
-			AND t.instrument = #{instrument}
 		</if>
 	  	
 	  	<if test="scape != null and !scape.equals('')">
@@ -338,13 +340,6 @@
 		INNER JOIN sourcefileinfo sif on sif.source_no = ms.source_no
 		where ms.user_no = #{userNo}
   	</select>
-  	
-  	
-  	
-  	
-  	
-  	
-  	
   	
   	
   	

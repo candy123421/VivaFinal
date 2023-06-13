@@ -161,7 +161,7 @@ input{
 
 .noline{
 	 text-decoration-line: none;
-	 color:#0000CD;
+	 color:wheat;
 }
 /*  viva 로고 부분 */
 #login_wrap_logo {
@@ -170,6 +170,9 @@ input{
 }
 #login_wrap_logo img {
     width: 250px;
+}
+input::placeholder {
+ 	 color:black;
 }
 </style>
 
@@ -183,14 +186,14 @@ input{
 			<input type="hidden" name="userNo" value="${userNo}">
 		
 			<div class="select">
-				<label for="userPw">변경할 비밀번호</label>
-				<input type="text"  id="userPw" name="userPw">
+<!-- 				<label for="userPw">변경할 비밀번호</label> -->
+				<input type="text"  id="userPw" name="userPw" placeholder="변경할 비밀번호">
 				<span id="userpw_msg" class="msg"></span>
 			</div>
 			
 			<div class="select">
-				<label for="userpw_check">비밀번호 재확인</label>
-				<input type="text"  id="userpw_check" name="userpw_check">
+<!-- 				<label for="userpw_check">비밀번호 재확인</label> -->
+				<input type="text"  id="userpw_check" name="userpw_check" placeholder="비밀번호 재확인">
 				<span id="userpwcheck_msg" class="msg"></span>
 			</div>
 			
@@ -198,7 +201,7 @@ input{
 				<button id="btn">변경하기</button>
 			</div>
 			
-			<div class="select" style=font-size:12px;>아이디를 찾으시겠습니까?
+			<div class="select" style="font-size:12px; color:white;">아이디를 찾으시겠습니까?
 				<a href="./idcheck" class="noline">아이디 찾기 | </a>
 				<a href="./login" class="noline">뒤로가기</a>
 			</div>

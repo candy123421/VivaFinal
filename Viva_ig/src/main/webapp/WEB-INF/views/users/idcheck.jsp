@@ -108,19 +108,16 @@ input{
 
 .noline{
 	 text-decoration-line: none;
-	 color:#0000CD;
+	 color:wheat;
+	 font-size:12px;
 }
 .msg{
 	color:red;
 }
-/*  viva 로고 부분 */
-/* .login_wrap_part { */
-/* 	width : 606px; */
-/* 	height: 638px; */
-/* 	background: linear-gradient(360deg, #FFFFFF 0%, rgba(255, 255, 255, 0.89) 136.89%); */
-/* 	border-radius: 10px; */
+input::placeholder {
+ 	 color:black;
+}
 
-/* } */
 #login_wrap_logo {
     margin: 0 auto;
     width: 250px;
@@ -139,15 +136,15 @@ input{
 	<div class="login_wrap_part" id="login_input">
 	
 		<div class="select">
-			<label for="userNick" >닉네임</label>
-			<input type="text" id="userNick" name="userNick">
+			<label for="userNick" ></label>
+			<input type="text" id="userNick" name="userNick" placeholder="닉네임" >
 			<span id="usernick_msg" class="msg"></span>
 			
 		</div>
 			
 		<div class="select">
-			<label for="userEmail">이메일</label>
-			<input type="text" id="userEmail" name="userEmail">
+			<label for="userEmail"></label>
+			<input type="text" id="userEmail" name="userEmail" placeholder="이메일">
 			<span id="useremail_msg" class="msg"></span>
 		</div>
 		
@@ -155,7 +152,7 @@ input{
 			<button id="id_check">아이디 찾기</button>
 		</div>
 		
-		<div class="select" style=font-size:12px;>비밀번호를 찾으시겠습니까?
+		<div class="select" style="font-size:12px; color:white;">비밀번호를 찾으시겠습니까?
 		<a href="./pwcheck" class="noline">비밀번호 찾기 | </a>
 		<a href="./login" class="noline">뒤로가기</a> 
 		</div>

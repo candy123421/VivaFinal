@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import web.dto.Credit;
-import web.dto.UserProfile;
 import web.dto.Users;
 import web.service.face.CreditService;
 import web.service.face.KakaoService;
@@ -82,19 +81,26 @@ public class UsersController {
 	      boolean kakaoIdCheck = usersService.getkakaoId(users);
 	      logger.info("users{}",users.getKakaoId());
 	      
-	      
+		  
+
            if(kakaoIdCheck) {
         	   //카카오ID가 Db에 있다면 세션에s id,email저장 후 로그인 성공!
         	   logger.info("회원 정보 조회 여부 : {}",kakaoIdCheck);
 
         	   session.setAttribute("login", true);
+        	   session.setAttribute("loginCheck", true);
+        	   //카카오 아이디로 회원 번호 저장
+        	   int num = usersService.selectAll(users);
+        	   logger.info("유저번호 : {}",num);
+        	   session.setAttribute("userNo", num);
         	   
-	          //카카오 아이디로 회원 번호 저장
-		      int num = usersService.selectAll(users);
-		      logger.info("유저번호 : {}",num);
-	          session.setAttribute("userNo", num);
+        	   //카카오 유저번호로 프로필사진 가져오기
+        	   String storedname = usersService.selectStoredName(num);
+   			   session.setAttribute("userProfile", storedname);
+   			
+   			   logger.info("storedname : {}" , storedname);
         	   
-        	   return "/";
+	          return "redirect:/";
            }else {
         	   //카카오 ID가 DB에 없으면 로그인처음이므로 카카오 회원가입으로 보내서 추가회원정보 받기
         	   logger.info("회원 정보 조회 여부 : {}",kakaoIdCheck);
@@ -134,6 +140,7 @@ public class UsersController {
 			
 			//세션에 true값 저장
 			session.setAttribute("login", loginResult);
+			session.setAttribute("loginCheck", true);
 			
 			//***************아이디 저장하기********************
 			session.setAttribute("id", users.getUserId());
@@ -260,7 +267,7 @@ public class UsersController {
 		
 		usersService.kakaojoin(users);
 		
-		return "redirect:/";
+		return "redirect:./login";
 	}
 
 	//아이디 중복 검사

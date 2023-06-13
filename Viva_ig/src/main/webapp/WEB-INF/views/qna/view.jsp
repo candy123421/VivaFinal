@@ -66,9 +66,8 @@
 #titleWrap{
 	width: 1400px;
 	margin: 0 auto;
-	font-size: 2.5rem;
 	font-weight: bold;
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 }
 
 	.list{

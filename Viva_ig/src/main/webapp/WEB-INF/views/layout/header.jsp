@@ -403,7 +403,7 @@ font-weight: bold;
 	  <c:choose>
 	  
 	  <c:when test="${empty adminlogin and empty login }">
-	  <a href="/viva/login"> <button class="login">Login</button> </a>
+	  <a href="/users/login"> <button class="login">Login</button> </a>
 	  
 	  </c:when>
 	  
@@ -433,11 +433,11 @@ font-weight: bold;
 		  			<span class="iconName">My Sounds</span>
 		  		</a>
 			<!--  여기까지 지선 작성 부분 -->
-	  	
-	  	<a href="/users/mypage"><img src="<%=request.getContextPath() %>/profile/${userProfile}" style="width: 40px; border-radius:50px;"></a>
-		<span style="font-size: 1.5em;" class="header_icon"> ${nick }</span>님
+	  	<a href="/users/mypage" style="text-decoration: none;">
+	  	<img src="../../../profile/${userProfile}" style="width: 40px; border-radius:50px;">
+		<span style="font-size: 1.5em;" class="header_icon"> ${nick }</span></a>님
+	  	<a href="/users/logout"><button class="login">Logout</button></a>
 
-	  	<a href="/users/logout"><button class="btn btn-outline-secondary btn-sm">Logout</button></a>
 	  	
 	  	</c:when>
 	  

@@ -6,11 +6,36 @@
 
 
 <c:import url="../layout/header.jsp"/>
+<!-- 스마트 에디터 2 로드 -->
+<script type="text/javascript" src="/resources/se2/js/service/HuskyEZCreator.js"></script>
+<script type="text/javascript">
+function submitContents(elClickedObj) {
+	oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", [])
+	
+	try {
+		elClickedObj.form.submit();
+	} catch(e) {}
+}
+$(document).ready(function() {
+	$("#cancel").click(function() {
+		history.go(-1)
+	})
+	
+	//이게 있어야지 스마트에디터 콘텐트부분에 내용이 들어간다
+		$("#btnWrite").click(function() {
+		submitContents($("#btnWrite"))
+		
+		$("form").submit();
+	})
+})
+</script>
+
 
 
 <style type="text/css">
+
 	.all{
-	text-align: center;
+sss	text-align: center;
 	}
 
 
@@ -47,34 +72,52 @@
 	#titleWrap{
 	width: 1400px;
 	margin: 0 auto;
-	font-size: 2.5rem;
+		font-size: 2.5rem;
 	font-weight: bold;
 	margin-bottom: 30px;
 }
 
+	.question{
+	background: rgba(255, 255, 255, 0.01);
+	border: 2px solid #F88080;
+	border-radius: 10px;
+	width:70px;
+	height:40px;
+	transition: all 0.4s;
+	color: #F88080;
+	}
+	.question:focus{
+	outline: none;
+	}
 
+	.question:hover{
+	background: linear-gradient(270deg, rgba(255, 194, 137, 0.929575) 4.09%, rgba(255, 43, 91, 0.812201) 99.99%, #4200FF 100%);
+	width:70px;
+	height:40px;
+	color: white;
+	}
+		
+	.cancel{
+	background: rgba(255, 255, 255, 0.01);
+	border: 2px solid #F88080;
+	border-radius: 10px;
+	width:70px;
+	height:40px;
+	transition: all 0.4s;
+	color: #F88080;
+	}
+	.cancel:focus{
+	outline: none;
+	}
 
+	.cancel:hover{
 
-</style>
-<script type="text/javascript">
-$(function(){
-	
-	$(document).ready(function() {
-		$("#cancel").click(function() {
-			history.go(-1)
-		})
+	background: linear-gradient(270deg, rgba(245, 174, 108, 0.929575) 4.09%, rgba(255, 43, 91, 0.812201) 99.99%, #4200FF 100%);
+	color: white;
+	}
 
-		//form이 있는데 굳이 또 쓰는이유를 잘모르겠어용
-// 		$("#btnWrite").click(function() {
-// 			submitContents($("#btnWrite"))
-			
-// 			$("form").submit();
-// 		})
-	})
-	
+</style>s
 
-
-</script>
 
 
 <title>QnA Question</title>
@@ -82,8 +125,12 @@ $(function(){
 </head>
 <body>
 <div id="titleWrap">
-	Viva QnA View
-		<img class="FunctionTilteLine" src="../resources/icon/Line.svg" style="margin-top:15px; margin-bottom: 15px; width:1300px;">
+<div class="FunctionTitle">
+   Viva QnA Question 
+</div>
+<div class="FunctionTitleLine1">
+   <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg" style="margin-top:15px; margin-bottom: 15px; width:1400px;">
+</div>
 </div>
 <form action="/qna/question" method="post">
 <div class="q">
@@ -100,14 +147,28 @@ $(function(){
 <br>
 <hr> 
 	<div style="text-align: center">문의 내용</div>  <hr>
-<textarea id="content" name="qContent" class="form-control" rows="10" placeholder="문의 내용을 입력해주세요!"></textarea>
+<textarea id="content" name="qContent" rows="10" placeholder="문의 내용을 입력해주세요!" style="width: 1190px;"></textarea>
 
 	<div class="text-center"  style="margin-top: 15px;">
-		<button id="btnWrite" class="btn btn-outline-secondary">작성</button>
-		<input type="reset" id="cancel" class="btn btn-outline-danger" value="취소">
+		<button id="btnWrite" class="question">작성</button>
+		<input type="reset" id="cancel" class="cancel" value="취소">
 	</div>
 </div>
 </form>
 
+
+
+
+
 </body>
+
+<script type="text/javascript">
+var oEditors = [];
+nhn.husky.EZCreator.createInIFrame({
+	oAppRef: oEditors
+	, elPlaceHolder: "content"
+	, sSkinURI: "/resources/se2/SmartEditor2Skin.html"
+	, fCreator: "createSEditor2"
+})
+</script>
 </html>

@@ -140,6 +140,12 @@ public interface AdminService {
 	 */
 	public List<Users> userlist(Paging paging);
 
+	/**
+	 * 체크박스 여러개 선택가능
+	 * @param check
+	 */
+	public void checkUser(int[] check);
+
 	
 
 

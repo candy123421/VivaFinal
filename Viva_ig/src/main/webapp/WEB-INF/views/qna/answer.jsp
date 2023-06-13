@@ -4,6 +4,31 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:import url="../layout/header.jsp"/>
+<!-- 스마트 에디터 2 로드 -->
+<script type="text/javascript" src="/resources/se2/js/service/HuskyEZCreator.js"></script>
+<script type="text/javascript">
+function submitContents(elClickedObj) {
+	oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", [])
+	
+	try {
+		elClickedObj.form.submit();
+	} catch(e) {}
+}
+$(document).ready(function() {
+	$("#cancel").click(function() {
+		history.go(-1)
+	})
+	
+	//이게 있어야지 스마트에디터 콘텐트부분에 내용이 들어간다
+		$("#btnWrite").click(function() {
+		submitContents($("#btnWrite"))
+		
+		$("form").submit();
+	})
+})
+</script>
+
+
 <style type="text/css">
 
 .q{
@@ -70,7 +95,6 @@
 	#titleWrap{
 	width: 1400px;
 	margin: 0 auto;
-	font-size: 2.5rem;
 	font-weight: bold;
 	margin-bottom: 30px;
 }
@@ -83,6 +107,7 @@
 	height:40px;
 	transition: all 0.4s;
 	color: #F88080;
+	margin-top: 30px;
 	}
 	.an:focus{
 	outline: none;
@@ -143,7 +168,7 @@ ${userQuestion.qContent }
 <div class="a">
 답변
 
-<textarea id="aAnswer" name="aAnswer" class="form-control" placeholder="답변을 등록해주세요!" rows="10" style="resize: none;">
+<textarea id="content" name="aAnswer" class="form-control" placeholder="답변을 등록해주세요!" rows="10" style="resize: none;">
 
 </textarea>
 
@@ -151,11 +176,20 @@ ${userQuestion.qContent }
 
 </div>
 <div class="menu">
-	<button class="an">답변작성</button>
+	<button id="btnWrite" class="an">답변작성</button>
 </div>	
 	<input type="hidden" value="${userQuestion.qNo}" name="qNo" >
 	
 </form>
+<script type="text/javascript">
+var oEditors = [];
+nhn.husky.EZCreator.createInIFrame({
+	oAppRef: oEditors
+	, elPlaceHolder: "content"
+	, sSkinURI: "/resources/se2/SmartEditor2Skin.html"
+	, fCreator: "createSEditor2"
+})
+</script>
 
 
 

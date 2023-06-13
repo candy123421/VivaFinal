@@ -13,12 +13,14 @@ public class Board {
 	private int boardLike;
 	private int userNo;
 	private String userId;
-	private String userNick;
+	private int likeCount;
+	
 	
 	public Board() {}
 
+	
 	public Board(int boardNo, String boardTitle, String boardContent, Date boardDate, String categoryType, int boardHit,
-			int boardLike, int userNo, String userId, String userNick) {
+			int boardLike, int userNo, String userId, int likeCount) {
 		super();
 		this.boardNo = boardNo;
 		this.boardTitle = boardTitle;
@@ -29,14 +31,15 @@ public class Board {
 		this.boardLike = boardLike;
 		this.userNo = userNo;
 		this.userId = userId;
-		this.userNick = userNick;
+		this.likeCount = likeCount;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "Board [boardNo=" + boardNo + ", boardTitle=" + boardTitle + ", boardContent=" + boardContent
 				+ ", boardDate=" + boardDate + ", categoryType=" + categoryType + ", boardHit=" + boardHit
-				+ ", boardLike=" + boardLike + ", userNo=" + userNo + ", userId=" + userId + ", userNick=" + userNick
+				+ ", boardLike=" + boardLike + ", userNo=" + userNo + ", userId=" + userId + ", likeCount=" + likeCount
 				+ "]";
 	}
 
@@ -112,12 +115,12 @@ public class Board {
 		this.userId = userId;
 	}
 
-	public String getUserNick() {
-		return userNick;
+	public int getLikeCount() {
+		return likeCount;
 	}
 
-	public void setUserNick(String userNick) {
-		this.userNick = userNick;
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
 	}
 	
 }

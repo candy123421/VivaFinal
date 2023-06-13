@@ -50,20 +50,21 @@ input{
 
 .noline{
 	 text-decoration-line: none;
-	 color:#0000CD;
+	 color:wheat;
 }
 
 /* 이메일 @.com 뒤에꺼 버튼 */
 .form-controll{
 	position: absolute;
-	top: 31px;
+	top: 9px;
  	right:  -133px; 
 }
 
 .btn-btn-primary{
 	position: absolute;
-	top: 71px;
+	top: 48px;
 	right:18px;
+	border-radius:7px;
 }
 
 .mail-check-input{
@@ -81,6 +82,9 @@ input{
 #login_wrap_logo img {
     width: 250px;
 }
+input::placeholder {
+ 	 color:black;
+}
 </style>
 
 <script type="text/javascript">
@@ -94,11 +98,11 @@ $(function(){
 	})
 	
 	$('#mail-Check-Btn').click(function() {
-		const email = $('#userEmail').val() + $('#userEmail2').val(); // 이메일 주소값 얻어오기!
+		const email = $('#userEmail1').val() + $('#userEmail2').val(); // 이메일 주소값 얻어오기!
 		console.log('완성된 이메일 : ' + email); // 이메일 오는지 확인
 		const checkInput = $('.mail-check-input') // 인증번호 입력하는곳 
 		
-		var userEmail = $("#userEmail").val();
+		var userEmail = $("#userEmail1").val();
 		
 		if( userEmail == '' ) {
 			$('#mail-check-warn').html("이메일을 입력해주세요")
@@ -142,7 +146,7 @@ $(function(){
 					$resultMsg.css('color','green');
 					$('#mail-Check-Btn').attr('disabled',true);
 					$('#pw_check').attr('disabled',false);
-					$('#userEmail').attr('readonly',true);
+					$('#userEmail1').attr('readonly',true);
 					$('#userEmail2').attr('readonly',true);
 					$('#userEmail2').attr('onFocus', 'this.initialSelect = this.selectedIndex');
 			        $('#userEmail2').attr('onChange', 'this.selectedIndex = this.initialSelect');
@@ -180,20 +184,22 @@ $(function(){
     //비밀번호 찾기를 눌렀을 때 ajax를 이용하여 DB에 아이디, 이메일이 존재하면 pwchange 페이지로 넘기기
 	$("#pw_check").on("click", function(){
 		var userId = $("#userId").val();
-		var userEmail = $("#userEmail").val();
+		var Email1 = $("#userEmail1").val();
+		const email = $('#userEmail1').val() + $('#userEmail2').val(); // 이메일 주소값 얻어오기!
+		console.log('완성된 이메일2 : ' + email); // 이메일 오는지 확인
+		
+		console.log(userId)
+		console.log(email)
 		
 		if( userId == '' ) {
 			$('#userid_msg').html("아이디를 입력해주세요")
 			return
 		}
 		
-		if( userEmail == '' ) {
+		if( Email1 == '' ) {
 			$('#mail-check-warn').html("이메일을 입력해주세요")
 			return
 		}
-		
-		console.log(userId)
-		console.log(userEmail)
 		
 		//비밀번호 찾기시 아이디과 이메일 존재여부 확인
 		$.ajax({
@@ -201,7 +207,7 @@ $(function(){
 			url: " /users/checkIdEmail",
 			data : {
 				"userId":userId,
-				"userEmail":userEmail
+				"userEmail":email
 			},
 			dataType : "json",
 			success:function(res){
@@ -233,14 +239,14 @@ $(function(){
 <!-- 	<input type="hidden" id="compare" value="0"> -->
 	
 		<div class="select">
-			<label for="userId">아이디</label>
-			<input type="text"  id="userId" name="userId" class="name_bord2">
+<!-- 			<label for="userId">아이디</label> -->
+			<input type="text"  id="userId" name="userId" class="name_bord2" placeholder="아이디">
 			<span id="userid_msg" class="msg"></span>
 		</div>
 		
 		<div class="select">
-			<label for="userEmail">이메일</label>
-			<input class="userEmail" type="text"  id="userEmail" name="userEmail" placeholder="이메일 인증을 해주세요">
+<!-- 			<label for="userEmail">이메일</label> -->
+			<input class="userEmail" type="text"  id="userEmail1" name="userEmail1" placeholder="이메일 인증을 해주세요">
 			<select class="form-controll" id="userEmail2" name="userEmail2">
 				<option>@naver.com</option>
 				<option>@daum.net</option>
@@ -248,8 +254,10 @@ $(function(){
 				<option>@hanmail.com</option>
 				<option>@yahoo.co.kr</option>
 			</select>
+			<input type="hidden" id="userEmail" name="userEmail">
+			
 			<div class="mail-check-box">
-				<input class="mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled" maxlength="6">
+				<input class="mail-check-input" placeholder="인증번호 6자리 입력!" disabled="disabled" maxlength="6">
 			</div>
 			
 			<div class="input-group-addon">
@@ -265,7 +273,7 @@ $(function(){
 			<button id="pw_check" class="auth" disabled="disabled">비밀번호 변경하기</button>
 		</div>
 			
-		<div class="select" style=font-size:12px;>아이디를 찾으시겠습니까?
+		<div class="select" style="font-size:12px; color:white;">아이디를 찾으시겠습니까?
 			<a href="./idcheck" class="noline">아이디 찾기 | </a>
 			<a href="./login" class="noline">뒤로가기</a>
 		</div>

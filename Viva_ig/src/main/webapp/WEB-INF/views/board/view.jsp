@@ -26,9 +26,9 @@
 <style>
 
 .container {
-/* 	width : 1400px; */
+	width : 1400px;
 	margin : 0 auto:
-	height: 100%;
+/* 	height: 100%; */
 }
 
 .file-container {
@@ -133,7 +133,23 @@ input[name="commListContent"] {
 	        </tr>
 	        <tr>
 	        	<td colspan="4" class="text-left" valign="top" height="50">
-	        	<div class="like" data-like="${viewBoard.boardLike}"><img src="../resources/icon/heart.svg" style="width:30px;"></div>
+<%-- 	        	<c:choose> --%>
+<%-- 	        		<c:when test="${res eq false }"> --%>
+<%-- 						<div class="like" data-like="${viewBoard.boardNo}"> --%>
+<!-- 	        			<img class="like-icon" src="../resources/icon/heart.svg" style="width:45%;"> -->
+<!-- 	        			</div> -->
+<%-- 	        		</c:when> --%>
+<%-- 					<c:when test="${res eq true}"> --%>
+<%-- 						<div class="like" data-like="${viewBoard.boardNo}"> --%>
+<!-- 						<img class="like-icon" src="../resources/icon/heart-fill.svg" style="width:45%;"> -->
+<!-- 						</div> -->
+<%-- 					</c:when>	        		 --%>
+<%-- 	        	</c:choose> --%>
+						<div class="like" data-like="${viewBoard.boardNo}">
+						    <img class="like-icon" src="../resources/icon/heart.svg" style="width: 45px;">
+						</div>
+							<span class="like-count">${likeCount}</span>
+	        				<span class="like-count">${board.boardLike }</span>
 	        </tr>
 	        <tr>
 				<c:if test="${id eq viewBoard.userId }">
@@ -153,7 +169,6 @@ input[name="commListContent"] {
 				<c:forEach var="boardFile" items="${boardFile}">
 					<a href="./download?fileNo=${boardFile.fileNo }">${boardFile.fileNo}</a>
 					<img src="/boardUpload/${boardFile.storedname }" alt="❤️"><hr>
-					<hr>
 				</c:forEach>
 			</div>
 		</c:if>
@@ -162,7 +177,7 @@ input[name="commListContent"] {
 	<!-------------------- 댓글 시작 -------------------->
 	<!---------- 댓글 작성 ---------->
 	<div id="comment">
-		<form action="/commentWrite" method="post">
+		<form action="/commentWrite" method="post" style="padding-top: 30px;"><hr>
 			<input type="hidden" name="boardNo" value="${viewBoard.boardNo }">
 			<div>${viewBoard.userId}</div>
 			<input id="commContent" name="commContent" placeholder=" 댓글을 작성하세요" rows="4" cols="100"><br>
@@ -174,17 +189,15 @@ input[name="commListContent"] {
 	<!---------- 댓글 목록 ---------->
 	<div id="commentList" class="commentList">
 		<c:forEach items="${commentList}" var="commentList">
-<%-- 			<div type="hidden" name="commboardNo" value="${commentList.boardNo }"></div> --%>
-			<div type="hidden" name="commboardNo" value="${viewBoard.boardNo }"></div>
-			<div type="hidden" value="${commentList.commNo }"></div>
+			<input type="hidden" name="commboardNo" value="${commentList.boardNo}">
+			<input type="hidden" value="${commentList.commNo}">
 			<div id="comm-userId">${viewBoard.userId}</div>
 			<input id="commContent-${commentList.commNo}" name="commListContent" value="${commentList.commContent}" readonly="readonly"><br>
-				<c:if test="${id eq viewBoard.userId }">
+				<c:if test="${id eq viewBoard.userId}">
 					<button type="button" class="btnCommentUpdate" data-comm-no="${commentList.commNo}">댓글 수정</button>
 					<button type="button" class="btnCommentDelete" data-comm-no="${commentList.commNo}">댓글 삭제</button>
 	       		</c:if>
 	        <div name="writeDate"><fmt:formatDate value="${commentList.commDate}" pattern="yyyy-MM-dd hh:mm" /></div>
-			<hr>
 		</c:forEach>
 	</div>
 	</c:when>
@@ -196,14 +209,15 @@ $(document).ready(function() {
 		
 	<!-------------------- 좋아요 시작 -------------------->
 	//좋아요 구현
-	var likes = document.querySelectorAll("div[data-like]");
-	
+ 	var likes = document.querySelectorAll("div[data-like]");
 	$(".like").click(function() {
-		
 		var idx = $(".like").index(this)					// 인덱스 변수
 		var boardno = likes[idx].getAttribute('data-like')	// boardNo 변수
 		var userno = ${viewBoard.userNo}					// userNo 변수
-
+		
+		console.log(boardno);
+		console.log(userno);
+		
 		$.ajax({
 			type: "GET"
 			, url: "./like"
@@ -212,14 +226,29 @@ $(document).ready(function() {
 			, success: function( res ) {
 				
 				if(res.result == true) {
-					$(".like").eq(idx).html('<img src="../resources/icon/heart-fill.svg" style="width:45!">')
-					
+	                $(".like-icon").eq(idx).attr("src", "../resources/icon/heart-fill.svg");
 				} else if (res.result == false) {
-					$(".like").eq(idx).html('<img src="../resources/icon/heart.svg" style="width:45!">')
+	                $(".like-icon").eq(idx).attr("src", "../resources/icon/heart.svg");
 				}
+				// 좋아요 개수 업데이트
+	            $(".like-count").eq(idx).text(res.likeCount);
+				
+				console.log(res);
+				console.log(res.likeCount);
+// 				 if (res.result == true) {
+// 		                $(".like-icon").eq(idx).attr("src", "../resources/icon/heart-fill.svg");
+// 		                var likeCount = parseInt($(".like-count").eq(idx).text());
+// 		                $(".like-count").eq(idx).text(likeCount + 1);
+// 		            } else if (res.result == false) {
+// 		                $(".like-icon").eq(idx).attr("src", "../resources/icon/heart.svg");
+// 		                var likeCount = parseInt($(".like-count").eq(idx).text());
+// 		                $(".like-count").eq(idx).text(likeCount - 1);
+// 		            }
 			} //success end
 		}) //ajax end
 	}) //like end
+
+
 	<!-------------------- 좋아요 끝 -------------------->
 
 	
@@ -289,7 +318,7 @@ $(document).ready(function() {
 		}) //ajax end
 	} //function viewComment() end
 	
-	
+	//하
 	//댓글 수정 ajax
 	 $(document).on("click", ".btnCommentUpdate", function() {
 		 //새로 입력할 댓글 창 보여주기
@@ -319,6 +348,9 @@ $(document).ready(function() {
 		var idx = $(".btnCommentDelete").index(this);
 		var boardNo = $("input[name='commboardNo']").val();
         var commNo = $(".btnCommentDelete").eq(idx).attr('data-comm-no');
+        
+        console.log(boardNo);
+        console.log(commNo);
 
         $.ajax({
 	        type: 'POST',
@@ -327,10 +359,9 @@ $(document).ready(function() {
 	        success: function(result) {
 
 				$(".commentList").html(result);
-
  	            console.log("댓글 삭제 성공")
  	            alert("댓글을 삭제했습니다")
-  				location.reload(); // 페이지 새로고침
+				location.reload(); // 페이지 새로고침
 	        },
 	        error: function(error) {
 	            console.log("댓글 삭제 실패");

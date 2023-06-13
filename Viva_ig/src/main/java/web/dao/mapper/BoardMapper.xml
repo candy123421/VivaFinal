@@ -179,6 +179,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		WHERE board_no = #{boardNo} and USER_NO = #{userNo}
   	</delete>
   	
+  	<select id="selectBoardLikeCount" parameterType="web.dto.Likes" resultType="int">
+  		SELECT count(*) FROM LIKES
+  		WHERE user_no = #{userNo} and board_no = #{boardNo} 
+  	</select>
+<!-- 	<select id="selectBoardLikeCount" parameterType="web.dto.Board" resultType="int"> -->
+<!-- 	    SELECT COUNT(*) FROM Likes -->
+<!-- 		INNER JOIN Board ON Board.board_no = Likes.board_no -->
+<!-- 		WHERE Board.board_no = #{boardNo} AND Likes.user_no = #{userNo} -->
+<!-- 	</select> -->
+	
+	<select id="selectBoardLikeCount" parameterType="web.dto.Likes" resultType="int">
+	    SELECT likeCount FROM Board
+	    WHERE board_no = #{boardNo}
+	</select>
+		
+	<update id="updateBoardLikeCount" parameterType="web.dto.Likes">
+	    UPDATE Board
+	    SET likeCount = #{likeCount}
+	    WHERE board_no = #{boardNo}
+	</update>
+  	
   	<select id="selectComment" resultType="web.dto.Comments" parameterType="int">
   		SELECT COMM_NO, COMM_CONTENT, COMM_DATE, BOARD_NO, USER_NO
   		FROM Comments
@@ -206,11 +227,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		DELETE FROM comments
  		WHERE comm_no = #{commNo} AND board_no = #{boardNo}
  	</delete>
- 	
- 	<select id="searchAll" resultType="web.dto.Board">
- 		SELECT * FROM board
- 		WHERE title LIKE #{keyword}
- 	</select>
  	
  	<delete id="deleteCommentAll" parameterType="web.dto.Board">
  	DELETE FROM comments

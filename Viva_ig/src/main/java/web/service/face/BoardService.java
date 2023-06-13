@@ -83,7 +83,7 @@ public interface BoardService {
 	 * @param board - 삭제할 게시글의 번호
 	 * @param comments 
 	 */
-	public void delete(Board board, Comments comments);
+	public void delete(Board board);
 
 	/**
 	 * 게시글 좋아요 확인
@@ -107,7 +107,30 @@ public interface BoardService {
 	 */
 	public void boardReverseLike(Likes like);
 
+	/**
+	 * 좋아요 갯수 조회
+	 * 
+	 * @param board - 좋아요 객체
+	 * @return 좋아요 갯수
+	 */
+	public int getBoardLikeCount(Board board);
 	
+	/**
+	 * 좋아요 누적 카운트 - 좋아요 증가
+	 * 
+	 * @param like - 좋아요 객체
+	 * @return 좋아요 증가값
+	 */
+	public int incrementLikeCount(Likes like);
+	
+	/**
+	 * 좋아요 누적 카운트 - 좋아요 감소
+	 * 
+	 * @param like - 좋아요 객체
+	 * @return 좋아요 감소
+	 */
+	public int decrementLikeCount(Likes like);
+
 	/**
 	 * 댓글 조회하기 
 	 * 
@@ -117,12 +140,11 @@ public interface BoardService {
 	public List<Comments> viewComment(Comments comments);
 
 	/**
-	 * 관리자가 /board/list에서 선택한애들 삭제하도록
+	 * 관리자가 /board/list에서 선택한애들 삭제하도록 - 보현
 	 * @param board
 	 */
 	public void deleteBoard(Board board);
 	
-
   
 	/**
 	 * 댓글 작성하기
@@ -148,21 +170,11 @@ public interface BoardService {
 	public void deleteComment(Comments comments);
 
 	/**
-	 * 전체 검색하기
-	 * 
-	 * @param keyword - 클라이언트가 입력한 검색할 키워드
-	 * @param page - 페이징 정보 객체
-	 * @return
-	 */
-	public List<Board> searchBoard(String keyword, Paging page);
-
-	/**
 	 * 보현작성
 	 * 체크 선택한거 삭제 시키는거
 	 * @param check
 	 */
 	public void deleteCheckBoard(int[] check);
-
 
 
 }

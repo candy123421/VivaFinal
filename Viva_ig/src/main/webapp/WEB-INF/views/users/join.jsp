@@ -411,7 +411,9 @@ input{
 	position: fixed;
 	bottom: 40px;
     text-decoration-line: none;
-    margin-left:450px;
+    margin-left:480px;
+    margin-bottom:110px;
+    color:white;
 }
  
 .select input[type=text]{
@@ -476,6 +478,7 @@ input{
 	position: absolute;
 	top: 30px;
 	right: -120px;
+	border-radius:7px;
 }
 /* 이메일 @.com 뒤에꺼 버튼 */
 .form-controll{
@@ -488,11 +491,13 @@ input{
 	position: absolute;
 	top: 27px;
 	right: -145px;
+	border-radius:7px;
 }
 .btn-btn-primary{
 	position: absolute;
 	top: 71px;
 	right:101px;
+	border-radius:7px;
 }
 .mail-check-input{
 	margin-top:10px;
@@ -518,7 +523,7 @@ input{
 		<form action="./join" method="post">
 
 			<div class="select">
-				<label for="userId" >아이디</label><br>
+				<label for="userId" style="color:white;">아이디</label><br>
 				<input type="text"  id="userId" name="userId"  placeholder="6자 이상, 20자 이하의 영문자,숫자만 가능">
 				<span id="userid_msg" class="msg"></span>
 				<button type="button" value="ID중복확인" class="id_input">ID중복확인</button>
@@ -527,31 +532,31 @@ input{
 			</div>
 				
 			<div class="select">
-				<label for="userPw">비밀번호</label>
+				<label for="userPw" style="color:white;">비밀번호</label>
 				<input type="text"  id="userPw" name="userPw" placeholder="알파벳 대소문자, 숫자, 특수기호 조합으로 8~20자">
 				<span id="userpw_msg" class="msg"></span>
 			</div>
 			
 			<div class="select">
-				<label for="userpw_check">비밀번호 재확인</label>
+				<label for="userpw_check" style="color:white;">비밀번호 재확인</label>
 				<input type="text"  id="userpw_check" name="userpw_check" >
 				<span id="userpwcheck_error" class="msg"></span>
 			</div>
 			
 			<div class="select">
-				<label for="userName">이름</label>
+				<label for="userName" style="color:white;">이름</label>
 				<input type="text"  id="userName" name="userName">
 				<span id="username_msg" class="msg"></span>
 			</div>
 			
 			<div class="select">
-				<label for="userBirth">생년월일</label>
+				<label for="userBirth" style="color:white;">생년월일</label>
 				 <input type="date"  id="userBirth" name="userBirth" required="required">
 				<span id="userbirth_msg" class="msg"></span>
 			</div>
 			
 			<div class="select">
-				<label for="userNick">닉네임</label>
+				<label for="userNick" style="color:white;">닉네임</label>
 				<input type="text"  id="userNick" name="userNick" required="required">
 				<span id="usernick_msg" class="msg"></span>
 				<button type="button" value="닉네임중복확인" class="nick_input">닉네임중복확인</button>
@@ -560,7 +565,7 @@ input{
 			</div>
 			
 			<div class="select">
-				<label for="userEmail">이메일</label>
+				<label for="userEmail" style="color:white;">이메일</label>
 				<input class="userEmail" type="text"  id="userEmail1" name="userEmail1" placeholder="이메일" required="required">
 				<select class="form-controll" id="userEmail2" name="userEmail2">
 					<option value="@naver.com">@naver.com</option>

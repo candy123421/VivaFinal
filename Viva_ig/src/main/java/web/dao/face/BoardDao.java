@@ -201,6 +201,14 @@ public interface BoardDao {
 	public int selectByLike(Likes like);
 	
 	/**
+	 * 게시글 좋아요 갯수 확인
+	 * 
+	 * @param like - 좋아요 객체
+	 * @return 좋아요 개수
+	 */
+	public int selectBoardLikeCount(Board board);
+	
+	/**
 	 * 게시글 좋아요 삽입
 	 * 
 	 * @param like - 좋아요를 누른 객체 정보
@@ -213,6 +221,22 @@ public interface BoardDao {
 	 * @param like - 좋아요를 누른 객체 정보
 	 */
 	public void deleteBoardLike(Likes like);
+
+	/**
+	 * 게시글의 누적된 좋아요 수 조회
+	 * 
+	 * @param like - 좋아요 객체
+	 * @return 게시글의 좋아요 값
+	 */
+	public int selectBoardLikeCount(Likes like);
+
+	/**
+	 * 좋아요를 누른 후 증가된 좋아요가 반영된 게시글의 좋아요 수
+	 * 
+	 * @param like - 좋아요 객체
+	 * @param likeCount - 게시글의 좋아요 수
+	 */
+	public void updateBoardLikeCount(Likes like, int likeCount);
 
 	/**
 	 * 댓글 조회하기
@@ -246,20 +270,14 @@ public interface BoardDao {
 	public void deleteComment(Comments comment);
 
 	/**
-	 * 전체 검색하기
-	 * 
-	 * @param keyword - 
-	 * @param page - 페이징 정보 객체
-	 * @return
-	 */
-	public List<Board> searchAll(String keyword, Paging page);
-
-	/**
 	 * 보현작성 
 	 * 체크박스로 글 삭제하기전에 댓글 먼저 삭제하는거
 	 * @param board
 	 */
 	public void deleteCommentAll(Board board);
+
+
+
 
 
 

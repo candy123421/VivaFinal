@@ -5,9 +5,9 @@
 
 <c:import url="../layout/header.jsp"/>   
 
-	<!-- jQuery -->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<!-- jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
 <style type= "text/css">
 /*  전체에 대한 중앙정렬 */

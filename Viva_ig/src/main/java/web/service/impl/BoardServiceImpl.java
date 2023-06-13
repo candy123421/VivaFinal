@@ -407,24 +407,14 @@ public class BoardServiceImpl implements BoardService {
 
 
 	@Override
-	public void delete(Board board, Comments comments) {
+	public void delete(Board board) {
+		logger.info("delete - ServiceImpl ❤️도착❤️");
 		
-		//게시글 댓글 삭제 (댓글 있는 게시글 삭제 시, 게시글 댓글 먼저 삭제를 위함)
 		//Comments 객체 생성 및 데이터 설정
 	    Comments comment = new Comments();
-	    comment.setCommNo(comments.getCommNo());
-	    comment.setCommContent(comments.getCommContent());
-	    comment.setCommDate(comments.getCommDate());
-	    comment.setBoardNo(comments.getBoardNo());
-	    comment.setUserNo(board.getUserNo());
 		
+	    //게시글 댓글 삭제 (댓글 있는 게시글 삭제 시, 게시글 댓글 먼저 삭제를 위함)
 		boardDao.deleteComment(comment);
-		
-		logger.info("CCCCCCCCCCCCCCCCCCCCCCCCcomments :  {}", comments);
-		logger.info("CCCCCCCCCCCCCCCCCCCCCCCCcomment :  {}", comment);
-		logger.info("DDDDDDDDDDDDDDDDDDDDDDDDDelete comment-boardNo {}", comments.getBoardNo());//값 받아옴
-		logger.info("DDDDDDDDDDDDDDDDDDDDDDDDDelete comment-userNo {}", comments.getUserNo());	//값 못받아옴
-		logger.info("DDDDDDDDDDDDDDDDDDDDDDDDDelete board-userNo {}", board.getUserNo());		//값 받아옴
 
 		//게시글 파일 삭제
 		boardDao.deleteFile(board);
@@ -433,11 +423,12 @@ public class BoardServiceImpl implements BoardService {
 		boardDao.delete(board);	
 	}
 	
+	//보현
 	@Override
 	public void deleteBoard(Board board) {
-		
 		boardDao.delete(board);
 	}
+	
 	
 	@Override
 	public boolean checkLike(Likes like) {
@@ -461,6 +452,27 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
+	public int getBoardLikeCount(Board board) {
+		return boardDao.selectBoardLikeCount(board);
+	}
+	
+	@Override
+	public int incrementLikeCount(Likes like) {
+		int likeCount = boardDao.selectBoardLikeCount(like);
+	    likeCount++;
+	    boardDao.updateBoardLikeCount(like, likeCount);
+	    return likeCount;
+	}
+	
+	@Override
+	public int decrementLikeCount(Likes like) {
+		 int likeCount = boardDao.selectBoardLikeCount(like);
+		 likeCount++;
+		 boardDao.updateBoardLikeCount(like, likeCount);
+		 return likeCount;
+	}
+	
+	@Override
 	public List<Comments> viewComment(Comments comments) {
 		return boardDao.selectComment(comments);
 	}
@@ -478,11 +490,6 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void deleteComment(Comments comments) {
 		boardDao.deleteComment(comments);
-	}
-	
-	@Override
-	public List<Board> searchBoard(String keyword, Paging page) {
-		return boardDao.searchAll(keyword, page);
 	}
 	
 	@Override

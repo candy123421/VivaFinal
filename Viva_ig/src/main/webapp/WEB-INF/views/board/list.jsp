@@ -152,10 +152,11 @@ th {
 	text-align: -webkit-center;
 }
 
+
 </style>
 
 <div class="container-top">
-	<div class="FunctionTitle">
+	<div class="FunctionTitle" style="margin: 1 auto;">
 	   FREE BOARD
 	</div>
 	<div class="FunctionTitleLine">
@@ -179,7 +180,7 @@ th {
 	<div class="container-list" >
 		<table style="width: 1400px;">
 			<thead>
-				<tr class = "head">
+				<tr class="head">
 					<c:if test="${not empty adminlogin and adminlogin }">
 						<th><input type='checkbox'
 					       name='checkall' 

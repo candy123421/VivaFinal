@@ -1,6 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -20,18 +18,18 @@
 </style>
 
 <script type="text/javascript">
-// function submitContents(elClickedObj) {
-// 	oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", [])	
-// 	try {
-// 		elClickedObj.form.submit();
-// 	} catch(e) {}
-// }
+function submitContents(elClickedObj) {
+	oEditors.getById["boardContent"].exec("UPDATE_CONTENTS_FIELD", [])	
+	try {
+		elClickedObj.form.submit();
+	} catch(e) {}
+}
 
 $(document).ready(function() {
 	$("#btnUpdate").click(function() {
 		
 		console.log("#btnUpdate");
-// 		submitContents($("#btnUpdate"))
+ 		submitContents($("#btnUpdate"))
 		
 		$("form").submit()
 		$(".formclass").submit()
@@ -68,7 +66,6 @@ $(document).ready(function() {
 				<table class="table">
 					<tr>
 						<td class="danger">카테고리</td>
-					    <td >
 					        <td>
 								<select name="categoryType" class="categoryType">
 									<option value="free">자유</option>
@@ -96,7 +93,7 @@ $(document).ready(function() {
 		            </tr>
 		            
 		            <tr>
-			            <td class="filesBox">
+			            <td class="file-container">
 			            
 			            	<!-- 여기 주석 처리 했었음 -->
 <!-- 							<div id="originFile"> -->
@@ -126,16 +123,14 @@ $(document).ready(function() {
 	</div>
 </div><!-- wrap end -->
 
-<!-- 
 <script type="text/javascript">
 var oEditors = [];
 nhn.husky.EZCreator.createInIFrame({
 	oAppRef: oEditors
-	, elPlaceHolder: "content"
+	, elPlaceHolder: "boardContent"
 	, sSkinURI: "/resources/se2/SmartEditor2Skin.html"
 	, fCreator: "createSEditor2"
 })
 </script>
- -->
 
 <c:import url="/WEB-INF/views/layout/footer.jsp" />

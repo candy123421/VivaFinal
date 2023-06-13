@@ -3,12 +3,14 @@ package web.controller;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +67,7 @@ public class BoardController {
 		model.addAttribute("categoryType", board.getCategoryType());
 		
 		logger.info("ccccccccccccccccccccccccategoryType {}", categoryType);
+		logger.info("1");
 
 	}
 	
@@ -137,7 +140,7 @@ public class BoardController {
 	
 	@PostMapping("/write")
 	public String write( Board writeBoard, @RequestParam(required=false) List<MultipartFile> file, Model model, HttpSession session ){		
-		logger.info("/board/write [POST]");	
+		logger.info("/board/write ❤️도착❤️");	
 		logger.info("컨트롤러 보드 {}", writeBoard);
 		logger.info("컨트롤러 파일 {}", file);
 		
@@ -145,11 +148,10 @@ public class BoardController {
 		writeBoard.setUserNo(userNo);
 		
 		boardService.write( writeBoard, file );
-		model.addAttribute("컨트롤러 보드 {} writeBoard", writeBoard);
+		model.addAttribute("writeBoard", writeBoard);
 		
 		return "redirect:./list";	//게시글 목록
 	}
-	
 	
 	@RequestMapping("/download")
 	public String download(Files boardFile, Model model) {
@@ -159,7 +161,6 @@ public class BoardController {
 		 
 		return "down";
 	}
-	
 	
 	
 	@GetMapping("/update")
@@ -203,44 +204,80 @@ public class BoardController {
 	
 	@RequestMapping("/delete")
 	public String delete( Board board, Comments comments, HttpSession session ) {
+		logger.info("/delete ❤️도착❤️");
 		
 		int userNo = (Integer)session.getAttribute("userNo");
 		board.setUserNo(userNo);
 		
-		boardService.delete(board, comments);
+		//댓글 조회 - (댓글이 있는 게시글 삭제를 위한 댓글 조회)
+		int boardNo = board.getBoardNo();
+		List<Comments> commentList = boardService.viewComment(comments);
 		
-		logger.info("CDCDCDCDCDCDCDCDCDCDCDCD comments {}", comments);
+		//댓글을 하나씩 삭제 (댓글이 있는 게시글 삭제를 위한 댓글 선삭제)
+	    for (Comments comment : commentList) {
+	        boardService.deleteComment(comment);
+	    }
+		
+		boardService.delete(board);
 		
 		return "redirect:./list";
 	}
 	
 	@GetMapping("/like")
 	@ResponseBody
-	public void likeBoard(Likes like, Board board, Writer out) {
-		logger.info("좋아요 정보 : {}", like);
-		
+	public void likeBoard(Likes like, Board board, Writer out, Model model) {
+		logger.info("/like ❤️도착❤️ : {}", like);
 		
 		boolean result = boardService.checkLike(like);
-
-		if (result == false) {
-			boardService.boardLike(like);
-			try {
-				out.write("{\"result\":true}");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else if (result == true) {
-			boardService.boardReverseLike(like); 
-			try {
-				out.write("{\"result\":false}");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		
+		 if (!result) {
+		        boardService.boardLike(like);
+		        try {
+		            out.write("{\"result\":true}");
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        }
+		        model.addAttribute("likeCount", boardService.incrementLikeCount(like));
+		    } else {
+		        boardService.boardReverseLike(like);
+		        try {
+		            out.write("{\"result\":false}");
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        }
+		        model.addAttribute("likeCount", boardService.decrementLikeCount(like));
+		    }
+		
+		//좋아요 수 조회
+//		int likeCount = boardService.getBoardLikeCount(board);
+//		model.addAttribute("likeCount", likeCount);
+////		int likeCount = boardService.getBoardLikeCount(like);
+//
+//		if (result == false) {
+//			boardService.boardLike(like);
+//			try {
+//				out.write("{\"result\":true, \"likeCount\":" + likeCount + "}");
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		} else if (result == true) {
+//			boardService.boardReverseLike(like); 
+//			try {
+//				out.write("{\"result\":false}");
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
 		
 		logger.info("LLLLLLLLLLLLLLLLLLLLllike like - boardNo {}", like.getBoardNo());
 		logger.info("LLLLLLLLLLLLLLLLLLLLllike like - userNo {}", like.getUserNo());
 		logger.info("bbbbbbbbbbbbbbbbbbbbboard board - boardNo {}", board.getBoardNo());
+		logger.info("likeCount ❤️ = 몇 개? : {}", result);
+		logger.info("like - result {}", result);
+		logger.info("///////////////////Like {}", like);
+		logger.info("///////////////////Like - boardNo {}", like.getBoardNo());
+		logger.info("///////////////////Like - userNo {}", like.getUserNo());
+		
 	}
 	
 	
@@ -301,25 +338,24 @@ public class BoardController {
 	@RequestMapping("/commentDelete")
 	@ResponseBody
 	public List<Comments> commentDelete(Board viewBoard, Comments comments, Model model) {
-			
+		logger.info("/commentDelete ❤️도착❤️ ");
+		
 		//Comments 객체 생성 및 데이터 설정
 	    Comments comment = new Comments();
 	    comment.setBoardNo(viewBoard.getBoardNo());
+	    comment.setBoardNo(comments.getBoardNo());
 	    comment.setCommNo(comments.getCommNo());
-	    
-	    logger.info("cocococococococcoco Comment - boardNo {}", viewBoard.getBoardNo());
-	    logger.info("cccccccccoooooooooo Comments - boardNo {}", comments.getBoardNo());
-	    logger.info("ccccccccccccccccccc Comments - commNo {}", comments.getCommNo() );
 
-		boardService.deleteComment(comment);
+	    boardService.deleteComment(comment);
 
 		//댓글 조회
 		int boardNo = viewBoard.getBoardNo();
 		
 		//수정된 댓글 리스트 조회
 	    List<Comments> commentList = boardService.viewComment(comments);
-	    
-		return commentList;
+	    model.addAttribute("commentList", commentList);
+
+	    return commentList;
 	}
 	
 

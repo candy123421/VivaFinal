@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import web.dto.Admin;
 import web.dto.AdminAnswer;
@@ -72,29 +73,35 @@ public class AdminController {
 	
 	
 	@RequestMapping("/qna/list")
-	public void qnalist(Paging paramData,Model model,HttpSession session) {
+	public String qnalist(Paging paramData,Model model,HttpSession session) {
 		logger.info("/qna/list [GET]");
 		
-		//페이징 계산
-		Paging paging = adminService.getPaging( paramData );
-		logger.info("{}",paging);
-		
-		//관리자 - 문의 목록 조회 
-		List<UserQuestion> qnalist= adminService.qnalist(paging);
-		
-		
-		if(session.getAttribute("adminlogin") == null) {
-			
+		//회원 로그인이 되어있을때 
+		if(session.getAttribute("login") !=null) {
 			//회원 -문의 목록 조회
 			List<UserQuestion> userqna = adminService.userQnA((int)session.getAttribute("userNo"));
 			logger.info("**userqna 의 값:***{}",userqna);
 			model.addAttribute("userqna",userqna);
-			
 		}
 		
+		//관리자 로그인 되어있을때
+		if(session.getAttribute("adminlogin") !=null ) {
+			//페이징 계산
+			Paging paging = adminService.getPaging( paramData );
+			logger.info("{}",paging);
+			
+			//관리자 - 문의 목록 조회 
+			List<UserQuestion> qnalist= adminService.qnalist(paging);
+			model.addAttribute("paging",paging);
+			model.addAttribute("qnalist",qnalist);
+		}
 		
-		model.addAttribute("paging",paging);
-		model.addAttribute("qnalist",qnalist);
+		//둘다 로그인되어있지않을때 로그인창으로 보내버리기
+		if(session.getAttribute("login") == null && session.getAttribute("adminlogin") == null) {
+			
+			return "redirect:/users/login";
+		}
+		return null;
 		
 	}
 	
@@ -185,9 +192,9 @@ public class AdminController {
 		
 	}
 	
-	@GetMapping("/admin/usergrade")
-	public void usergrade(Paging paramData,Model model ) {
-		logger.info("/admin/usergrade [get]");
+	@GetMapping("/admin/userlist")
+	public void usergrade(Paging paramData,Model model) {
+		logger.info("/admin/userlist [get]");
 		
 		//페이징계산
 		Paging paging = adminService.getUserPaging( paramData ); 
@@ -201,9 +208,24 @@ public class AdminController {
 		
 	}
 	
-	@PostMapping("/admin/usergrade")
-	public void usergradepost() {
-		logger.info("/admin/usergrade [post]");
+	@PostMapping("/admin/userlist")
+	public void usergradepost(Paging paramData,Model model ,@RequestParam(value="check") int[] check ) {
+		logger.info("/admin/userlist [post]");
+		
+		//페이징계산
+		Paging paging = adminService.getUserPaging( paramData ); 
+		
+		//회원 전체 목록 조회
+		List<Users> userlist = adminService.userlist(paging);
+		
+		model.addAttribute("paging",paging);
+		model.addAttribute("userlist",userlist);
+		
+		//체크박스부분 
+		logger.info("***check의값 : ***{}",check);
+		adminService.checkUser(check);
+		
+	
 	}
 	
 	

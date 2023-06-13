@@ -129,6 +129,13 @@ public interface AdminDao {
 	 * @return 페이징이 적용된 게시글 목록
 	 */
 	public List<Users> selectUserList(Paging paging);
+	
+	/**
+	 * check된 애들 Grade update 시키기 
+	 * @param users
+	 */
+	public void updateUserGrade(Users users);
+
 
 
 

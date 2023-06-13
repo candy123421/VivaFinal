@@ -94,11 +94,41 @@ function clearInput(){
 </script>
 
 <div class="FunctionTitle">
-   Credit
+   Credit 
 </div>
 <div class="FunctionTitleLine">
    <img class="FunctionTilteLine" src="/resources/icon/Line.svg">
 </div>
+
+
+<!--  jstl 안에서 자바스크립트에 접근은 불가능하지만 -->
+<!--  자바스크립트 안에서 jstl 접근은 가능하다. -->
+<!--  실행순서 : java > jstl > html > javascript -->
+<script language = "javaScript">
+/*  분명 컨트롤러에서 Object 타입으로 보냈으나 number 타입으로 받아냈다.. */
+console.log(${grade})
+console.log(${creditAcc})
+
+
+<!--  일반회원일 경우 : 페이지 로딩하자마자 빈화면에 alert 가 뜬다.  -->
+if(${grade}===0) {
+	console.log(${grade})
+	alert("일반회원은 환전 이용이 가능하지 않습니다.")
+	/*  크레딧 리스트 페이지로 이동*/
+	location.href = "./list";
+} 
+<!--  사운드 디자이너일 경우 + 잔여금액이 1000크레딧 이하일때 alert가 뜬다. -->
+if(!${creditAcc}) {
+	alert("환전은 1000크레딧 이상부터 가능합니다.")
+	/*  크레딧 리스트 페이지로 이동*/
+	location.href = "./list";
+}
+
+<!--  사운드 디자이너 일 경우 : 아래의 화면을 그냥 이용할 수 있다. -->
+
+</script>
+
+
 
 <div class="exchange_wrap"><!--  width : 1400 -->
 	<div class="exchange_title">크레딧 환전</div><!--  width : 600 -->

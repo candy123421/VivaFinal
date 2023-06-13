@@ -93,7 +93,7 @@
 	color: #FFFFFF;
 	
 }
-.dealCategory:active{
+.clicked_menu{ /*클릭 시 적용되는 style 속성*/
 	box-sizing: border-box;
 	
 	width: 59px;
@@ -104,7 +104,6 @@
 	border-radius: 27px;
 	margin-bottom: 15px;
 	color: #FFFFFF;
-	
 }
 /*  ====================================== */
 #credit_select_row {
@@ -203,30 +202,48 @@ th {
 	</div>
 	
 	<script type="text/javascript">
-		$(".dealCategory").click(function() {
+	/*  ======= 카테고리 버튼 눌렀을 때 눌린 상태 유지하게하기 */
+	$(".dealCategory").each(function(index){
+		$(this).attr('menu-index', index);
+		
+		/*  위의 설정을 다 거치고 클릭을 해주면 아래의 코드가 실행된다. */	
+	}).click(function(){
 			console.log("카테고리 click")
+			console.log($(this).attr('menu-index'))
 			
+			//ajax로 보낼 데이터
 			var state = $(this).html();
 			console.log(state);
-			
-			
+			 
+			/*클릭된 <div>의 menu-index 값을 index 변수에 할당한다.*/
+		    var index = $(this).attr('menu-index');
+			console.log(index)
+		    /*클릭한 <div>에  clicked_menu 클래스 추가*/
+			$('.dealCategory[menu-index=' + index + ']').addClass('clicked_menu'); 
+		    /*그 외 <div>는  clicked_menu 클래스 삭제*/
+			$('.dealCategory[menu-index!=' + index + ']').removeClass('clicked_menu');
+		    
+		    
 			//ajax 로 해당 url 에 데이터 전송하기
 			$.ajax({
-				url : "/credit/list"
+				url : "/credit/category"
 				, type : "post"
 				, data : {state : state}
+				, dataType : "json"
 				, success : function(result) {
 						console.log("ajax 성공!");
 						//이 코드를 꼭 써줘야 리로드 안되고, 내용물만 바뀔수 있다!
-						$('body').html(result);
+// 						$('body').html(result);
+						$('#order').html(result);
+						console.log(result.creditAcc)
 				}, 
 		        error: function (request, status, error) {
 		            console.log("ajax 실패");
 		        },        
 
 			})
-			
-		})
+		});
+
 	</script>
 	
 	<!--  내역 조회 -->

@@ -106,6 +106,7 @@ public class CreditController {
 		user.setUserNo(userNo.getUserNo());
 		String grade = "";
 		grade = creditService.chkUserGrade(user);
+		
 		logger.info("회원등급 : {}", grade);
 		
 		model.addAttribute("grade", grade);
@@ -113,6 +114,47 @@ public class CreditController {
 		//문제는 이런 방식으로는 (String은 view로 전달 안되는가? Object 타입만 전달이 가능한가?) null 이 들어가 있어서 해결이 안된다,,,ㅠ
 		//=> model.getAttribute()괄호 안에 따옴표까지 포함해서 써야 출력이 되는거다!!!!
 	}
+//----------------------------------------------------------------------------------------------------------------------
+	//----------------------------------------------------------------------------------------
+	//userNo 알아낸 뒤, 크레딧 목록 부르는 페이지
+	@ResponseBody
+	@RequestMapping("/category")
+	public List<Credit> category(HttpSession session, Credit userNo, Model model, String state) {
+		logger.info("credit/category - category()");
+		logger.info("세션userNo : {}", session.getAttribute("userNo"));
+		logger.info("카테고리 클릭 시:{}", state);
+		
+		
+		userNo.setUserNo((int) session.getAttribute("userNo"));
+		logger.info("userno: {} ", userNo);
+		
+		//1. 크레딧 전체 내역(default) 조회하기 + state 로 
+		List<Credit> creditList = new ArrayList<>(); 
+
+		//1-1. 크레딧 전체 내역(default) -null or 다시 '전체' 클릭했을 경우
+		if(state == null || "전체".equals(state)) {
+			
+			//Credit userNo 만 매개변수로.
+			creditList = creditService.getCreditList(userNo);
+			logger.info("조회내역:{}", creditList);
+//			model.addAttribute("list", creditList);
+			
+			return creditList;
+		
+		//1-2. 크레딧 필터된 내역 
+		}else if (state !=null) {
+			logger.info("카테고리 클릭했다.");
+			
+			//Credit userNo과 카테고리까지 매개변수로
+			creditList = creditService.clickCategoryList(userNo, state);
+			logger.info("조회내역:{}", creditList);
+//			model.addAttribute("list", creditList);
+			return creditList;
+		}
+		
+		
+	}	
+	
 	
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -138,6 +180,16 @@ public class CreditController {
 		//orderID로 jsp에게 전달해주기
 		String orderId= "VIVA" + id.split("-")[2] + id.split("-")[3] + id.split("-")[4];
 		model.addAttribute("id", orderId);
+		
+
+		//충전이후의 크레딧을 보여주기 위해서 크레딧 총계 보내주기
+		//회원 크레딧 잔액 구하기 (DB 조회 결과 null 일 경우 0 으로 반환)
+		int myPocket = 0; 
+		userNo.setUserNo((int) session.getAttribute("userNo"));
+		myPocket = creditService.selectCreditAcc(userNo);
+		logger.info("크레딧잔액:{}", myPocket);
+		
+		model.addAttribute("creditAcc", myPocket);
 		
 	}
 	
@@ -282,6 +334,30 @@ public class CreditController {
 		logger.info("credit/exchange - exchange()");
 		logger.info("세션userNo : {}", session.getAttribute("userNo"));
 		
+		//1. 회원등급 확인하기 (0:일반회원, 1 : 업로더) -> 아닐 경우 알려주기
+		Users user = new Users();
+		user.setUserNo((int) session.getAttribute("userNo"));
+		String grade = "";
+		grade = creditService.chkUserGrade(user);
+		logger.info("회원등급 : {}", grade);
+		
+		//2. 잔여 크레딧(환전 가능 액수 : 1000크레딧부터) 확인하기 -> 아닐 경우 알려주기
+		Credit myPocket = new Credit();
+		myPocket.setUserNo((int) session.getAttribute("userNo"));
+		
+		int res = 0; //잔여 크레딧 
+		res = creditService.selectCreditAcc(myPocket);
+		logger.info("크레딧잔액:{}", res);
+		
+		//크레딧 잔여가 1000 이상 일 경우에만 환전 가능!
+		if (res >= 1000 ) {
+			model.addAttribute("creditAcc", true);
+		} else {
+			model.addAttribute("creditAcc", false);
+		}
+
+		//view 에서 grade 에 따라 바로 화면 보여주거나 or alert 창이 바로 뜨면서 돌아가게 하기!
+		model.addAttribute("grade", grade);
 	}
 
 	//-----------------------------------------------------------------------------
@@ -398,10 +474,20 @@ public class CreditController {
 			method = "계좌이체";
 			
 		}
-	    Map<String, Object> paramMap = new HashMap<>();
+		
+		Map<String, Object> paramMap = new HashMap<>();
 	    
 	    paramMap.put("cash", cash);
 	    paramMap.put("method", method);
+	    
+	    //주문서 작성을 위해 회원 이름과 email 검색하기 (조건 : 회원번호)
+	    Map<String, Object> info = creditService.getUserInfo((int) session.getAttribute("userNo"));
+	    //HashMap으로 받아왔으면, 대문자로 DB에 입력된 컬럼값 그대로 받아와야한다.
+	    logger.info("회원이메일: {}", info.get("USER_EMAIL"));
+	    
+	    //paramMap에다가 같이 넣어주기 
+	    paramMap.put("email", (String) info.get("USER_EMAIL"));
+	    paramMap.put("name", (String) info.get("USER_NAME"));
 	    
 	    return paramMap;
 	}

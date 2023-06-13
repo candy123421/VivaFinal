@@ -19,16 +19,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import web.dto.Cart;
+import web.dto.Credit;
 import web.dto.Source;
 import web.dto.Users;
 import web.service.face.CartService;
+import web.service.face.CreditService;
 
 @Controller
 @RequestMapping("/cart")
 public class CartController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired private CartService cartService;
+	
+	//장바구니 구매에 따라서 크레딧 잔액 변화를 위해서 import 함.
+	@Autowired private CreditService creditService;
 
 	//장바구니 세션구현 완료^_^
 	
@@ -200,21 +206,29 @@ public class CartController {
 		
 		int user = (int) session.getAttribute("userNo");
 		
-		//회원의 구매가능 잔고 확인 
-		//구매할 소스의 총계 구하기
-		//비교해서 구매가능한지(true, false 로 반환)
+		//1. 회원의 고 확인 후 소스가격과 비교해서 구매가능한지 알려주기 
 		boolean purchase = cartService.chkCreditAcc(user, cart);
 		logger.info("구매가능여부 : {}", purchase);
 		
+		//-----------------------------------------------
+		//2. 본격 구매 시작.
 		if(purchase) {
 			logger.info("선택사항 구매가능!");
 			//본격적인 구매 진행
 			//service 에서 트랜잭션 진행할 생각!
 			//필요한거? 회원번호, cart[] 이거면 된다. (원래는 cartNo 까지 같이 갈려고 했으나, 굳이 ? 라는 생각이 들어 뺐다.)
 			boolean success = cartService.purchaseCartItem(user, cart);
+			
 			//만약 트랜잭션이 잘 됐다면...true 가 나오겠지.. 
 			logger.info("{}", success);
 //		
+			
+			//***************크레딧 잔액 리로드 하기******************** 
+			//CreditService 임포트 필수!
+			Credit creditAcc = new Credit();
+			creditAcc.setUserNo((int)session.getAttribute("userNo"));
+			session.setAttribute("headerCredit", creditService.selectCreditAcc(creditAcc));
+			
 //			//try~catch 구문을 써주긴 해야할지 모르겠다...
 			try {
 				out.write("{\"result\": " + success + "}");

@@ -285,7 +285,7 @@
 		    console.log("결제하기 clicked!!!!()")  
 			
 		    var	payment=0;
-		    var obj;
+		    
 			//ajax 로 해당 url 에 데이터 전송하기
 			$.ajax({
 				url : "/credit/toss",
@@ -293,10 +293,14 @@
 				data: {cash : cash, method: method}, 
 				dataType: "json",
 				success: function(res) {
+					
 					console.log("ajax 성공");
 					console.log(res)
-					console.log(res.result)
-					payment = res.result;
+					console.log(res.cash)
+					payment = res.cash;
+					method = res.method;
+					console.log("?", cash)
+					console.log("??", method)
 // 					console.log(payment)
 					
 					<!--  결제위젯 연동하기 페이지 보면서 다시 해보기 -->
@@ -329,7 +333,7 @@
 					    // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
 					    // 더 많은 결제 정보 파라미터는 결제위젯 SDK에서 확인하세요.
 					    // https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
-					      tossPayments.requestPayment('카드', { //(카드, 계좌이체, 가상계좌, 휴대폰 등)
+					      tossPayments.requestPayment(method, { //(카드, 계좌이체, 가상계좌, 휴대폰 등)
 					    	amount : payment,
 					        orderId: "${id}",            // uuid 난수로 컨트롤러에서 받아옴
 					        orderName: "크레딧 충전",                 // 주문명
@@ -338,7 +342,10 @@
 					        customerEmail: "hjsun12@naver.com",
 					        customerName: "고객님"
 					      })
-					} 
+					}
+					,error: function () {
+						console.log("AJAX fail")
+					}
 				
 			});
 		    

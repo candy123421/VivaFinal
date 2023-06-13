@@ -20,6 +20,10 @@
 	    width: 100px;
     margin: 0 auto;
 }
+
+#exchangeOk_ment h3 {
+	font-weight: 700;
+}
 .exchangeOk_wrap div:nth-child(2) {
 	font-size: 23px;
     font-weight: 900;
@@ -145,14 +149,14 @@
 		<dl>
 			<dt>크레딧 잔액</dt>
 			<dd>
-				<span class="price">${info.exAmount}</span>
+				<span class="price">${headerCredit}</span>
 				<span class="price">Credit</span>
 			</dd>
 		</dl>
 		<dl>
 			<dt>환전 받을 계좌</dt>
 			<dd>
-				<span>${info.bank}</span><br><span>(${info.accNo})</span>
+				<span>${info.bank}</span><span>(${info.accNo})</span>
 			</dd>
 		</dl>
 		<dl>

@@ -6,7 +6,7 @@ public class ExchangeInfo {
 	private int exNo;
 	private String holder;
 	private String bank;	//은행명
-	private int accNo;		//계좌번호
+	private String accNo;		//계좌번호. int형으로 하면 10자리 넘어서면 오류 나서 String 형으로 변환.
 	private int exAmount;	//환전요청한 실제 금액
 	private String admTransfer;	//관리자 처리여부. 디폴트 N 임.
 	private Date exDate;	//환전요청시간. 디폴트 current_timestamp 임.
@@ -17,8 +17,8 @@ public class ExchangeInfo {
 	public ExchangeInfo() {}
 
 
-	public ExchangeInfo(int exNo, String holder, String bank, int accNo, int exAmount, String admTransfer, Date exDate,
-			int dealNo, int userNo) {
+	public ExchangeInfo(int exNo, String holder, String bank, String accNo, int exAmount, String admTransfer,
+			Date exDate, int dealNo, int userNo) {
 		super();
 		this.exNo = exNo;
 		this.holder = holder;
@@ -70,12 +70,12 @@ public class ExchangeInfo {
 	}
 
 
-	public int getAccNo() {
+	public String getAccNo() {
 		return accNo;
 	}
 
 
-	public void setAccNo(int accNo) {
+	public void setAccNo(String accNo) {
 		this.accNo = accNo;
 	}
 
@@ -128,6 +128,8 @@ public class ExchangeInfo {
 	public void setUserNo(int userNo) {
 		this.userNo = userNo;
 	}
+
+	
 
 
 }

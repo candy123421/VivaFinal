@@ -15,14 +15,14 @@
 $(function() {
 	//작성버튼 동작
 	$("#btnWrite").click(function() {
-		
-		//제목 필수 입력 설정
-		if( $("input[name~='boardTitle']").val() == '' ) {
-			alert("제목을 입력하세요")
-			return false;
-		}
+	console.log("btnWrite click");
+	      
+		//iframe내용을 textarea에 넣어주어야 보여짐
 		//작성된 내용을 <textarea>에 적용하기
-		updateContents()
+ 		updateContents()
+		//-> 이 함수 밖에 있으면 content등록 전에 작동하게 됨
+	      
+		//폼 제출
 		$("form").submit()
 	})
 	
@@ -30,14 +30,13 @@ $(function() {
 	$("#btnCancel").click(function() {
 		history.go(-1)
 	})
-	
 })
 
-// 	function updateContents() {
-// 	//스마트 에디터에 작성된 내용을 textarea#content에 반영한다
-// 	oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", [])
-// 	}
+function updateContents() {
+	//스마트 에디터에 작성된 내용을 textarea#content에 반영한다
+	oEditors.getById["boardContent"].exec("UPDATE_CONTENTS_FIELD", [])
 }
+
 
 </script>
 
@@ -134,14 +133,13 @@ $(function() {
     <div class="col-md-8">
         <h2 class="text-center">게시글 작성</h2><p>&nbsp;</p>
         
-		<form action="./write" method="post" enctype="multipart/form-data">
+		<form action="/board/write" method="post" enctype="multipart/form-data">
         
             <div class="table table-responsive">
 <!-- 				<table class="table table-striped"> -->
 				<table class="table" style="width:1400px; margin: 0 atuo;">
 					<tr>
 						<td class="danger">카테고리</td>
-					    <td >
 					        <td>
 								<select name="categoryType" class="categoryType">
 									<option value="free">자유</option>
@@ -154,22 +152,22 @@ $(function() {
 					    </td>
 					</tr>
 		            <tr>
-		            	<input type="hidden" name="boardNo" value="${writeBoard.boardNo}">
 		                <td class="danger">작성자</td>
 		                <td>${id}</td>
 		            </tr>
 		            <tr>
 		                <td class="danger">제목</td>
-		                <td colspan="3"><input type="text" class="form-control" id="boardTitle" name="boardTitle" value="${writeBoard.boardTitle }"></td>
+		                <td colspan="3"><input type="text" class="form-control" id="boardTitle" name="boardTitle" ></td>
 		            </tr>
 		             
 		            <tr>
 		                <td class="danger">글내용</td>
-		                <td colspan="3"><textarea class="form-control" id="boardContent" name="boardContent" style="height: 400px;">${writeBoard.boardContent }</textarea></td>
+		                <td colspan="3"><textarea class="form-control" id="boardContent" name="boardContent" style="height: 400px;"></textarea></td>
 		            </tr>
+		            <tr>
+		            
 				</table> 
-
-				<div class="form-file">
+ 				<div class="form-file">
 					<label class="multifile" for="multifile">첨부파일</label>
 					<input type="file" id="file" name="file" class="file" multiple="multiple">
 				</div>
@@ -178,21 +176,18 @@ $(function() {
 
 		<div class="button">
 			<c:if test="${not empty login and login}">
-				<button class="btnWrite" id="btnWrite">작성</button>
+				<button type="button" class="btnWrite" id="btnWrite">작성</button>
 				<input type="reset" id="btnCancel" class="btnCancel" value="취소">
 			</c:if>
 		</div>
 	
 		</form>
-		
+
 	</div> <!-- col-md-8 -->
-	</div> <!-- col-md-2 -->
 </div> <!-- row end -->
 
 
-
-<!-- 스마트에디터 초기화 -->
-<!--  
+<!-- 스마트에디터 초기화 --> 
 <script type="text/javascript">
 var oEditors = [];
 nhn.husky.EZCreator.createInIFrame({
@@ -202,6 +197,12 @@ nhn.husky.EZCreator.createInIFrame({
 	fCreator: "createSEditor2"
 })
 </script>
--->
+
+ 
+ <script>
+// $('form').submit(function() {
+// 	console.log($('form').serialize());
+// })
+</script>
 
 <c:import url="/WEB-INF/views/layout/footer.jsp" />

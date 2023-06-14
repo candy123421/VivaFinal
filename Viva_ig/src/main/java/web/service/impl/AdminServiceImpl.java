@@ -56,8 +56,15 @@ public class AdminServiceImpl implements AdminService {
 	
 	
 	@Override
-	public List<UserQuestion> qnalist(Paging paging) {
-		return adminDao.selectQnAList(paging);
+	public List<UserQuestion> qnalist(Paging paging,String qProcess,String keyword) {
+		
+		if(keyword == null) {
+			
+			return adminDao.selectQnAList(paging,qProcess);
+		} else {
+			return adminDao.selectQnAListByKeyword(keyword);
+		}
+		
 	}
 
 	@Override
@@ -129,8 +136,14 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	@Override
-	public List<Users> userlist(Paging paging) {
-		return adminDao.selectUserList(paging);
+	public List<Users> userlist(Paging paging,String keyword) {
+		if(keyword == null) {
+			return adminDao.selectUserList(paging);
+			
+		} else {
+			return adminDao.selectUserListByKeyword(keyword);
+		}
+		
 	}
 	
 	@Override

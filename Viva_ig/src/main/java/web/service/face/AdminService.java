@@ -44,9 +44,10 @@ public interface AdminService {
 	 * 페이징이 적용된 QnA 목록 조회
 	 * 
 	 * @param paging - 페이징 정보 객체
+	 * @param Process - 답변대기,답변완료 따로검색하도록 
 	 * @return 페이징이 적용된 QnA 목록
 	 */
-	public List<UserQuestion> qnalist(Paging paging);
+	public List<UserQuestion> qnalist(Paging paging,String qProcess,String keyword);
 	
 	/**
 	 * list 불러올때 세션에서 가져온 userno인 애들만 불러오기
@@ -138,7 +139,7 @@ public interface AdminService {
 	 * @param paging - 페이징 정보 객체
 	 * @return 페이징이 적용된 게시글 목록
 	 */
-	public List<Users> userlist(Paging paging);
+	public List<Users> userlist(Paging paging,String keyword);
 
 	/**
 	 * 체크박스 여러개 선택가능

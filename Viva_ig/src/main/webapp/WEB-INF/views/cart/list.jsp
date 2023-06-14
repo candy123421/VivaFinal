@@ -102,7 +102,9 @@ th {
 
 <div class="cart_wrap"><!--  전체 구성물 -->
 	
-	<form>
+	<!--  jsp를 통해 파일 다운로드 도전! -->
+	<form action="fileDownloadProc.jsp" method="post">
+	
 		<div class="cart_select_btn">	
 			<label for="allCheck">전체선택</label>
 			<button type="button" class="selectDelete_btn">선택삭제</button>
@@ -304,7 +306,14 @@ th {
 				</c:forEach><!--  반복되는 항목들 end-->
 				
 			</table><!--  orderTable End-->
-	
+			
+			
+			파일명 : <input type="text" name="fileName">
+			다운로드 : <input type="submit" value="다운로드">
+			
+			
+			
+			
 			<script>
 			/*  장바구니 항목 구매 시 ajax 구현() */
 			$(document).on('click', '.buy-button', function() {
@@ -374,5 +383,13 @@ th {
 	
 		</div>
 	</form>
+	<div class="container">
+		<form action="/addressBook/addressBook/fileTest.do" method="post">
+			<input type="hidden" name="fileName" value="한글테스트.txt">
+			<button class="btn btn-primary" id="fileTest">파일테스트~!</button>
+		
+		</form>
+	
+	</div>
 </div>
 <c:import url ="../layout/footer.jsp"/>

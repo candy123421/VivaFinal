@@ -30,8 +30,9 @@ public class AllInterceptor implements HandlerInterceptor  {
 				//컨트롤러 접근 금지
 				return false;
 				
-			}else if((boolean)session.getAttribute("loginCheck") ) {
-			// 2. 로그인 상태
+			}else if((boolean)session.getAttribute("loginCheck")) {
+			
+				// 2. 로그인 상태
 			//컨트롤러 접근 허용
 			logger.info(" >> 접속 허용 : 로그인 상태");
 			return true;

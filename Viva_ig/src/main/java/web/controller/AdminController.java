@@ -44,13 +44,13 @@ public class AdminController {
 			//관리자 번호 가져오기 
 			Admin adminNo= adminService.getAdminNo(admin);
 			session.setAttribute("adminlogin", true);
+			session.setAttribute("loginCheck", true);
 			session.setAttribute("adminloginid", admin.getAdminId());
 			session.setAttribute("adminNo", adminNo.getAdminNo());
 			session.setAttribute("loginCheck", true);
 		} else {
 			session.invalidate();
 		}
-		
 		
 		return "redirect:./main";
 		
@@ -70,8 +70,6 @@ public class AdminController {
 		return "redirect:./main";
 		
 	}
-	
-	
 	
 	@RequestMapping("/qna/list")
 	public void qnalist(Paging paramData,Model model,HttpSession session , String qProcess ,String keyword) {
@@ -102,8 +100,6 @@ public class AdminController {
 	
 	@RequestMapping("/viva/login")
 	public void vivalogin() {
-		
-		
 	}
 	
 	@GetMapping("/admin/boardnotice")

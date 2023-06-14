@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,7 +48,7 @@ public class BoardController {
 	
 	@GetMapping("/list")
 	public void list( Paging paging, Board board, Model model, String userId, String keyword, String categoryType ) {
-		logger.info("/board/list [GET]");
+		logger.info("board/list [GET] ❤️도착❤️");
 		
 		logger.info("CCCCCCCCCCCCCCCCCCCCCCategoryType {}", categoryType);
 		if (categoryType == null) {
@@ -97,10 +98,8 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/view")
-	public String view( Board viewBoard, Model model, List<MultipartFile> file, HttpSession session, Comments comments ) {
-		logger.info("/board/view");
-		
-		logger.info("BBBBBBBBBBBBBBBBBBboardcontent {}", viewBoard.getBoardContent());
+	public String view( Board viewBoard, Model model, List<MultipartFile> file, HttpSession session, Comments comments, Likes like ) {
+		logger.info("/board/view ❤️도착❤️");
 		
 		//잘못된 게시글 번호 처리
 		if( viewBoard.getBoardNo() < 1 ) {
@@ -127,8 +126,20 @@ public class BoardController {
 		List<Comments> commentList = boardService.viewComment(comments);
 		model.addAttribute("commentList", commentList);
 		
-		logger.info("bbbbbbbbbbbbbbbbbbbbbboardcontent {}", viewBoard.getBoardContent());
-
+		// 좋아요 수 조회
+		int likeCount = boardService.getBoardLikeCount(like);
+		logger.info("VIEW - 좋아요 수는 ? : {}", likeCount);
+		logger.info("VIEW - viewBoard.likeCount : {}", viewBoard.getLikeCount());
+		model.addAttribute("likeCount", likeCount);
+		
+		//좋아요 이력 조회 (0이면 좋아요 안 한 상황 -> 좋아요 삽입, 1이면 좋아요 한 상황 -> 좋아요 삭제)
+		boolean likeCheck = boardService.viewCheckLike(session, viewBoard);
+		if (likeCheck == true) {
+			model.addAttribute("likeCheck", likeCheck);
+		} else if ( likeCheck == false) {
+			model.addAttribute("likeCheck", likeCheck);
+		}
+		
 		return "board/view";
 	}		
 	
@@ -197,7 +208,6 @@ public class BoardController {
 		
 	    return "redirect:./view?boardNo=" + updateBoard.getBoardNo();
 	    }
-
 		
 	
 	@RequestMapping("/delete")
@@ -215,67 +225,58 @@ public class BoardController {
 	    for (Comments comment : commentList) {
 	        boardService.deleteComment(comment);
 	    }
-		
 		boardService.delete(board);
 		
 		return "redirect:./list";
 	}
 	
+	
 	@GetMapping("/like")
 	@ResponseBody
-	public void likeBoard(Likes like, Board board, Writer out, Model model) {
+	public void likeBoard(Likes like, Board board, Writer out, Model model, HttpSession session) {
 		logger.info("/like ❤️도착❤️ : {}", like);
 		
-		boolean result = boardService.checkLike(like);
+		//좋아요 상태 조회 (0이면 좋아요 안 한 상황 -> 좋아요 삽입, 1이면 좋아요 한 상황 -> 좋아요 삭제)
+		boolean likeCheck = boardService.likeCheck(like);
+		logger.info("좋아요 상태 확인 : {}", likeCheck);
 		
-		 if (!result) {
-		        boardService.boardLike(like);
-		        try {
-		            out.write("{\"result\":true}");
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		        }
-		        model.addAttribute("likeCount", boardService.incrementLikeCount(like));
-		    } else {
-		        boardService.boardReverseLike(like);
-		        try {
-		            out.write("{\"result\":false}");
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		        }
-		        model.addAttribute("likeCount", boardService.decrementLikeCount(like));
-		    }
-		
-		//좋아요 수 조회
-//		int likeCount = boardService.getBoardLikeCount(board);
+		if (likeCheck == false) {
+				
+			//좋아요 이력 없음 -> 좋아요 삽입
+			boardService.boardLike(like);
+				
+			//좋아요 수 조회
+			int likeCount = boardService.getBoardLikeCount(like);
+			logger.info("좋아요 수는 ? ZERO : {}", likeCount);
+			
+			try {
+				out.write("{\"result\":true, \"likeCount\": \"" + likeCount + "\"}");
+				logger.info("likeCheck - 뭘까? {}", likeCheck);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+				}
+			} else if (likeCheck == true) {
+				
+				//좋아요 이력 있음 -> 좋아요 삭제
+				boardService.boardDislike(like);
+				
+				//좋아요 수 조회
+				int likeCount = boardService.getBoardLikeCount(like);
+				logger.info("좋아요 수는 ? ONE : {}", likeCount);
+				
+				try {
+					out.write("{\"result\":false, \"likeCount\": \"" + likeCount + "\"}");
+					logger.info("likeCheck - 뭐지?? {}", likeCheck);
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 //		model.addAttribute("likeCount", likeCount);
-////		int likeCount = boardService.getBoardLikeCount(like);
-//
-//		if (result == false) {
-//			boardService.boardLike(like);
-//			try {
-//				out.write("{\"result\":true, \"likeCount\":" + likeCount + "}");
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		} else if (result == true) {
-//			boardService.boardReverseLike(like); 
-//			try {
-//				out.write("{\"result\":false}");
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
 		
-		logger.info("LLLLLLLLLLLLLLLLLLLLllike like - boardNo {}", like.getBoardNo());
-		logger.info("LLLLLLLLLLLLLLLLLLLLllike like - userNo {}", like.getUserNo());
-		logger.info("bbbbbbbbbbbbbbbbbbbbboard board - boardNo {}", board.getBoardNo());
-		logger.info("likeCount ❤️ = 몇 개? : {}", result);
-		logger.info("like - result {}", result);
-		logger.info("///////////////////Like {}", like);
-		logger.info("///////////////////Like - boardNo {}", like.getBoardNo());
-		logger.info("///////////////////Like - userNo {}", like.getUserNo());
-		
+//		logger.info("나와라!!!!!!!!!!!!!!! {}", likeCount);
+		logger.info("나와라!!!!!!!!!!!!!!! {}", board.getLikeCount());
 	}
 	
 	

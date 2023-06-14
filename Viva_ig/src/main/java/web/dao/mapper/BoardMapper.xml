@@ -164,20 +164,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		WHERE board_no = #{boardNo}
   	</delete>
   	
-<!--   	<select id="selectByLike" parameterType="web.dto.Likes" resultType="int"> -->
-<!--   		SELECT count(*) result FROM LIKES -->
-<!--   		WHERE user_no = #{userNo} and board_no = #{boardNo} -->
-<!--   	</select> -->
+  	<select id="selectByLikeCheck" parameterType="web.dto.Likes" resultType="int">
+  		SELECT count(*) likeCheck FROM LIKES
+  		WHERE user_no = #{userNo} and board_no = #{boardNo}
+  	</select>
   	
 <!--   	<insert id="insertBoardLike" parameterType="web.dto.Likes"> -->
-<!--   		INSERT INTO LIKES(BOARD_NO, USER_NO) -->
-<!--   		VALUES(#{boardNo}, #{userNo}) -->
+<!-- 		INSERT INTO LIKES (BOARD_NO, USER_NO) -->
+<!-- 		SELECT b.board_no, u.user_no -->
+<!-- 		FROM BOARD b -->
+<!-- 		JOIN USERS u ON b.user_no = u.user_no -->
+<!-- 		WHERE b.board_no = #{boardNo} AND u.user_no = #{userNo} -->
 <!--   	</insert> -->
+  	<insert id="insertBoardLike" parameterType="web.dto.Likes">
+  		INSERT INTO LIKES (BOARD_NO, USER_NO)
+  		VALUES (#{boardNo}, #{userNo})
+  	</insert>
   	
-<!--   	<delete id="deleteBoardLike" parameterType="web.dto.Likes"> -->
-<!--   		DELETE LIKES -->
-<!--   		WHERE board_no = #{boardNo} and USER_NO = #{userNo} -->
-<!--   	</delete> -->
+  	<delete id="deleteBoardLike" parameterType="web.dto.Likes">
+  		DELETE LIKES
+  		WHERE board_no = #{boardNo} and USER_NO = #{userNo}
+  	</delete>
+  	
+	<select id="selectBoardLikeCount" parameterType="web.dto.Likes" resultType="int">
+    SELECT COUNT(*) FROM LIKES
+    WHERE board_no = #{boardNo}
+	</select>
+  
+  
+  
+  
+  
+
+  	<select id="selectByViewBoardLike" parameterType="web.dto.Likes" resultType="int">
+	  	SELECT count(*) result FROM Likes
+		WHERE board_no = #{boardNo} AND user_no = #{userNo}
+  	</select>
+  	
   	
   	<select id="selectComment" resultType="web.dto.Comments" parameterType="int">
   		SELECT COMM_NO, COMM_CONTENT, COMM_DATE, BOARD_NO, USER_NO
@@ -186,7 +209,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		ORDER BY comm_no DESC
   	</select>
   	
-<!--   	<insert id="insertComment" parameterType="web.dto.Comments"> -->
 	<insert id="insertComment" parameterType="web.dto.Comments">
   		INSERT INTO Comments (COMM_NO, COMM_CONTENT, COMM_DATE, BOARD_NO, USER_NO)
   		VALUES ( comments_seq.nextval, #{commContent}, sysdate, #{boardNo}, 1)	

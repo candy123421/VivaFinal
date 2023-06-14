@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +17,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.servlet.view.AbstractView;
 
+import web.dto.Credit;
 import web.dto.SourceFileInfo;
+import web.service.face.CreditService;
 
 public class DownloadView extends AbstractView{
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired ServletContext context;
+	@Autowired CreditService creditService;
 	
 	@Override
 	protected void renderMergedOutputModel(
@@ -73,6 +77,7 @@ public class DownloadView extends AbstractView{
 		
 		// 서버 -> 클라이언트 파일 복사
 		FileCopyUtils.copy(in, out);
+		
 		
 	}
 

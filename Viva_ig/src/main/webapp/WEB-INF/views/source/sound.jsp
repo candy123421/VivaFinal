@@ -195,7 +195,7 @@ $(function() {
 			<div class="likeContent">
 				<c:forEach items="${likelist }" var="likelist">
 					<div class="show">
-					<a class="a" href="./pack?packno=${likelist.PACK_NO }">
+					<a class="a" href="./pack?packNo=${likelist.PACK_NO }">
 						<c:if test="${empty likelist.PACK_IMG_STOREDNAME }">
 							<img class="img" src="../upload/default-image">
 						</c:if>

@@ -424,7 +424,7 @@ div[data-itemtype='line']{
 			</div>
 			
 			<div class="icons" data-itemtype="line">
-				<div class="limg"><a href="./download?sourceNo=${list.SOURCE_NO }"><img src="../resources/icon/plus-circle.svg" style="width: 45%"></a></div>
+				<div class="buy" data-buy="${list.SOURCE_NO }" data-buy2="${list.PACK_NO}"><img src="../resources/icon/plus-circle.svg" style="width: 45%"></div>
 				<div class="like" data-like="${list.SOURCE_NO}">
 					<c:if test="${list.CNT > 0 }">
 						<img src="../resources/icon/heart-fill.svg" style="width: 45%">
@@ -651,6 +651,45 @@ div[data-itemtype='line']{
 						}
 			     })
 			  })
+			  
+			   // 다운로드?
+				  var buys = document.querySelectorAll("div[data-buy]");
+				  var buys2 = document.querySelectorAll("div[data-buy2]");
+				  
+				  $(".buy").click(function() {
+					
+					  var bidx = $(".buy").index(this)
+					  var bsourceNo = buys[bidx].getAttribute('data-buy')
+					  var bpackNo = buys2[bidx].getAttribute('data-buy2')
+					  
+					  console.log("인덱스",bidx)
+					  console.log("소스넘",bsourceNo)
+					  console.log("팩넘",bpackNo)
+					  
+					  $.ajax({
+						type:"get",
+						url:"/source/credit",
+						data: {
+							"userNo" : ${userNo},
+							"sourceNo": bsourceNo
+						},
+						dataType: "json",
+						success : function(res) {
+							if(res.result == true) {
+								
+								$("#headerCreditStatus").text(res.credit + " credits")
+								location.href = "/source/download?sourceNo="+bsourceNo
+								
+							} else if (res.result == false) {
+								
+								$("#headerCreditStatus").text(res.credit + " credits")
+								location.href = "/source/download?sourceNo="+bsourceNo
+							}
+						}
+					
+					  })
+					  
+				  })
 			
 			  // 장바구니 구현
 			  var carts = document.querySelectorAll("div[data-cart]");

@@ -191,10 +191,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     WHERE board_no = #{boardNo}
 	</select>
   
-  
-  
-  
-  
 
   	<select id="selectByViewBoardLike" parameterType="web.dto.Likes" resultType="int">
 	  	SELECT count(*) result FROM Likes

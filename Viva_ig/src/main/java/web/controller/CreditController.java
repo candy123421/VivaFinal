@@ -151,6 +151,9 @@ public class CreditController {
 //			model.addAttribute("list", creditList);
 			return creditList;
 		}
+		logger.info("보내기전 마지막 결과 확인 : {}", creditList);
+		return creditList;
+		
 		
 		
 	}	

@@ -242,4 +242,12 @@ public class CreditServiceImpl implements CreditService {
 		
 		return creditDao.selectExchangeInfo(exchange);
 	}
+
+	//toss 페이먼츠 실행 전 주문서 작성을 위해 회원 정보 조회하기
+	@Override
+	public Map<String, Object> getUserInfo(int userNo) {
+		logger.info("getUserInfo()");
+		
+		return creditDao.selectUserInfo(userNo);
+	}
 }

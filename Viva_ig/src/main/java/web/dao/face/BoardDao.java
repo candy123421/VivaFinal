@@ -1,6 +1,7 @@
 package web.dao.face;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
@@ -191,22 +192,15 @@ public interface BoardDao {
 	 * @param board - 삭제할 게시글의 글번호
 	 */
 	public void delete(Board board);
-
+	
+	
 	/**
 	 * 게시글 좋아요 확인 
 	 * 
 	 * @param like - 좋아요를 누른 객체 정보
 	 * @return - 조회된 행 수
 	 */
-	public int selectByLike(Likes like);
-	
-	/**
-	 * 게시글 좋아요 갯수 확인
-	 * 
-	 * @param like - 좋아요 객체
-	 * @return 좋아요 개수
-	 */
-	public int selectBoardLikeCount(Board board);
+	public int selectByLikeCheck(Likes like);
 	
 	/**
 	 * 게시글 좋아요 삽입
@@ -214,30 +208,48 @@ public interface BoardDao {
 	 * @param like - 좋아요를 누른 객체 정보
 	 */
 	public void insertBoardLike(Likes like);
-
+	
 	/**
 	 * 게시글 좋아요 삭제
 	 * 
 	 * @param like - 좋아요를 누른 객체 정보
 	 */
 	public void deleteBoardLike(Likes like);
-
+	
 	/**
-	 * 게시글의 누적된 좋아요 수 조회
+	 * 특정 사용자가 해당 게시글에 대해 좋아요를 누른 수 조회. 
+	 * 즉, 특정 사용자의 좋아요 상태를 확인하고 해당 사용자의 좋아요 수를 반환.
 	 * 
 	 * @param like - 좋아요 객체
-	 * @return 게시글의 좋아요 값
+	 * @return 좋아요 수 (1 : 좋아요 누름, 0 : 좋아요 누르지 않음)
 	 */
 	public int selectBoardLikeCount(Likes like);
+	
+	/**
+	 * 조회한 게시글의 총 좋아요 수
+	 * 
+	 * @param boardNo - 조회한 게시글의 번호
+	 * @return 조회한 게시글의 총 좋아요 수
+	 */
+	public int selectBoardTotalLikeCount(int boardNo);
+	
+	/**
+	 * 좋아요를 누른 후 증가된 좋아요가 반영된 게시글
+	 * 
+	 * @param board - 증가된 좋아요가 반영된 게시글의 번호
+	 */
+	public void updateBoardLikeCount(Board board);
 
 	/**
-	 * 좋아요를 누른 후 증가된 좋아요가 반영된 게시글의 좋아요 수
+	 * 게시글 상세보기 - 회원의 좋아요 상태를 확인한다
 	 * 
 	 * @param like - 좋아요 객체
-	 * @param likeCount - 게시글의 좋아요 수
+	 * @return 로그인한 회원의 게시글 좋아요 여부 (int)
 	 */
-	public void updateBoardLikeCount(Likes like, int likeCount);
-
+	public int selectByViewBoardLike(Likes like);
+	
+	
+	
 	/**
 	 * 댓글 조회하기
 	 * 
@@ -275,8 +287,6 @@ public interface BoardDao {
 	 * @param board
 	 */
 	public void deleteCommentAll(Board board);
-
-
 
 
 

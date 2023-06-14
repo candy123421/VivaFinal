@@ -141,7 +141,7 @@ h3 {
 		<dl>
 			<dt>실제 결제 금액</dt>
 			<dd>
-				<span>${info.TOTAL_AMOUNT}</span>
+				<span id="money">${info.TOTAL_AMOUNT}</span>
 				<span>원</span>
 			</dd>
 		</dl>
@@ -152,5 +152,13 @@ h3 {
 		<div><button type="button" id="creditListRedirect" onClick="location.href='./list'">크레딧 내역 조회</button></div>
 	</div>
 </div>
-
+<script>
+/*  실제 결제 금액에 콤마 찍어주기 */
+var money = $('#money').text();
+/*  3번째 자리에 콤마 찍기 */
+var money2 = money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+$('#money').text(money2);
+console.log(money)
+console.log(money2)
+</script>
 <c:import url ="../layout/footer.jsp"/> 

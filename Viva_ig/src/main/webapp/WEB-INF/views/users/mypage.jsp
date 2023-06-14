@@ -102,7 +102,7 @@ a {
 			<div class="items"><h1>마이페이지</h1></div>
 			<div class="items"><a href="./mypage">회원정보</a></div>
 			<div class="items"><a href="">내가 쓴글</a></div>
-			<div class="items"><a href="">내 음원</a></div>
+			<div class="items"><a href="./mysource">내 음원</a></div>
 			<div class="items"><a href="/credit/list">결제내역</a></div>
 			<div class="items"><a href="/qna/list">문의하기</a></div>
 		</div>	

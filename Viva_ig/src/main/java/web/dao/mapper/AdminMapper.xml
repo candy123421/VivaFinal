@@ -24,14 +24,33 @@
   	
   	</select>
   	
-  	<select id="selectQnAList" resultType="web.dto.UserQuestion" parameterType="web.util.Paging">
+  	<select id="selectQnAList" resultType="web.dto.UserQuestion" parameterType="Map">
   		SELECT * FROM (
 			SELECT rownum rnum, Q.* FROM (
-				select * from userquestion order by q_no desc
+				select * from userquestion 
+				<choose>
+					<when test="qProcess == '답변대기' ">
+					where q_process = #{qProcess}
+					</when>
+					
+					<when test="qProcess == '답변완료' ">
+					where q_process = #{qProcess}
+					</when>
+					
+					<otherwise>     
+					</otherwise>
+				</choose>
+				 order by q_no desc
 			) Q
 		) USERQUESTION
-		WHERE rnum BETWEEN #{startNo } AND #{endNo }
+		WHERE rnum BETWEEN #{paging.startNo } AND #{paging.endNo }
   	</select>
+  	
+  	<select id="selectQnAListByKeyword" resultType="web.dto.UserQuestion" parameterType="java.util.Map">
+  	select * from userquestion
+  	where q_title like '%' || #{keyword} || '%'
+  	</select>
+  	
   	
   	<select id="selectUserQnAList" resultType="web.dto.UserQuestion" parameterType="int">
  		select * from userquestion  
@@ -116,6 +135,13 @@
 	where user_no = #{userNo}
 	</update>
 
+	<select id="selectUserListByKeyword" resultType="web.dto.Users" parameterType="java.util.Map">
+	select * from users
+	where user_id like '%' || #{keyword} || '%'
+    or user_nick like '%' || #{keyword} || '%'
+    or user_name like '%' || #{keyword} || '%'
+	
+	</select>
 	
   	
   </mapper>

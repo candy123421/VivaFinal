@@ -93,7 +93,7 @@
 	color: #FFFFFF;
 	
 }
-.dealCategory:active{
+.clicked_menu{ /*클릭 시 적용되는 style 속성*/
 	box-sizing: border-box;
 	
 	width: 59px;
@@ -104,7 +104,6 @@
 	border-radius: 27px;
 	margin-bottom: 15px;
 	color: #FFFFFF;
-	
 }
 /*  ====================================== */
 #credit_select_row {
@@ -203,30 +202,104 @@ th {
 	</div>
 	
 	<script type="text/javascript">
-		$(".dealCategory").click(function() {
+	/*  ======= 카테고리 버튼 눌렀을 때 눌린 상태 유지하게하기 */
+	$(".dealCategory").each(function(index){
+		$(this).attr('menu-index', index);
+		
+		/*  위의 설정을 다 거치고 클릭을 해주면 아래의 코드가 실행된다. */	
+	}).click(function(){
 			console.log("카테고리 click")
+			console.log($(this).attr('menu-index'))
 			
+			//ajax로 보낼 데이터
 			var state = $(this).html();
 			console.log(state);
-			
-			
+			 
+			/*클릭된 <div>의 menu-index 값을 index 변수에 할당한다.*/
+		    var index = $(this).attr('menu-index');
+			console.log(index)
+		    /*클릭한 <div>에  clicked_menu 클래스 추가*/
+			$('.dealCategory[menu-index=' + index + ']').addClass('clicked_menu'); 
+		    /*그 외 <div>는  clicked_menu 클래스 삭제*/
+			$('.dealCategory[menu-index!=' + index + ']').removeClass('clicked_menu');
+		    
+		    
 			//ajax 로 해당 url 에 데이터 전송하기
 			$.ajax({
-				url : "/credit/list"
+				url : "/credit/category"
 				, type : "post"
 				, data : {state : state}
-				, success : function(result) {
+				, dataType : "json"
+				, success : function(data) {
 						console.log("ajax 성공!");
-						//이 코드를 꼭 써줘야 리로드 안되고, 내용물만 바뀔수 있다!
-						$('body').html(result);
-				}, 
-		        error: function (request, status, error) {
-		            console.log("ajax 실패");
-		        },        
+						console.log(data);
+// 						$('body').html("없어요");
+// 						$('#order').html( $('#order'));
 
-			})
-			
-		})
+
+						 // 서버에서 받아온 데이터를 테이블에 적용하는 로직 작성
+    					var list = data; // 서버에서 받아온 ArrayList
+  					  	var tableBody = $("#order").find("tbody"); // 테이블의 tbody 요소 선택
+  						// 기존의 tbody 내용 제거
+  					    tableBody.empty();
+  					  	
+  						// 데이터를 반복하면서 테이블에 행을 추가
+  					    $.each(list, function(index, item) {
+  					      var row = $("<tr>").addClass("deal-item");
+  					      
+  					 // 각 열에 데이터 추가
+  					      var checkBox = $("<td>").html('<div class="checkBox"><input class="form-check-input chBox" type="checkbox" name="chBox" data-deal-no="' + item.dealNo + '"></div>');
+  					    var dealDate = $("<td>").html('<span>' + item.dealDate + '</span>');
+  					    console.log(item.dealDate)
+  					  var dealCategory = $("<td>")
+					console.log(item.dealCategory);
+  					if (item.dealCategory === 1) {
+  					  dealCategory.html('<span>크레딧 충전</span>');
+  					} else if (item.dealCategory === 2) {
+  					  dealCategory.html('<span>음원 구매</span>');
+  					} else if (item.dealCategory === 3) {
+  					  dealCategory.html('<span>음원 수익</span>');
+  					} else if (item.dealCategory === 4) {
+  					  dealCategory.html('<span>크레딧 환전</span>');
+  					}
+
+  					var amount = $("<td>").html('<span>' + item.amount + ' Credit</span>');
+
+  					var deleteButton = $("<td>").addClass("popup").html('<img data-deal-no="' + item.dealNo + '" class="delete-' + item.dealNo + 'button" alt="삭제" src="../resources/icon/X.png" width="20">');
+  					 
+  					
+  				// 행을 테이블에 추가
+  					row.append(checkBox, dealDate, dealCategory, amount, deleteButton);
+  					tableBody.append(row);   
+  					
+  					    })
+  					    
+  					    
+// 						let str = JSON.stringify(result); // <> parse()
+						/*  list는 for문에 넣어서 each 문으로 돌려줘야 한다!!! */
+// 						for(var i=0; i<result.length; i++) {
+// 							var map = result[i];
+// 							console.log(map)
+// 							console.log(map.dealCategory)
+// 							$('#order').load(map);
+// 						}
+						
+// 						$.each(result, function(index, item) { // 데이터 =item
+// 							$("#order").append(index + " "); // index가 끝날때까지 
+// 							$("#order").append(item.dealNo + " ");
+// 							$("#order").append(item.dealDate + " ");
+// 							$("#order").append(item.dealCategory + " ");
+// 							$("#order").append(item.amount + "<br>");
+// 						});
+						
+						
+						
+				}	/*  success End*/
+				
+			}) /*  ajax End */
+
+		});	/*  click function() End */
+
 	</script>
 	
 	<!--  내역 조회 -->
@@ -322,6 +395,7 @@ th {
 		  
 		  <!--  테이블 데이터 -->
 		  <c:forEach var="i" items="${list}">
+		  
 		  <tbody>
 				<tr class="deal-item"><!--  첫번째 열 시작-->
 					<td><!--  1. 체크박스 -->
@@ -341,12 +415,13 @@ th {
 						<span>${i.dealDate}</span>
 					</td>
 					
-					<td><!--  4. 내용 -->	  	  
-						<c:if test="${i.dealCategory eq '1'}"><c:out value="크레딧 충전" /></c:if>
-				  		<c:if test="${i.dealCategory eq '2'}"><c:out value="음원 구매" /></c:if>
-						<c:if test="${i.dealCategory eq '3'}"><c:out value="음원 수익" /></c:if>
-						<c:if test="${i.dealCategory eq '4'}"><c:out value="크레딧 환전" /></c:if>
+					<td> <!--  3. 내용 --> 	  
+						<c:if test="${i.dealCategory eq '1'}"><span><c:out value="크레딧 충전" /></span></c:if>
+				  		<c:if test="${i.dealCategory eq '2'}"><span><c:out value="음원 구매" /></span></c:if>
+						<c:if test="${i.dealCategory eq '3'}"><span><c:out value="음원 수익" /></span></c:if>
+						<c:if test="${i.dealCategory eq '4'}"><span><c:out value="크레딧 환전" /></span></c:if>
 					</td>
+
 					
 					<td><!--  5. 금액 -->
 						<span>${i.amount} Credit</span>

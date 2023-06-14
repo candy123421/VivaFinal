@@ -47,6 +47,7 @@ public class AdminController {
 			session.setAttribute("loginCheck", true);
 			session.setAttribute("adminloginid", admin.getAdminId());
 			session.setAttribute("adminNo", adminNo.getAdminNo());
+			session.setAttribute("loginCheck", true);
 		} else {
 			session.invalidate();
 		}
@@ -71,7 +72,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping("/qna/list")
-	public String qnalist(Paging paramData,Model model,HttpSession session) {
+	public void qnalist(Paging paramData,Model model,HttpSession session , String qProcess ,String keyword) {
 		logger.info("/qna/list [GET]");
 		
 		//회원 로그인이 되어있을때 
@@ -89,17 +90,11 @@ public class AdminController {
 			logger.info("{}",paging);
 			
 			//관리자 - 문의 목록 조회 
-			List<UserQuestion> qnalist= adminService.qnalist(paging);
+			List<UserQuestion> qnalist= adminService.qnalist(paging,qProcess,keyword);
 			model.addAttribute("paging",paging);
 			model.addAttribute("qnalist",qnalist);
+			model.addAttribute("qProcess",qProcess);
 		}
-		
-		//둘다 로그인되어있지않을때 로그인창으로 보내버리기
-		if(session.getAttribute("login") == null && session.getAttribute("adminlogin") == null) {
-			
-			return "redirect:/users/login";
-		}
-		return null;
 		
 	}
 	
@@ -189,14 +184,14 @@ public class AdminController {
 	}
 	
 	@GetMapping("/admin/userlist")
-	public void usergrade(Paging paramData,Model model) {
+	public void usergrade(Paging paramData,Model model,String keyword) {
 		logger.info("/admin/userlist [get]");
 		
 		//페이징계산
 		Paging paging = adminService.getUserPaging( paramData ); 
 		
 		//회원 전체 목록 조회
-		List<Users> userlist = adminService.userlist(paging);
+		List<Users> userlist = adminService.userlist(paging,keyword);
 		
 		model.addAttribute("paging",paging);
 		model.addAttribute("userlist",userlist);
@@ -205,14 +200,14 @@ public class AdminController {
 	}
 	
 	@PostMapping("/admin/userlist")
-	public void usergradepost(Paging paramData,Model model ,@RequestParam(value="check") int[] check ) {
+	public void usergradepost(Paging paramData,Model model ,@RequestParam(value="check") int[] check ,String keyword) {
 		logger.info("/admin/userlist [post]");
 		
 		//페이징계산
 		Paging paging = adminService.getUserPaging( paramData ); 
 		
 		//회원 전체 목록 조회
-		List<Users> userlist = adminService.userlist(paging);
+		List<Users> userlist = adminService.userlist(paging,keyword);
 		
 		model.addAttribute("paging",paging);
 		model.addAttribute("userlist",userlist);

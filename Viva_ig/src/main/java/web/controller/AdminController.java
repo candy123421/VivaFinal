@@ -46,6 +46,7 @@ public class AdminController {
 			session.setAttribute("adminlogin", true);
 			session.setAttribute("adminloginid", admin.getAdminId());
 			session.setAttribute("adminNo", adminNo.getAdminNo());
+			session.setAttribute("loginCheck", true);
 		} else {
 			session.invalidate();
 		}

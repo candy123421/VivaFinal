@@ -14,14 +14,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import web.dto.Credit;
+import web.dto.MySource;
 import web.dto.Pack;
 import web.dto.PackLike;
 import web.dto.SourceFileInfo;
 import web.dto.SourceLike;
 import web.dto.Tag;
-import web.service.face.BoardService;
+import web.dto.Users;
+import web.service.face.CreditService;
+import web.service.face.OrderService;
 import web.service.face.SourceService;
-import web.util.Paging;
 
 @Controller
 public class SourceController {
@@ -30,6 +33,8 @@ public class SourceController {
 private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired SourceService sourceService;
+	@Autowired CreditService creditService;
+	@Autowired OrderService orderService;
 	
 	@GetMapping("/source/sound")
 	public void sound(Model model, HttpSession session) {
@@ -149,6 +154,8 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		
 		if(instrument.getInstrument() == null) {
 			
+			logger.info("1번 실행");
+			
 			Tag res = sourceService.getInst(instrument);
 			logger.info("res : {}",res);
 			model.addAttribute("det", res.getDetail());
@@ -167,17 +174,16 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 			model.addAttribute("fx", fx);
 			model.addAttribute("cfx", instrument.getFx());
 			
+			res.setFx(instrument.getFx());
+			res.setScape(instrument.getScape());
+			res.setGenre(instrument.getGenre());
+			
 			// 음원소스 조회 [ inst, detail ] 포함
 			List<Map<String, Object>> list = sourceService.getSourceByInstDetail(res, session);
 			
 			model.addAttribute("list", list);
-		}
-		
-		model.addAttribute("inst", instrument.getInstrument());
-		
-		logger.info("inst의 악기 포함 {}",instrument.getInstrument());
-		
-		if(instrument.getInstrument() != null && instrument.getDetail() == null) {
+			
+		} else if(instrument.getInstrument() != null && instrument.getDetail() == null) {
 			
 			logger.info("2번 실행");
 			
@@ -205,9 +211,8 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 			List<Map<String, Object>> list = sourceService.getSourceByInstDetail(instrument, session);
 			
 			model.addAttribute("list", list);
-		}
-		
-		if(instrument.getInstrument() != null && instrument.getDetail() != null) {
+			
+		} else if(instrument.getInstrument() != null && instrument.getDetail() != null) {
 			
 			logger.info("3번 실행");
 			
@@ -297,6 +302,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		}
 		
 	}
+	
 	
 	@GetMapping("/source/pack/like")
 	public void packlike(PackLike like, Writer out) {
@@ -428,7 +434,6 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		
 	}
 	
-	
 	@GetMapping("/sound/genre")
 	public void soundsource(Model model) {
 		logger.info("/sound/genre 확인");
@@ -438,12 +443,69 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 	}
 	
 	
-	
 	@GetMapping("/sound/inst")
 	public void soundpack(Model model) {
 		logger.info("/sound/inst 확인");
 		model.addAttribute("inst", "inst");
 		
 	}
+	
+	
+	@GetMapping("/source/credit")
+	public void sourecredit(Credit trace, Writer out, HttpSession session, MySource so) {
+		logger.info("들어옴? : {}", trace.getUserNo());
+		
+		Users user = new Users();
+		user.setUserNo((int)session.getAttribute("userNo"));
+		so.setUserNo((int)session.getAttribute("userNo"));
+		
+		logger.info("구매 시도중 User : {}", user);
+		
+		// 크레딧 조회
+		int credit = creditService.selectCreditAcc(trace);
+		
+		// 기존 음원 있는 지 조회
+		boolean chk = orderService.checkSource(so, user);
+		
+		logger.info("chk 확인 : {}", chk);
+		
+		// 응답
+		if ( chk == true || credit < 30) {
+			
+			logger.info("음원 구매 안되야함");
+			
+			// 다운 불가
+			session.setAttribute("headerCredit", credit);
+			try {
+				out.write("{\"result\":true, \"credit\": \"" + credit + "\"}");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		} else if ( chk == false && credit >= 30) {
+			
+			logger.info("음원 구매 중");
+			// 다운 가능
+			credit = credit-30;
+			session.setAttribute("headerCredit", credit);
+			
+			try {
+				out.write("{\"result\":false, \"credit\": \"" + credit + "\"}");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

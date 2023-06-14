@@ -31,6 +31,7 @@ public class OrderController {
 		
 		session.getAttribute("userNo");
 		Users user = new Users();
+		user.setUserNo((int)session.getAttribute("userNo"));
 		
 		// 구매 크레딧 이상 가지고 있는지 확인
 		boolean chkCredit = orderService.checkCredit(user);
@@ -56,7 +57,6 @@ public class OrderController {
 			
 			// SourceDown
 			orderService.intoSourceDown(source);
-			
 			
 			// CREDIT
 			orderService.intoCredit(source);

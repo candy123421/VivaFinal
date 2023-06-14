@@ -37,7 +37,6 @@ $(function() {
 </script>
 <style type="text/css">
 #top{
-	padding-left: 16px;
 }
 .middle{
 	margin: 0 auto;
@@ -145,25 +144,9 @@ a{
 	<div id="top">
 		<div id="slideWrap">
 			<div class="content">
-				<img class="img" src="../resources/img/banner3.jpg" style="height: 300px">
-				<img class="img" src="../resources/img/banner4.jpg" style="height: 300px">
-				<img class="img" src="../resources/img/banner7.jpg" style="height: 300px">
-				<img class="img" src="../resources/img/banner8.jpg" style="height: 300px">
-				<img class="img" src="../resources/img/1.png" style="height: 300px">
-				<img class="img" src="../resources/img/2.png" style="height: 300px">
-				<img class="img" src="../resources/img/3.png" style="height: 300px">
-				<img class="img" src="../resources/img/4.png" style="height: 300px">
-				<img class="img" src="../resources/img/5.png" style="height: 300px">
-				<img class="img" src="../resources/img/6.png" style="height: 300px">
-				<img class="img" src="../resources/img/7.png" style="height: 300px">
-				<img class="img" src="../resources/img/8.png" style="height: 300px">
-				<img class="img" src="../resources/img/9.png" style="height: 300px">
-				<img class="img" src="../resources/img/10.png" style="height: 300px">
-				<img class="img" src="../resources/img/11.png" style="height: 300px">
-				<img class="img" src="../resources/img/12.png" style="height: 300px">
-				<img class="img" src="../resources/img/13.png" style="height: 300px">
-				<img class="img" src="../resources/img/14.png" style="height: 300px">
-				<img class="img" src="../resources/img/15.png" style="height: 300px">
+				<img class="img" src="../resources/img/banner_21.png" style="height: 300px">
+				<img class="img" src="../resources/img/banner_22.png" style="height: 300px">
+				<img class="img" src="../resources/img/banner_23.png" style="height: 300px">
 			</div>
 		</div>
 	</div>

@@ -370,16 +370,14 @@ public class SourceServiceImpl implements SourceService{
 			list.put("userNo", session.getAttribute("userNo"));
 			list.put("instrument", instrument.getInstrument());
 			list.put("detail", instrument.getDetail());
-			
-			if( instrument.getScape() != null) {
-				list.put("scape", instrument.getScape());
-			}
-			if( instrument.getFx() != null) {
-				list.put("fx", instrument.getFx());
-			}
-			
+			list.put("scape", instrument.getScape());
+			list.put("fx", instrument.getFx());
+			list.put("genre", instrument.getGenre());
 			
 		}
+		
+		list.put("instrument", instrument.getInstrument());
+		list.put("userNo", session.getAttribute("userNo"));
 		
 		logger.info("inst Tag : {} ", instrument);
 		

@@ -7,22 +7,6 @@
 
 <c:import url="/WEB-INF/views/layout/header.jsp" /> 
 
-<!-- 
-<script>
-  var empty = true;
-  var boardFile = 'example.jpg';
-
-  if (empty) {
-    document.getElementById('board').style.display = 'none';
-  } else {
-    document.getElementById('board').style.display = 'block';
-  }
-  
-  var boardContent = "<p>게시글 내용</p>";
-  document.getElementById('boardContentContainer').innerHTML = boardContent;
-</script>
- -->
-
 <style>
 
 .container {
@@ -133,23 +117,20 @@ input[name="commListContent"] {
 	        </tr>
 	        <tr>
 	        	<td colspan="4" class="text-left" valign="top" height="50">
-<%-- 	        	<c:choose> --%>
-<%-- 	        		<c:when test="${res eq false }"> --%>
-<%-- 						<div class="like" data-like="${viewBoard.boardNo}"> --%>
-<!-- 	        			<img class="like-icon" src="../resources/icon/heart.svg" style="width:45%;"> -->
-<!-- 	        			</div> -->
-<%-- 	        		</c:when> --%>
-<%-- 					<c:when test="${res eq true}"> --%>
-<%-- 						<div class="like" data-like="${viewBoard.boardNo}"> --%>
-<!-- 						<img class="like-icon" src="../resources/icon/heart-fill.svg" style="width:45%;"> -->
-<!-- 						</div> -->
-<%-- 					</c:when>	        		 --%>
-<%-- 	        	</c:choose> --%>
-						<div class="like" data-like="${viewBoard.boardNo}">
-						    <img class="like-icon" src="../resources/icon/heart.svg" style="width: 45px;">
+
+						<!-- 좋아요 -->
+						<div id="like">
+						<c:choose>
+							<c:when test="${likeCheck eq true }">
+						    	<img id="likeBoard" class="like-icon" src="../resources/icon/heart-fill.svg"  style="width: 45px;">
+						    </c:when>
+							<c:when test="${likeCheck eq false }">
+								<img id="likeBoard" class="like-icon" src="../resources/icon/heart.svg" style="width: 45px;">
+							</c:when>
+						</c:choose>		
+							<span class="like-count" id="likeCount">${likeCount}</span><br>
 						</div>
-							<span class="like-count">${likeCount}</span>
-	        				<span class="like-count">${board.boardLike }</span>
+							
 	        </tr>
 	        <tr>
 				<c:if test="${id eq viewBoard.userId }">
@@ -209,44 +190,94 @@ $(document).ready(function() {
 		
 	<!-------------------- 좋아요 시작 -------------------->
 	//좋아요 구현
- 	var likes = document.querySelectorAll("div[data-like]");
-	$(".like").click(function() {
-		var idx = $(".like").index(this)					// 인덱스 변수
-		var boardno = likes[idx].getAttribute('data-like')	// boardNo 변수
-		var userno = ${viewBoard.userNo}					// userNo 변수
+	// 좋아요 구현
+$("#likeBoard").click(function() {
+    var boardno = $(this).parent().data('like'); 	// 부모 요소의 data-like 속성을 가져와서 boardNo 변수에 저장
+    var userno = "${viewBoard.userNo}"; 			// userNo 변수
+
+    console.log("${viewBoard.boardNo}");
+    console.log(boardno);
+    console.log(userno);
+
+    $.ajax({
+        type: "GET",
+        url: "/board/like",
+        data: { "userNo": userno, "boardNo": boardno }, // userNo는 세션에서 받아오기
+        dataType: "json",
+        success: function(res) {
+            if (res.result == true) {
+                // 좋아요 추가
+                $(this).html('<img src="../resources/icon/heart-fill.svg" style="width:45%">');
+                console.log(res);
+                console.log(res.result);
+                console.log("성공^^");
+                $("#likeCount").html(res.likeCount);
+                $("#like").children(2).eq(1).html(res.likeCount)
+            } else if (res.result == false) {
+                // 좋아요 삭제
+                $(this).html('<img src="../resources/icon/heart.svg" style="width:45%">');
+                console.log(res);
+                console.log(res.result);
+                console.log("실패ㅠㅠ");
+                $("#likeCount").html(res.likeCount);
+            }
+        }
+    });
+});
+
+	
+//  	var likes = document.querySelectorAll("div[data-like]");
+// 	$(".like").click(function() {
+// 		var idx = $(".like").index(this)					// 인덱스 변수
+// 		var boardno = likes[idx].getAttribute('data-like')	// boardNo 변수
+//  		var userno = "${viewBoard.userNo}";					// userNo 변수
 		
-		console.log(boardno);
-		console.log(userno);
+//  		console.log("${viewBoard.boardNo}");
+// 		console.log(boardno);
+// 		console.log(userno);
 		
-		$.ajax({
-			type: "GET"
-			, url: "./like"
-			, data: { "userNo" : userno, "boardNo" : boardno }
-			, dataType: "json"
-			, success: function( res ) {
+// 		$.ajax({
+// 			type: "GET",
+// 			url: "/board/like",
+// 			data: { "userNo": userno, "boardNo": boardno }, //userNo는 세션에서 받아오기
+// 			dataType: "json",	//html로 하고
+// 			success: function(res) {
+			    	
+// 			if (res.result == true) {
 				
-				if(res.result == true) {
-	                $(".like-icon").eq(idx).attr("src", "../resources/icon/heart-fill.svg");
-				} else if (res.result == false) {
-	                $(".like-icon").eq(idx).attr("src", "../resources/icon/heart.svg");
-				}
-				// 좋아요 개수 업데이트
-	            $(".like-count").eq(idx).text(res.likeCount);
-				
-				console.log(res);
-				console.log(res.likeCount);
-// 				 if (res.result == true) {
-// 		                $(".like-icon").eq(idx).attr("src", "../resources/icon/heart-fill.svg");
-// 		                var likeCount = parseInt($(".like-count").eq(idx).text());
-// 		                $(".like-count").eq(idx).text(likeCount + 1);
-// 		            } else if (res.result == false) {
-// 		                $(".like-icon").eq(idx).attr("src", "../resources/icon/heart.svg");
-// 		                var likeCount = parseInt($(".like-count").eq(idx).text());
-// 		                $(".like-count").eq(idx).text(likeCount - 1);
-// 		            }
-			} //success end
-		}) //ajax end
-	}) //like end
+// 				//좋아요 추가
+// 				$(".like").eq(idx).html('<img src="../resources/icon/heart-fill.svg" style="width:45%">')
+// 				console.log(res);
+// 				console.log(res.result);
+// 				console.log("성공^^")
+// 				$("#like").children(2).eq(1).html(res.likeCount)
+// 			} else if (res.result == false) {
+// 				//좋아요 삭제
+// 				$(".like").eq(idx).html('<img src="../resources/icon/heart.svg" style="width:45%">')
+// 				console.log(res);
+// 				console.log(res.result);
+// 				console.log("실패ㅠㅠ")
+// 				$("#like").children(2).eq(1).html(res.likeCount)
+// 			}
+			
+// 			console.log(res.likeCount);
+			
+			//받은 응답에서 누적 카운트 업데이트
+// 			var likeCount = res.likeCount;
+// 			console.log(likeCount);
+// 			$(".like-count").eq(idx).text(likeCount);
+	
+// 				console.log(res);
+// 				console.log(res.likeCount);
+
+				// 좋아요 누적 카운트 업데이트
+// 				$("#total-like-count").text(res.totalLikeCount);
+// 			},
+// 				error: function(xhr, status, error) {
+// 				console.log(error);
+// 			} //success end
+// 		}) //ajax end
+// 	}) //like end
 
 
 	<!-------------------- 좋아요 끝 -------------------->

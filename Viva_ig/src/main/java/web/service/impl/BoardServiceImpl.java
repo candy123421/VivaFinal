@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ import web.dto.Board;
 import web.dto.Comments;
 import web.dto.Files;
 import web.dto.Likes;
+import web.dto.PackLike;
 import web.dto.Tag;
 import web.service.face.BoardService;
 import web.util.Paging;
@@ -279,6 +281,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	
+	
+	
 	@Override
 	public List<Files> getAttachFile(Board viewBoard) {
 		return boardDao.selectBoardFileByBoardNo(viewBoard);
@@ -431,9 +435,11 @@ public class BoardServiceImpl implements BoardService {
 	
 	
 	@Override
-	public boolean checkLike(Likes like) {
+	public boolean likeCheck(Likes like) {
+		logger.info("serviceImpl - checkLike ⭐도착⭐");
 		
-		int result = boardDao.selectByLike(like);
+		//좋아요 상황 조회 (0이면 좋아요 안 한 상황, 1이면 좋아요 한 상황)
+		int result = boardDao.selectByLikeCheck(like);
 		
 		if( result > 0 ) {
 			return true;
@@ -447,31 +453,84 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public void boardReverseLike(Likes like) {
+	public void boardDislike(Likes like) {
 		boardDao.deleteBoardLike(like);
 	}
 	
 	@Override
-	public int getBoardLikeCount(Board board) {
-		return boardDao.selectBoardLikeCount(board);
+	public int getBoardLikeCount(Likes like) {
+		
+		//특정 사용자의 좋아요 상태를 확인하고 해당 사용자의 좋아요 수를 반환
+		return boardDao.selectBoardLikeCount(like);
 	}
 	
 	@Override
-	public int incrementLikeCount(Likes like) {
-		int likeCount = boardDao.selectBoardLikeCount(like);
-	    likeCount++;
-	    boardDao.updateBoardLikeCount(like, likeCount);
-	    return likeCount;
+	public int getBoardTotalLikeCount(int boardNo) {
+		
+		//게시글의 총 좋아요 수
+		return boardDao.selectBoardTotalLikeCount(boardNo);
 	}
 	
 	@Override
-	public int decrementLikeCount(Likes like) {
-		 int likeCount = boardDao.selectBoardLikeCount(like);
-		 likeCount++;
-		 boardDao.updateBoardLikeCount(like, likeCount);
-		 return likeCount;
+	public int incrementBoardLikeCount(int boardNo) {
+		
+		//게시글의 총 좋아요 수 확인(count)
+		int likeCount = boardDao.selectBoardTotalLikeCount(boardNo);
+		likeCount++;
+		
+		Board board = new Board();
+	    board.setBoardNo(boardNo);
+	    
+	    //좋아요 수 조회 및 증가 로직
+	    board.setLikeCount(likeCount);
+	    boardDao.updateBoardLikeCount(board);
+	    
+	    //좋아요 업데이트 후 다시 조회하여 업데이트가 정상적으로 이루어졌는지 확인
+	    int updateLikeCount = boardDao.selectBoardTotalLikeCount(boardNo);
+	    
+	    return updateLikeCount;
 	}
 	
+	@Override
+	public int decrementBoardLikeCount(int boardNo) {
+		
+		//게시글의 총 좋아요 수 확인 (count)
+	    int likeCount = boardDao.selectBoardTotalLikeCount(boardNo);
+	    likeCount--;
+
+	    Board board = new Board();
+	    board.setBoardNo(boardNo);
+	    
+	    //좋아요 수 조회 및 감소 로직
+	    board.setLikeCount(likeCount);
+	    boardDao.updateBoardLikeCount(board);
+
+	    //좋아요 업데이트 후 다시 조회하여 업데이트가 정상적으로 이루어졌는지 확인
+	    int updateLikeCount = boardDao.selectBoardTotalLikeCount(boardNo);
+
+	    return updateLikeCount;
+	}
+	
+	@Override
+	public boolean viewCheckLike(HttpSession session, Board viewBoard) {
+		logger.info("ServiceImpl - viewCheckLike()  ⭐도착⭐ {}");
+		
+		Likes like = new Likes();
+		like.setUserNo((int)session.getAttribute("userNo"));
+		like.setBoardNo(viewBoard.getBoardNo());
+		
+		int result = boardDao.selectByViewBoardLike(like);
+		logger.info("result 결과 값 {}",result);
+		
+		if(result <= 0) {
+			return false;
+		} else if(result > 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	 
 	@Override
 	public List<Comments> viewComment(Comments comments) {
 		return boardDao.selectComment(comments);
@@ -504,4 +563,6 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 	}
+
+
 }

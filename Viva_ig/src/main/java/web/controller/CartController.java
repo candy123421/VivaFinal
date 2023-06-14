@@ -206,7 +206,7 @@ public class CartController {
 		
 		int user = (int) session.getAttribute("userNo");
 		
-		//1. 회원의 고 확인 후 소스가격과 비교해서 구매가능한지 알려주기 
+		//1. 회원의 잔고 확인 후 소스가격과 비교해서 구매가능한지 알려주기 
 		boolean purchase = cartService.chkCreditAcc(user, cart);
 		logger.info("구매가능여부 : {}", purchase);
 		
@@ -238,6 +238,68 @@ public class CartController {
 			
 		} else {
 			logger.info("선택사항 구매 불가능!");
+			//크레딧이 부족해서 그런건지
+			//source가 이미 구매해서 그런건지
+			//source가 더이상 구매 불가능해서 그런건지 등등 
+			//그에 따른 반환값을 정해줘야할 듯 함... 
+			//아직은 모르겠음 ㅠ
+		}
+	}
+	@RequestMapping("/filedown")
+	public void filedown(HttpSession session, Cart user, Model model) {
+		logger.info("cart/list - list()");
+		logger.info("세션userNo : {}", session.getAttribute("userNo"));
+		
+		
+		//세션에 있는 userNo을  cart DTO에 지정하여 진행
+		session.getAttribute("userNo");
+		user.setUserNo((int)session.getAttribute("userNo"));
+		logger.info("userNo : {}", user.getUserNo());
+		  
+		//userNo을 통해 리스트 확인하기
+		List<Map<String,Object>> cartList = cartService.getCartList(user);
+		logger.info("리스트출력 : {}", cartList);
+		
+		model.addAttribute("list", cartList);
+		
+	}
+	@ResponseBody
+	@RequestMapping("/fileDownloadProc")
+	public boolean fileDownloadProc(HttpSession session , int[] sourceNo) {
+		logger.info("/cart/fileDownloadProc -  fileDownloadProc()");
+		logger.info("세션userNo : {}", session.getAttribute("userNo"));
+		logger.info("sourceNo : {}", sourceNo);
+		
+		int user = (int) session.getAttribute("userNo");
+		//1. 회원의 잔고 확인 후 소스가격과 비교해서 구매가능한지 알려주기 
+		boolean purchase = cartService.chkCreditAcc(user, sourceNo);
+		logger.info("구매가능여부 : {}", purchase);
+		
+		//-----------------------------------------------
+		//2. 본격 구매 시작.
+		if(purchase) {
+			logger.info("선택사항 구매가능!");
+			//본격적인 구매 진행
+			//service 에서 트랜잭션 진행할 생각!
+			//필요한거? 회원번호, cart[] 이거면 된다. (원래는 cartNo 까지 같이 갈려고 했으나, 굳이 ? 라는 생각이 들어 뺐다.)
+			boolean success = cartService.purchaseCartItem(user, sourceNo);
+			
+			//만약 트랜잭션이 잘 됐다면...true 가 나오겠지.. 
+			logger.info("{}", success);
+//		
+			
+			//***************크레딧 잔액 리로드 하기******************** 
+			//CreditService 임포트 필수!
+			Credit creditAcc = new Credit();
+			creditAcc.setUserNo((int)session.getAttribute("userNo"));
+			session.setAttribute("headerCredit", creditService.selectCreditAcc(creditAcc));
+			
+			return true;
+
+			
+		} else {
+			logger.info("선택사항 구매 불가능!");
+			return false;
 			//크레딧이 부족해서 그런건지
 			//source가 이미 구매해서 그런건지
 			//source가 더이상 구매 불가능해서 그런건지 등등 

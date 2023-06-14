@@ -4,8 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
 
+
 <c:import url="../layout/header.jsp"/>   
-<!--  카테고리를 클릭했을 때, 그에 해당하는 카테고리의 색상이 변해있고,, 아래의 내용만 새로고침하고 싶으나, ajax 를 너무 몰라서 도저히 안되겠다.. ㅠ-->
+
 
 <style type="text/css">
 

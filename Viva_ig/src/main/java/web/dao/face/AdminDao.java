@@ -2,6 +2,8 @@ package web.dao.face;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import web.dto.Admin;
 import web.dto.AdminAnswer;
 import web.dto.UserQuestion;
@@ -36,9 +38,18 @@ public interface AdminDao {
 	 * 	paging.startNo, paging.endNo를 이용하여 rownum을 조회한다
 	 * 
 	 * @param paging - 페이징 정보 객체
+	 * @param Process - 답변대기,답변완료 따로검색하도록 
 	 * @return 페이징이 적용된 QnA 목록
 	 */
-	public List<UserQuestion> selectQnAList(Paging paging);
+	public List<UserQuestion> selectQnAList(@Param(value = "paging") Paging paging,@Param(value = "qProcess") String qProcess);
+	
+	/**
+	 * keyword로 검색한것만 나오게하기 
+	 * @param keyword - 검색 키워드
+	 * @return
+	 */
+	public List<UserQuestion> selectQnAListByKeyword(String keyword);
+
 
 	/**
 	 * list 불러올때 세션에서 가져온 userno인 애들만 불러오기
@@ -135,6 +146,14 @@ public interface AdminDao {
 	 * @param users
 	 */
 	public void updateUserGrade(Users users);
+
+	/**
+	 * keyword로 검색된 애들 보여주는 리스트
+	 * @param keyword
+	 * @return 
+	 */
+	public List<Users> selectUserListByKeyword(String keyword);
+
 
 
 

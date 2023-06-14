@@ -117,9 +117,12 @@ function selectAll(selectAll)  {
 	}
 
 	.btnupdate:hover{
-
 	background: linear-gradient(270deg, rgba(245, 174, 108, 0.929575) 4.09%, rgba(255, 43, 91, 0.812201) 99.99%, #4200FF 100%);
 	color: white;
+	}
+	
+	.i{
+	font-weight: 900;
 	}
 
 </style>
@@ -139,25 +142,27 @@ function selectAll(selectAll)  {
 <div>
 	<c:choose>
 		<c:when test="${empty adminlogin and empty login}">
+		<div id="titleWrap">
 		<span style="color: red; font-size: 2.5em;">이 곳은 관리자 구역입니다. 접근금지!</span><br>
 		관리자는 로그인을 해주세요!
 		<a href="/admin/login"> <button class="btn btn-outline-secondary btn-sm">Login</button> </a>
+		</div>
 		</c:when>
 		
 		
 		<c:when test="${not empty adminlogin and adminlogin }">
 				<!-------------------- 검색 시작 -------------------->
-				<form action="/admin/usergrade?keyword=${keyword}" method="get" name="searchForm">
-			<div class="topWrap">
-				<div id="grid">
-					<div class="search_wrap">
-						<input type="text" class="form-control" name="keyword" id="keyword" placeholder=" 검색어를 입력하세요">
-					</div>
-					<div>
-						<button class="search" id="btnSearch">Search</button>
+				<form action="/admin/userlist?keyword=${keyword}" method="get" name="searchForm">
+				<div class="topWrap">
+					<div id="grid">
+						<div class="search_wrap">
+							<input type="text" class="form-control" name="keyword" id="keyword" placeholder="ID or Nick를 검색하세요">
+						</div>
+						<div>
+							<button class="search" id="btnSearch">Search</button>
+						</div>
 					</div>
 				</div>
-			</div>
 				</form>
 		<!-------------------- 검색 끝 -------------------->
 		
@@ -165,20 +170,20 @@ function selectAll(selectAll)  {
 		<div class="total"> 
 			<form action="/admin/userlist" method="post">
 			<div class="userlist">
-				<div class="item"><input type='checkbox' name='checkall' value='selectall' onclick='selectAll(this)'/> Check All</div>
-				<div class="item">회원번호</div>
-				<div class="item">ID</div>
-				<div class="item">닉네임</div>
-				<div class="item">등급</div>
-				<div class="item">가입일</div>
+				<div class="i"><input type='checkbox' name='checkall' value='selectall' onclick='selectAll(this)'/> Check All</div>
+				<div class="i">Number</div>
+				<div class="i">ID</div>
+				<div class="i">Nick</div>
+				<div class="i">Grade</div>
+				<div class="i">Join Date</div>
 			
 			<c:forEach var="userlist" items="${userlist }">
-				<div class="item"><input type='checkbox' name='check' value="${userlist.userNo }" onclick='checkSelectAll(this)'/></div>
-				<div class="item">${userlist.userNo }</div>
-				<div class="item">${userlist.userId }</div>
-				<div class="item">${userlist.userNick }</div>
-				<div class="item">${userlist.userGrade }</div>
-				<div class="item"><fmt:formatDate value="${userlist.userJoindate }" pattern="yyyy-MM-dd"/></div>
+				<div><input type='checkbox' name='check' value="${userlist.userNo }" onclick='checkSelectAll(this)'/></div>
+				<div>${userlist.userNo }</div>
+				<div>${userlist.userId }</div>
+				<div>${userlist.userNick }</div>
+				<div>${userlist.userGrade }</div>
+				<div><fmt:formatDate value="${userlist.userJoindate }" pattern="yyyy-MM-dd"/></div>
 			</c:forEach>
 			<button id="btnupdate" name="btnupdate" class="btnupdate">Upgrade</button>
 			<div></div>

@@ -80,7 +80,14 @@ public interface CreditService {
 	 * @return 환전 정보 입력 완료된 정보 
 	 */
 	public ExchangeInfo addExchangeInfo(int exCredit, ExchangeInfo exchange);
-	
+
+	/**
+	 * 주문서 작성을 위해 userNo 을 이용하여 email과 회원 이름 조회하기
+	 * 
+	 * @param userNo
+	 * @return	<Map> email, name
+	 */
+	public Map<String, Object> getUserInfo(int userNo);
 
 
 

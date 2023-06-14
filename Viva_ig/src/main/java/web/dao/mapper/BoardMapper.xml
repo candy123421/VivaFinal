@@ -195,89 +195,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   
   
   
-<!-- 	<select id="selectBoardTotalLikeCount" parameterType="int" resultType="int"> -->
-<!-- 	    SELECT likeCount -->
-<!-- 	    FROM board  -->
-<!-- 	    WHERE board_no = #{boardNo} -->
-<!-- 	</select> -->
-	<select id="selectBoardTotalLikeCount" parameterType="int" resultType="int">
-	    SELECT 1
-	    FROM board 
-	    WHERE board_no = #{boardNo}
-	</select>
-	
-<!-- 	<update id="updateBoardLikeCount" parameterType="web.dto.Board"> -->
-<!-- 	    UPDATE board -->
-<!-- 	    SET likeCount = #{likeCount} -->
-<!-- 	    WHERE boardNo = #{board.boardNo} -->
-<!-- 	</update> -->
-	<update id="updateBoardLikeCount" parameterType="web.dto.Board">
-	    UPDATE board
-	    SET likeCount = 1
-	    WHERE boardNo = #{board.boardNo}
-	</update>
-<!--   	<insert id="insertBoardLike" parameterType="web.dto.Likes"> -->
-<!--   		INSERT INTO LIKES(BOARD_NO, USER_NO) -->
-<!--   		VALUES(#{boardNo}, #{userNo}) -->
-<!--   	</insert> -->
-<!--   	<insert id="insertBoardLike" parameterType="web.dto.Likes"> -->
-<!--   		INSERT INTO LIKES (BOARD_NO, USER_NO) -->
-<!-- 		SELECT b.board_no, (SELECT USER_NO FROM USERS WHERE USER_NO = #{userNo}) -->
-<!-- 		FROM BOARD b -->
-<!-- 		WHERE b.board_no = #{boardNo} -->
-<!--   	</insert> -->
-  	
+
   	<select id="selectByViewBoardLike" parameterType="web.dto.Likes" resultType="int">
 	  	SELECT count(*) result FROM Likes
 		WHERE board_no = #{boardNo} AND user_no = #{userNo}
   	</select>
   	
-<!--   	<select id="selectBoardLikeCount" parameterType="web.dto.Likes" resultType="int"> -->
-<!--   		SELECT count(*) FROM LIKES -->
-<!--   		WHERE user_no = #{userNo} and board_no = #{boardNo}  -->
-<!--   	</select> -->
-<!-- 	<select id="selectBoardLikeCount" parameterType="web.dto.Board" resultType="int"> -->
-<!-- 	    SELECT COUNT(*) FROM Likes -->
-<!-- 		INNER JOIN Board ON Board.board_no = Likes.board_no -->
-<!-- 		WHERE Board.board_no = #{boardNo} AND Likes.user_no = #{userNo} -->
-<!-- 	</select> -->
-	
-<!-- 	<select id="selectBoardLikeCount" parameterType="web.dto.Board" resultType="int"> -->
-<!-- 	    SELECT likeCount FROM Board -->
-<!-- 	    WHERE board_no = #{boardNo} -->
-<!-- 	</select> -->
-		
-<!-- 	<update id="updateBoardLikeCount" parameterType="web.dto.Board"> -->
-<!-- 	    UPDATE Board -->
-<!-- 	    SET likeCount = #{likeCount} -->
-<!-- 	    WHERE board_no = #{boardNo} -->
-<!-- 	</update> -->
-
-<!--   <update id="updateBoardLikeCount" parameterType="java.util.Map"> -->
-<!--     UPDATE board  -->
-<!--     SET like_count = #{likeCount} WHERE board_no = #{boardNo} -->
-<!--   </update> -->
-<!--   <update id="updateBoardLikeCount" parameterType="web.dto.Board"> -->
-<!-- 	    누적 카운트를 위해 현재 좋아요 개수를 조회합니다 -->
-<!-- 	    <selectKey keyProperty="likeCount" resultType="int" order="BEFORE"> -->
-<!-- 	        SELECT like_count FROM board WHERE board_no = #{boardNo} -->
-<!-- 	    </selectKey> -->
-	
-<!-- 	    조회된 좋아요 개수에 1을 더하여 업데이트합니다 -->
-<!-- 	    UPDATE board -->
-<!-- 	    SET like_count = #{likeCount + 1} -->
-<!-- 	    WHERE board_no = #{boardNo} -->
-<!-- 	</update> -->
-  
-<!--   <select id="selectBoardTotalLikeCount" parameterType="int" resultType="int"> -->
-<!--     SELECT like_count  -->
-<!--     FROM board  -->
-<!--     WHERE board_no = #{boardNo} -->
-<!--   </select> -->
-
-
-
-
   	
   	<select id="selectComment" resultType="web.dto.Comments" parameterType="int">
   		SELECT COMM_NO, COMM_CONTENT, COMM_DATE, BOARD_NO, USER_NO

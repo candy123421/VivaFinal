@@ -8,15 +8,32 @@
 <mapper namespace="web.dao.face.CartDao">
 
 	
+<!-- 	<select id="selectCartByUserno" resultType="HashMap" parameterType="web.dto.Cart"> -->
+<!-- 		select  -->
+<!-- 			C.cart_no -->
+<!-- 			, SI.SOURCE_IMG_STOREDNAME  -->
+<!-- 			, S.source_name, S.source_no, source_price, bpm, key -->
+<!-- 		 from cart C -->
+<!-- 			left join source S on C.source_no = S.source_no -->
+<!-- 			left join SOURCEIMGINFO SI on C.source_no = SI.source_no -->
+<!-- 		 where C.user_no = #{userNo} -->
+<!-- 	</select> -->
+
 	<select id="selectCartByUserno" resultType="HashMap" parameterType="web.dto.Cart">
 		select 
-			C.cart_no
-			, SI.SOURCE_IMG_STOREDNAME 
-			, S.source_name, S.source_no, source_price, bpm, key
-		 from cart C
-			left join source S on C.source_no = S.source_no
-			left join SOURCEIMGINFO SI on C.source_no = SI.source_no
-		 where C.user_no = #{userNo}
+		    C.cart_no, C.user_no
+		    , S.source_name, S.source_no, source_price, bpm, key, S.tag_no sourcetag
+		    , SI.SOURCE_IMG_ORIGINNAME, SI.SOURCE_IMG_STOREDNAME 
+		    , PACK_IMG_ORIGINNAME, PACK_IMG_STOREDNAME, PI.PACK_NO 
+		    , pack_name, pack_content, pack_date, P.tag_no packtag
+		    , F.upload_no, F.file_originname, F.file_storedname, F.file_size, F.source_date
+		from cart C
+		    left join source S on C.source_no = S.source_no
+		    left join SOURCEIMGINFO SI on C.source_no = SI.source_no
+		    left join packimginfo PI on s.pack_no = PI.pack_no
+		    left join pack P on s.pack_no = p.pack_no
+		    left join sourcefileinfo F on S.source_no = F.source_no
+		where C.user_no = #{userNo}
 	</select>
 	
 <!--  ====================================================================== -->	

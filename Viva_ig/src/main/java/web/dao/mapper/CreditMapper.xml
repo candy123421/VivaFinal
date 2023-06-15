@@ -134,7 +134,11 @@
 		FROM exchangeinfo WHERE deal_no = #{dealNo}
 	
 	</select>
-	
+<!--  ================================================================= -->
+	<select id="selectUserInfo" resultType="HashMap" parameterType="int">
+		SELECT USER_EMAIL, USER_NAME FROM USERS 
+		WHERE USER_NO = #{userNo}
+	</select>	
 	
 	
 </mapper>

@@ -20,6 +20,7 @@
 	<!-- 인터셉터들 설정	 -->
 	<interceptors>
 		<interceptor>
+					<!-- 이 경로는 로그인하지않으면 로그인창으로 보냄-->
 				<mapping path="/source/**"/>
 				<mapping path="/board/**"/>
 				<mapping path="/boardnotice/**"/>

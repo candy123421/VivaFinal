@@ -45,8 +45,16 @@ public class UsersController {
 	@Autowired CreditService creditService;
 	
 	@GetMapping("/login")
-	public void login() {
+	public void login(Model model, String msg) {
 		logger.info("/login [GET]");
+		logger.info("msg : {}", msg);
+		
+		if( msg != null ) {
+			msg = msg.replace("Not", "로그인 정보가 일치하지 않습니다");
+			model.addAttribute("msg", msg);
+			logger.info("msg Replace 확인 : {}", msg);
+		}
+		
 	}
 	
 //	//main페이지
@@ -173,7 +181,9 @@ public class UsersController {
 			
 			session.invalidate();
 			
-			return "redirect:./login";
+			String msg = "Not";
+			model.addAttribute("msg", msg);
+			return "redirect:./login?";
 		}
 		
 	}

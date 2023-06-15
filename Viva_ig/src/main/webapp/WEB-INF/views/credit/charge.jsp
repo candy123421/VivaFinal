@@ -52,6 +52,7 @@
     color: #333d4b;
     width: 80px;
     margin-bottom: 20px;
+    margin-left: 205px;
 }
 
 /*  ========================================================= */
@@ -131,25 +132,51 @@
     margin-top: 22px;
 	
 }
+.clicked_menu{ /*클릭 시 적용되는 style 속성*/
+	box-sizing: border-box;
+	
+    width: 230px;
+    height: 52px;
+
+	background: #000000;
+	border: 2px solid rgba(105, 100, 100, 0.5);
+	border-radius: 27px;
+	margin-bottom: 15px;
+	color: #FFFFFF;
+	font-weight: 600;
+    font-size: 25px;
+    margin-right: 13px;
+    margin-top: 22px;
+}
 .delete-button {
 	cursor : pointer;
 	margin-left : 20px;
 }
+
+/*  =================================================  */
 #cash_result{
 	display: inline-block;
     width: 150px;
     text-align: end;
     margin-left: 461px;
+    font-weight: 700;
 }
 #real_cash {
     padding-top: 15px;
     font-size: 20px;
 }
-#cash_result span {
-    position: absolute;
-    left: 920px;
-    margin-left: 10px;
+
+#credit_result{
+	display: inline-block;
+    width: 150px;
+    text-align: end;
+    margin-left: 461px;
+    font-weight: 700;
 }
+#after_credit {
+    font-size: 20px;
+}
+
 /*  ============================================= */
 #payment-method, #agreement{
 	width : 1200px;
@@ -180,7 +207,7 @@
 
 
 <div class="FunctionTitle">
-   Credit
+   Credit ${grade }
 </div>
 <div class="FunctionTitleLine">
    <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
@@ -195,8 +222,11 @@
 		</div>
 		<label style="padding: 0px 6px 0px 21px; font-size: 34px;">Credit</label><img data-deal-no='${i.dealNo}' class="delete-button" alt="지우기" src="../resources/icon/X.png" width="25">
 		
-		<div id="real_cash">
-			<div id="cash_result" value="0"></div><span>원</span>
+		<div id="real_cash">	<!--  실제 결제될 금액 -->
+			<div id="cash_result" value="0"></div>
+		</div>
+		<div id="after_credit">	<!--  충전된 후 크레딧 -->
+			<div id="credit_result" value="0"></div>
 		</div>
 		
 		<div class="button-area">
@@ -222,7 +252,10 @@
 	<script>
  	var sum = 0;	//크레딧 합계
     var cash = 0;	//실제금액 합계
+    var future = 0; //충전 후 크레딧 총계
     var method;		//결제 방식 
+    var name;	//주문자 이름
+    var email;	//주문자 이메일
     
 	$(function() {
 		
@@ -241,22 +274,49 @@
 			    /*  누적크레딧에 대한 실제 환산 금액 */
 			   	cash = (10 * sum);
 			    console.log(cash);
-			    $("#cash_result").html(cash);
+			    
+			    /*  실제 금액의 콤마 찍어주기 */
+				/*  3번째 자리에 콤마 찍기 */
+				var money2 = cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				console.log(money2)
+			    $("#cash_result").html(money2 + " 원");
 	
+				/*  충전된 이후의 예상 크레딧 */
+				future = sum + ${creditAcc}
+				console.log("what? : ",${creditAcc})
+				console.log(future)
+				/*  충전후 크레딧을 보여주기 */
+				$("#credit_result").html(future + " credit");
+				
 			    // <button> 태그의 페이지 이동(기본 동작) 막기
 			    return cash;
 		  })
 		  
+		  /*  ======= 결제방식 눌렀을 경우 ======== */
+		  /* 결제방식 버튼 각각에게 함수를 움직이게 해준 것 */
+		  /*  이 과정을 거치면, html 코드에 menu-index 라는 속성을 부여해줄 수 있다. 0,1,2 */
+			$('.method-btn').each(function(index){
+				$(this).attr('menu-index', index);
+				
+			/*  위의 설정을 다 거치고 클릭을 해주면 아래의 코드가 실행된다. */	
+			}).click(function(){
+				 console.log("결제수단 클릭!!!!()")
+				 console.log($(this).attr('menu-index'))
+				 
+				 method = $(this).attr('value')
+			  	 console.log(method);
+				 
+				/*클릭된 <div>의 menu-index 값을 index 변수에 할당한다.*/
+			    var index = $(this).attr('menu-index');
+				console.log(index)
+			    /*클릭한 <div>에  clicked_menu 클래스 추가*/
+				$('.method-btn[menu-index=' + index + ']').addClass('clicked_menu'); 
+			    /*그 외 <div>는  clicked_menu 클래스 삭제*/
+				$('.method-btn[menu-index!=' + index + ']').removeClass('clicked_menu');
+			});
 		  
-		  $(".method-btn").click(function(e) {
-			  console.log("결제수단 클릭!!!!()")
-			  
-			  method = $(this).attr('value')
-			  console.log(method);
-		  })
 		  
-		  
-		  // X표 눌렀을 경우
+		  // X표 눌렀을 경우 
 		  $(".delete-button").click(function() {
 		    console.log("금액초기화()")
 
@@ -265,6 +325,8 @@
 		    sum = 0;
 		    $(".ChargeAmountChoose").html("<h3>충전금액을 눌러주세요</h3>");
 		    $("#cash_result").html('');
+		    $("#credit_result").html('');
+		    
 
 		    // <button> 태그의 페이지 이동(기본 동작) 막기
 		    return false;
@@ -284,7 +346,7 @@
 	$(document).on('click', '#payment-button', function() {
 		    console.log("결제하기 clicked!!!!()")  
 			
-		    var	payment=0;
+		    var	payment=0;	//
 		    
 			//ajax 로 해당 url 에 데이터 전송하기
 			$.ajax({
@@ -299,8 +361,13 @@
 					console.log(res.cash)
 					payment = res.cash;
 					method = res.method;
+					name = res.name;
+					email = res.email;
+					
 					console.log("?", cash)
 					console.log("??", method)
+					console.log("???", name)
+					console.log("????", email)
 // 					console.log(payment)
 					
 					<!--  결제위젯 연동하기 페이지 보면서 다시 해보기 -->
@@ -338,9 +405,9 @@
 					        orderId: "${id}",            // uuid 난수로 컨트롤러에서 받아옴
 					        orderName: "크레딧 충전",                 // 주문명
 					        successUrl: 'http://localhost:8888/credit/charging',    // 결제에 성공하면 이동하는 페이지(직접 만들어주세요)
-					      failUrl: 'http://localhost:8888/credit/fail',         // 결제에 실패하면 이동하는 페이지(직접 만들어주세요)
-					        customerEmail: "hjsun12@naver.com",
-					        customerName: "고객님"
+					     	failUrl: 'http://localhost:8888/credit/fail',         // 결제에 실패하면 이동하는 페이지(직접 만들어주세요)
+					        customerEmail: email,
+					        customerName: name
 					      })
 					}
 					,error: function () {

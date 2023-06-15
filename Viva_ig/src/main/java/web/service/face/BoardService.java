@@ -2,6 +2,8 @@ package web.service.face;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -91,7 +93,7 @@ public interface BoardService {
 	 * @param like - 좋아요를 누른 객체 정보
 	 * @return - 조회된 행 수
 	 */
-	public boolean checkLike(Likes like);
+	public boolean likeCheck(Likes like);
 	
 	/**
 	 * 게시글 좋아요 삽입
@@ -105,32 +107,50 @@ public interface BoardService {
 	 * 
 	 * @param like - 좋아요를 누른 객체 정보
 	 */
-	public void boardReverseLike(Likes like);
+	public void boardDislike(Likes like);
 
 	/**
-	 * 좋아요 갯수 조회
+	 * 특정 사용자가 해당 게시글에 대해 좋아요를 누른 수 조회. 
+	 * 즉, 특정 사용자의 좋아요 상태를 확인하고 해당 사용자의 좋아요 수를 반환. 
+	 * likeCheck 변수와 함께 사용되어 특정 사용자의 좋아요 상태와 좋아요 수를 확인하는 용도로 사용.
 	 * 
 	 * @param board - 좋아요 객체
-	 * @return 좋아요 갯수
+	 * @return 좋아요 수 (1 : 좋아요 누름, 0 : 좋아요 누르지 않음)
 	 */
-	public int getBoardLikeCount(Board board);
+	public int getBoardLikeCount(Likes like);
 	
 	/**
-	 * 좋아요 누적 카운트 - 좋아요 증가
+	 * boardNo로 조회한 게시글의 총 좋아요 수
 	 * 
-	 * @param like - 좋아요 객체
-	 * @return 좋아요 증가값
+	 * @param boardNo - 좋아요 수를 조회할 게시글 번호
+	 * @return 게시글의 총 좋아요 수
 	 */
-	public int incrementLikeCount(Likes like);
+	public int getBoardTotalLikeCount(int boardNo);
 	
 	/**
-	 * 좋아요 누적 카운트 - 좋아요 감소
+	 * 게시글 상세보기 - 회원의 좋아요 상태를 확인한다
 	 * 
-	 * @param like - 좋아요 객체
-	 * @return 좋아요 감소
+	 * @param session - 로그인한 사용자 정보
+	 * @param viewBoard - 게시글 정보
+	 * @return 좋아요 상태 확인 (int)
 	 */
-	public int decrementLikeCount(Likes like);
+	public boolean viewCheckLike(HttpSession session, Board viewBoard);
+	
+	/**
+	 * 게시글에 대한 전체 좋아요 수 누적
+	 * 
+	 * @param boardNo - 좋아요 누적할 게시글의 게시글 번호
+	 * @return 증가한 게시글의 좋아요 수 (int)
+	 */
+	public int incrementBoardLikeCount(int boardNo);
 
+	/**
+	 * 게시글에 대한 전체 좋아요 수 감소
+	 * 
+	 * @param boardNo - 좋아요 감소할 게시글의 게시글 번호
+	 * @return 감소한 게시글의 좋아요 수 (int)
+	 */
+	public int decrementBoardLikeCount(int boardNo);
 	/**
 	 * 댓글 조회하기 
 	 * 
@@ -175,6 +195,9 @@ public interface BoardService {
 	 * @param check
 	 */
 	public void deleteCheckBoard(int[] check);
+
+
+
 
 
 }

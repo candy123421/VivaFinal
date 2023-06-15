@@ -3,11 +3,14 @@ package web.dao.face;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import web.dto.Cart;
 import web.dto.Credit;
 import web.dto.MySource;
 import web.dto.Source;
 import web.dto.SourceDown;
+import web.dto.SourceFileInfo;
 import web.dto.Users;
 
 public interface CartDao {
@@ -30,6 +33,16 @@ public interface CartDao {
 	public boolean deleteCartByCartNo(Cart cartNo);
 
 //=========================================================================	
+//	spring에서는 DTO 객체로 받지 않고 2개 이상의 파라미터 변수를 디비에 넣을 시 ,@Param 어노테이션을 Mapper에 붙여 주면 된다.
+	/**
+	 * 장바구니 담기 전, 회원번호와 음원페이지의 음원소스 번호를 통해 나의 구매이력 확인하기
+	 * 
+	 * @param sourceNo
+	 * @param userNo
+	 * @return count 수
+	 */
+	public int selectMySourceByUserNoAndSourceNo(@Param(value = "sourceNo[]")int sourceNo, @Param("userNo")int userNo);
+	
 	/**
 	 * cart의 중복여부 확인하기. 
 	 * 
@@ -45,6 +58,15 @@ public interface CartDao {
 	 */
 	public void insertCartItem(Cart add);
 
+	
+//=========================================================================	
+	/**
+	 * 팩 페이지에서 add Pack 을 통해 배열로 넘어온 sourceNo 과 userNo을 통해 mysource TB에서 구매이력 확인하기.
+	 * 
+	 * @param userNo, sourceNo
+	 * @return count(*) row
+	 */
+	public int selectMySourceByUserNoAndPackSource(MySource mySource);
 //=========================================================================	
 	/**
 	 * 회원자격 확인 중, userNo 을 통해 credit TB 조회 하여 총액 구하기
@@ -108,11 +130,22 @@ public interface CartDao {
 	 */
 	public void uploaderIncomeCredit(Credit uploaderInc);
 
+	
+
+
 	/**
-	 * pack 의 source 를 cart TB에 삽입한다.
+	 * 다운로드 시도 중......
+	 * sourceNo이 담긴 int []배열을 가지고 가서 sourceinfo 반환하기
 	 * 
-	 * @param cart - userNo, sourceNo
+	 * @param sourceNo
+	 * @return sourceinfo
 	 */
-	public void insertPack(Cart cart);
+	public SourceFileInfo selectSourceFileBysourceNo(int[] sourceNo);
+
+	
+
+
+
+
 
 }

@@ -244,10 +244,12 @@ th {
 								<c:choose>
 									<c:when test="${!empty i.PACK_IMG_STOREDNAME }">
 										<img alt="img" src="../upload/${i.PACK_IMG_STOREDNAME }" width="50" height="50">
+										<span>${i.PACK_IMG_STOREDNAME }</span>
+										<span>${i.PACK_IMG_ORIGINNAME }</span>
 									</c:when>
 									
 									<c:otherwise>
-										<img alt="img" src="../upload/${i.PACK_IMG_STOREDNAME }" width="50" height="50">
+										<img alt="img" src="../upload/${i.SOURCE_IMG_STOREDNAME }" width="50" height="50">
 									</c:otherwise>
 								</c:choose>
 							</div>
@@ -260,7 +262,7 @@ th {
 						
 						<td><!--  6. Key -->
 <%-- 							<a href="${pageContext.request.contextPath}/credit/list">nn</a> --%>
-								<button type="button" id="wow" data-download="${i.SOURCE_NO}"><span>${i.FILE_ORIGINNAME }</span></button>
+								<button type="button" id="wow" data-download="${i.SOURCE_NO}" href="./download?fileNo"><span>${i.FILE_ORIGINNAME }</span></button>
 								<button type="button"  id="omg" data-download="${i.SOURCE_NO}"><span>${i.FILE_STOREDNAME }</span></button>
 								<button type="button" class="btn btn-primary" id="export_project">파일테스트~!</button>
 						</td>
@@ -324,7 +326,8 @@ th {
 											console.log("구매가능!")
 											
 											 const req = new XMLHttpRequest();
-											req.open("GET", '${pageContext.request.contextPath}/source/download?sourceNo='+'downNum', true);
+// 											req.open("GET", '${pageContext.request.contextPath}/source/download?sourceNo=207', true);
+											req.open("GET", 'D:/Image/biz/upload', true);
 											req.responseType = "arraybuffer";
 											req.onload = function() {
 												const arrayBuffer = req.response;
@@ -332,13 +335,13 @@ th {
 			 							            var blob = new Blob([arrayBuffer], { type: "application/octetstream" });
 			 							            var link=document.createElement('a');
 			 							            link.href=window.URL.createObjectURL(blob);
-			 							            link.download="Brave_Soul_Vocal_Male.wav";
-										            
+			 							            link.download="모남희.jpg";
+										            console.log(link.download)
 			 							            link.click();
 			 							        }
 			 							    };
 			 							    req.send();
-											
+											console.log("다운로드 진행 완료")
 											
 											
 											

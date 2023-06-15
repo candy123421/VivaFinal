@@ -40,7 +40,7 @@ out = pageContext.pushBody();
    //.one -> application/onenote
    //.ppt -> application/vnd.ms-powerpoint
    //.txt -> text/plain
-   //.ini -> application/octet-stream (octect-strean은 8비트로 된 데이터라는 뜻)
+   //.ini -> application/octet-stream (octect-stream은 8비트로 된 데이터라는 뜻)
    //.wav -> audio/wav
    
    // 한글 인코딩

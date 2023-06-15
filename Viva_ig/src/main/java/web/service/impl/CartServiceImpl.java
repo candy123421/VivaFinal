@@ -19,6 +19,7 @@ import web.dto.Credit;
 import web.dto.MySource;
 import web.dto.Source;
 import web.dto.SourceDown;
+import web.dto.SourceFileInfo;
 import web.dto.Users;
 import web.service.face.CartService;
 
@@ -47,6 +48,17 @@ public class CartServiceImpl implements CartService {
 	}
 	
 //======================================================================================================
+	//음원페이지에서 장바구니로 담기 전에, 구매이력 먼저 확인하여 장바구니 접근 제한하기
+	@Override
+	public int checkMySource(int sourceNo, int userNo) {
+		logger.info("checkMySource ()");
+		logger.info("매개변수 확인 : {}, {}", sourceNo, userNo);
+		
+		return cartDao.selectMySourceByUserNoAndSourceNo(sourceNo, userNo);
+	}
+	
+	
+	
 	@Override
 	public boolean addCartItem(Cart add) {
 		logger.info("addCartItem()");
@@ -68,37 +80,73 @@ public class CartServiceImpl implements CartService {
 	}
 	
 //======================================================================================================
+	//팩 페이지에서 장바구니로 담기 전에, 구매이력 먼저 확인하여 장바구니 접근 제한하기
+	@Override
+	public int checkMySourceToPack(int[] source, int userNo) {
+		logger.info("checkMySourceToPack()");
+		
+		//중복되는 행의 수
+		int sum = 0;
+		
+		//mapper.xml 에서 parameterType 에 int[] 와 int 를 다 넣는 방법을 찾을 수가 없기에
+		//할수 없이 서비스 임플에서 for문을 돌려 찾아볼까한다..ㅠ
+		MySource mySource = new MySource();
+		mySource.setUserNo(userNo);
+		
+		for(int i=0; i<source.length; i++) {
+			
+			mySource.setSourceNo(source[i]);
+			int row = cartDao.selectMySourceByUserNoAndPackSource(mySource);
+			
+			sum += row;
+		}
+		logger.info("팩 중 구매이력 수: {} ", sum);
+		
+		return sum;
+	}
+	
+	
 	//여기서 int 배열을 하나씩 꺼내어 userNo과 짝지어준다.
 	@Override
-	public boolean addPack(int userNo, int[] source) throws Exception {
+	public int addPack(int userNo, int[] source) throws Exception {
 		logger.info("addPack()");
 		logger.info("userNo:{}", userNo);
 	    logger.info("source[]: {}", source);
 	    
-		//성공적으로 끝날지에 대한 결과값
-		int result = 0;
-		Cart cart = new Cart();
-		
-		//배열로 담아온 source를 하나씩 꺼내어 Cart TB에 set 해주기
-		//추후, 세션 종료 여부를 위해 if 문으로 걸러주는거임. 
-		if(cart !=null) {
+	    //이미 구매했던 소스들 걸러내기
+	    
+	    
+	    //장바구니 항목 중복 검사하기
+	    Cart cart = new Cart();
+	    
+	    int sum = 0;	//장바구니 중복 합계
+	  	int res = 0;	//insert 성공 확인
+	  	
+	  	cart.setUserNo(userNo);
+	  	
+	  	for(int s : source) {
+	  		cart.setSourceNo(s);
+	  		
+	  		res = cartDao.selectDuplicatedCartByUserNo(cart);
+	  		logger.info("중복여부 : {}", res);
 
-			for(int s : source) {
-				
-				//int형 배열로 받아온 sourceNo값을 하나씩 꺼내어 cart DTO에 set해준다.
-				cart.setSourceNo(s);
-				cart.setUserNo(userNo);
-				logger.info("잘 담김? :{}", cart );
-				
-				//메소드를 반복해준다. (foreach문 밖을 나가면, 메소드는 반복되지 않음)
-				cartDao.insertPack(cart);
-			}
-			logger.info("insertPack 성공");
-			result = 1;
-		}
+	  		
+	  		if(res==0) {
+	  			logger.info("중복아님 :{}", res);
+	  			
+	  			cartDao.insertCartItem(cart);
+	  			logger.info("장바구니 담았숩니당");
+	  			
+	  			
+	  		} else {
+	  			logger.info("중복이다 : {}", res);
+	  			//중복일 경우는 장바구니에 추가하는 메소드를 아예 만들지 않는다.
+	  		}
+	  		
+	  		sum += res;
+	  	}
 		logger.info("pack 장바구니 추가 성공!");
-		
-		return true;
+		return sum;
 	}
 //======================================================================================================
 	
@@ -232,5 +280,11 @@ public class CartServiceImpl implements CartService {
 		
 		return true;
   }
+  
+	@Override
+	public SourceFileInfo getFile(int[] sourceNo) {
+		logger.info("getFile()");
+		return cartDao.selectSourceFileBysourceNo(sourceNo);
+	}
 
 }

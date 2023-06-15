@@ -43,6 +43,15 @@
 		AND user_no = #{userNo}
 	</delete>
 
+	<select id="selectMySourceByUserNoAndSourceNo" resultType="int" parameterType="int">
+		select count(*) from mysource 
+		where user_no = #{userNo} and source_no = #{sourceNo}
+	</select>
+	
+	<select id="selectMySourceByUserNoAndPackSource" resultType="int" parameterType="web.dto.MySource">
+		select count(*) from mysource 
+		where user_no = #{userNo} and source_no = #{sourceNo}
+	</select>
 <!--  ====================================================================== -->	
 	<select id="selectDuplicatedCartByUserNo" resultType="int" parameterType="web.dto.Cart">
 		select count(*) from cart
@@ -55,11 +64,6 @@
 		VALUES( cart_seq.nextval, #{sourceNo}, #{userNo})
 	</insert>
 
-<!--  ====================================================================== -->
-	<insert id="insertPack" parameterType="web.dto.Cart">
-	  	INSERT INTO CART (CART_NO, SOURCE_NO, USER_NO)
-	  	VALUES (cart_seq.nextval, #{sourceNo}, #{userNo})
-	</insert>
 
 <!--  ====================================================================== -->
 	
@@ -103,6 +107,7 @@
 	
 
 	<!--  트랜잭션 중 2. 장바구니 항목에서 삭제 (배열로) -->
+	<!--  이거 고쳐야함..... 장바구니 전체 항목에서 삭제되는 것이니 그 회원의 것이 사라지는게 아님 ..ㅠ 하~~~ -->
 	<delete id="deletePurchasedCartItem"  parameterType="int[]">
 		DELETE FROM cart
 		WHERE source_no IN
@@ -134,5 +139,15 @@
 		insert into credit (DEAL_NO, user_no, DEAL_CATEGORY, AMOUNT) 
 		values (credit_seq.nextval, #{userNo}, #{dealCategory}, #{amount})
 	</insert>
+	
+	<select id="selectSourceFileBysourceNo" parameterType="int[]" resultType="web.dto.SourceFileInfo">
+  		SELECT * FROM SOURCEFILEINFO
+  		WHERE SOURCE_NO in
+  		<foreach item="item" collection="array" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+  	</select>
+	
+	
 	
 </mapper>  

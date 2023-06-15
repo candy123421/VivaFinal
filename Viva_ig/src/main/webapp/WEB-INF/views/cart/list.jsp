@@ -109,80 +109,6 @@ th {
 			<label for="allCheck">전체선택</label>
 			<button type="button" class="selectDelete_btn">선택삭제</button>
 			<button type="button" class="selectBuy-btn">구매하기</button>
-			
-			<script>
-			/*  ==========선택 삭제에 대한 스크립트 ============= */
-			 $('.selectDelete_btn').click(function(){
-				 console.log("선택 삭제 clicked()")
-			  
-				//배열선언
-				var checkArr = new Array();
-				 
-				//체크박스의 name (attr)이 체크된 상태인 항목 각각에 대한 동작
-				$("input[name='chBox']:checked").each(function(){
-					
-					//밖에서 선언한 배열변수에 체크박스의 cartNo 요소를 추가해주며
-					//추가된 배열의 길이를 반환.
-					checkArr.push($(this).attr("data-cart-no"));
-					console.log(checkArr);
-				});
-			    
-				//ajax로 데이터 전달하기
-				$.ajax({
-			    	url : "/cart/deleteChk",
-			    	type : "POST",
-			    	data : { chbox : checkArr },
-			    	success: function(response) {
-			    	console.log("ajax 성공");
-					location.href = "/cart/list";		                    
-				},
-				error: function() {
-					console.log("AJAX 실패")
-				}
-				});
-			});
-			
-			 /*  ==========선택 구매에 대한 스크립트 ============= */
-			 $('.selectBuy-btn').click(function(){
-				 console.log("선택항목 구매 clicked()")
-				 
-				//배열선언
-				var checkArr = new Array();
-				 
-				//체크박스의 name (attr)이 체크된 상태인 항목 각각에 대한 동작
-				$("input[name='chBox']:checked").each(function(){
-					
-					//밖에서 선언한 배열변수에 체크박스의 cartNo 요소를 추가해주며
-					//추가된 배열의 길이를 반환.
-					checkArr.push($(this).attr("data-source-no"));
-					console.log("배열", checkArr);
-				});
-			    
-				//ajax로 데이터 전달하기
-				$.ajax({
-			    	url : "/cart/buy",
-			    	type : "GET",
-			    	data : { chbox : checkArr },
-			    	success: function(response) {
-			    	console.log("ajax 성공");
-					location.href = "/cart/list";	
-					
-					reloadHeaderCredit(); //헤더 크레딧 잔액 변경
-				},
-				error: function() {
-					console.log("AJAX 실패")
-				}
-				});
-				 
-			 });
-			 function reloadHeaderCredit() {
-				 console.log("리로드하고싶다")
-				 /*  주의 ! location.href+ 이후 특정 영역을 입력해줄 때, 빈 칸 하나를 입력해주지 않으면 오류 발생한다 */
-				 $('#headerCreditStatus').load(location.href +' #divReloadLayer');
-				 
-			 }
-			</script>
-			
 		</div>
 	
 		<!--  테이블 내용 -->
@@ -249,7 +175,7 @@ th {
 									</c:when>
 									
 									<c:otherwise>
-										<img alt="img" src="../upload/${i.PACK_IMG_STOREDNAME }" width="50" height="50">
+										<img alt="img" src="../upload/${i.SOURCE_IMG_STOREDNAME }" width="50" height="50">
 									</c:otherwise>
 								</c:choose>
 							</div>
@@ -307,61 +233,81 @@ th {
 				
 			</table><!--  orderTable End-->
 			
-			
-			파일명 : <input type="text" name="fileName">
-			다운로드 : <input type="submit" value="다운로드">
-			
-			
-			
-			
 			<script>
-			/*  장바구니 항목 구매 시 ajax 구현() */
-			$(document).on('click', '.buy-button', function() {
-				console.log("개별항목 구매 clicked()")
-	// 			var sourceNo = $(this).data('source-no');
-	// 			var cartNo = $(this).data('cart-no');
-	// 			console.log(cartNo);
-	// 			console.log(sourceNo);
-				
+			/*  ==========선택 삭제에 대한 스크립트 ============= */
+			 $('.selectDelete_btn').click(function(){
+				 console.log("선택 삭제 clicked()")
+			  
 				//배열선언
 				var checkArr = new Array();
-				checkArr.push($(this).attr("data-source-no"));
-				
-				var $cartItem = $(this).closest('.cart-item'); // .cart-item을 찾아서 저장
-				
+				 
+				//체크박스의 name (attr)이 체크된 상태인 항목 각각에 대한 동작
+				$("input[name='chBox']:checked").each(function(){
+					
+					//밖에서 선언한 배열변수에 체크박스의 cartNo 요소를 추가해주며
+					//추가된 배열의 길이를 반환.
+					checkArr.push($(this).attr("data-cart-no"));
+				});
 				console.log(checkArr);
-				console.log($cartItem);
-											 
+			    
+				//ajax로 데이터 전달하기
 				$.ajax({
-					url: "/cart/buy",
-					type: "GET",
-	// 				data: {
-	// 					"cartNo" : cartNo,
-	// 					"sourceNo" : sourceNo
-	// 				},
-					data : { chbox : checkArr },
-	// 				dataType : 'json',
-					success: function(response) {
-						console.log("ajax 성공");
-						console.log(sourceNo);
-								                    
-						$cartItem.remove(); // $cartItem 변수를 사용하여 항목 제거
-					},
-					error: function() {
-						console.log("AJAX 실패");
-						console.error();
-					}
+			    	url : "/cart/deleteChk",
+			    	type : "POST",
+			    	data : { chbox : checkArr },
+			    	success: function(response) {
+			    	console.log("ajax 성공");
+					location.href = "/cart/list";		                    
+				},
+				error: function() {
+					console.log("AJAX 실패")
+				}
 				});
 			});
 			
+			 /*  ==========선택 구매에 대한 스크립트 ============= */
+			 $('.selectBuy-btn').click(function(){
+				 console.log("선택항목 구매 clicked()")
+				 
+				//배열선언 (빈 배열)
+				var checkArr = [];
 			
-			/*  장바구니 항목 삭제 시 ajax 구현 */
+				//체크박스의 name (attr)이 체크된 상태인 항목 각각에 대한 동작
+				$("input[name='chBox']:checked").each(function(index){
+					//밖에서 선언한 배열변수에 체크박스의 cartNo 요소를 추가해주며
+					//추가된 배열의 길이를 반환.
+					checkArr.push($(this).attr("data-source-no"));
+					console.log(index)
+				});
+					console.log("배열", checkArr);
+					console.log("배열", checkArr[0]);
+			    
+				
+				//ajax로 데이터 전달하기
+				$.ajax({
+			    	url : "/cart/buy",
+			    	type : "GET",
+			    	data : { chbox : checkArr },
+			    	success: function(response) {
+			    	console.log("ajax 성공");
+					location.href = "/cart/list";	
+					
+					reloadHeaderCredit(); //헤더 크레딧 잔액 변경
+				},
+				error: function() {
+					console.log("AJAX 실패")
+				}
+				});
+				 
+			 });
+
+
+			/*  ========= 항목 삭제 시 ajax 구현 ========= */
 			$(document).on('click', '.delete-button', function() {
 				var cartNo = $(this).data('cart-no');
 				var $cartItem = $(this).closest('.cart-item'); // .cart-item을 찾아서 저장
 				console.log(cartNo);
 				console.log($cartItem);
-				
 											 
 				$.ajax({
 					url: "/cart/delete",
@@ -378,18 +324,53 @@ th {
 					}
 				});
 			});
-			/*  하지만 전체 선택 및 부분 선택하여 삭제하는 기능은 미정 ... 수정해야함 !*/						
+			
+			
+			/*  ==========항목 구매에 대한 스크립트 ============= */
+			$(document).on('click', '.buy-button', function() {
+				console.log("항목 구매 clicked()")
+	// 			var sourceNo = $(this).data('source-no');
+	// 			var cartNo = $(this).data('cart-no');
+	// 			console.log(cartNo);
+	// 			console.log(sourceNo);
+				
+				//배열선언
+				var checkArr = new Array();
+				checkArr.push($(this).attr("data-source-no"));
+				
+				var $cartItem = $(this).closest('.cart-item'); // .cart-item을 찾아서 저장
+				
+				console.log("배열 : ", checkArr);
+				console.log("지워질 항목 : ", $cartItem);
+											 
+				$.ajax({
+					url: "/cart/buy",
+					type: "GET",
+					data : { chbox : checkArr },
+	// 				dataType : 'json',
+					success: function(response) {
+						console.log("ajax 성공");
+						console.log("응답 : ",response);
+								                    
+						$cartItem.remove(); // $cartItem 변수를 사용하여 항목 제거
+						
+						reloadHeaderCredit(); //헤더 크레딧 잔액 변경
+					},
+					error: function() {
+						console.log("AJAX 실패");
+						console.error();
+					}
+				});
+			});
+			function reloadHeaderCredit() {
+				 console.log("리로드하고싶다")
+				 /*  주의 ! location.href+ 이후 특정 영역을 입력해줄 때, 빈 칸 하나를 입력해주지 않으면 오류 발생한다 */
+				 $('#headerCreditStatus').load(location.href +' #divReloadLayer');
+				 
+			 }
 			</script>
 	
 		</div>
 	</form>
-	<div class="container">
-		<form action="/addressBook/addressBook/fileTest.do" method="post">
-			<input type="hidden" name="fileName" value="한글테스트.txt">
-			<button class="btn btn-primary" id="fileTest">파일테스트~!</button>
-		
-		</form>
-	
-	</div>
 </div>
 <c:import url ="../layout/footer.jsp"/>

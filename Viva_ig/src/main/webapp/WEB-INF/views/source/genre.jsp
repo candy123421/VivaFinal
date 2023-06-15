@@ -18,6 +18,9 @@ $(function() {
 			'color':'black'
 		})
 	})
+	$(".buy").hover(function() {
+		$(this).css("cursor","pointer");
+	})
 })
 </script>
 <style type="text/css">

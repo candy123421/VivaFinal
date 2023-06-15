@@ -334,10 +334,10 @@
 		    smg.source_img_storedname,
 		    sif.file_storedname
 		FROM Mysource ms
-		INNER JOIN packimginfo pmg on pmg.pack_no = ms.pack_no
-		INNER JOIN source s on s.source_no = ms.source_no
-		INNER JOIN sourceimginfo smg on s.source_no = smg.source_no
-		INNER JOIN sourcefileinfo sif on sif.source_no = ms.source_no
+		LEFT JOIN packimginfo pmg on pmg.pack_no = ms.pack_no
+		LEFT JOIN source s on s.source_no = ms.source_no
+		LEFT JOIN sourceimginfo smg on s.source_no = smg.source_no
+		LEFT JOIN sourcefileinfo sif on sif.source_no = ms.source_no
 		where ms.user_no = #{userNo}
   	</select>
   	

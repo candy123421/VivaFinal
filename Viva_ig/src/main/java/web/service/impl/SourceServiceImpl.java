@@ -177,9 +177,7 @@ public class SourceServiceImpl implements SourceService{
 
 	@Override
 	public void sourceLike(SourceLike like) {
-		
 		sourceDao.insertSourceLike(like);
-		
 	}
 
 	@Override

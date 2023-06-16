@@ -31,6 +31,14 @@ public interface AdminDao {
 	 * @return 총 QnA 수
 	 */
 	public int selectQnACnt();
+	
+	/**
+	 * qProcess가 답변대기일때 , 답변완료일때의 count수를 구하기
+	 * @param qProcess
+	 * @return
+	 */
+	public int selectQnACnt(String qProcess);
+
 
 	/**
 	 * 페이징을 적용하여 QnA 목록 조회
@@ -48,7 +56,7 @@ public interface AdminDao {
 	 * @param keyword - 검색 키워드
 	 * @return
 	 */
-	public List<UserQuestion> selectQnAListByKeyword(String keyword);
+	public List<UserQuestion> selectQnAListByKeyword(@Param(value = "paging")Paging paging,@Param(value = "keyword") String keyword);
 
 
 	/**
@@ -133,6 +141,13 @@ public interface AdminDao {
 	public int selectUserCnt();
 
 	/**
+	 * 키워드가 포함된 회원수 조회
+	 * @param keyword
+	 * @return
+	 */
+	public int selectUserCnt(String keyword);
+	
+	/**
 	 * 페이징을 적용하여 회원 목록 조회 
 	 * 	paging.startNo, paging.endNo를 이용하여 rownum을 조회한다
 	 * 
@@ -152,7 +167,9 @@ public interface AdminDao {
 	 * @param keyword
 	 * @return 
 	 */
-	public List<Users> selectUserListByKeyword(String keyword);
+	public List<Users> selectUserListByKeyword(@Param(value = "paging")Paging paging,@Param(value="keyword") String keyword);
+
+
 
 
 

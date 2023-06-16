@@ -47,27 +47,27 @@ public class AdminController {
 			session.setAttribute("loginCheck", true);
 			session.setAttribute("adminloginid", admin.getAdminId());
 			session.setAttribute("adminNo", adminNo.getAdminNo());
-			session.setAttribute("loginCheck", true);
+			session.setAttribute("userNo",1 );
 		} else {
 			session.invalidate();
 		}
 		
-		return "redirect:./main";
+		return "redirect:/";
 		
 	}
 	
 	@RequestMapping("/admin/main")
-	public void main() {
+	public void adminmain() {
 		logger.info("/admin/main [GET]");
 		
 	}
 	
 	@RequestMapping("/admin/logout")
-	public String logout(HttpSession session) {
+	public String adminlogout(HttpSession session) {
 		logger.info("/admin/logout [GET]");
 		session.invalidate();
 		
-		return "redirect:./main";
+		return "redirect:/";
 		
 	}
 	
@@ -86,7 +86,7 @@ public class AdminController {
 		//관리자 로그인 되어있을때
 		if(session.getAttribute("adminlogin") !=null ) {
 			//페이징 계산
-			Paging paging = adminService.getPaging( paramData );
+			Paging paging = adminService.getPaging( paramData , qProcess,keyword);
 			logger.info("{}",paging);
 			
 			//관리자 - 문의 목록 조회 
@@ -94,6 +94,7 @@ public class AdminController {
 			model.addAttribute("paging",paging);
 			model.addAttribute("qnalist",qnalist);
 			model.addAttribute("qProcess",qProcess);
+			model.addAttribute("keyword",keyword);
 		}
 		
 	}
@@ -109,7 +110,7 @@ public class AdminController {
 	}
 	
 	@GetMapping("/qna/view")
-	public void noticeview(UserQuestion userQuestion,AdminAnswer adminAnswer,Model model,Users users,Admin admin) {
+	public void qnaview(UserQuestion userQuestion,AdminAnswer adminAnswer,Model model,Users users,Admin admin) {
 		
 		userQuestion = adminService.getQNo(userQuestion);
 		logger.info("{}",userQuestion);
@@ -184,33 +185,35 @@ public class AdminController {
 	}
 	
 	@GetMapping("/admin/userlist")
-	public void usergrade(Paging paramData,Model model,String keyword) {
+	public void userlist(Paging paramData,Model model,String keyword) {
 		logger.info("/admin/userlist [get]");
 		
 		//페이징계산
-		Paging paging = adminService.getUserPaging( paramData ); 
+		Paging paging = adminService.getUserPaging( paramData , keyword); 
 		
 		//회원 전체 목록 조회
 		List<Users> userlist = adminService.userlist(paging,keyword);
 		
 		model.addAttribute("paging",paging);
 		model.addAttribute("userlist",userlist);
+		model.addAttribute("keyword",keyword);
 		
 		
 	}
 	
 	@PostMapping("/admin/userlist")
-	public void usergradepost(Paging paramData,Model model ,@RequestParam(value="check") int[] check ,String keyword) {
+	public void userlistpost(Paging paramData,Model model ,@RequestParam(value="check") int[] check ,String keyword) {
 		logger.info("/admin/userlist [post]");
 		
 		//페이징계산
-		Paging paging = adminService.getUserPaging( paramData ); 
+		Paging paging = adminService.getUserPaging( paramData ,keyword ); 
 		
 		//회원 전체 목록 조회
 		List<Users> userlist = adminService.userlist(paging,keyword);
 		
 		model.addAttribute("paging",paging);
 		model.addAttribute("userlist",userlist);
+		model.addAttribute("keyword",keyword);
 		
 		//체크박스부분 
 		logger.info("***check의값 : ***{}",check);
@@ -231,8 +234,8 @@ public class AdminController {
 		
 		
 	}
-		
-		
+	
+
 	
 
 }

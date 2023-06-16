@@ -38,7 +38,7 @@ public interface AdminService {
 	 * @param paramData- curPage를 저장하고있는 객체
 	 * @return 계산이 완료된 Paging객체
 	 */
-	public Paging getPaging(Paging paramData);
+	public Paging getPaging(Paging paramData , String qProcess,String keyword);
 
 	/**
 	 * 페이징이 적용된 QnA 목록 조회
@@ -132,7 +132,7 @@ public interface AdminService {
 	 * @param paramData - curPage를 저장하고있는 객체
 	 * @return 계산이 완료된 Paging객체
 	 */
-	public Paging getUserPaging(Paging paramData);
+	public Paging getUserPaging(Paging paramData,String keyword);
 
 	/**
 	 * 페이징이 적용될 회원 목록 조회 

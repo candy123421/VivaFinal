@@ -43,10 +43,19 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	@Override
-	public Paging getPaging(Paging paramData) {
+	public Paging getPaging(Paging paramData , String qProcess ,String keyword) {
 		
 		//총 게시글 수 조회
-		int totalCount = adminDao.selectQnACnt();
+		int totalCount = 0;
+		totalCount = adminDao.selectQnACnt();
+		
+		if(qProcess != null && keyword ==null ) {
+			totalCount= adminDao.selectQnACnt(qProcess);
+		} 
+		
+		if(keyword != null) {
+			totalCount = adminDao.selectQnACnt(keyword);
+		}
 		
 		//페이징 계산
 		Paging paging = new Paging ( totalCount, paramData.getCurPage());
@@ -62,7 +71,7 @@ public class AdminServiceImpl implements AdminService {
 			
 			return adminDao.selectQnAList(paging,qProcess);
 		} else {
-			return adminDao.selectQnAListByKeyword(keyword);
+			return adminDao.selectQnAListByKeyword(paging,keyword);
 		}
 		
 	}
@@ -126,11 +135,17 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	@Override
-	public Paging getUserPaging(Paging paramData) {
-		//총 회원수 조회
-		int totalcount = adminDao.selectUserCnt();
+	public Paging getUserPaging(Paging paramData,String keyword) {
+		
+		int totalCount = 0;
+		totalCount = adminDao.selectUserCnt();
+		
+		if(keyword !=null ) {
+		totalCount = adminDao.selectUserCnt(keyword);
+		}
+		
 		//페이징 게산
-		Paging paging = new Paging(totalcount, paramData.getCurPage());
+		Paging paging = new Paging(totalCount, paramData.getCurPage());
 		
 		return paging;
 	}
@@ -141,7 +156,7 @@ public class AdminServiceImpl implements AdminService {
 			return adminDao.selectUserList(paging);
 			
 		} else {
-			return adminDao.selectUserListByKeyword(keyword);
+			return adminDao.selectUserListByKeyword(paging,keyword);
 		}
 		
 	}

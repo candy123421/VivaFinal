@@ -33,7 +33,7 @@ function selectAll(selectAll)  {
 
 .userlist{
 	display: grid;
-	grid-template-columns: 100px 100px 200px 200px 250px 100px;
+	grid-template-columns: 100px 100px 200px 200px 200px 100px 100px;
 	border: 2px #ffd4de solid;
 	border-radius: 10px;
 	width: 1050px;
@@ -156,7 +156,7 @@ function selectAll(selectAll)  {
 				<div class="topWrap">
 					<div id="grid">
 						<div class="search_wrap">
-							<input type="text" class="form-control" name="keyword" id="keyword" placeholder="ID or Nick를 검색하세요">
+							<input type="text" class="form-control" name="keyword" id="keyword" placeholder="ID, Nick, Name을 검색하세요">
 						</div>
 						<div>
 							<button class="search" id="btnSearch">Search</button>
@@ -165,8 +165,8 @@ function selectAll(selectAll)  {
 				</div>
 				</form>
 		<!-------------------- 검색 끝 -------------------->
-		
-		
+		<input type="hidden" value="${keyword }" name="keyword">
+
 		<div class="total"> 
 			<form action="/admin/userlist" method="post">
 			<div class="userlist">
@@ -174,6 +174,7 @@ function selectAll(selectAll)  {
 				<div class="i">Number</div>
 				<div class="i">ID</div>
 				<div class="i">Nick</div>
+				<div class="i">Name</div>
 				<div class="i">Grade</div>
 				<div class="i">Join Date</div>
 			
@@ -182,6 +183,7 @@ function selectAll(selectAll)  {
 				<div>${userlist.userNo }</div>
 				<div>${userlist.userId }</div>
 				<div>${userlist.userNick }</div>
+				<div>${userlist.userName }</div>
 				<div>${userlist.userGrade }</div>
 				<div><fmt:formatDate value="${userlist.userJoindate }" pattern="yyyy-MM-dd"/></div>
 			</c:forEach>
@@ -198,13 +200,7 @@ function selectAll(selectAll)  {
 				</form>
 			</div>
 		</c:when>
-		
-		
 	</c:choose>
-		
-		
-		
-		
 		
 </div>
 		

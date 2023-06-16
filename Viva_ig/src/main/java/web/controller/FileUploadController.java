@@ -37,35 +37,6 @@ public class FileUploadController {
 	//로그객체
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	@RequestMapping("/file/test1")
-	public void test1() {
-		
-	}
-	@RequestMapping("/file/test2")
-	public void test2() {
-		
-	}
-	@RequestMapping("/file/test3")
-	public void test3() {
-		
-	}
-	@RequestMapping("/file/test4")
-	public void test4() {
-		
-	}
-	@RequestMapping("/file/test5")
-	public void test5() {
-		
-	}
-	@RequestMapping("/file/test6")
-	public void test6() {
-		
-	}
-	
-	@RequestMapping("/file/test7")
-	public void test7() {
-		
-	}
 	@RequestMapping("/file/guide")
 	public void guide() {
 		
@@ -176,8 +147,7 @@ public class FileUploadController {
 		
 //		
 		
-		return "redirect:/file/sourcelist";
-//		return "test";
+		return "redirect:/source/sound";
 		
 	}
 	
@@ -233,7 +203,7 @@ public class FileUploadController {
 		fileUploadService.uploadPack(tag,pack,packImg,source,packFileList);
 		
 		
-		return "redirect:/file/packlist";
+		return "redirect:/source/sound";
 	}
 	
 

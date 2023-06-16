@@ -116,7 +116,7 @@ sss	text-align: center;
 	color: white;
 	}
 
-</style>s
+</style>
 
 
 

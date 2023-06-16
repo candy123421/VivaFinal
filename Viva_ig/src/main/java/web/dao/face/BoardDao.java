@@ -23,19 +23,21 @@ public interface BoardDao {
 	public int selectCntAll();
 	
 	/**
-	 * 자유 게시글 수를 조회한다
+	 * 카테고리 타입에 따라 전체 게시글 수를 조회한다
 	 * 
-	 * @return 자유 게시글의 갯수
+	 * @param categoryType - 
+	 * @return
 	 */
-	public int selectCntFree();
-	
+	public int selectCntAll(String categoryType);
+
 	/**
-	 * 공지 게시글 수를 조회한다
 	 * 
-	 * @return 공지 게시글의 갯수
+	 * @param categoryType
+	 * @param keyword
+	 * @return
 	 */
-	public int selectCntQna();
-	
+	public int selectCntAll(String categoryType, String keyword);
+
 	/**
 	 * 페이징을 적용하여 모든 게시글 목록 조회
 	 * 
@@ -45,87 +47,32 @@ public interface BoardDao {
 	 * @param keyword  - 검색어
 	 * @return 페이징이 적용된 모든 게시글 목록
 	 */
-	public List<Board> selectAllBoardList(Paging page);
+	public List<Board> selectAllBoardList(@Param(value="paging")Paging paging,@Param(value="keyword")String keyword, @Param(value="categoryType")String categoryType);
 	
+
 	/**
-	 * 페이징을 적용하여 자유 게시글 목록 조회
+	 * 페이징을 적용하여 질문 게시글 목록 조회
 	 * 
 	 * paging.startNo, paging.endNo를 이용하여 rownum을 조회한다
 	 * 
 	 * @param paging - 페이지 정보 객체
-	 * @return 페이징이 적용된 자유게시글 목록
+	 * @return 페이징이 적용된 질문게시글 목록
 	 */
-	public List<Board> selectFreeBoardList(Paging paging);
-
-	/**
-	 * 페이징을 적용하여 공지 게시글 목록 조회
-	 * 
-	 * paging.startNo, paging.endNo를 이용하여 rownum을 조회한다
-	 * 
-	 * @param paging - 페이지 정보 객체
-	 * @return 페이징이 적용된 공지게시글 목록
-	 */
-	public List<Board> selectQnaBoardList(Paging paging);
+	public List<Board> selectQnaBoardList(@Param(value="paging")Paging paging,@Param(value="keyword")String keyword, @Param(value="categoryType")String categoryType);
 	
-	/**
-	 * categoryType을 기준으로 하는 개시글 갯수
-	 * 
-	 * @param categoryType - categoryType 정보
-	 * @return
-	 */
-	public int selectCntByCategory(String categoryType);
-
-	/**
-	 * keyword로 검색한 전체 게시글 수를 조회한다
-	 * 
-	 * @param keyword - 검색어
-	 * @return keyword가 들어간 전체 게시글 갯수
-	 */
-	public int selectCntAllByKeyword(String keyword);
 	
-	/**
-	 * keyword로 검색한 자유 게시글 수를 조회한다
-	 * 
-	 * @param keyword - 검색어
-	 * @return keyword가 들어간 자유 게시글 갯수
-	 */
-	public int selectCntFreeByKeyword(String keyword);
 
-	/**
-	 * keyword로 검색한 공지 게시글 수를 조회한다
-	 * 
-	 * @param keyword - 검색어
-	 * @return keyword가 들어간 공지 게시글 갯수
-	 */
-	public int selectCntQnaByKeyword(String keyword);
+	public List<Board> selectAllBoardList(@Param(value="paging") Paging paging, @Param(value="categoryType")String categoryType);
 
-	/**
-	 * 페이징을 적용하고, 키워드로 검색한 게시글 목록 조회
-	 * 
-	 * @param paging - 페이지 정보 객체
-	 * @param keyword - 검색어
-	 * @return 페이징이 적용되고, 키워드로 검색한 전체 게시글 목록
-	 */
-	public List<Board> selectAllBoardListByKeyword(@Param("paging") Paging page, @Param(value="keyword") String keyword);
+	public List<Board> selectQnaBoardList(@Param(value="paging") Paging paging, @Param(value="categoryType")String categoryType);
+
+	public List<Board> selectAllBoardListByKeyword(@Param(value="paging")Paging paging, @Param(value="keyword") String keyword);
 	
-	/**
-	 * 페이징을 적용하고, 키워드로 검색한 게시글 목록 조회
-	 * 
-	 * @param paging - 페이지 정보 객체
-	 * @param keyword - 검색어
-	 * @return 페이징이 적용되고, 키워드로 검색한 자유 게시글 목록
-	 */
-	public List<Board> selectFreeBoardListByKeyword(@Param("paging") Paging page, @Param(value="keyword") String keyword);
+	public List<Board> selectAllBoardListByKeyword(Paging paging);
 
-	/**
-	 * 페이징을 적용하고, 키워드로 검색한 게시글 목록 조회
-	 * 
-	 * @param paging - 페이지 정보 객체
-	 * @param keyword - 검색어
-	 * @return 페이징이 적용되고, 키워드로 검색한 공지 게시글 목록
-	 */
-	public List<Board> selectQnaBoardListByKeyword(@Param("paging") Paging page, @Param(value="keyword") String keyword);
-
+	
+	
+	
 	/**
 	 * 조회하려는 게시글의 조회수를 1 증가시킨다
 	 * 
@@ -226,29 +173,12 @@ public interface BoardDao {
 	public int selectBoardLikeCount(Likes like);
 	
 	/**
-	 * 조회한 게시글의 총 좋아요 수
-	 * 
-	 * @param boardNo - 조회한 게시글의 번호
-	 * @return 조회한 게시글의 총 좋아요 수
-	 */
-	public int selectBoardTotalLikeCount(int boardNo);
-	
-	/**
-	 * 좋아요를 누른 후 증가된 좋아요가 반영된 게시글
-	 * 
-	 * @param board - 증가된 좋아요가 반영된 게시글의 번호
-	 */
-	public void updateBoardLikeCount(Board board);
-
-	/**
 	 * 게시글 상세보기 - 회원의 좋아요 상태를 확인한다
 	 * 
 	 * @param like - 좋아요 객체
 	 * @return 로그인한 회원의 게시글 좋아요 여부 (int)
 	 */
 	public int selectByViewBoardLike(Likes like);
-	
-	
 	
 	/**
 	 * 댓글 조회하기
@@ -287,6 +217,10 @@ public interface BoardDao {
 	 * @param board
 	 */
 	public void deleteCommentAll(Board board);
+
+
+
+
 
 
 

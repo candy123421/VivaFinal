@@ -290,9 +290,44 @@ th {
 			    	data : { chbox : checkArr },
 			    	success: function(response) {
 			    	console.log("ajax 성공");
-					location.href = "/cart/list";	
+// 					location.href = "/cart/list";	
 					
-					reloadHeaderCredit(); //헤더 크레딧 잔액 변경
+					console.log("응답 : ",response);
+					
+					
+					if(response = 1) {
+						console.log("전부 구매했었던 소스입니다.")
+						
+						var result = confirm ("이미 구매한 항목입니다. 구매항목을 확인하시겠습니까?")
+				  			
+					  		if(result) {
+					           //yes => 내가 받은 음원 페이지로 이동함
+					            location.replace('/users/mysource');
+					        
+					  		} else {
+					            //no
+					        }
+					}
+					
+					if(response = 2) {
+						console.log("아주 깨끗하게 산적 없는 소스들만 선택했군요!")
+						
+						//다운로드 진행..ㅠㅠ
+					}
+					if(response = 3) {
+						console.log("잔액 부족..ㅠㅠ")
+						
+						var result = confirm ("크레딧이 부족합니다. 크레딧을 충전하시겠습니까?")
+				  			
+					  		if(result) {
+					           //yes => 내가 받은 음원 페이지로 이동함
+					            location.replace('/credit/charge');
+					        
+					  		} else {
+					            //no
+					        }
+						
+					}
 				},
 				error: function() {
 					console.log("AJAX 실패")
@@ -351,10 +386,49 @@ th {
 					success: function(response) {
 						console.log("ajax 성공");
 						console.log("응답 : ",response);
-								                    
-						$cartItem.remove(); // $cartItem 변수를 사용하여 항목 제거
+
+						if(response == 1) {
+							console.log("전부 구매했었던 소스입니다.")
+							
+							reloadHeaderCredit(); //헤더 크레딧 잔액 변경
+							
+							$cartItem.remove(); // $cartItem 변수를 사용하여 항목 제거
+							
+							var result = confirm ("이미 구매한 항목입니다. 구매항목을 확인하시겠습니까?")
+					  			
+						  		if(result) {
+						           //yes => 내가 받은 음원 페이지로 이동함
+						            location.replace('/users/mysource');
+						        
+						  		} else {
+						            //no
+						        }
+						}
 						
+						if(response == 2) {
+							console.log("아주 깨끗하게 산적 없는 소스들만 선택했군요!")
+							reloadHeaderCredit(); //헤더 크레딧 잔액 변경
+							//다운로드 진행..ㅠㅠ
+							$cartItem.remove(); // $cartItem 변수를 사용하여 항목 제거
+						}
+
+						if(response == 3) {
+							console.log("잔액 부족..ㅠㅠ")
+							var result = confirm ("크레딧이 부족합니다. 크레딧을 충전하시겠습니까?")
+							reloadHeaderCredit(); //헤더 크레딧 잔액 변경
+					  			
+						  		if(result) {
+						           //yes => 내가 받은 음원 페이지로 이동함
+						            location.replace('/credit/charge');
+						        
+						  		} else {
+						            //no
+						        }
+						}
+							
 						reloadHeaderCredit(); //헤더 크레딧 잔액 변경
+						
+						
 					},
 					error: function() {
 						console.log("AJAX 실패");
@@ -365,7 +439,7 @@ th {
 			function reloadHeaderCredit() {
 				 console.log("리로드하고싶다")
 				 /*  주의 ! location.href+ 이후 특정 영역을 입력해줄 때, 빈 칸 하나를 입력해주지 않으면 오류 발생한다 */
-				 $('#headerCreditStatus').load(location.href +' #divReloadLayer');
+				 $('#headerCreditStatus').load(location.href +' #headerCreditStatus');
 				 
 			 }
 			</script>

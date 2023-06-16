@@ -100,7 +100,7 @@ public class CartServiceImpl implements CartService {
 			
 			mySource.setSourceNo(source[i]);
 			int row = cartDao.selectMySourceByUserNoAndPackSource(mySource);
-			
+			logger.info("row는 0또는 1이 나와야해! {} ", row);
 			sum += row;
 		}
 		logger.info("팩 중 구매이력 수: {} ", sum);
@@ -167,6 +167,23 @@ public class CartServiceImpl implements CartService {
 	int price = 0;
 //	private Credit credit;
 	
+	
+	//장바구니에 이미 담겨있는 항목 중 구매이력있음을 확인하고 지워줌..
+	@Override
+	public void duplicatedItemToTrash(int[] cart, int user) {
+		logger.info("duplicatedItemToTrash ()");
+		
+		Cart delete = new Cart();
+		delete.setUserNo(user);
+		
+		for(int i : cart) {
+			delete.setSourceNo(i);
+			
+			cartDao.deleteCartByUserNoAndSourceNo(delete);
+			logger.info("싹 지움");
+		}
+	}
+	
 	@Override
 	public boolean chkCreditAcc(int user, int[] cart) {
 		logger.info("chkCreditAcc()");
@@ -199,6 +216,9 @@ public class CartServiceImpl implements CartService {
 			return false;
 		}
 	}
+
+	
+	
 	
   @Transactional
   @Override

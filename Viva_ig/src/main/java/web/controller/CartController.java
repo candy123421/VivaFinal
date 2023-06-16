@@ -234,7 +234,7 @@ public class CartController {
 		
 		
 		//경우 A. 이미 팩의 소스를 구매 다 한 경우
-		if(alreadyGot == source.length) {
+		if(alreadyGot >= source.length) {
 			logger.info("소스를 이미 다 구매한 팩이다.");
 			
 			return false;
@@ -260,8 +260,9 @@ public class CartController {
 	
 	//--------------------------------------------------------------------
 	//장바구니에서 항목 구매시 처리할 메소드
+	@ResponseBody
 	@RequestMapping("/buy")
-	public void cartBuy(HttpSession session, @RequestParam(value = "chbox[]") int[] cart, Writer out) {
+	public int cartBuy(HttpSession session, @RequestParam(value = "chbox[]") int[] cart, HttpServletResponse response) throws IOException {
 		logger.info("/cart/buy -  cartBuy()");
 		logger.info("세션userNo : {}", session.getAttribute("userNo"));
 		logger.info("배열:{}", cart);
@@ -286,48 +287,57 @@ public class CartController {
 		int already = cartService.checkMySourceToPack(cart, user);
 		//addPack 메소드에서 쓰던걸 재활용!
 		
+		logger.info("구매 중복확인 : {}/{}", already, cart.length);
 		
 		
-		//1. 회원의 잔고 확인 후 소스가격과 비교해서 구매가능한지 알려주기 
-		boolean purchase = cartService.chkCreditAcc(user, cart);
-		logger.info("구매가능여부 : {}", purchase);
+		int result=0;	//jsp에서 1~ n까지 에 따른 경우의 수 달라짐
 		
 		
-		//-----------------------------------------------
-		
-		//2. 본격 구매 시작.
-		if(purchase) {
-			logger.info("선택사항 구매가능!");
-			//본격적인 구매 진행
-			//service 에서 트랜잭션 진행할 생각!
-			//필요한거? 회원번호, cart[] 이거면 된다. (원래는 cartNo 까지 같이 갈려고 했으나, 굳이 ? 라는 생각이 들어 뺐다.)
-			boolean success = cartService.purchaseCartItem(user, cart);
+		if(already >= cart.length) {
+			logger.info("아이고 다 구매하셨던건데, 장바구니에 또 있는거였네요? 다 삭제");
 			
-			//만약 트랜잭션이 잘 됐다면...true 가 나오겠지.. 
-			logger.info("{}", success);
-//		
+			//장바구니 TB에서 전부 지워주기
+			cartService.duplicatedItemToTrash(cart, user);
 			
-			//***************크레딧 잔액 리로드 하기******************** 
-			//CreditService 임포트 필수!
-			Credit creditAcc = new Credit();
-			creditAcc.setUserNo((int)session.getAttribute("userNo"));
-			session.setAttribute("headerCredit", creditService.selectCreditAcc(creditAcc));
+			result = 1;
 			
-//			//try~catch 구문을 써주긴 해야할지 모르겠다...
-			try {
-				out.write("{\"result\": " + success + "}");
-			} catch (IOException e) {
-				e.printStackTrace();
+		} else if (already == 0 ){
+			logger.info("아주 깨끗하게 산적 없는 소스들만 선택했군요!");
+			
+			//1. 회원의 잔고 확인 후 소스가격과 비교해서 구매가능한지 알려주기 
+			boolean purchase = cartService.chkCreditAcc(user, cart);
+			logger.info("구매가능여부 : {}", purchase);
+			//-----------------------------------------------
+			
+			//2. 본격 구매 시작.
+			if(purchase) {
+				logger.info("선택사항 구매가능!");
+				//본격적인 구매 진행
+				//service 에서 트랜잭션 진행할 생각!
+				//필요한거? 회원번호, cart[] 이거면 된다. (원래는 cartNo 까지 같이 갈려고 했으나, 굳이 ? 라는 생각이 들어 뺐다.)
+				boolean success = cartService.purchaseCartItem(user, cart);
+				
+				//만약 트랜잭션이 잘 됐다면...true 가 나오겠지.. 
+				logger.info("{}", success);
+//			
+				
+				//***************크레딧 잔액 리로드 하기******************** 
+				//CreditService 임포트 필수!
+				Credit creditAcc = new Credit();
+				creditAcc.setUserNo((int)session.getAttribute("userNo"));
+				session.setAttribute("headerCredit", creditService.selectCreditAcc(creditAcc));
+				
+				result = 2;
+				
+			} else {
+				logger.info("잔액부족하네 너!");
+				result = 3;
+			
 			}
-			
-		} else {
-			logger.info("선택사항 구매 불가능!");
-			//크레딧이 부족해서 그런건지
-			//source가 이미 구매해서 그런건지
-			//source가 더이상 구매 불가능해서 그런건지 등등 
-			//그에 따른 반환값을 정해줘야할 듯 함... 
-			//아직은 모르겠음 ㅠ
+		
 		}
+		logger.info("jsp에게 보내질 최종 숫자 : {} ", result);
+		return result;
 	}
 	@RequestMapping("/filedown")
 	public void filedown(HttpSession session, Cart user, Model model) {

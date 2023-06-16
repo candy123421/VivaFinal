@@ -93,6 +93,14 @@ public interface CartService {
 	 */
 	public boolean addSomePack(int userNo, int[] source);
 
+	/**
+	 * 장바구니에서 구매하기를 눌렀을때, 혹시 이전에 구매이력이 있다면 그냥 장바구니 TB에서 지워주기
+	 * 
+	 * @param cart -sourceNo []
+	 * @param user - userNo
+	 */
+	public void duplicatedItemToTrash(int[] cart, int user);
+
 
 
 

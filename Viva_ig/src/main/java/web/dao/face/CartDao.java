@@ -93,7 +93,9 @@ public interface CartDao {
 	public void expenditureCredit(Credit credit);
 
 	/**
+	 * *****************폐기해야할 메소드 ****************
 	 * 트랜잭션 중, Cart TB에서 해당 cartNo 항목을 delete 하기
+	 * 
 	 * 
 	 * @param cart - sourceNo 배열
 	 */
@@ -141,6 +143,13 @@ public interface CartDao {
 	 * @return sourceinfo
 	 */
 	public SourceFileInfo selectSourceFileBysourceNo(int[] sourceNo);
+
+	/**
+	 * Cart DTO 에 해당 userNo과 sourceNo을 지정하고 cart TB에서 해당 항목 delete 하기
+	 * 
+	 * @param delete - userNo, sourceNo
+	 */
+	public void deleteCartByUserNoAndSourceNo(Cart delete);
 
 	
 

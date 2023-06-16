@@ -148,6 +148,11 @@
 		</foreach>
   	</select>
 	
+	<!--  장바구니에서 이미 구매한 항목을 지우기 위해 Cart DTO 에 해당 userNo과 sourceNo을 지정하고 cart TB에서 해당 항목 delete 하기-->
+	<delete id="deleteCartByUserNoAndSourceNo" parameterType="web.dto.Cart">
+		DELETE FROM cart
+		WHERE source_no = #{sourceNo} and user_no = #{userNo}
+	</delete>
 	
 	
 </mapper>  

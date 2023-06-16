@@ -305,7 +305,12 @@ a{
 		<div id="grid">
 			<c:forEach items="${list }" var="list">
 				<div class="content">
-					<div class="trimg" data-img="${list.PACK_IMG_STOREDNAME }" ><img src="../upload/${list.PACK_IMG_STOREDNAME }" style="width: 100%"></div>
+					<c:if test="${list.PACK_IMG_STOREDNAME eq null }">
+						<div class="trimg" data-img="default-image.webp" ><img src="../resources/img/default-image.webp" style="width: 100%"></div>
+					</c:if>
+					<c:if test="${list.PACK_IMG_STOREDNAME ne null }">
+						<div class="trimg" data-img="${list.PACK_IMG_STOREDNAME }" ><img src="../upload/${list.PACK_IMG_STOREDNAME }" style="width: 100%"></div>
+					</c:if>
 					<a href="/source/pack?packNo=${list.PACK_NO }"><div class="packname" data-no="${list.PACK_NO }" data-packname="${list.PACK_NAME }" data-name="${list.FILE_STOREDNAME }">${list.PACK_NAME }</div></a>
 					<div class="wavewrap"><div id="wave${list.PACK_NO }"></div>
 					</div>

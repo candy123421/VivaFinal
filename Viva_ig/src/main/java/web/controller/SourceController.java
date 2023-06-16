@@ -280,6 +280,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		
 		model.addAttribute("info",info);
 		model.addAttribute("list", list);
+		model.addAttribute("single", pack.getPackNo());
 		
 		//좋아요 수 조회
 		int cnt = sourceService.getPackLikeCnt(like);

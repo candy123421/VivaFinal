@@ -261,7 +261,7 @@ div[data-itemtype='line']{
 			<li><a class="dropdown-item" href="/source/inst?detail=Clean">Clean</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Dist">Dist</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Rhythm">Rhythm</a></li>
-			<li><a class="dropdown-item" href="/source/inst?detail=Melody">Solo</a></li>
+			<li><a class="dropdown-item" href="/source/inst?detail=Solo">Solo</a></li>
 			<li><a class="dropdown-item" href="/source/inst?detail=Riff">Riff</a></li>
 			
 			<li><a class="dropdown-item disabled">Bass</a></li>
@@ -282,7 +282,7 @@ div[data-itemtype='line']{
 			<li><a class="dropdown-item" href="/source/inst?detail=Pizzicato">Pizzicato</a></li>
 			
 			<li><a class="dropdown-item disabled">Piano</a></li>
-			<li><a class="dropdown-item" href="/source/inst?inst=Piano">Piano</a></li>
+			<li><a class="dropdown-item" href="/source/inst?instrument=Piano">Piano</a></li>
 		</ul>
 	</div>
 	<div id="line"></div>
@@ -382,11 +382,14 @@ div[data-itemtype='line']{
 		<c:forEach var="list" items="${list}">
 			
 			<c:choose>
-				<c:when test="${empty list.PACK_IMG_STOREDNAME }">
+				<c:when test="${empty list.PACK_IMG_STOREDNAME && list.SOURCE_IMG_STOREDNAME ne null }">
 					<div class="trimg" data-itemtype="line" data-img="${list.SOURCE_IMG_STOREDNAME}"><img src="../upload/${list.SOURCE_IMG_STOREDNAME}" style="width:40px; height: 40px;"></div>
 				</c:when>
-				<c:otherwise>
+				<c:when test="${not empty list.PACK_IMG_STOREDNAME }">
 					<div class="trimg" data-itemtype="line" data-img="${list.PACK_IMG_STOREDNAME}"><a href="./pack?packNo=${list.PACK_NO }"><img src="../upload/${list.PACK_IMG_STOREDNAME}" style="width:40px; height: 40px;"></a></div>
+				</c:when>
+				<c:otherwise>
+					<div class="trimg" data-itemtype="line" data-img="default-image.webp"><a href="./pack?packNo=10"><img src="../resources/img/default-image.webp" style="width:40px; height: 40px;"></a></div>
 				</c:otherwise>
 			</c:choose>
 			

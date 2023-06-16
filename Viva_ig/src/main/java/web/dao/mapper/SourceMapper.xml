@@ -34,11 +34,11 @@
 		    (SELECT count(*) FROM source_like sl where s.source_no = sl.source_no and sl.user_no= #{userNo}) cnt,
 		    sif.source_img_originname, sif.source_img_storedname
 		FROM source S
-		INNER JOIN tag t on s.tag_no = t.tag_no
-		INNER JOIN pack p on s.pack_no = p.pack_no 
-		INNER JOIN packimginfo pi on p.pack_no = pi.pack_no
-		INNER JOIN sourcefileinfo sf on s.source_no = sf.source_no
-		INNER JOIN sourceimginfo sif on s.source_no = sif.source_no
+		left JOIN tag t on s.tag_no = t.tag_no
+		left JOIN pack p on s.pack_no = p.pack_no 
+		left JOIN packimginfo pi on p.pack_no = pi.pack_no
+		left JOIN sourcefileinfo sf on s.source_no = sf.source_no
+		left JOIN sourceimginfo sif on s.source_no = sif.source_no
 		WHERE t.genre = #{genre}
 		
 		<if test="instrument != null and !instrument.equals('')">
@@ -138,9 +138,9 @@
 		FROM source S
 			INNER JOIN tag t on s.tag_no = t.tag_no
 			INNER JOIN pack p on s.pack_no = p.pack_no 
-			INNER JOIN packimginfo pi on p.pack_no = pi.pack_no
+			LEFT JOIN packimginfo pi on p.pack_no = pi.pack_no
 			INNER JOIN sourcefileinfo sf on s.source_no = sf.source_no
-			INNER JOIN sourceimginfo sif on s.source_no = sif.source_no
+			LEFT JOIN sourceimginfo sif on s.source_no = sif.source_no
 		WHERE t.instrument = #{instrument}
 		
 		<if test="genre != null and !genre.equals('')">
@@ -195,10 +195,10 @@
             pig.pack_img_storedname,
             t.tag_no
 		FROM Pack p
-		INNER JOIN source s on s.pack_no = p.pack_no
-		INNER JOIN packimginfo pig on pig.pack_no = p.pack_no
-		INNER JOIN tag t on t.tag_no = s.tag_no
-		INNER JOIN sourcefileinfo sif on s.source_no = sif.source_no
+		left JOIN source s on s.pack_no = p.pack_no
+		left JOIN packimginfo pig on pig.pack_no = p.pack_no
+		left JOIN tag t on t.tag_no = s.tag_no
+		left JOIN sourcefileinfo sif on s.source_no = sif.source_no
 		WHERE 1=1 and p.pack_no = #{packNo}
 		
 		<if test="genre != null and !genre.equals('')">
@@ -230,7 +230,7 @@
   		SELECT P.PACK_NAME, P.PACK_CONTENT, P.PACK_NO,
     		PIG.PACK_IMG_STOREDNAME
 		FROM PACK P
-		INNER JOIN PACKIMGINFO PIG ON P.PACK_NO = PIG.PACK_NO
+		left JOIN PACKIMGINFO PIG ON P.PACK_NO = PIG.PACK_NO
 		WHERE P.PACK_NO = #{packNo}
   	</select>
   	

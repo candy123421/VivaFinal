@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import web.dto.Cart;
 import web.dto.Source;
+import web.dto.SourceFileInfo;
 import web.dto.Users;
 
 public interface CartService {
@@ -28,6 +29,16 @@ public interface CartService {
 	public boolean deleteCartItem(Cart cartNo);
 
 
+	/**
+	 * 회원번호와 음원페이지의 음원소스 번호를 통해 나의 구매이력 확인하기
+	 * 
+	 * @param sourceNo
+	 * @param userNo
+	 * @return count (*) 수
+	 */
+	public int checkMySource(int sourceNo, int userNo);
+	
+	
 	/**
 	 * userNo, sourceNo 을 통해 장바구니 중복 검사 후 장바구니 담기
 	 * 
@@ -57,14 +68,41 @@ public interface CartService {
 	public boolean purchaseCartItem(int user, int[] cart);
 
 	/**
-	 * 배열과 userNo 을 foreach 문을 통해 Map으로 지정해준다.
+	 * 다운로드 구현 중....... int 배열로 받아온 sourceNo을 통해 fileinfo를 알아내어 반환하기
+	 * 
+	 * @param sourceNo
+	 * @return fileinfo
+	 */
+	public SourceFileInfo getFile(int[] sourceNo);
+
+	/**
+	 * sourceNo이 담긴 int[] 과 userno을 통해서 mysource TB에서 구매이력 확인하기
+	 * 
+	 * @param source - 팩 단위로 묶인 sourceNo
+	 * @param userNo - 회원번호
+	 * @return 구매이력이 있는 소스의 수
+	 */
+	public int checkMySourceToPack(int[] source, int userNo);
+
+	/**
+	 * 소스 일부만 구매했거나, 구매한적 없는 팩에 한해서, 장바구니 중복 검사 후에 집어넣으려고 함.
 	 * 
 	 * @param userNo
-	 * @param source - sourceNo 배열
-	 * @return true - 1
-	 * @throws Exception 
+	 * @param source - sourceNo []
+	 * @return 어쨌든 true 임..
 	 */
-	public boolean addPack(int userNo, int[] source) throws Exception;
+	public boolean addSomePack(int userNo, int[] source);
+
+	/**
+	 * 장바구니에서 구매하기를 눌렀을때, 혹시 이전에 구매이력이 있다면 그냥 장바구니 TB에서 지워주기
+	 * 
+	 * @param cart -sourceNo []
+	 * @param user - userNo
+	 */
+	public void duplicatedItemToTrash(int[] cart, int user);
+
+
+
 
 
 

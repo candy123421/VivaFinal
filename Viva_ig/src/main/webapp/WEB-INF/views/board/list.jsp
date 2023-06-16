@@ -27,30 +27,27 @@ function selectAll(selectAll)  {
 }
 
 //카테고리 AJAX
-$(document).ready(function() {
-// 				  	var filterSelect = $(".filterSelect"); // jQuery 
-	var filterSelect = $("select[name='categoryType']"); // jQuery
+// $(document).ready(function() {
+// // 				  	var filterSelect = $(".filterSelect"); // jQuery 
+// 	var filterSelect = $("select[name='categoryType']"); // jQuery
 
-	filterSelect.on("change", function(e) {
-		e.preventDefault();
-		console.log("변화감지..!");
+// 	filterSelect.on("change", function(e) {
+// 		e.preventDefault();
+// 		console.log("변화감지..!")
+// 		var status = $(this).find(":selected").val();
+// 	    console.log("status : ", status);
 	    
-// 					    var status = this.options[this.selectedIndex].value;
-// 					    var status = $(this).val();
-		var status = $(this).find(":selected").val();
-	    console.log("status : ", status);
-	    
-	    $.ajax({
-	    	url: "/board/list",
-	    	type : "GET",
-	    	data : {categoryType : status},
-	    	success : function(result) {
-	    		console.log("ajax 성공");
-	    		$('body').html(result);
-	    	}
-	    })
-	});
-});
+// 	    $.ajax({
+// 	    	url: "/board/list",
+// 	    	type : "GET",
+// 	    	data : {categoryType : status},
+// 	    	success : function(result) {
+// 	    		console.log("ajax 성공");
+// 	    		$('body').html(result);
+// 	    	}
+// 	    })
+// 	});
+// });
 </script>
 
 <style>
@@ -177,6 +174,7 @@ th {
 
 
 <form action="./list" method="post" name="form-head" style="width: 1400px; margin: 0 auto;">
+<div id="formAfter">
 	<div class="container-list" >
 		<table style="width: 1400px;">
 			<thead>
@@ -190,9 +188,9 @@ th {
 						<th>게시글 번호</th>
 						<th>카테고리
 							<select class="filterSelect" name="categoryType">
-							    <option value="all" selected="${categoryType == null || categoryType == 'all' || categoryType == 'free' || categoryType == 'qna'}">전체</option>
-							    <option value="free" selected="${categoryType == 'free'}">자유</option>
-							    <option value="qna" selected="${categoryType == 'qna'}">질문</option>
+							    <option class="boardCategory" data-index="0" value="all" selected="${categoryType == null || categoryType == 'all' || categoryType == 'free' || categoryType == 'qna'}">전체</option>
+							    <option class="boardCategory" data-index="1" value="free" selected="${categoryType == 'free'}">자유</option>
+							    <option class="boardCategory" data-index="2" value="qna" selected="${categoryType == 'qna'}">질문</option>
 							</select>
 						</th>
 					<th>게시글 제목</th>
@@ -202,9 +200,12 @@ th {
 				</tr>
 			</thead>
 		
+		<!--  ajax를 통해 업데이트 될 구역 -->
 		<tbody class="body">
 			<c:forEach var="boardList" items="${boardList}">
-				<tr>
+			
+				<tr class="board-item"> <!--  첫번째 row 시작 -->
+				
 					<c:if test="${not empty adminlogin and adminlogin }">
 						<td><input type='checkbox'
 					       name='check' 
@@ -212,12 +213,12 @@ th {
 					       onclick='checkSelectAll(this)'/>
 						</td>
 					</c:if>
-						<td>${boardList.boardNo }</td>
-						<td>${boardList.categoryType }</td>
-						<td><a href="./view?boardNo=${boardList.boardNo }">${boardList.boardTitle }</a></td>
-						<td>${boardList.userId}</td> 
-						<td>${boardList.boardHit }</td>
-						<td><fmt:formatDate value="${boardList.boardDate }" pattern="yyyy-MM-dd"/></td>
+						<td><span>${boardList.boardNo }</span></td>
+						<td><span>${boardList.categoryType }</span></td>
+						<td><a href="./view?boardNo=${boardList.boardNo }"><span>${boardList.boardTitle }</span></a></td>
+						<td><span>${boardList.userId}</span></td> 
+						<td><span>${boardList.boardHit }</span></td>
+						<td><span><fmt:formatDate value="${boardList.boardDate }" pattern="yyyy-MM-dd"/></span></td>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -241,63 +242,91 @@ th {
 			<button id="btnDelete" name="btnDelete" class="btn btn-danger">선택 삭제</button>
 		</c:if>
 
-		<th>게시글 번호</th>
-		<th>카테고리
-			<select class="filterSelect" name="search_option" >
-						<option value="all">전체</option>
-						<option value="free">자유</option>
-						<option value="notice">공지</option>
-			</select>
 			
 			<script>
-			var filterSelect = $(".filterSelect") // jQuery 
+			/*  ===== 말머리 유지하게 하기 ===== */
+			$(document).ready(function() {
+			       
+			   //select 태그를 동적쿼리로 등록하는것. 
+			   var filterSelect = $(".filterSelect") // jQuery 
+			
+			   //select 태그에 변화가 감지되면
+			   filterSelect.on("change", function(e) {
 
-			filterSelect.on("change", function(e) {
-				e.preventDefault();.
+				e.preventDefault();
 				console.log("변화감지..!");
-			    
+				
 			    var status = this.options[this.selectedIndex].value;
 			    console.log("status : ", status);
+
+			    var index = $(this.options[this.selectedIndex]).data('index');
+				console.log("index변수 선언 : ",index)	//[Object object] 로 출력됨
+				
+				$('.boardCategory[data-index=' + index + ']').addClass('clicked_menu');
+				console.log($('.boardCategory[data-index=' + index + ']').addClass('clicked_menu'))
+				
+				$('.boardCategory[data-index!=' + index + ']').removeClass('clicked_menu');
+				console.log($('.boardCategory[data-index!=' + index + ']').removeClass('clicked_menu'))
+				
+				
+			    
 			    
 			    $.ajax({
-			    	url: "/board/list",
-			    	type : "GET",
+			    	url: "/board/category",
+			    	type : "POST",
 			    	data : {categoryType : status},
-			    	success : function() {
+			    	dataType : "json",
+			    	success : function(data) {
 			    		console.log("ajax 성공");
-			    	}
-			    })
-			});
-			</script>
-		</th>
-		<th>게시글 제목</th>
-		<th>작성자</th>
-		<th>조회수</th>
-		<th>게시글 작성일</th>
-	</tr>
-	</thead>
-	<tbody class="body">
-		<c:forEach var="boardList" items="${boardList}">
-			<tr>
-				<c:if test="${not empty adminlogin and adminlogin }">
-					<td><input type='checkbox'
-				       name='check' 
-				       value="${boardList.boardNo }"
-				       onclick='checkSelectAll(this)'/>
-					</td>
-				</c:if>
-					<td>${boardList.boardNo }</td>
-					<td>${boardList.categoryType }</td>
-					<td><a href="./view?boardNo=${boardList.boardNo }">${boardList.boardTitle }</a></td>
-					<td>${boardList.userId}</td> 
-					<td>${boardList.boardHit }</td>
-					<td><fmt:formatDate value="${boardList.boardDate }" pattern="yyyy-MM-dd"/></td>
-			</tr>
-		</c:forEach>
-	</tbody>
-	</table>
+			    		console.log(data)
+			    		
+			    		// 서버에서 받아온 데이터를 테이블에 적용하는 로직 작성
+			    		var list = data; // 서버에서 받아온 ArrayList
+			    		var tableBody = $("#formAfter").find("tbody"); // 테이블의 tbody 요소 선택
+			    		console.log(list)
+			    		console.log(tableBody)
+			    		// 기존의 tbody 내용 제거
+  					    tableBody.empty();
+			    		
+			    		//컨트롤러에서 받아온 데이터를 반복하면서 가상의 테이블에 가상의 행을 추가!
+			    		$.each(list, function(index, item) {
+			    			var row = $("<tr>").addClass("board-item");
+			    			
+			    			//각 열에 데이터 추가
+			    			var boardNo = $("<td>").html('<span>' + item.boardNo + ' </span>');
+			    			var categoryType=$("<td>")
 
-	</div> 
+			    			if(item.categoryType === 'free') {
+			    				categoryType.html('<span>자유</span>')
+			    			} else if (item.categoryType === 'all') {
+			    				categoryType.html('<span>전체</span>')
+			    			} else if (item.categoryType === 'qna') {
+			    				categoryType.html('<span>질문</span>')
+			    			}
+			    			
+			    			var boardTitle = $("<td>").html('<span>' + item.boardTitle + ' </span>');
+			    			var userId = $("<td>").html('<span>' + item.userId + ' </span>');
+			    			var boardHit = $("<td>").html('<span>' + item.boardHit + ' </span>');
+			    			var boardDate = $("<td>").html('<span>' + item.boardDate + '</span>');
+			    			
+			    			//새롭게 동적으로 만든 행을 동적으로 만든 테이블에 추가
+			    			row.append(boardNo, categoryType, boardTitle, userId, boardHit, boardDate );
+			    			tableBody.append(row);
+			    			
+			    		})
+			    		
+			    		
+			    	},
+			    	error : function() {
+			    		console.log("AJAX 실패")
+			    	}
+			    	
+			    })/*  ajax END */
+			    })/*  change 이벤트  END */
+			    
+			});/*  document.ready END */
+			</script>
+</div>			
 </form>	
 
 

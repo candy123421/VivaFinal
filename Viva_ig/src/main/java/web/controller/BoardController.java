@@ -71,6 +71,36 @@ public class BoardController {
 		logger.info("1");
 
 	}
+	//ResoponseBody 를 쓰지 않으면 view name 을 찾아간다. 왜냐면 항상 viewResolver 가 뷰네임을 찾으러 가기에.  그리고 return 값을 내가 원하는 타입으로 보내줄수 있다!
+	@ResponseBody
+	@RequestMapping("/category")
+	public List<Board> category( Paging paging, Board board, Model model, String userId, String keyword, String categoryType ) {
+		logger.info("board/category [GET] ❤️도착❤️");
+		
+		logger.info("CCCCCCCCCCCCCCCCCCCCCCategoryType {}", categoryType);
+		
+		//전체 카테고리를 걸러냄.
+		if (categoryType == null || "all".equals(categoryType)) {
+			logger.info("전체 카테고리를 눌렀다.");
+		    categoryType = "all";
+		}
+		
+		//페이징 계산
+		Paging page = boardService.getPaging(paging, keyword, categoryType);
+		
+		//게시글 목록 조회
+		List<Board> boardList = boardService.boardList(page, userId, keyword, categoryType);
+		logger.info("리스트 : {}", boardList);
+		model.addAttribute("page", page);
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("userId", userId);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("categoryType", board.getCategoryType());
+		
+		
+		return boardList;
+
+	}
 	
 	@PostMapping("/list")
 	public String listpost(

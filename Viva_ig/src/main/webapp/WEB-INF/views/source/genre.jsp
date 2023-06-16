@@ -713,11 +713,27 @@ div[data-itemtype='line']{
 				  	, success : function(res) {
 				  		
 				  		console.log("장바구니 ajax 성공")
-				  		if(res.result == true) {
+				  		console.log(res)
+				  		/*  res 반환값을 true / false 로 주려고 해서 ... 아래의 내용을 수정함 - 지선 */
+// 				  		if(res.result == true) {
+				  		if(res) {
 					  		$(".cartmsg").eq(cidx).text('Get Source!')
 					  		$(".cartmsg").eq(cidx).css("display","block")
 			  			
-				  		} 
+					  		/*  else if 구문 추가함 ! (false) 에 대한 반응 */
+				  		} else if (!res) {
+							$(".cartmsg").eq(cidx).text('You already have!')
+					  		$(".cartmsg").eq(cidx).css("display","block")
+					  		var result = confirm ("이미 구매한 항목입니다. 구매항목을 확인하시겠습니까?")
+				  			
+					  		if(result) {
+					           //yes => 내가 받은 음원 페이지로 이동함
+					            location.replace('/users/mysource');
+					        
+					  		} else {
+					            //no
+					        }
+				  		}
 				  		
 					 	 $(".cartmsg").eq(cidx).fadeOut(1000)
 					  

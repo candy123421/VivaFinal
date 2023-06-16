@@ -100,5 +100,21 @@ public interface OrderDao {
 	 */
 	public int selectCreditAcc(Users userNo);
 
+	/**
+	 * 장바구니 페이지가 아닌 다른 곳에서 구매(다운로드)를 할 때
+	 * 기존 장바구니에 해당 음원소스가 담겨있는 지 조회한다
+	 * 
+	 * @param cart - 조회하려는 장바구니 정보
+	 * @return 0 = 장바구니에 없음, 1 = 장바구니에 있음
+	 */
+	public int selectCartBySourceNoUserNo(Cart cart);
+
+	/**
+	 * 장바구니 페이지가 아닌 다른 곳에서 구매(다운로드)를 할 때
+	 * 해당 음원소스가 기존 장바구니에 있는 경우 삭제한다
+	 * @param cart - 삭제하려는 장바구니 정보
+	 */
+	public void deleteCartBySourceNoUserNo(Cart cart);
+
 
 }

@@ -146,4 +146,38 @@ public class OrderServiceImpl implements OrderService {
 		return false;
 	}
 
+	@Override
+	public void checkCart(MySource source, Users user) {
+		
+		logger.info("구매(다운) 요청 확인 {}, {}", source, user);
+		
+		Cart cart = new Cart();
+		cart.setUserNo(user.getUserNo());
+		cart.setSourceNo(source.getSourceNo());
+		
+		// 조회 한 후 1이상인 경우 모두 삭제
+		int cnt = orderDao.selectCartBySourceNoUserNo(cart);
+		
+		// 조회된 행이 있을 경우 삭제 아니면 Return 종료
+		if( cnt > 0 ) {
+			orderDao.deleteCartBySourceNoUserNo(cart);
+		} else if ( cnt <= 0 ) {
+			return;
+		}
+		
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

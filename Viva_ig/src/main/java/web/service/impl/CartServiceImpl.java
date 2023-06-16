@@ -83,6 +83,7 @@ public class CartServiceImpl implements CartService {
 //=================== get Pack ===================================================
 	
 	//팩 페이지에서 장바구니로 담기 전에, 구매이력 먼저 확인하여 장바구니 접근 제한하기
+	// + /cart/buy 했을 때 중복 검사하기
 	@Override
 	public int checkMySourceToPack(int[] source, int userNo) {
 		logger.info("checkMySourceToPack()");
@@ -204,6 +205,11 @@ public class CartServiceImpl implements CartService {
 	public boolean purchaseCartItem(int user, int[] cart) {
 		logger.info("purchaseCartItem()");
     
+		//0. MySource TB에서 구매이력 확인하기
+		//
+		
+		
+		
 		//1. 구매자 크레딧 지출하기
 		//크레딧DTO 초기화
 		Credit credit = new Credit();

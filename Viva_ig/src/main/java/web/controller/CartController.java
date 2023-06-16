@@ -267,12 +267,34 @@ public class CartController {
 		logger.info("배열:{}", cart);
 		
 		int user = (int) session.getAttribute("userNo");
+
+		// A. cart[] 전부 다 구매이력 있는 경우 = > result : 나의 소스 redirect 
+		// B. cart[] 일부 구매이력 있거나, 구매이력이 전혀 없는 경우 (각 항목별로 적용한 개념임)
+			// B-a. 이미 구매이력 있는 소스는 cart TB에서 delete 해준다.
+			// B-b. 구매이력이 전혀 없는 소스는 아래의 5단계 트랜잭션을 진행해준다.
+		// 어쨌든, buy를 요청한 항목은 cart 페이지에서 사라지게 될 거임. cart TB에서도.
+
+		
+		
+		//** 사실 cart 에 담기 전부터 구매이력을 확인 후 담지못하게 할거지만, 혹시라도 장바구니에 이미 있는 경우에는
+		//어쨌든 이러한 과정을 거쳐야 하는건 맞는거다..
+
+		//0. 나의 구매이력에서 우선 확인 후, 구매하지 않은 소스를 구매할 조건이 되는지를 확인하기
+		//매개변수 : userNo, sourceNo
+		//필요한 return 값 : count(*) 수. / cart.length (배열의 길이)
+		//여기서 추가로 더 확인해야할 사항 -> 구매하지 않은 소스의 수량 만큼 credit 보유가 있는지 + 소스의 총 합계
+		int already = cartService.checkMySourceToPack(cart, user);
+		//addPack 메소드에서 쓰던걸 재활용!
+		
+		
 		
 		//1. 회원의 잔고 확인 후 소스가격과 비교해서 구매가능한지 알려주기 
 		boolean purchase = cartService.chkCreditAcc(user, cart);
 		logger.info("구매가능여부 : {}", purchase);
 		
+		
 		//-----------------------------------------------
+		
 		//2. 본격 구매 시작.
 		if(purchase) {
 			logger.info("선택사항 구매가능!");

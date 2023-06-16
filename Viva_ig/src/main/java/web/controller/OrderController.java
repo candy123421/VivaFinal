@@ -14,6 +14,7 @@ import web.dto.Pack;
 import web.dto.SourceFileInfo;
 import web.dto.Tag;
 import web.dto.Users;
+import web.service.face.CartService;
 import web.service.face.OrderService;
 
 @Controller
@@ -39,6 +40,9 @@ public class OrderController {
 		// 기존에 가지고 있는 음원소스인지 확인
 		boolean chkSource = orderService.checkSource(source, user);
 		logger.info("chkSource {}", chkSource);
+		
+		// 장바구니 삭제
+		orderService.checkCart(source, user);
 		
 		// 구매(다운로드) 실패 시 얻을 장르
 		Tag getTag = null;

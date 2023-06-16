@@ -68,5 +68,15 @@
 		FROM DUAL
 	</select>
 	
+	<select id="selectCartBySourceNoUserNo" parameterType="web.dto.Cart" resultType="int">
+		SELECT count(*) FROM CART
+		WHERE user_no = #{userNo} and source_no = #{sourceNo}
+	</select>
+	
+   <delete id="deleteCartBySourceNoUserNo" parameterType="web.dto.Cart">
+      DELETE FROM cart
+      WHERE source_no = #{sourceNo} and user_no = #{userNo}
+   </delete>
+	
 	
 </mapper>

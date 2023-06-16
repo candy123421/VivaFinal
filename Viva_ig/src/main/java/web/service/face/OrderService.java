@@ -79,6 +79,15 @@ public interface OrderService {
 	 */
 	public Tag getInstrument(int sourceNo);
 
+	/**
+	 * 장바구니 페이지가 아닌 다른 곳에서 구매(다운로드)를 했을 때
+	 * 기존 장바구니에 해당 음원소스가 담겨있는 경우 삭제한다
+	 * 
+	 * @param source - 구매(다운)할 음원소스 정보
+	 * @param user - 구매할 사용자 정보
+	 */
+	public void checkCart(MySource source, Users user);
+
 
 
 }

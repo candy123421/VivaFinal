@@ -18,6 +18,9 @@ $(function() {
 			'color':'black'
 		})
 	})
+	$(".buy").hover(function() {
+		$(this).css("cursor","pointer");
+	})
 })
 </script>
 <style type="text/css">
@@ -406,11 +409,14 @@ div[data-itemtype='line']{
 		<c:forEach var="list" items="${list}">
 			
 			<c:choose>
-				<c:when test="${empty list.PACK_IMG_STOREDNAME }">
-					<div class="trimg" data-itemtype="line" data-img="${list.SOURCE_IMG_STOREDNAME}"><img src="../upload/${list.SOURCE_IMG_STOREDNAME}" style="width:40px; height: 40px;"></div>
+				<c:when test="${empty list.PACK_IMG_STOREDNAME && list.SOURCE_IMG_STOREDNAME ne null }">
+					<div class="trimg" data-itemtype="line" data-img="${list.SOURCE_IMG_STOREDNAME}"><a href="./pack?packNo=10"><img src="../upload/${list.SOURCE_IMG_STOREDNAME}" style="width:40px; height: 40px;"></a></div>
+				</c:when>
+				<c:when test="${not empty list.PACK_IMG_STOREDNAME }">
+					<div class="trimg" data-itemtype="line" data-img="${list.PACK_IMG_STOREDNAME}"><a href="./pack?packNo=${list.PACK_NO }"><img src="../upload/${list.PACK_IMG_STOREDNAME}" style="width:40px; height: 40px;"></a></div>
 				</c:when>
 				<c:otherwise>
-					<div class="trimg" data-itemtype="line" data-img="${list.PACK_IMG_STOREDNAME}"><a href="./pack?packNo=${list.PACK_NO }"><img src="../upload/${list.PACK_IMG_STOREDNAME}" style="width:40px; height: 40px;"></a></div>
+					<div class="trimg" data-itemtype="line" data-img="default-img.webp"><a href="./pack?packNo=10"><img src="../resources/img/default-image.webp" style="width:40px; height: 40px;"></a></div>
 				</c:otherwise>
 			</c:choose>
 			
@@ -719,21 +725,20 @@ div[data-itemtype='line']{
 				  		if(res) {
 					  		$(".cartmsg").eq(cidx).text('Get Source!')
 					  		$(".cartmsg").eq(cidx).css("display","block")
-			  			
-					  		/*  else if 구문 추가함 ! (false) 에 대한 반응 */
+			  		
 				  		} else if (!res) {
-							$(".cartmsg").eq(cidx).text('You already have!')
-					  		$(".cartmsg").eq(cidx).css("display","block")
-					  		var result = confirm ("이미 구매한 항목입니다. 구매항목을 확인하시겠습니까?")
 				  			
-					  		if(result) {
-					           //yes => 내가 받은 음원 페이지로 이동함
-					            location.replace('/users/mysource');
-					        
-					  		} else {
-					            //no
-					        }
-				  		}
+                        	 $(".cartmsg").eq(cidx).text('You already have!')
+                         	 $(".cartmsg").eq(cidx).css("display","block")
+	                         var result = confirm ("이미 구매한 항목입니다. 구매항목을 확인하시겠습니까?")
+	                         
+	                         if(result) {
+	                             //yes => 내가 받은 음원 페이지로 이동함
+	                              location.replace('/users/mysource');
+	                         }
+
+				  	  	}
+
 				  		
 					 	 $(".cartmsg").eq(cidx).fadeOut(1000)
 					  

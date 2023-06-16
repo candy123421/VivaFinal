@@ -19,6 +19,9 @@ $(function() {
 			'color':'black'
 		})
 	})
+	$(".buy").hover(function() {
+		$(this).css("cursor","pointer")
+	})
 })
 </script>
 <style type="text/css">
@@ -220,26 +223,39 @@ div[data-itemtype='line']{
 </style>
 <div id="Wrap">
 	<div id="WrapTop">
-		<div class="packimg"><img class="img" src="../upload/${info.PACK_IMG_STOREDNAME }"></div>
-		<div class="packname">
-			<h1>${info.PACK_NAME }</h1>
-			<div class="space">
-				<div id="explain">
-					<div id="explainText">${info.PACK_CONTENT}</div>
+		<c:if test="${single ne 10 }">
+			<div class="packimg"><img class="img" src="../upload/${info.PACK_IMG_STOREDNAME }"></div>
+			<div class="packname">
+				<h1>${info.PACK_NAME }</h1>
+				<div class="space">
+					<div id="explain">
+						<div id="explainText">${info.PACK_CONTENT}</div>
+					</div>
+				</div>
+				<div id="getpack" class="get">Get Pack</div>		
+				<div id="packlike" style="margin-left: 15px;">
+				<c:if test="${pLike == true }">
+					<img id="likepack" src="../resources/icon/heart-fill.svg" style="width: 40%">
+				</c:if>
+				<c:if test="${pLike == false }">
+					<img id="likepack" src="../resources/icon/heart.svg" style="width: 40%">
+				</c:if>
+					<span style="margin-left:5px; font-size:20px;">${like }</span>
+				</div>	
+				<div id="cartpackmsg"></div>
+			</div>
+		</c:if>	
+		<c:if test="${single eq 10 }">
+			<div class="packimg"><img class="img" src="../resources/img/default-image.webp"></div>
+			<div class="packname">
+				<h1>Single Source Page</h1>
+				<div class="space">
+					<div id="explain">
+						<div id="explainText">Pack에 없는 단일 음원 Source 입니다!</div>
+					</div>
 				</div>
 			</div>
-			<div id="getpack" class="get">Get Pack</div>		
-			<div id="packlike" style="margin-left: 15px;">
-			<c:if test="${pLike == true }">
-				<img id="likepack" src="../resources/icon/heart-fill.svg" style="width: 40%">
-			</c:if>
-			<c:if test="${pLike == false }">
-				<img id="likepack" src="../resources/icon/heart.svg" style="width: 40%">
-			</c:if>
-				<span style="margin-left:5px; font-size:20px;">${like }</span>
-			</div>	
-			<div id="cartpackmsg"></div>	
-		</div>
+		</c:if>	
 	</div>
 	
 	<div id="WrapContent">
@@ -317,7 +333,7 @@ div[data-itemtype='line']{
 			
 				<c:choose>
 					<c:when test="${empty list.PACK_IMG_STOREDNAME }">
-						<div class="trimg" data-itemtype="line" data-img="${list.SOURCE_IMG_STOREDNAME}"><img src="../upload/${list.SOURCE_IMG_STOREDNAME}" style="width:40px; height: 40px;"></div>
+						<div class="trimg" data-itemtype="line" data-img="default-image.webp"><img src="../resources/img/default-image.webp" style="width:40px; height: 40px;"></div>
 					</c:when>
 					<c:otherwise>
 						<div class="trimg" data-itemtype="line" data-img="${list.PACK_IMG_STOREDNAME}"><a href="./pack?packNo=${list.PACK_NO }"><img src="../upload/${list.PACK_IMG_STOREDNAME}" style="width:40px; height: 40px;"></a></div>
@@ -653,25 +669,22 @@ div[data-itemtype='line']{
 					  		if(res) {
 						  		$(".cartmsg").eq(cidx).text('Get Source!')
 						  		$(".cartmsg").eq(cidx).css("display","block")
-				  			
-						  		/*  else if 구문 추가함 ! (false) 에 대한 반응 */
+						  		
 					  		} else if (!res) {
-								$(".cartmsg").eq(cidx).text('You already have!')
-						  		$(".cartmsg").eq(cidx).css("display","block")
-						  		var result = confirm ("이미 구매한 항목입니다. 구매항목을 확인하시겠습니까?")
 					  			
-						  		if(result) {
-						           //yes => 내가 받은 음원 페이지로 이동함
-						            location.replace('/users/mysource');
-						        
-						  		} else {
-						            //no
-						        }
-					  		}
+	                        	 $(".cartmsg").eq(cidx).text('You already have!')
+	                         	 $(".cartmsg").eq(cidx).css("display","block")
+		                         var result = confirm ("이미 구매한 항목입니다. 구매항목을 확인하시겠습니까?")
+		                         
+		                         if(result) {
+		                             //yes => 내가 받은 음원 페이지로 이동함
+		                              location.replace('/users/mysource');
+		                         }
+
+					  	  	}
 					  		
-						 	 $(".cartmsg").eq(cidx).fadeOut(1000)
-						  
-					  	  }
+					  		 $(".cartmsg").eq(cidx).fadeOut(1000)
+					  	  } 
 					  , error : function() {
 						  $(".cartmsg").eq(cidx).css("display","block")
 						  $(".cartmsg").eq(cidx).text('You already have!')
@@ -730,7 +743,7 @@ div[data-itemtype='line']{
 			</script>
 	</div>
 </div>
-
+</div>
 
 
 

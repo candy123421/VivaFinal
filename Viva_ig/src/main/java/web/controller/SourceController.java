@@ -54,7 +54,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	
 	@GetMapping("/source/genre")
-	public void genre(Tag genre, Model model, String msg, HttpSession session, String curPage) {
+	public void genre(Tag genre, Model model, String msg, HttpSession session) {
 		logger.info("Genre별 Source 접근 [GET]");
 		logger.info("장르별 카테고리 {}",genre.getGenre());
 		
@@ -280,6 +280,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		
 		model.addAttribute("info",info);
 		model.addAttribute("list", list);
+		model.addAttribute("single", pack.getPackNo());
 		
 		//좋아요 수 조회
 		int cnt = sourceService.getPackLikeCnt(like);

@@ -85,12 +85,9 @@ input[name="commListContent"] {
 <hr>
 
 <c:choose>
-	<c:when test="${empty login}">
-		로그인 후 이용해 주세요!
-		<a href="/viva/login"> <button>Login</button></a>
-	</c:when>
+
 	  
-	<c:when test="${not empty login and login}">
+	<c:when test="${login or adminlogin}">
 	<div class="container">
 	     <div class="row row1">
 	      <table class="table">

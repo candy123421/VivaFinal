@@ -646,11 +646,15 @@ div[data-itemtype='line']{
 				  
 				  $(".cart").click(function() {
 					  
+					  console.log("장바구니를 넣고 싶어하군요")
 					  // 인덱스 변수 확인
 					  var cidx = $(".cart").index(this)
+					  console.log("cidx : ", cidx)
 					  
 					  // SourceNo 확인
 					  var csourceNo = carts[cidx].getAttribute('data-cart')
+					  console.log("csourceNo : ", csourceNo)
+					  
 					  
 					  $.ajax({
 						type :"get"

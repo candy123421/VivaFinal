@@ -80,6 +80,8 @@ public class CartServiceImpl implements CartService {
 	}
 	
 //======================================================================================================
+//=================== get Pack ===================================================
+	
 	//팩 페이지에서 장바구니로 담기 전에, 구매이력 먼저 확인하여 장바구니 접근 제한하기
 	@Override
 	public int checkMySourceToPack(int[] source, int userNo) {
@@ -105,49 +107,59 @@ public class CartServiceImpl implements CartService {
 		return sum;
 	}
 	
-	
-	//여기서 int 배열을 하나씩 꺼내어 userNo과 짝지어준다.
+	//getPack 을 한 뒤, 팩 전체 구매이력이 있는 팩을 제외하고, 일부 구매나 구매 이력 없는 팩에 한하여
+	//장바구니 중복 검사 진행 후, 장바구니에 집어넣을거다.
 	@Override
-	public int addPack(int userNo, int[] source) throws Exception {
-		logger.info("addPack()");
-		logger.info("userNo:{}", userNo);
-	    logger.info("source[]: {}", source);
-	    
-	    //이미 구매했던 소스들 걸러내기
-	    
-	    
-	    //장바구니 항목 중복 검사하기
-	    Cart cart = new Cart();
-	    
-	    int sum = 0;	//장바구니 중복 합계
-	  	int res = 0;	//insert 성공 확인
-	  	
-	  	cart.setUserNo(userNo);
-	  	
-	  	for(int s : source) {
-	  		cart.setSourceNo(s);
-	  		
-	  		res = cartDao.selectDuplicatedCartByUserNo(cart);
-	  		logger.info("중복여부 : {}", res);
-
-	  		
-	  		if(res==0) {
-	  			logger.info("중복아님 :{}", res);
-	  			
-	  			cartDao.insertCartItem(cart);
-	  			logger.info("장바구니 담았숩니당");
-	  			
-	  			
-	  		} else {
-	  			logger.info("중복이다 : {}", res);
-	  			//중복일 경우는 장바구니에 추가하는 메소드를 아예 만들지 않는다.
-	  		}
-	  		
-	  		sum += res;
-	  	}
-		logger.info("pack 장바구니 추가 성공!");
-		return sum;
+	public boolean addSomePack(int userNo, int[] source) {
+		logger.info("addSomePack()");
+		
+		//******************** get Pack 의 규칙 *****************************
+		// B. 팩 일부 구매했을 경우 + 팩 구매 이력 없을 경우   
+			// B-a. 나머지 팩-음원 전체 장바구니 있을 경우  => (서비스에서 false 반환) -> 반환 값 없음.
+			// B-b. 나머지 팩-음원 일부 장바구니 있을 경우  => true 반환
+			// B-c. 나머지 팩-음원 전체 장바구니 없을 경우 	=> true 반환
+		//*******************************************************************
+		
+		//B. Cart DTO 를 통해 중복 검사하기
+		//중복되는 행의 수
+		int sum = 0;
+		
+		Cart myCart = new Cart();
+		myCart.setUserNo(userNo);
+		
+		for(int i = 0; i<source.length; i++) {
+			
+			myCart.setSourceNo(source[i]);
+			int row = cartDao.selectDuplicatedCartByUserNo(myCart);
+			
+			sum += row;
+			
+				//row 가 0 인 경우 -> 
+				//B-b, B-c : 장바구니에 insert 한다.
+				if (row >0 ) {
+					logger.info("이미 장바구니에 담긴 항목은 다시 넣을 수 없다 : {}", myCart);
+				
+				} else {
+					logger.info("장바구니에 집어넣기");
+					
+					cartDao.insertCartItem(myCart);
+					logger.info("장바구니 담았숩니당 : {} ", myCart);
+				}
+				// if 문 END : 이미 담겨있든 새로 담든 어쨌든 장바구니에 존재할 것이다.
+			
+		}
+		logger.info("팩 중 장바구니 중복 수: {} ", sum);
+		
+		if(sum == source.length) {
+			
+			logger.info("이 팩 전체는 원래부터 장바구니에 있었다.");
+			return false;
+		}
+		
+		//어쨌든 전부 원래부터 장바구니에 있는 경우 제외하고, 어쨌든 장바구니에 모두 존재할 것이기에 true 값 반환!
+		return true;
 	}
+
 //======================================================================================================
 	
 	//음원 소스의 총계를 전역변수로 지정해서 다른 메소드에서도 쓸수 있게 선언했다.

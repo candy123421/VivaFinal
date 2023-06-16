@@ -161,7 +161,9 @@ public class CartController {
 		
 		//1. 구매이력 확인하기 (구매했던 이력 있음 장바구니 접근도 못하게 만들기!!!)
 		//My Source TB에서 userNo, sourceNo 으로 대조하기
-		int history = cartService.checkMySource(add.getSourceNo(), (int) session.getAttribute("userNo"));
+		int history = 0;
+		history = cartService.checkMySource(add.getSourceNo(), (int) session.getAttribute("userNo"));
+		
 		logger.info("구매이력 확인 : {} ",history);
 		//0 이면 구매가능. 1 이상이면, 이미 구매이력이 있으므로, 무조건 return false
 
@@ -196,8 +198,9 @@ public class CartController {
 	//source 페이지에서 pack 단위로 장바구니 넣어야할 때 
 	//지금까지 했던 방식과 다르게, 배열을 값을 serviceImpl까지 끌고가서 map 으로 userno과 짝지어줄것임. 
 	//컨트롤러에서 for each 문을 쓰니 성능 낭비가 있을것 같음(물론 우리의 데이터는 적지만!)
+	@ResponseBody
 	@RequestMapping("/addPack")
-	public Map<String, Object> addPack(HttpSession session, @RequestParam(value="sourceNo[]") int[] source) throws Exception {
+	public boolean addPack(HttpSession session, @RequestParam(value="sourceNo[]") int[] source) throws Exception {
 		logger.info("/cart/addPack - addPack()");
 		logger.info("세션userNo : {}", session.getAttribute("userNo"));
 		int userNo = (int) session.getAttribute("userNo");
@@ -206,61 +209,53 @@ public class CartController {
 		logger.info("int배열길이? : {}", source.length);
 		
 		
-		//1. 구매이력 확인하기 (구매했던 이력 있음 장바구니 접근도 못하게 만들기!!!)
+		//******************** get Pack 의 규칙 *****************************
+		// A. 팩 전체가 이미 구매이력이 있을 경우에만  => false 를 반환.
+		// B. 팩 일부 구매했을 경우 + 팩 구매 이력 없을 경우   
+			// B-a. 나머지 팩-음원 전체 장바구니 있을 경우  => true 반환.
+			// B-b. 나머지 팩-음원 일부 장바구니 있을 경우  => true 반환
+			// B-c. 나머지 팩-음원 전체 장바구니 없을 경우 	=> true 반환
+		// C. 어쨌든 이 이외의 상황 ? => false 를 반환.
+		//*******************************************************************
+		
+
+		//1. 구매이력 확인하기 
 		//My Source TB에서 userNo, sourceNo 으로 대조하기
 		//** 근데 만약, pack 의 일부는 구매를 했고, 일부는 구매하지 않았다면, 
 		//구매한 것만 제외하고 장바구니에 넣는걸 진행해볼수 있을까? => 서비스에서 꺼내어서 확인해보자
 		//int getPackItem 은 총 담겨진 소스의 수를 반환..?
-		int getPackItem = cartService.checkMySourceToPack(source, userNo);
+		int alreadyGot = 0;
+		alreadyGot = cartService.checkMySourceToPack(source, userNo);
 		
-		logger.info("구매한 소스/팩의 소스 : {} / {} ",getPackItem, source.length );
+		logger.info("구매한 소스/팩의 소스 : {} / {} ",alreadyGot, source.length );
 		//0 이면 구매가능. 1 이상이면, 이미 구매이력이 있다는거.
 		//하지만 전체 팩 중 구매한 소스 제외 구매이력 없는 소스는 장바구니에 넣을 준비를 하려고 함. 
 		//일단 이미 구매한 소스의 수를 알려주고 함. 
 		
-		Map<String, Object> paramMap = new HashMap<>();
-		int success = 0;
 		
-		//경우 1. 이미 팩의 소스를 구매 다 한 경우
-		if(getPackItem == source.length) {
+		//경우 A. 이미 팩의 소스를 구매 다 한 경우
+		if(alreadyGot == source.length) {
 			logger.info("소스를 이미 다 구매한 팩이다.");
 			
-		//경우 2. 팩의 일부를 구매한 경우
-		} else if ( getPackItem >0) {
-			logger.info("팩의 일부 소스를 구매한 적 있다.");
+			return false;
 			
-			//나머지 소스의 장바구니 중복 검사를 진행한다.
-			success = cartService.addPack(userNo, source);
-			logger.info("장바구니 중복 검사 후, 장바구니 중복 결과? : {}", success);
+		//경우 B. 팩의 일부를 구매한 경우 + 팩 구매 이력이 없을 경우
+		} else if ( alreadyGot < source.length) {
+			logger.info("팩의 일부 소스를 구매한 적 있거나 or 아예 구매한 적 없는 소스일 경우");
+			
+			// 이미 장바구니에 들어가있는 소스를 제외하고 장바구니에 집어넣자.
+			//근데 이미 구매한 소스를 제외하고 걸러내서 넣는 방법은..? 서비스에서 for 문을 통해 진행하자
+			
+			//나머지 소스의 구매이력 걸러내어 중복 검사를 진행한다.
+			boolean success = cartService.addSomePack(userNo, source);
+			logger.info("장바구니 잘 담궜지? : {}", success);
 			//장바구니 중복결과와 상관없이 장바구니에 해당 팩 소스는 존재할 것임. 이미 구매한 애들 제외하고.
-		
+			//====================== 그래서 어쨌든 장바구니에 다 담궜을 거야. 이미 전체 소스가 담긴 경우에는 반환값 안줄거임!
+			return true;
+		} else {
+			return false;
 			
-		//경우 3. 구매 이력이 전혀 없는 팩의 경우			
-		} else if (getPackItem == 0) {
-			logger.info("구매한적 없은 팩이다.");
-			//장바구니 중복 검사를 진행한다.
-			success = cartService.addPack(userNo, source);
-			logger.info("장바구니 중복 검사 후, 장바구니 중복 결과? : {}", success);
-			//장바구니 중복결과와 상관없이 장바구니에 해당 팩 소스는 존재할 것임.
 		}
-		
-		paramMap.put("sourceCount", source.length);
-		paramMap.put("purchasedSource", getPackItem);
-		
-		return paramMap;
-		//수행해야할 코드는 서비스로 넘기기
-//		boolean success = cartService.addPack(userno, source);
-//		
-//		logger.info("addPack 완전히 성공확인!");
-//		
-//		if(success) {
-//			try {
-//				out.write("{\"result\": " + success + "}");
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//			logger.info("jsp로 true 값일 때만 전송 완료!");
-//		}
 	}
 	
 	//--------------------------------------------------------------------

@@ -41,7 +41,7 @@ public interface CartDao {
 	 * @param userNo
 	 * @return count 수
 	 */
-	public int selectMySourceByUserNoAndSourceNo(@Param(value = "sourceNo[]")int sourceNo, @Param("userNo")int userNo);
+	public int selectMySourceByUserNoAndSourceNo(@Param(value = "sourceNo")int sourceNo, @Param("userNo")int userNo);
 	
 	/**
 	 * cart의 중복여부 확인하기. 

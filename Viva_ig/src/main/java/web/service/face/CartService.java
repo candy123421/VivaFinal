@@ -68,16 +68,6 @@ public interface CartService {
 	public boolean purchaseCartItem(int user, int[] cart);
 
 	/**
-	 * 배열과 userNo 을 foreach 문을 통해 Map으로 지정해준다.
-	 * 
-	 * @param userNo
-	 * @param source - sourceNo 배열
-	 * @return true - 1
-	 * @throws Exception 
-	 */
-	public int addPack(int userNo, int[] source) throws Exception;
-
-	/**
 	 * 다운로드 구현 중....... int 배열로 받아온 sourceNo을 통해 fileinfo를 알아내어 반환하기
 	 * 
 	 * @param sourceNo
@@ -93,6 +83,15 @@ public interface CartService {
 	 * @return 구매이력이 있는 소스의 수
 	 */
 	public int checkMySourceToPack(int[] source, int userNo);
+
+	/**
+	 * 소스 일부만 구매했거나, 구매한적 없는 팩에 한해서, 장바구니 중복 검사 후에 집어넣으려고 함.
+	 * 
+	 * @param userNo
+	 * @param source - sourceNo []
+	 * @return 어쨌든 true 임..
+	 */
+	public boolean addSomePack(int userNo, int[] source);
 
 
 

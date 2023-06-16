@@ -429,7 +429,7 @@ font-weight: bold;
 	  			<a class="header_icon" id="header_icon_cart" href="/cart/list">
 	 					<span class="iconName">Cart</span>
 		  		</a>
-				  		<a class="header_icon" id="header_icon_mySouncds" href="">
+				  		<a class="header_icon" id="header_icon_mySouncds" href="/users/mysource">
 		  			<span class="iconName">My Sounds</span>
 		  		</a>
 			<!--  여기까지 지선 작성 부분 -->

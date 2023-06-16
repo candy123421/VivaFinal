@@ -161,7 +161,6 @@ public class UsersController {
 			creditAcc.setUserNo(getUserNo.getUserNo());
 			session.setAttribute("headerCredit", creditService.selectCreditAcc(creditAcc));
 			
-			
 			//rememberId는 체크박스 name이다
 			//아이디 저장 체크박스가 체크되어있으면 쿠키저장
 			if(rememberId(rememberId)) {
@@ -181,6 +180,8 @@ public class UsersController {
 			
 			session.invalidate();
 			
+			//로그인시 아이디, 비밀번호가 일치하지 않으면 "로그인 정보가 일치하지 않습니다"
+			//span으로 띄우기
 			String msg = "Not";
 			model.addAttribute("msg", msg);
 			return "redirect:./login?";
@@ -504,11 +505,11 @@ public class UsersController {
 			
 			return "redirect:./mypage";
 		
-		// false를 받아서 회원프로필사진 삽입(insert)
 		}else if (isProfileNo == true && profile.getSize() <= 0) {
 			logger.info("정보만 수정하려는 쪽");
 			usersService.updateIdPw(users,profile);
 			
+			// false를 받아서 회원프로필사진 삽입(insert)
 		} else if(isProfileNo == false) {
 			logger.info("프로필사진 올린적없음");
 			usersService.insertProfile(users,profile);

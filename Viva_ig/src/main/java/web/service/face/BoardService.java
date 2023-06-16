@@ -28,7 +28,7 @@ public interface BoardService {
 	 * @param keyword 
 	 * @return 계산이 완료된 Paging객체
 	 */
-	public Paging getPaging(Paging paging, String keyword, String categoryType);
+	public Paging getPaging(Paging paramData, String keyword, String categoryType);
 
 	/**
 	 * 페이징이 적용된 게시글 목록 조회
@@ -36,7 +36,7 @@ public interface BoardService {
 	 * @param page - 페이징 정보 객체
 	 * @return 페이징이 적용된 게시글 목록
 	 */
-	public List<Board> boardList(Paging page, String userId, String keyword, String categoryType);
+	public List<Board> boardList(Paging paging, String userId, String keyword, String categoryType);
 
 	/**
 	 * 게시글 상세보기
@@ -118,15 +118,7 @@ public interface BoardService {
 	 * @return 좋아요 수 (1 : 좋아요 누름, 0 : 좋아요 누르지 않음)
 	 */
 	public int getBoardLikeCount(Likes like);
-	
-	/**
-	 * boardNo로 조회한 게시글의 총 좋아요 수
-	 * 
-	 * @param boardNo - 좋아요 수를 조회할 게시글 번호
-	 * @return 게시글의 총 좋아요 수
-	 */
-	public int getBoardTotalLikeCount(int boardNo);
-	
+
 	/**
 	 * 게시글 상세보기 - 회원의 좋아요 상태를 확인한다
 	 * 
@@ -136,21 +128,6 @@ public interface BoardService {
 	 */
 	public boolean viewCheckLike(HttpSession session, Board viewBoard);
 	
-	/**
-	 * 게시글에 대한 전체 좋아요 수 누적
-	 * 
-	 * @param boardNo - 좋아요 누적할 게시글의 게시글 번호
-	 * @return 증가한 게시글의 좋아요 수 (int)
-	 */
-	public int incrementBoardLikeCount(int boardNo);
-
-	/**
-	 * 게시글에 대한 전체 좋아요 수 감소
-	 * 
-	 * @param boardNo - 좋아요 감소할 게시글의 게시글 번호
-	 * @return 감소한 게시글의 좋아요 수 (int)
-	 */
-	public int decrementBoardLikeCount(int boardNo);
 	/**
 	 * 댓글 조회하기 
 	 * 
@@ -173,7 +150,6 @@ public interface BoardService {
 	 * @param boardNo - 댓글 작성할 게시글 번호(를 가지고 있는 DTO)
 	 */
 	public void writeComment(Comments comments);
-	
 	
 	/**
 	 * 댓글 수정하기

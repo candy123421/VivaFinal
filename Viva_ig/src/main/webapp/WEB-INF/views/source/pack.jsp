@@ -661,9 +661,13 @@ div[data-itemtype='line']{
 						}
 					  	, dataType :"json"
 					  	, success : function(res) {
+					  		
 					  		console.log("장바구니 ajax 성공")
-					  		if(res.result == true) {
-					  			$(".cartmsg").eq(cidx).text('Get Source!')
+					  		console.log(res)
+					  		/*  res 반환값을 true / false 로 주려고 해서 ... 아래의 내용을 수정함 - 지선 */
+//	 				  		if(res.result == true) {
+					  		if(res) {
+						  		$(".cartmsg").eq(cidx).text('Get Source!')
 						  		$(".cartmsg").eq(cidx).css("display","block")
 						  		
 					  		} else if (!res) {
@@ -717,7 +721,7 @@ div[data-itemtype='line']{
 						  dataType: "json",
 						  success : function(res) {
 							console.log("ajax 성공") 
-							
+							console.log(res)
 							if(res.result == true) {
 								$("#cartpackmsg").css("display","inline-block")
 								$("#cartpackmsg").text("You get a Pack!");

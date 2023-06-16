@@ -64,7 +64,5 @@ public class UserProfile {
 	public void setUserNo(int userNo) {
 		this.userNo = userNo;
 	}
-
-	
 	
 }

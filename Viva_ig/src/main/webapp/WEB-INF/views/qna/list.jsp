@@ -29,6 +29,12 @@ function selectProcess() {
 	margin: auto;
 	grid-row-gap: 15px;
 	background: #fef6fc;
+	
+}
+
+.qnalist-row:hover{
+	background: linear-gradient(270deg, rgba(255, 194, 137, 0.929575) 4.09%, rgba(255, 43, 91, 0.812201) 99.99%, #4200FF 100%);
+	color: white;
 }
 
 #titleWrap{
@@ -163,12 +169,20 @@ function selectProcess() {
 	  
 	  
 		  <div class="qnalist">
+		  <input type="hidden" value="${qProcess }" name="qProcess">
+		  <input type="hidden" value="${keyword }" name="keyword">
 				<div class="item">문의번호</div>
 				<div class="item">문의제목</div>
 				<div class="item">처리여부
 					<select name="qProcess" id="qProcess" onchange="selectProcess()" >
 						<c:choose>
 							<c:when test="${qProcess eq null }">
+								<option value="All" selected>All</option>
+								<option value="답변대기">대기</option>
+								<option value="답변완료">완료</option>
+							</c:when>
+							
+							<c:when test="${qProcess.equals('') }">
 								<option value="All" selected>All</option>
 								<option value="답변대기">대기</option>
 								<option value="답변완료">완료</option>
@@ -194,16 +208,13 @@ function selectProcess() {
 						
 						</c:choose>
 						
-						
-						
-						
-						
 					</select>
 				</div>
 				<div class="item">문의 작성일</div>
 				<div class="item">유저번호</div>
 			
 			<c:forEach var="qnalist" items="${qnalist }">
+			
 				<div class="item">${qnalist.qNo}</div>
 				<div class="item"><a href="./view?qNo=${qnalist.qNo}" >${qnalist.qTitle }</a></div>
 				<div class="item">${qnalist.qProcess }</div>
@@ -214,6 +225,7 @@ function selectProcess() {
 				<div class="clearfix"></div>
 			</div>
 			<div id="pagingWrap">
+			
 				<c:import url="/WEB-INF/views/layout/qnapaging.jsp" />
 			</div>
 

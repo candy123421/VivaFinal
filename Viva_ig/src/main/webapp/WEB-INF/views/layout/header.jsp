@@ -384,6 +384,19 @@ font-weight: bold;
 	<div class="menu"><i class="fa fa-globe"></i><a class="subCategory" href="/file/fileupsource">Upload</a><i class="fa fa-chevron-down"></i></div>
 	</li>
 	
+<!-- 		목록6: 관리자 -->
+	<c:if test="${adminlogin and not empty adminlogin }">
+	<li>
+      <div class="menu"><i class="fa fa-mobile"></i><a class="subCategory" href="/source/sound">Admin</a><i class="fa fa-chevron-down"></i></div>
+      <ul class="submenu">
+		<li><a href="/board/list">Board</a></li>
+		<li><a href="/qna/list">Q&A</a></li>
+		<li><a href="/admin/credit">Credit</a></li>
+		<li><a href="/admin/userlist">UserList</a></li>
+	  </ul>
+	</li>
+	
+	</c:if>
 	
   </ul>
   </div>
@@ -410,7 +423,7 @@ font-weight: bold;
 
 	  
 	  	<c:when test="${not empty adminlogin and adminlogin }">
-		<a class="header_icon" id="header_icon_profile" href="/admin/main">
+		<a class="header_icon" id="header_icon_profile">
 		<img class="admin_profile" src="/resources/icon/profile.svg" alt="기본프로필" class="d-inline-block align-text-top"></a>
 		<span style="font-size: 1.5em; color: red;"> ${adminNo }</span>번 Admin
 		<span style="font-size: 1.5em; color: red;"> ${adminloginid }</span>님
@@ -429,7 +442,7 @@ font-weight: bold;
 	  			<a class="header_icon" id="header_icon_cart" href="/cart/list">
 	 					<span class="iconName">Cart</span>
 		  		</a>
-				  		<a class="header_icon" id="header_icon_mySouncds" href="">
+				  		<a class="header_icon" id="header_icon_mySouncds" href="/users/mysource">
 		  			<span class="iconName">My Sounds</span>
 		  		</a>
 			<!--  여기까지 지선 작성 부분 -->

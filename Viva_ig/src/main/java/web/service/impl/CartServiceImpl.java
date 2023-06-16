@@ -19,6 +19,7 @@ import web.dto.Credit;
 import web.dto.MySource;
 import web.dto.Source;
 import web.dto.SourceDown;
+import web.dto.SourceFileInfo;
 import web.dto.Users;
 import web.service.face.CartService;
 
@@ -47,6 +48,17 @@ public class CartServiceImpl implements CartService {
 	}
 	
 //======================================================================================================
+	//음원페이지에서 장바구니로 담기 전에, 구매이력 먼저 확인하여 장바구니 접근 제한하기
+	@Override
+	public int checkMySource(int sourceNo, int userNo) {
+		logger.info("checkMySource ()");
+		logger.info("매개변수 확인 : {}, {}", sourceNo, userNo);
+		
+		return cartDao.selectMySourceByUserNoAndSourceNo(sourceNo, userNo);
+	}
+	
+	
+	
 	@Override
 	public boolean addCartItem(Cart add) {
 		logger.info("addCartItem()");
@@ -68,43 +80,109 @@ public class CartServiceImpl implements CartService {
 	}
 	
 //======================================================================================================
-	//여기서 int 배열을 하나씩 꺼내어 userNo과 짝지어준다.
+//=================== get Pack ===================================================
+	
+	//팩 페이지에서 장바구니로 담기 전에, 구매이력 먼저 확인하여 장바구니 접근 제한하기
+	// + /cart/buy 했을 때 중복 검사하기
 	@Override
-	public boolean addPack(int userNo, int[] source) throws Exception {
-		logger.info("addPack()");
-		logger.info("userNo:{}", userNo);
-	    logger.info("source[]: {}", source);
-	    
-		//성공적으로 끝날지에 대한 결과값
-		int result = 0;
-		Cart cart = new Cart();
+	public int checkMySourceToPack(int[] source, int userNo) {
+		logger.info("checkMySourceToPack()");
 		
-		//배열로 담아온 source를 하나씩 꺼내어 Cart TB에 set 해주기
-		//추후, 세션 종료 여부를 위해 if 문으로 걸러주는거임. 
-		if(cart !=null) {
-
-			for(int s : source) {
-				
-				//int형 배열로 받아온 sourceNo값을 하나씩 꺼내어 cart DTO에 set해준다.
-				cart.setSourceNo(s);
-				cart.setUserNo(userNo);
-				logger.info("잘 담김? :{}", cart );
-				
-				//메소드를 반복해준다. (foreach문 밖을 나가면, 메소드는 반복되지 않음)
-				cartDao.insertPack(cart);
-			}
-			logger.info("insertPack 성공");
-			result = 1;
+		//중복되는 행의 수
+		int sum = 0;
+		
+		//mapper.xml 에서 parameterType 에 int[] 와 int 를 다 넣는 방법을 찾을 수가 없기에
+		//할수 없이 서비스 임플에서 for문을 돌려 찾아볼까한다..ㅠ
+		MySource mySource = new MySource();
+		mySource.setUserNo(userNo);
+		
+		for(int i=0; i<source.length; i++) {
+			
+			mySource.setSourceNo(source[i]);
+			int row = cartDao.selectMySourceByUserNoAndPackSource(mySource);
+			logger.info("row는 0또는 1이 나와야해! {} ", row);
+			sum += row;
 		}
-		logger.info("pack 장바구니 추가 성공!");
+		logger.info("팩 중 구매이력 수: {} ", sum);
 		
+		return sum;
+	}
+	
+	//getPack 을 한 뒤, 팩 전체 구매이력이 있는 팩을 제외하고, 일부 구매나 구매 이력 없는 팩에 한하여
+	//장바구니 중복 검사 진행 후, 장바구니에 집어넣을거다.
+	@Override
+	public boolean addSomePack(int userNo, int[] source) {
+		logger.info("addSomePack()");
+		
+		//******************** get Pack 의 규칙 *****************************
+		// B. 팩 일부 구매했을 경우 + 팩 구매 이력 없을 경우   
+			// B-a. 나머지 팩-음원 전체 장바구니 있을 경우  => (서비스에서 false 반환) -> 반환 값 없음.
+			// B-b. 나머지 팩-음원 일부 장바구니 있을 경우  => true 반환
+			// B-c. 나머지 팩-음원 전체 장바구니 없을 경우 	=> true 반환
+		//*******************************************************************
+		
+		//B. Cart DTO 를 통해 중복 검사하기
+		//중복되는 행의 수
+		int sum = 0;
+		
+		Cart myCart = new Cart();
+		myCart.setUserNo(userNo);
+		
+		for(int i = 0; i<source.length; i++) {
+			
+			myCart.setSourceNo(source[i]);
+			int row = cartDao.selectDuplicatedCartByUserNo(myCart);
+			
+			sum += row;
+			
+				//row 가 0 인 경우 -> 
+				//B-b, B-c : 장바구니에 insert 한다.
+				if (row >0 ) {
+					logger.info("이미 장바구니에 담긴 항목은 다시 넣을 수 없다 : {}", myCart);
+				
+				} else {
+					logger.info("장바구니에 집어넣기");
+					
+					cartDao.insertCartItem(myCart);
+					logger.info("장바구니 담았숩니당 : {} ", myCart);
+				}
+				// if 문 END : 이미 담겨있든 새로 담든 어쨌든 장바구니에 존재할 것이다.
+			
+		}
+		logger.info("팩 중 장바구니 중복 수: {} ", sum);
+		
+		if(sum == source.length) {
+			
+			logger.info("이 팩 전체는 원래부터 장바구니에 있었다.");
+			return false;
+		}
+		
+		//어쨌든 전부 원래부터 장바구니에 있는 경우 제외하고, 어쨌든 장바구니에 모두 존재할 것이기에 true 값 반환!
 		return true;
 	}
+
 //======================================================================================================
 	
 	//음원 소스의 총계를 전역변수로 지정해서 다른 메소드에서도 쓸수 있게 선언했다.
 	int price = 0;
 //	private Credit credit;
+	
+	
+	//장바구니에 이미 담겨있는 항목 중 구매이력있음을 확인하고 지워줌..
+	@Override
+	public void duplicatedItemToTrash(int[] cart, int user) {
+		logger.info("duplicatedItemToTrash ()");
+		
+		Cart delete = new Cart();
+		delete.setUserNo(user);
+		
+		for(int i : cart) {
+			delete.setSourceNo(i);
+			
+			cartDao.deleteCartByUserNoAndSourceNo(delete);
+			logger.info("싹 지움");
+		}
+	}
 	
 	@Override
 	public boolean chkCreditAcc(int user, int[] cart) {
@@ -138,12 +216,20 @@ public class CartServiceImpl implements CartService {
 			return false;
 		}
 	}
+
+	
+	
 	
   @Transactional
   @Override
 	public boolean purchaseCartItem(int user, int[] cart) {
 		logger.info("purchaseCartItem()");
     
+		//0. MySource TB에서 구매이력 확인하기
+		//
+		
+		
+		
 		//1. 구매자 크레딧 지출하기
 		//크레딧DTO 초기화
 		Credit credit = new Credit();
@@ -232,5 +318,11 @@ public class CartServiceImpl implements CartService {
 		
 		return true;
   }
+  
+	@Override
+	public SourceFileInfo getFile(int[] sourceNo) {
+		logger.info("getFile()");
+		return cartDao.selectSourceFileBysourceNo(sourceNo);
+	}
 
 }

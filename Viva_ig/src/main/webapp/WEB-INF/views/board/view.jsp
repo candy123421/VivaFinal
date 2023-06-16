@@ -12,7 +12,6 @@
 .container {
 	width : 1400px;
 	margin : 0 auto:
-/* 	height: 100%; */
 }
 
 .file-container {
@@ -85,63 +84,56 @@ input[name="commListContent"] {
 <hr>
 
 <c:choose>
-	<c:when test="${empty login}">
-		로그인 후 이용해 주세요!
-		<a href="/viva/login"> <button>Login</button></a>
-	</c:when>
+
 	  
-	<c:when test="${not empty login and login}">
+
+	<c:when test="${login or adminlogin}">
 	<div class="container">
 	     <div class="row row1">
 	      <table class="table">
 	        <tr>
-	         <th width=20% class="text-center warning">게시글 번호</th>
-	         <td width=20% class="text-center">${viewBoard.boardNo }</td>
-			<th width=20% class="text-center warning">조회수</th>
-	         <td width=20% class="text-center">${viewBoard.boardHit}</td>
+				<th class="table-th">게시글 번호</th>
+				<td class="table-td">${viewBoard.boardNo }</td>
+				<th class="table-th">조회수</th>
+	         	<td class="table-td">${viewBoard.boardHit}</td>
 	        </tr>
+	        
 	        <tr>
-	         <th width=20% class="text-center warning">아이디</th>
-	         <td width=20% class="text-center">${viewBoard.userId }</td>
-			<th width=20% class="text-center warning">작성일</th>
-	         <td width=20% class="text-center"><fmt:formatDate value="${viewBoard.boardDate }" pattern="yyyy-MM-dd hh:mm" /></td>
+			<th class="table-th">아이디</th>
+			<td class="table-td">${viewBoard.userId }</td>
+			<th class="table-th">작성일</th>
+			<td class="table-td"><fmt:formatDate value="${viewBoard.boardDate }" pattern="yyyy-MM-dd hh:mm" /></td>
 	        </tr>
+	        
 	        <tr>
-	         <th width=20% class="text-center warning" style="height: 50px;">제목</th>
-	         <td colspan="3" style="height: 50px;">${viewBoard.boardTitle }</td>
+			<th width=20% class="table-th" style="height: 50px;">제목</th>
+			<td colspan="3" style="height: 50px;">${viewBoard.boardTitle }</td>
 	        </tr>
+	        
 	        <tr>
-	          <td colspan="4" class="text-left" valign="top" height="200">
-				<div class="content">${viewBoard.boardContent }</div>
-	          </td>
-	        </tr>
-	        <tr>
-	        	<td colspan="4" class="text-left" valign="top" height="50">
-
-						<!-- 좋아요 -->
-						<div id="like">
-						<c:choose>
-							<c:when test="${likeCheck eq true }">
-						    	<img id="likeBoard" class="like-icon" src="../resources/icon/heart-fill.svg"  style="width: 45px;">
-						    </c:when>
-							<c:when test="${likeCheck eq false }">
-								<img id="likeBoard" class="like-icon" src="../resources/icon/heart.svg" style="width: 45px;">
-							</c:when>
-						</c:choose>		
-							<span class="like-count" id="likeCount">${likeCount}</span><br>
-						</div>
-							
-	        </tr>
-	        <tr>
-				<c:if test="${id eq viewBoard.userId }">
-	          <td colspan="4" class="btnList">
-		            <button id="btnUpdate">수정</button>
-		            <button id="btnDelete">삭제</button>
-	          </td>
-				</c:if>
+			<td class="table-td" valign="top" height="200">
+			<div class="content">${viewBoard.boardContent }</div>
+			</td>
 	        </tr>
 	      </table>
-	     </div>
+	        
+			<div id="like" class="like">
+				<c:choose>
+					<c:when test="${likeCheck eq true }">
+						<img id="likeBoard" class="like-icon" src="../resources/icon/heart-fill.svg"  style="width: 45px;">
+					</c:when>
+					<c:when test="${likeCheck eq false }">
+						<img id="likeBoard" class="like-icon" src="../resources/icon/heart.svg" style="width: 45px;">
+					</c:when>
+				</c:choose>		
+				<span class="like-count" id="likeCount">${likeCount}</span><br>
+			</div>
+				<c:if test="${id eq viewBoard.userId }">
+					<div class="btnList">
+						<button class="btnUpdate" id="btnUpdate">수정</button>
+			            <button class="btnDelete" id="btnDelete">삭제</button>
+					</div>
+				</c:if>
 	</div>
 	<!---------- 첨부파일 ---------->
 	<div class="file-container">
@@ -181,105 +173,52 @@ input[name="commListContent"] {
 	        <div name="writeDate"><fmt:formatDate value="${commentList.commDate}" pattern="yyyy-MM-dd hh:mm" /></div>
 		</c:forEach>
 	</div>
+	<!-------------------- 댓글 끝 -------------------->
 	</c:when>
 </c:choose>
-	
+
+	<div class="btnList" style="text-align: center;">
+		<button id="btnList">목록</button>
+	</div>    
+</div><!-- .container end -->
+
+
 <script type="text/javascript">
 
 $(document).ready(function() {
 		
 	<!-------------------- 좋아요 시작 -------------------->
 	//좋아요 구현
-	// 좋아요 구현
-$("#likeBoard").click(function() {
-    var boardno = $(this).parent().data('like'); 	// 부모 요소의 data-like 속성을 가져와서 boardNo 변수에 저장
-    var userno = "${viewBoard.userNo}"; 			// userNo 변수
-
-    console.log("${viewBoard.boardNo}");
-    console.log(boardno);
-    console.log(userno);
-
-    $.ajax({
-        type: "GET",
-        url: "/board/like",
-        data: { "userNo": userno, "boardNo": boardno }, // userNo는 세션에서 받아오기
-        dataType: "json",
-        success: function(res) {
-            if (res.result == true) {
-                // 좋아요 추가
-                $(this).html('<img src="../resources/icon/heart-fill.svg" style="width:45%">');
-                console.log(res);
-                console.log(res.result);
-                console.log("성공^^");
-                $("#likeCount").html(res.likeCount);
-                $("#like").children(2).eq(1).html(res.likeCount)
-            } else if (res.result == false) {
-                // 좋아요 삭제
-                $(this).html('<img src="../resources/icon/heart.svg" style="width:45%">');
-                console.log(res);
-                console.log(res.result);
-                console.log("실패ㅠㅠ");
-                $("#likeCount").html(res.likeCount);
-            }
-        }
-    });
-});
-
-	
-//  	var likes = document.querySelectorAll("div[data-like]");
-// 	$(".like").click(function() {
-// 		var idx = $(".like").index(this)					// 인덱스 변수
-// 		var boardno = likes[idx].getAttribute('data-like')	// boardNo 변수
-//  		var userno = "${viewBoard.userNo}";					// userNo 변수
+	$("#likeBoard").click(function() {
 		
-//  		console.log("${viewBoard.boardNo}");
-// 		console.log(boardno);
-// 		console.log(userno);
-		
-// 		$.ajax({
-// 			type: "GET",
-// 			url: "/board/like",
-// 			data: { "userNo": userno, "boardNo": boardno }, //userNo는 세션에서 받아오기
-// 			dataType: "json",	//html로 하고
-// 			success: function(res) {
-			    	
-// 			if (res.result == true) {
-				
-// 				//좋아요 추가
-// 				$(".like").eq(idx).html('<img src="../resources/icon/heart-fill.svg" style="width:45%">')
-// 				console.log(res);
-// 				console.log(res.result);
-// 				console.log("성공^^")
-// 				$("#like").children(2).eq(1).html(res.likeCount)
-// 			} else if (res.result == false) {
-// 				//좋아요 삭제
-// 				$(".like").eq(idx).html('<img src="../resources/icon/heart.svg" style="width:45%">')
-// 				console.log(res);
-// 				console.log(res.result);
-// 				console.log("실패ㅠㅠ")
-// 				$("#like").children(2).eq(1).html(res.likeCount)
-// 			}
-			
-// 			console.log(res.likeCount);
-			
-			//받은 응답에서 누적 카운트 업데이트
-// 			var likeCount = res.likeCount;
-// 			console.log(likeCount);
-// 			$(".like-count").eq(idx).text(likeCount);
+	    var boardno = "${viewBoard.boardNo}";	//부모 요소의 data-like 속성을 가져와서 boardNo 변수에 저장
+	    var userno = "${userNo}"; 				//userNo 변수
 	
-// 				console.log(res);
-// 				console.log(res.likeCount);
-
-				// 좋아요 누적 카운트 업데이트
-// 				$("#total-like-count").text(res.totalLikeCount);
-// 			},
-// 				error: function(xhr, status, error) {
-// 				console.log(error);
-// 			} //success end
-// 		}) //ajax end
-// 	}) //like end
-
-
+	    console.log(boardno);
+	    console.log(userno);
+	
+	    $.ajax({
+	        type: "GET",
+	        url: "/board/like",
+	        data: { "userNo": userno, "boardNo": boardno }, // userNo는 세션에서 받아오기
+	        dataType: "json",
+	        success: function(res) {
+	            if (res.result == true) {
+	                //좋아요 추가
+	                $("#likeBoard").attr("src","../resources/icon/heart-fill.svg")
+	                console.log(res);
+	                console.log("성공^^");
+	                $("#likeCount").html(res.likeCount);
+	            } else if (res.result == false) {
+	                //좋아요 삭제
+	                $("#likeBoard").attr("src","../resources/icon/heart.svg")
+	                console.log(res);
+	                console.log("실패ㅠㅠ");
+	                $("#likeCount").html(res.likeCount);
+	            }
+	        }
+	    });
+	});
 	<!-------------------- 좋아요 끝 -------------------->
 
 	
@@ -404,11 +343,5 @@ $("#likeBoard").click(function() {
 }) //$(document).ready(function() end
 
 </script>
-
-	<div class="btnList" style="text-align: center;">
-		<button id="btnList">목록</button>
-	</div>    
-
-</div><!-- .container end -->
 
 <c:import url="../layout/footer.jsp"/>

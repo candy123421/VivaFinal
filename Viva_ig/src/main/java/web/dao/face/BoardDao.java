@@ -232,7 +232,7 @@ public interface BoardDao {
 	 * @param comments - 조회할 댓글의 게시글 번호
 	 * @return
 	 */
-	public List<Comments> selectComment(Comments comments);
+	public List<Map<String,Object>> selectComment(Comments comments);
 
 	/**
 	 * 댓글 작성하기

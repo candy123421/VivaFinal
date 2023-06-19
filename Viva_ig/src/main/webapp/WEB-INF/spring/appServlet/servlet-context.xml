@@ -55,10 +55,10 @@
 		<beans:property name="maxInMemorySize" value="1048576"/>
 		
 		<!-- 파일 업로드 허용의 최대 사이즈 -->
-		<beans:property name="maxUploadSize" value="31457280"/>
+		<beans:property name="maxUploadSize" value="51457280"/>
 		
 		<!-- 업로드 된 파일 하나 당 사이즈 제한 30MB -->
-		<beans:property name="maxUploadSizePerFile" value="31457280"/>
+		<beans:property name="maxUploadSizePerFile" value="51457280"/>
 		
 	</beans:bean>
 

@@ -74,7 +74,7 @@ $(document).ready(function() {
  	resize: none; 
 	width: 1000px;
 	}
-	.menu{
+	.m{
 	width: 1050px; 
 	margin: 0 auto;
 	display: grid;
@@ -175,7 +175,7 @@ ${userQuestion.qContent }
 
 
 </div>
-<div class="menu">
+<div class="m">
 	<button id="btnWrite" class="an">답변작성</button>
 </div>	
 	<input type="hidden" value="${userQuestion.qNo}" name="qNo" >

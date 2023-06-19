@@ -103,7 +103,7 @@ public class BoardController {
       int boardNo = viewBoard.getBoardNo();
       logger.info("boardNo {}", boardNo);
       
-      List<Comments> commentList = boardService.viewComment(comments);
+      List<Map<String,Object>> commentList = boardService.viewComment(comments);
       model.addAttribute("commentList", commentList);
       
       // 좋아요 수 조회
@@ -206,14 +206,8 @@ public class BoardController {
       int userNo = (Integer)session.getAttribute("userNo");
       board.setUserNo(userNo);
       
-      //댓글 조회 - (댓글이 있는 게시글 삭제를 위한 댓글 조회)
-      int boardNo = board.getBoardNo();
-      List<Comments> commentList = boardService.viewComment(comments);
-      
       //댓글을 하나씩 삭제 (댓글이 있는 게시글 삭제를 위한 댓글 선삭제)
-       for (Comments comment : commentList) {
-           boardService.deleteComment(comment);
-       }
+      boardService.deleteComment(comments);
       boardService.delete(board);
       
       return "redirect:./list";
@@ -268,7 +262,7 @@ public class BoardController {
    
    @GetMapping("/commentView")
    @ResponseBody
-   public List<Comments> commentList(Board viewBoard, Comments comments, Model model) {
+   public List<Map<String,Object>> commentList(Board viewBoard, Comments comments, Model model) {
        
       Comments comment = new Comments();
       comment.setBoardNo(comment.getBoardNo());
@@ -277,8 +271,10 @@ public class BoardController {
       //댓글 조회
       int boardNo = viewBoard.getBoardNo();
       
-      List<Comments> commentList = boardService.viewComment(comments);
-      
+
+   
+      List<Map<String,Object>> commentList = boardService.viewComment(comments);
+
       model.addAttribute("commentList", commentList);
       
       return commentList;
@@ -286,24 +282,25 @@ public class BoardController {
    
    @PostMapping("/commentWrite")
    @ResponseBody
-   public List<Comments> commentWrite(
+   public List<Map<String,Object>> commentWrite(
          
          @RequestParam("boardNo") int boardNo, 
          @RequestParam("commContent") String commContent, Comments comments,
-         Model model) {
+         Model model,HttpSession session) {
       
+	   comments.setUserNo((int)session.getAttribute("userNo"));
        boardService.writeComment(comments);
        
-       List<Comments> commentList = boardService.viewComment(comments);
+       List<Map<String,Object>> commentList = boardService.viewComment(comments);
        model.addAttribute("commentList", commentList);
-       
+       logger.info("코맨트리스틍*******@*@*@*@*@*{}",commentList);
        return commentList;
    }
    
    
    @PostMapping("/commentUpdate")
    @ResponseBody
-   public List<Comments> commentUpdate(Comments comments, Model model) {
+   public List<Map<String,Object>> commentUpdate(Comments comments, Model model) {
 	   logger.info("/commentUpdate ❤️도착❤️ ");
       
        logger.info("comments {}", comments);
@@ -311,7 +308,7 @@ public class BoardController {
        boardService.updateComment(comments);
       
       //수정된 댓글 리스트 조회
-       List<Comments> commentList = boardService.viewComment(comments);
+       List<Map<String,Object>> commentList = boardService.viewComment(comments);
        
 //      return "redirect:./view?boardNo=" + board.getBoardNo();
        return commentList;
@@ -320,7 +317,7 @@ public class BoardController {
    
    @RequestMapping("/commentDelete")
    @ResponseBody
-   public List<Comments> commentDelete(Board viewBoard, Comments comments, Model model) {
+   public List<Map<String,Object>> commentDelete(Board viewBoard, Comments comments, Model model) {
       logger.info("/commentDelete ❤️도착❤️ ");
       
       //Comments 객체 생성 및 데이터 설정
@@ -335,7 +332,7 @@ public class BoardController {
       int boardNo = viewBoard.getBoardNo();
       
       //수정된 댓글 리스트 조회
-       List<Comments> commentList = boardService.viewComment(comments);
+       List<Map<String,Object>> commentList = boardService.viewComment(comments);
        model.addAttribute("commentList", commentList);
 
        return commentList;

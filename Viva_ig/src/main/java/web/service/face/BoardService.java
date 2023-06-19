@@ -1,6 +1,7 @@
 package web.service.face;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -140,7 +141,7 @@ public interface BoardService {
 	 * @param comments - 댓글 번호
 	 * @return 댓글 번호로 조회한 댓글 DTO
 	 */
-	public List<Comments> viewComment(Comments comments);
+	public List<Map<String, Object>> viewComment(Comments comments);
 
 	/**
 	 * 관리자가 /board/list에서 선택한애들 삭제하도록 - 보현

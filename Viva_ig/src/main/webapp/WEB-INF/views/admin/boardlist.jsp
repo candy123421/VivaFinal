@@ -34,7 +34,7 @@ function selectAll(selectAll)  {
 		var keyword = document.getElementById('keyword').value;
 
 		//서버로부터 해당 카테고리 유형에 맞는 데이터 가져오기
-		var newURL = "./list?categoryType=" + categoryType;
+		var newURL = "./boardlist?categoryType=" + categoryType;
 
 		console.log(categoryType);
 	
@@ -108,15 +108,13 @@ th {
 }
 
 .btnWrite, .btnSearch {
-	background: #FC466B;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	background: #FFFFFF;  /* fallback for old browsers */
 	border: 2px solid #F88080;
 	border-radius: 10px;
-	width:150px;
+	width:70px;
 	height:40px;
 	transition: all 0.4s;
-	color: #ffffff;
+	color: #F88080;
 }
 
 .btnWrite:focus, .btnSearch:focus  {
@@ -124,18 +122,6 @@ th {
 }
 
 .btnWrite:hover, .btnSearch:hover {
-/* 	background: #7F00FF;  /* fallback for old browsers */ 
-/* background: -webkit-linear-gradient(to left, #E100FF, #7F00FF);  /* Chrome 10-25, Safari 5.1-6 */ 
-/* background: linear-gradient(to left, #E100FF, #7F00FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ 
-
-/* background: #3A1C71;  /* fallback for old browsers */ 
-/* background: -webkit-linear-gradient(to left, #FFAF7B, #D76D77, #3A1C71);  /* Chrome 10-25, Safari 5.1-6 */ 
-/* background: linear-gradient(to left, #FFAF7B, #D76D77, #3A1C71); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ 
-			
-/* background: #c0392b;  /* fallback for old browsers */ 
-/* background: -webkit-linear-gradient(to left, #8e44ad, #c0392b);  /* Chrome 10-25, Safari 5.1-6 */ */
-/* background: linear-gradient(to left, #8e44ad, #c0392b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ 
-	
 	background: #FC466B;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -169,19 +155,23 @@ th {
 	margin: 0 auto;
 	text-align: -webkit-center;
 }
+.titlestyle{
+	width: 1400px;
+	margin: 0 auto;
+}
 </style>
 
-<div class="container-top">
-	<div class="FunctionTitle" style="margin: 0 auto;">Admin FREE BOARD</div>
-	<div class="FunctionTitleLine" style="margin: 0 auto;">
-		<img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
+<div class="titlestyle">
+	<div class="FunctionTitle" >ADMIN FREE BOARD</div>
+	<div class="FunctionTitleLine1">
+	   <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg" style="margin-top:15px; margin-bottom: 15px; width:1400px;">
 	</div>
 </div>
 
 
 <!-------------------- 검색 시작 -------------------->
 <div class="container">
-	<form action="./list" method="get" name="searchForm">
+	<form action="./boardlist" method="get" name="searchForm">
 		<div class="search_wrap">
 			<select class="searchType" id="searchType">
 				<option>제목</option>
@@ -284,7 +274,7 @@ th {
 	
 		    <div class="totalBoardCount">total : ${paging.totalCount }</div>
 		        <div>
-		          <a href="./write"><button type="button" id="btnWrite" class="btnWrite" name="btnWrite">게시글 작성하기</button></a>
+		          <a href="./write"><button type="button" id="btnWrite" class="btnWrite" name="btnWrite">작성하기</button></a>
 		        </div>
 		  </div>
 		</div> <!-- container-button end -->

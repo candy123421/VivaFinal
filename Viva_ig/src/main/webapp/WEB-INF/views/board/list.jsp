@@ -96,12 +96,12 @@ th {
 	color: black;
 }
 .btnSearch {
-	background: #FC5C7D;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	background: #d9a7c7;  /* fallback for old browsers */
+ 	background: -webkit-linear-gradient(to right, #d9a7c7, #fffcdc);  /* Chrome 10-25, Safari 5.1-6 */ */
+	background: linear-gradient(to right, #d9a7c7, #fffcdc); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	border: 2px solid #F88080;
 	border-radius: 10px;
-	width:100px;
+	width:70px;
 	height:40px;
 	transition: all 0.4s;
 	color: #ffffff;
@@ -146,12 +146,17 @@ th {
 	text-align: -webkit-center;
 }
 
+
+.titlestyle{
+	width: 1400px;
+	margin: 0 auto;
+}
 </style>
 
-<div class="container-top">
-	<div class="FunctionTitle" style="margin: 0 auto;">FREE BOARD</div>
-	<div class="FunctionTitleLine" style="margin: 0 auto;">
-		<img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
+<div class="titlestyle">
+	<div class="FunctionTitle" >FREE BOARD</div>
+	<div class="FunctionTitleLine1">
+	   <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg" style="margin-top:15px; margin-bottom: 15px; width:1400px;">
 	</div>
 </div>
 
@@ -210,7 +215,7 @@ th {
 				</c:choose>
 			</select> <input type="text" class="keyword" name="keyword" id="keyword"
 				placeholder=" 검색어를 입력하세요">
-			<button class="btnSearch" id="btnSearch">검색</button>
+			<button class="btn btn-outline-secondary" id="btnSearch">검색</button>
 		</div>
 		<!-- search_wrap end -->
 		<!--    </form> -->

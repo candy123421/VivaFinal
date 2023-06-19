@@ -57,15 +57,6 @@ public class UsersController {
 		
 	}
 	
-//	//main페이지
-//	@GetMapping("/")
-//	public void main(HttpSession session) {
-//		logger.info("users/main [GET]");
-//		
-//		int userNo = (int)session.getAttribute("userNo");
-//		logger.info("마이페이지 : {}" , userNo);
-//	}
-	
 	@GetMapping("/kakaologin")
 	   public String kakaoLogin(
 	         @RequestParam("code")String code
@@ -76,7 +67,7 @@ public class UsersController {
 	      //카카오 인가코드로 access_token 요청후 저장
 	      String access_Token = kakaoService.getAccessToken(code);
 	      logger.info("controller access_token : {}" + access_Token);
-
+	      
 	      // 액세스 토큰으로 읽어온 사용자 정보
 	      HashMap<String, Object> userInfo = kakaoService.getUserInfo(access_Token);
 	      logger.info("Info {}", userInfo);
@@ -539,115 +530,6 @@ public class UsersController {
 		return "redirect:./login";
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@GetMapping("/mysource")
 	public void mysource(HttpSession session, Model model) {
 		logger.info("내가 가진 음원 소스");
@@ -660,23 +542,6 @@ public class UsersController {
 		
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

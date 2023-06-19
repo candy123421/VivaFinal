@@ -17,6 +17,17 @@ $(function(){
  	//아이디에 포커스
 	$("#userId").focus()
 	
+// 	//아이디 입력란 클릭시 밑에 메시지 없애기
+// 		$("#userId").blur(function(){
+// 			$(".id_input1").html("")	
+// 			$(".id_input2").html("")	
+// 		})
+// 		//닉네임 입력란 클릭시 밑에 메시지 없애기
+// 		$("#userNick").blur(function(){
+// 			$(".nick_input1").html("")	
+// 			$(".nick_input2").html("")	
+// 		})
+		
 	//아이디를 입력하지 않고 넘어갈 경우(필수 정보입니다 띄우기)
 	$("#userId").blur(function(){
 		if($("#userId").val()==''){
@@ -190,6 +201,8 @@ $(function(){
 			$('#userid_msg').html("아이디를 입력해주세요")
 			return
 		}
+		
+		
 		//회원가입시 아이디 중복검사
 		$.ajax({
 			type:"get",
@@ -221,12 +234,11 @@ $(function(){
 	
 		var userNick = $("#userNick").val();
 		var data = {userNick : userNick}
-
+		
 		if(userNick == ''){
 			$('#usernick_msg').html("닉네임을 입력해주세요")
 			return
 		}
-		
 		$.ajax({
 			type:"get",
 			url: " /users/userNickChk",

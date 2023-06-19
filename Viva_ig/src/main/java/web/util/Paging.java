@@ -32,6 +32,8 @@ public class Paging {
 	public Paging(int totalCount, int curPage) {
 		setTotalCount(totalCount);
 		setCurPage(curPage);
+//		this.perPage = 10; // 페이지당 10개의 게시글을 보여준다고 가정 - 우정
+//		setTotalPage();		// - 우정
 		
 		makePaging();
 	}
@@ -55,34 +57,91 @@ public class Paging {
 		makePaging();
 	}
 	
-	
-	//페이징 정보를 생성하는 메소드
-	public void makePaging() {
-		if(totalCount == 0)	return; //게시글이 없는 경우 중단한다
-		
-		//기본값 설정
-		if(curPage == 0)	setCurPage(1);	//첫 페이지를 기본 페이지로 설정한다
-		if(listCount == 0)	setListCount(10);	//화면에 보여질 게시글 수를 기본 10개로 설정한다
-		if(pageCount == 0)	setPageCount(10);	//화면에 보여질 페이지 수를 기본 10페이지로 설정한다
-		
-		//총 페이지 수 계산
-		totalPage = totalCount / listCount;
-		if( totalCount % listCount > 0 )	totalPage++;
-		
-		//현재 페이지값 보정
-		if(curPage > totalPage)	curPage = totalPage;
-		
-		//화면에 보여질 페이지네이션의 시작번호와 끝번호
-		startPage = ( (curPage-1)/pageCount ) * pageCount + 1;
-		endPage = startPage + pageCount - 1;
-		
-		//끝 페이지값 보정
-		if(endPage > totalPage)	endPage = totalPage;
-		
-		//화면에 보여질 게시글의 시작번호와 끝번호
-		startNo = (curPage-1) * listCount + 1;
-		endNo = curPage * listCount;
+	//==================== 게시판 추가 페이징 계산 ====================
+	// 총 게시글 수, 현재 페이지 번호, 보여질 게시글 수, 검색 기준이 되는 검색 타입, 검색 키워드를 입력하는 생성자
+	public Paging(int totalCount, int curPage, int listCount, String categoryType, String keyword) {
+	    setTotalCount(totalCount);
+	    setCurPage(curPage);
+	    setListCount(listCount);
+	    setCategoryType(categoryType);
+	    setKeyword(keyword);
+	    
+	    makePaging();
 	}
+
+	// 검색 기준이 되는 검색 타입만 있는 경우
+	public Paging withCategoryType(String categoryType) {
+	    return new Paging(totalCount, curPage, listCount, categoryType, this.keyword);
+	}
+
+	// 검색 키워드만 있는 경우
+	public Paging withKeyword(String keyword) {
+	    return new Paging(totalCount, curPage, listCount, this.categoryType, keyword);
+	}
+
+	// 총 게시글 수, 현재 페이지 번호, 보여질 게시글 수, 검색 기준이 되는 검색 타입과 검색 키워드가 함께 있는 경우
+	public Paging withCategoryTypeAndKeyword(String categoryType, String keyword) {
+	    return new Paging(totalCount, curPage, listCount, categoryType, keyword);
+	}
+	//==================== 게시판 추가 페이징 계산 ====================
+
+
+	// 페이징 정보를 생성하는 메소드
+	public void makePaging() {
+	    if (totalCount == 0) return; // 게시글이 없는 경우 중단한다
+
+	    // 기본값 설정
+	    if (curPage == 0) setCurPage(1); // 첫 페이지를 기본 페이지로 설정한다
+	    if (listCount == 0) setListCount(10); // 화면에 보여질 게시글 수를 기본 10개로 설정한다
+	    if (pageCount == 0) setPageCount(10); // 화면에 보여질 페이지 수를 기본 10페이지로 설정한다
+
+	    // 총 페이지 수 계산
+//	    totalPage = (int) Math.ceil((double) totalCount / listCount);
+	    totalPage = (int) Math.ceil((double) totalCount / (double) listCount);
+
+
+	    // 현재 페이지값 보정
+	    if (curPage > totalPage) curPage = totalPage;
+
+	    // 화면에 보여질 페이지네이션의 시작번호와 끝번호
+	    startPage = ((curPage - 1) / pageCount) * pageCount + 1;
+	    endPage = startPage + pageCount - 1;
+
+	    // 끝 페이지값 보정
+	    if (endPage > totalPage) endPage = totalPage;
+
+	    // 화면에 보여질 게시글의 시작번호와 끝번호
+	    startNo = (curPage - 1) * listCount + 1;
+	    endNo = curPage * listCount;
+	}
+
+//	//페이징 정보를 생성하는 메소드
+//	public void makePaging() {
+//		if(totalCount == 0)	return; //게시글이 없는 경우 중단한다
+//		
+//		//기본값 설정
+//		if(curPage == 0)	setCurPage(1);	//첫 페이지를 기본 페이지로 설정한다
+//		if(listCount == 0)	setListCount(10);	//화면에 보여질 게시글 수를 기본 10개로 설정한다
+//		if(pageCount == 0)	setPageCount(10);	//화면에 보여질 페이지 수를 기본 10페이지로 설정한다
+//		
+//		//총 페이지 수 계산
+//		totalPage = totalCount / listCount;
+//		if( totalCount % listCount > 0 )	totalPage++;
+//		
+//		//현재 페이지값 보정
+//		if(curPage > totalPage)	curPage = totalPage;
+//		
+//		//화면에 보여질 페이지네이션의 시작번호와 끝번호
+//		startPage = ( (curPage-1)/pageCount ) * pageCount + 1;
+//		endPage = startPage + pageCount - 1;
+//		
+//		//끝 페이지값 보정
+//		if(endPage > totalPage)	endPage = totalPage;
+//		
+//		//화면에 보여질 게시글의 시작번호와 끝번호
+//		startNo = (curPage-1) * listCount + 1;
+//		endNo = curPage * listCount;
+//	}
 
 	@Override
 	public String toString() {
@@ -179,6 +238,7 @@ public class Paging {
 	public void setCategoryType(String categoryType) {
 		this.categoryType = categoryType;
 	}
-	
+
+
 	
 }

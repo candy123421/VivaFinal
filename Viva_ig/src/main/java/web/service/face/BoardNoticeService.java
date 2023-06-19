@@ -32,6 +32,7 @@ public interface BoardNoticeService {
 	 * @return 페이징이 적용된 게시글 목록
 	 */
 	List<BoardNotice> boardNoticeList(Paging page, String keyword);
+	
 
 	/**
 	 * 공지게시글 상세보기
@@ -52,6 +53,7 @@ public interface BoardNoticeService {
 	 * 공지게시글 수정
 	 * 
 	 * @param boardNotice - 공지게시글 정보 객체
+	 * @return 
 	 */
 	public void update(BoardNotice boardNotice);
 
@@ -60,6 +62,7 @@ public interface BoardNoticeService {
 	 * 
 	 * @param boardNotice - 삭제할 공지게시글의 번호
 	 */
-	public void delete(Board boardNotice);
+	public void delete(BoardNotice boardNotice);
+
 
 }

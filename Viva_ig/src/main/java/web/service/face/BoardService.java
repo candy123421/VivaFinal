@@ -36,8 +36,13 @@ public interface BoardService {
 	 * @param page - 페이징 정보 객체
 	 * @return 페이징이 적용된 게시글 목록
 	 */
-	public List<Board> boardList(Paging paging, String userId, String keyword, String categoryType);
+//	public List<Board> boardList(Paging paging, String userId, String keyword, String categoryType);
+//	public List<Board> boardList(Paging paging, String keyword, String categoryType);
 
+//	public List<Board> boardList(Paging paramData, String userId, String keyword, String categoryType);
+	public List<Board> boardList(Paging paging, String keyword, String categoryType);
+
+	
 	/**
 	 * 게시글 상세보기
 	 * 
@@ -171,6 +176,8 @@ public interface BoardService {
 	 * @param check
 	 */
 	public void deleteCheckBoard(int[] check);
+
+
 
 
 

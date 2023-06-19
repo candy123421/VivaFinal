@@ -130,14 +130,20 @@ $(document).ready(function() {
 </script>
 
 <div class="container">
-	<h2 class="text-center">게시글 작성</h2>
+<!-- 	<h2 class="text-center">게시글 작성</h2> -->
+
+<div class="container-top">
+	<div class="FunctionTitle">FreeBoard Modify</div>
+	<div class="FunctionTitleLine">
+		<img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
+	</div>
+</div>
 
 	<div class="container-2" style="width: 1170px;">
 	
         <form action="./update" method="post" class="formclass" enctype="multipart/form-data">
       
         <div class="container-table">
-				<!-- 				<table class="table table-striped"> -->
 				<table class="table">
 					<tr>
 						<td class="item">카테고리</td>

@@ -29,7 +29,6 @@
 			//폼 제출
 			$("form").submit()
 		})
-
 		//취소버튼 동작
 		$("#btnCancel").click(function() {
 			history.go(-1)
@@ -85,49 +84,34 @@
 */
 
 
-.btnWrite {
-	background: rgba(255, 255, 255, 0.01);
-/* 	border: 2px solid #F88080; */
+.btnWrite, .btnCancel {
+/* 	background: rgba(255, 255, 255, 0.01); */
+	background: #FC466B;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	border: 2px solid #F88080;
 	border-radius: 10px;
 	width:70px;
 	height:40px;
 	transition: all 0.4s;
-	color: #F88080;
-	
+	color: #ffffff;
 	margin-right: 10px;
 }
 
-.btnWrite:focus {
+.btnWrite:focus, .btnCancel:focus {
 	outline: none;
 }
 
-.btnWrite:hover {
-	background: linear-gradient(270deg, rgba(255, 194, 137, 0.929575) 4.09%, rgba(255, 43, 91, 0.812201) 99.99%, #4200FF 100%);
+.btnWrite:hover, .btnCancel:hover {
+	background: #FC466B;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	width:70px;
 	height:40px;
 	color: white;
 }
+
 		
-.btnCancel {
-	background: rgba(255, 255, 255, 0.01);
-	border: 2px solid #F88080;
-	border-radius: 10px;
-	width:70px;
-	height:40px;
-	transition: all 0.4s;
-	color: #F88080;
-}
-
-.btnCancel:focus {
-	outline: none;
-}
-
-.btnCancel:hover {
-	background: linear-gradient(270deg, rgba(245, 174, 108, 0.929575) 4.09%, rgba(255, 43, 91, 0.812201) 99.99%, #4200FF 100%);
-	color: white;
-}
-
 .container-button {
 	margin-top: 15px; 
 	display: flex; 
@@ -138,7 +122,13 @@
 
 
 <div class="container">
-	<h2 class="text-center">게시글 작성</h2>
+<!-- 	<h2 class="text-center">게시글 작성</h2> -->
+<div class="container-top">
+	<div class="FunctionTitle">FREE BOARD Write</div>
+	<div class="FunctionTitleLine">
+		<img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
+	</div>
+</div>
 
 	<div class="container-2" style="width: 1170px;">
 		<form action="/board/write" method="post" enctype="multipart/form-data">
@@ -160,6 +150,7 @@
 					<tr>
 						<td class="item">작성자</td>
 						<td>${id}</td>
+<%-- 						<td>${writeBoard.userId}</td> --%>
 					</tr>
 					<tr>
 						<td class="item">제목</td>

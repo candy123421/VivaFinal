@@ -65,6 +65,8 @@ public class BoardNoticeServiceImpl implements BoardNoticeService {
 	
 	@Override
 	public BoardNotice viewNotice(BoardNotice boardNotice) {
+		
+		//상세보기 조회 결과 리턴
 		return boardNoticeDao.select(boardNotice);
 	}
 	
@@ -92,7 +94,7 @@ public class BoardNoticeServiceImpl implements BoardNoticeService {
 	
 	
 	@Override
-	public void delete(Board boardNotice) {
+	public void delete(BoardNotice boardNotice) {
 		boardNoticeDao.delete(boardNotice);
 	}
 

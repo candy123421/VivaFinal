@@ -12,12 +12,10 @@ import java.util.UUID;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import web.controller.BoardController;
@@ -26,8 +24,6 @@ import web.dto.Board;
 import web.dto.Comments;
 import web.dto.Files;
 import web.dto.Likes;
-import web.dto.PackLike;
-import web.dto.Tag;
 import web.service.face.BoardService;
 import web.util.Paging;
 
@@ -39,187 +35,113 @@ public class BoardServiceImpl implements BoardService {
 	
 	private final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
-	
 	@Override
-	public Paging getPaging(Paging paramData, String keyword, String categoryType) {
+	public Paging getPaging(Paging paging, String keyword, String categoryType) {
+		logger.info("getPaging - ServiceImpl ❤️도착❤️");
 		
-		int totalCount = 0;
-		totalCount = boardDao.selectCntAll();
+		Paging page = null;
 		
-		if( categoryType != null && keyword == null ) {
-			totalCount = boardDao.selectCntAll(categoryType);
+		//키워드가 없는 경우,
+		if( keyword == null ) {
 			
-		} else if ( keyword != null && categoryType == null) {
-			totalCount = boardDao.selectCntAll(keyword);
-		} else if ( categoryType != null && keyword != null ) {
-			totalCount = boardDao.selectCntAll(categoryType, keyword);
-		}
-		
-		//v-페이징계산
-		Paging paging = new Paging(totalCount, paramData.getCurPage());
-		
-		return paging;
-	}
-	
-	
-	@Override
-	public List<Board> boardList(Paging paging, String userId, String keyword, String categoryType) {
-		
-		
-		if( categoryType == "free" && keyword == null ) {
-			return boardDao.selectAllBoardList(paging, categoryType);
+			//총 게시글 수 조회
+			int totalCount = boardDao.selectCntAll();
+			page = new Paging(totalCount, paging.getCurPage());			//페이징 계산
 			
-		} else if ( categoryType == "free" && keyword != null) {
-			return boardDao.selectAllBoardList(paging, categoryType, keyword);
-			
-		} else if ( categoryType == "qna" && keyword == null ) {
-			return boardDao.selectQnaBoardList(paging, categoryType);
-			
-		} else if (categoryType == "qna" && keyword != null) {
-			return boardDao.selectQnaBoardList(paging, categoryType, keyword);
-			
-		} else if ( categoryType == null && keyword != null  ) {
-			return boardDao.selectAllBoardListByKeyword(paging, keyword);
-			
-		} else if ( categoryType == null && keyword == null  ) {
-			return boardDao.selectAllBoardListByKeyword(paging); 
+			//키워드가 있는 경우
 		} else {
-			return null;
+			//키워드를 기준으로 총 게시글 수 조회
+			int totalCount = boardDao.selectCntAllByKeyword(keyword);
+//			page = new Paging(totalCount, paging.getCurPage());			//페이징 계산
+//	        page = paging.withKeyword(keyword).withCategoryType(categoryType);
+			page = new Paging(totalCount, paging.getCurPage())
+		            .withKeyword(keyword)
+		            .withCategoryType(categoryType);
 		}
-			
+		return page;
 	}
 	
-//	@Override
-//	public List<Board> boardList(Paging page,String userId, String keyword, String categoryType) {	
+	@Override
+	public List<Board> boardList(Paging paramData, String keyword, String categoryType) {	
+		logger.info("boardList - ServiceImpl ❤️도착❤️");
 		
-//		    if (keyword == null || keyword.isEmpty()) {
-//		        if (categoryType == null || categoryType.equals("all")) {
-//		            totalCount = boardDao.selectCntAll();
-//		            Paging paging2 = new Paging(curPage, totalCount);
-//		            boardList = boardDao.selectAllBoardList(paging2);
-//		            
-//		        } else if (categoryType.equals("free")) {
-//		            totalCount = boardDao.selectCntFree();
-//		            Paging paging2 = new Paging(curPage, totalCount);
-//		            boardList = boardDao.selectFreeBoardList(paging2);
-//		            
-//		        } else if (categoryType.equals("qna")) {
-//		            totalCount = boardDao.selectCntQna();
-//		            Paging paging2 = new Paging(curPage, totalCount);
-//		            boardList = boardDao.selectQnaBoardList(paging2);
-//				            
-//		        } else {
-//		            totalCount = 0; // 예시로 0으로 처리
-//		            Paging paging2 = new Paging(curPage, totalCount);
-//		            boardList = Collections.emptyList(); // 예시로 빈 리스트 반환
-//		        }
-//		    } else {
-//		        if (categoryType == null || categoryType.equals("all")) {
-//		            totalCount = boardDao.selectCntAllByKeyword(keyword);
-//		            Paging paging2 = new Paging(curPage, totalCount);
-//		            boardList = boardDao.selectAllBoardListByKeyword(paging2, keyword);
-//		            
-//		        } else if (categoryType.equals("free")) {
-//		            totalCount = boardDao.selectCntFreeByKeyword(keyword);
-//		            Paging paging2 = new Paging(curPage, totalCount);
-//		            boardList = boardDao.selectFreeBoardListByKeyword(paging2, keyword);
-//		            
-//		        } else if (categoryType.equals("qna")) {
-//		            totalCount = boardDao.selectCntQnaByKeyword(keyword);
-//		            Paging paging2 = new Paging(curPage, totalCount);
-//		            boardList = boardDao.selectQnaBoardListByKeyword(paging2, keyword);
-//		            
-//		        } else {
-//		            totalCount = 0; // 예시로 0으로 처리
-//		            boardList = Collections.emptyList(); // 예시로 빈 리스트 반환
-//		        }
-//		    }
-//		    page.setTotalCount(totalCount);
-//		    return boardList;
-//		}
+		List<Board> boardList;
+		int totalCount;
+	    Paging paging = new Paging(paramData.getTotalCount(), paramData.getCurPage());
+	    paging.setListCount(10);
+	    logger.info("paging ? : {}", paging);
 
-
-//		List<Board> boardList;
-//		Paging paging = null;
-//		
-//		if (keyword == null) {
-//		    int totalCount;
-//		    if (categoryType == null || categoryType.equals("all")) {
-//		        totalCount = boardDao.selectCntAll();
-//		    } else if (categoryType.equals("free")) {
-//		        totalCount = boardDao.selectCntFree();
-//		    } else if (categoryType.equals("qna")) {
-//		        totalCount = boardDao.selectCntQna();
-//		    } else {
-//		        // Handle invalid categoryType or return an appropriate count
-//		        totalCount = 0; // 예시로 0으로 처리
-//		    }
-//
-//		    paging = new Paging(totalCount, page.getCurPage());
-//
-//		    if (categoryType == null || categoryType.equals("all")) {
-//		        boardList = boardDao.selectAllBoardList(paging);
-//		        
-//		    } else if (categoryType.equals("free")) {
-//		        boardList = boardDao.selectFreeBoardList(paging);
-//		        
-//		    } else if (categoryType.equals("qna")) {
-//		        if (keyword != null) {
-//		            totalCount = boardDao.selectCntAllByKeyword(keyword);
-//		            paging = new Paging(totalCount, page.getCurPage());
-//		            boardList = boardDao.selectAllBoardListByKeyword(paging, keyword);
-//		            
-//		        } else {
-//		            boardList = boardDao.selectQnaBoardList(paging);
-//		        }
-//		    } else {
-//		        boardList = Collections.emptyList(); // 예시로 빈 리스트 반환
-//		    }
-//		} else {
-//			
-//		    int totalCount;
-//		    if (categoryType == null || categoryType.equals("all")) {
-//		        totalCount = boardDao.selectCntAllByKeyword(keyword);
-//		    } else if (categoryType.equals("free")) {
-//		        totalCount = boardDao.selectCntFreeByKeyword(keyword);
-//		    } else if (categoryType.equals("qna")) {
-//		        totalCount = boardDao.selectCntQnaByKeyword(keyword);
-//		    } else {
-//		        // Handle invalid categoryType or return an appropriate count
-//		        totalCount = 0; // 예시로 0으로 처리
-//		    }
-//
-//		    paging = new Paging(totalCount, page.getCurPage());
-//
-//		    if (categoryType == null || categoryType.equals("all")) {
-//		        boardList = boardDao.selectAllBoardListByKeyword(paging, keyword);
-//		    } else if (categoryType.equals("free")) {
-//		        boardList = boardDao.selectFreeBoardListByKeyword(paging, keyword);
-//		    } else if (categoryType.equals("qna")) {
-//		        boardList = boardDao.selectQnaBoardListByKeyword(paging, keyword);
-//		    } else {
-//		        boardList = Collections.emptyList(); // 예시로 빈 리스트 반환
-//		    }
-//		}
-//		return boardList = boardDao.selectAllBoardList(paging);
-//	}
-		
+	    	//키워드가 없는 경우,
+		    if (keyword == null || keyword.isEmpty()) {
+		    	
+		    	//카테고리 타입이 없거나(기본), 전체 선택 했을 때
+		        if (categoryType == null || categoryType.equals("all")) {
+		            totalCount = boardDao.selectCntAll();
+		            paging.setTotalCount(totalCount);
+		            
+		            boardList = boardDao.selectAllBoardList(paging);
+		        
+		            //카테고리 타입이 자유일 때
+		        } else if (categoryType.equals("free")) {
+		            totalCount = boardDao.selectCntFree();
+		            
+		            Paging page = new Paging(totalCount, paging.getCurPage());
+//		                    .withCategoryType(categoryType);
+		            		page.setCategoryType(categoryType);
+		                page.setTotalCount(totalCount);
+		                boardList = boardDao.selectFreeBoardList(page);
+		        
+		                logger.info("카테고리 타입이 자유일 때 - page : {}", page);
+		                logger.info("카테고리 타입이 자유일 때 - boardList : {}", boardList);
+		                logger.info("카테고리 타입이 자유일 때 - page담고 있는 boardList : {}", boardDao.selectFreeBoardList(page));
+		                logger.info("카테고리 타입이 자유일 때 - totalPage : {}", page.getTotalPage());
+		                logger.info("카테고리 타입이 자유일 때 - paging.getCurPage() : {}", paging.getCurPage());
+		                logger.info("카테고리 타입이 자유일 때 - page.getCurPage() : {}", page.getCurPage());
+		                
+		            //카테고리 타입이 질문일 때    		
+		        } else if (categoryType.equals("qna")) {
+		            totalCount = boardDao.selectCntQna();
+		            Paging page = new Paging(totalCount, paging.getCurPage())
+		                    .withCategoryType(categoryType);
+            		page.setTotalCount(totalCount);
+		            boardList = boardDao.selectQnaBoardList(page);
+		            
+		            
+		            logger.info("카테고리 타입이 질문일 때 - totalCount : {}", totalCount);
+		            logger.info("카테고리 타입이 질문일 때 - paging.getTotalPage() : {}", paging.getTotalPage());
+		            
+		        } else {
+		            totalCount = 0; // 예시로 0으로 처리
+		            boardList = Collections.emptyList(); // 예시로 빈 리스트 반환
+		        }
+		    
+		    //키워드가 있는 경우,
+		    } else {
+		    	
+		    	//카테고리 타입이 없거나(기본), 전체 선택 했을 때
+		        if (categoryType == null || categoryType.equals("all")) {
+		            totalCount = boardDao.selectCntAllByKeyword(keyword);
+		            boardList = boardDao.selectAllBoardListByKeyword(paging, keyword);
+		        
+		          //카테고리 타입이 자유일 때
+		        } else if (categoryType.equals("free")) {
+		            totalCount = boardDao.selectCntFreeByKeyword(keyword);
+		            boardList = boardDao.selectFreeBoardListByKeyword(paging, keyword);
+		            
+		          //카테고리 타입이 질문일 때  
+		        } else if (categoryType.equals("qna")) {
+		            totalCount = boardDao.selectCntQnaByKeyword(keyword);
+		            boardList = boardDao.selectQnaBoardListByKeyword(paging, keyword);
+		            
+		        } else {
+		            totalCount = 0; // 예시로 0으로 처리
+		            boardList = Collections.emptyList(); // 예시로 빈 리스트 반환
+		        }
+		    }
+		    paramData.setTotalCount(totalCount);
+		    return boardList;
+		}
 	
-	
-//		//키워드 검색
-//		if( keyword == null ) {
-//			int totalCount = boardDao.selectCntAll();
-//			paging = new Paging(totalCount, page.getCurPage() );
-//			
-//			return boardDao.selectBoardList(paging);
-//			
-//		} else {
-//			int totalCount = boardDao.selectCntAllByKeyword(keyword);
-//			paging = new Paging(totalCount, page.getCurPage());
-//
-//			return boardDao.selectBoardListByKeword(paging, keyword);
-//		}
-		
 
 	@Override
 	public Board view(Board viewBoard) {
@@ -545,6 +467,7 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 	}
+
 
 
 

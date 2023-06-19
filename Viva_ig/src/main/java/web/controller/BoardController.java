@@ -278,6 +278,7 @@ public class BoardController {
       int boardNo = viewBoard.getBoardNo();
       
       List<Comments> commentList = boardService.viewComment(comments);
+      
       model.addAttribute("commentList", commentList);
       
       return commentList;

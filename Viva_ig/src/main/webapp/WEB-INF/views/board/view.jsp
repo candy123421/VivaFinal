@@ -53,17 +53,27 @@
 	margin-bottom: 10px;
 }
 
+.btnUpdate, .btnDelete {
+background: #EDE574;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to left, #E1F5C4, #EDE574);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to left, #E1F5C4, #EDE574); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-.btnUpdate, .btnList, .btnComment, .btnList, .btnCommentUpdate, .btnCommentDelete {
-	background: #FC466B;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	border: 2px solid #F88080;
+	border: 2px solid white;
 	border-radius: 10px;
-	width:150px;
+	width:100px;
 	height:40px;
 	transition: all 0.4s;
-	color: #ffffff;
+	color: black;
+}
+
+.btnUpdate:hover, .btnDelete:hover {
+background: #EDE574;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to left, #E1F5C4, #EDE574);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to left, #E1F5C4, #EDE574); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+	width: 100px;
+	height:40px;
+	color: black;
 }
 
 .btnList {
@@ -72,23 +82,23 @@
 	background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	border: 2px solid #F88080;
 	border-radius: 10px;
+	margin-top: 100px;
 	width:120px;
 	height:40px;
 	transition: all 0.4s;
 	color: #ffffff;
 }
-
-.btnUpdate:focus, .btnDelete:focus, .btnList:focus, .btnComment:focus, .btnCommentUpdate:focus, .btnCommentDelete:focus  {
-	outline: none;
-}
-
-.btnUpdate:hover, .btnDelete:hover, .btnList:hover, .btnComment:hover, .btnCommentUpdate:hover, .btnCommentDelete:hover {
+.btnList:hover {
 	background: #FC466B;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	width:70px;
+	width:120px;
 	height:40px;
 	color: white;
+}
+
+.btnUpdate:focus, .btnDelete:focus, .btnList:focus, .btnComment:focus, .btnCommentUpdate:focus, .btnCommentDelete:focus  {
+	outline: none;
 }
 
 .btnCommentList {
@@ -111,6 +121,29 @@ input[name="commListContent"] {
 	height: 120px;
     border: 1px solid grey;
     border-radius: 10px;
+}
+
+.btnCommentUpdate, .btnCommentDelete, .btnComment {
+background: #C9D6FF;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to left, #E2E2E2, #C9D6FF);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to left, #E2E2E2, #C9D6FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+	border: 2px solid white;
+	border-radius: 10px;
+	width: 100px;
+	height: 40px;
+	transition: all 0.4s;
+	color: black;
+}
+
+.btnComment:hover, .btnCommentUpdate:hover, .btnCommentDelete:hover {
+background: #C9D6FF;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to left, #E2E2E2, #C9D6FF);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to left, #E2E2E2, #C9D6FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+	width:100px;
+	height:40px;
+	color: black;
 }
 
 .like{
@@ -196,8 +229,7 @@ input[name="commListContent"] {
       <button class="btnDelete" id="btnDelete">삭제</button>
     </div>
   </c:if>
-  <c:if test="${adminlogin }">
-  
+  <c:if test="${adminlogin}">
       <button class="btnDelete" id="btnDelete">삭제</button>
   </c:if>
 </div>
@@ -235,9 +267,8 @@ input[name="commListContent"] {
 					<button type="button" class="btnCommentUpdate" data-comm-no="${commentList.commNo}">댓글 수정</button>
 					<button type="button" class="btnCommentDelete" data-comm-no="${commentList.commNo}">댓글 삭제</button>
 	       		</c:if>
-	       		<c:if test="${adminlogin }">
+	       		<c:if test="${adminlogin}">
 					<button type="button" class="btnCommentDelete" data-comm-no="${commentList.commNo}">댓글 삭제</button>
-	       		
 	       		</c:if>
 				</div>
 		<hr>

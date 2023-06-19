@@ -41,47 +41,55 @@
 	border-radius: 10px;
 }
 
-.btnUpdate {
-	background: rgba(255, 255, 255, 0.01);
-/* 	border: 2px solid #F88080; */
-	border: 2px solid #F88080;
-	border-radius: 10px;
-	width:70px;
-	height:40px;
-	transition: all 0.4s;
-	color: #F88080;
-	
-	margin-right: 10px;
-}
-
 .btnUpdate:focus {
 	outline: none;
 }
 
+.btnUpdate {
+	background: #FC5C7D;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	border: 2px solid #F88080;
+	border-radius: 10px;
+	width:100px;
+	height:40px;
+	transition: all 0.4s;
+	color: white;
+	
+	margin-right: 10px;
+}
+
 .btnUpdate:hover {
-	background: linear-gradient(270deg, rgba(255, 194, 137, 0.929575) 4.09%, rgba(255, 43, 91, 0.812201) 99.99%, #4200FF 100%);
-	width:70px;
+	background: #FC466B;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	width:100px;
 	height:40px;
 	color: white;
 }
 		
-.btnCancel {
-	background: rgba(255, 255, 255, 0.01);
-	border: 2px solid #F88080;
-	border-radius: 10px;
-	width:70px;
-	height:40px;
-	transition: all 0.4s;
-	color: #F88080;
-}
-
 .btnCancel:focus {
 	outline: none;
 }
 
-.btnCancel:hover {
-	background: linear-gradient(270deg, rgba(245, 174, 108, 0.929575) 4.09%, rgba(255, 43, 91, 0.812201) 99.99%, #4200FF 100%);
+.btnCancel {
+	background: #FC5C7D;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	border: 2px solid #F88080;
+	border-radius: 10px;
+	width:100px;
+	height:40px;
+	transition: all 0.4s;
 	color: white;
+}
+
+.btnCancel:hover {
+	background: #FC466B;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	color: white;
+	width:100px;
 }
 
 .container-button {
@@ -183,7 +191,7 @@ $(document).ready(function() {
 							
 							<td id="newFile">
 								<label class="form-label" for="file">새로운 첨부파일</label>
-								<input type="file" id="file" name="file" class="form-control" multiple="multiple">
+								<input type="file" id="file" name="file" class="form-control" multiple="multiple" style="margin-bottom: 10px;">
 								<span>** 새로운 파일로 첨부하면 기존 파일은 삭제됩니다</span>
 							</td>
 						</td>

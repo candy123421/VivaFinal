@@ -85,10 +85,9 @@ th {
 }
 
 .btnWrite {
-background: #EDE574;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to left, #E1F5C4, #EDE574);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to left, #E1F5C4, #EDE574); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+	background: #EDE574;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to left, #E1F5C4, #EDE574);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to left, #E1F5C4, #EDE574); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	border: 2px solid #ffffff;
 	border-radius: 10px;
 	width:160px;
@@ -102,7 +101,7 @@ background: linear-gradient(to left, #E1F5C4, #EDE574); /* W3C, IE 10+/ Edge, Fi
 	background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	border: 2px solid #F88080;
 	border-radius: 10px;
-	width:120px;
+	width:100px;
 	height:40px;
 	transition: all 0.4s;
 	color: #ffffff;
@@ -116,9 +115,9 @@ background: linear-gradient(to left, #E1F5C4, #EDE574); /* W3C, IE 10+/ Edge, Fi
 	background: #FC466B;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	width:70px;
+	width:100px;
 	height:40px;
-	color: black;
+	color: white;
 }
 
 .container-button {
@@ -143,9 +142,10 @@ background: linear-gradient(to left, #E1F5C4, #EDE574); /* W3C, IE 10+/ Edge, Fi
 
 .paging {
 	width: 1400px;
-	margin: 0 auto;
+	margin-top: 30px;
 	text-align: -webkit-center;
 }
+
 </style>
 
 <div class="container-top">
@@ -253,8 +253,8 @@ background: linear-gradient(to left, #E1F5C4, #EDE574); /* W3C, IE 10+/ Edge, Fi
 
 		<!---------- 버튼 ---------->
 		<div class="container-button">
-		  <div class="d-flex justify-content-between align-items-center">
-		    <div class="totalBoardCount">total : ${paging.totalCount }</div>
+		  <div class="d-flex justify-content-between align-items-center" style="float: right;">
+<%-- 		    <div class="totalBoardCount">total : ${paging.totalCount }</div> --%>
 		    <c:choose>
 		      <c:when test="${empty login}">
 		        <a href="/viva/login"><button type="button" class="btnWrite">게시글 작성하기</button></a>

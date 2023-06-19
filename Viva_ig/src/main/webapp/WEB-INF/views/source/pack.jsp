@@ -726,11 +726,11 @@ div[data-itemtype='line']{
 						  success : function(res) {
 							console.log("ajax 성공") 
 							console.log(res)
-							if(res.result == true) {
+							if(res == true) {
 								$("#cartpackmsg").css("display","inline-block")
 								$("#cartpackmsg").text("You get a Pack!");
 								
-							} else if(res.result == false) {
+							} else if(res == false) {
 								$("#cartpackmsg").css("display","inline-block")
 								$("#cartpackmsg").text("You Already get a Pack!");
 							}

@@ -178,7 +178,7 @@ div[data-itemtype='line']{
 }
 #infoline{
 	display : grid;
-	grid-template-columns: 100px 1200px
+	grid-template-columns: 150px 1150px
 }
 .already{
 	font-family:"typeFont", "sans-serif;";

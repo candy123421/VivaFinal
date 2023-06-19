@@ -340,7 +340,7 @@ public class CartController {
 		return result;
 	}
 	@RequestMapping("/filedown")
-	public void filedown(HttpSession session, Cart user, Model model) {
+	public String filedown(HttpSession session, Cart user, Model model) {
 		logger.info("cart/filedown - list()");
 		logger.info("세션userNo : {}", session.getAttribute("userNo"));
 		
@@ -355,6 +355,8 @@ public class CartController {
 		logger.info("리스트출력 : {}", cartList);
 		
 		model.addAttribute("list", cartList);
+		
+		return "down";
 		
 	}
 	

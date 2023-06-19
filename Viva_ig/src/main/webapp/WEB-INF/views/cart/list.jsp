@@ -171,18 +171,18 @@ th {
 								<!--  조건. 팩 이미지는 팩 우선. 없으면 개별 소스 이미지 찾기 -->
 								<c:choose>
 									<c:when test="${!empty i.PACK_IMG_STOREDNAME }">
-										<img alt="img" src="../upload/${i.PACK_IMG_STOREDNAME }" width="50" height="50">
+										<a href="/source/pack?packNo=${i.PACK_NO}" ><img alt="img" src="../upload/${i.PACK_IMG_STOREDNAME }" width="50" height="50"></a>
 									</c:when>
 									
 									<c:otherwise>
-										<img alt="img" src="../upload/${i.SOURCE_IMG_STOREDNAME }" width="50" height="50">
+										<a href="/source/pack?packNo=${i.PACK_NO}" ><img alt="img" src="../upload/${i.SOURCE_IMG_STOREDNAME }" width="50" height="50"></a>
 									</c:otherwise>
 								</c:choose>
 							</div>
 						</td>
 						
 						<td><!--  3. 음원 title -->
-							<span id="source_title">${i.SOURCE_NAME}</span>
+							<a href="/source/pack?packNo=${i.PACK_NO}" style="text-decoration-line: none; color:black;"><span id="source_title">${i.SOURCE_NAME}</span></a>
 						</td>
 						
 						<td><!--  4. 태그 -->
@@ -282,7 +282,6 @@ th {
 					console.log("배열", checkArr);
 					console.log("배열", checkArr[0]);
 			    
-				
 				//ajax로 데이터 전달하기
 				$.ajax({
 			    	url : "/cart/buy",
@@ -290,32 +289,33 @@ th {
 			    	data : { chbox : checkArr },
 			    	success: function(response) {
 			    	console.log("ajax 성공");
-// 					location.href = "/cart/list";	
 					
 					console.log("응답 : ",response);
 					
-					
-					if(response = 1) {
+					if(response == 1) {
 						console.log("전부 구매했었던 소스입니다.")
+						reloadCartList();	//리스트 부분 리로드 하기!
 						
+						reloadHeaderCredit(); //헤더 크레딧 잔액 변경
 						var result = confirm ("이미 구매한 항목입니다. 구매항목을 확인하시겠습니까?")
 				  			
 					  		if(result) {
 					           //yes => 내가 받은 음원 페이지로 이동함
 					            location.replace('/users/mysource');
-					        
 					  		} else {
 					            //no
 					        }
 					}
 					
-					if(response = 2) {
+					if(response == 2) {
 						console.log("아주 깨끗하게 산적 없는 소스들만 선택했군요!")
+						reloadHeaderCredit(); //헤더 크레딧 잔액 변경
 						
 						//다운로드 진행..ㅠㅠ
 					}
-					if(response = 3) {
+					if(response == 3) {
 						console.log("잔액 부족..ㅠㅠ")
+						reloadHeaderCredit(); //헤더 크레딧 잔액 변경
 						
 						var result = confirm ("크레딧이 부족합니다. 크레딧을 충전하시겠습니까?")
 				  			
@@ -436,6 +436,13 @@ th {
 					}
 				});
 			});
+			
+			
+			function reloadCartList() {
+				 console.log("리스트 부분을 리로드하겠다.")
+				 $('#order').load(location.href + ' #order')
+				
+			}
 			function reloadHeaderCredit() {
 				 console.log("리로드하고싶다")
 				 /*  주의 ! location.href+ 이후 특정 영역을 입력해줄 때, 빈 칸 하나를 입력해주지 않으면 오류 발생한다 */

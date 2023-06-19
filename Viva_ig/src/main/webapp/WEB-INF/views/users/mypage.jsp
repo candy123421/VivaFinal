@@ -130,6 +130,15 @@ a {
 					<div class="contentMedium">${userInfo.userEmail}</div>
 					<div class="contentSmall">연락처</div>
 					<div class="contentMedium">${userInfo.userMobile}</div>
+					<div class="contentSmall">회원등급</div>
+					<div class="contentMedium">
+						<c:if test="${grade eq '0'}">
+							<c:out value="일반회원" />
+						</c:if>
+	  					<c:if test="${grade eq '1'}">
+	  						<c:out value="사운드디자이너 회원" />
+	  					</c:if>
+  					</div>
 				</div>
 			</div>		
 			<div class="contentSide"></div>	

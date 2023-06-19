@@ -171,8 +171,12 @@
 					$("#barsourcename").html( cname )
 					
 					var cimg = $(".trimg").eq(cur+idx).attr("data-img")
+					
 					$("#playimg").attr("src","../upload/"+cimg)
 					
+// 					if( cimg == 'default-image.webp') {
+// 						$("#playimg").attr("src","../resources/img/"+cimg)
+// 					}
 					
 					
  					//음원소스 재생 시간 계산 부분

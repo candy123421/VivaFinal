@@ -674,7 +674,7 @@ div[data-itemtype='line']{
 						  		$(".cartmsg").eq(cidx).text('Get Source!')
 						  		$(".cartmsg").eq(cidx).css("display","block")
 						  		
-					  		} else if (!res) {
+					  		} else if (res.result == false) {
 					  			
 	                        	 $(".cartmsg").eq(cidx).text('You already have!')
 	                         	 $(".cartmsg").eq(cidx).css("display","block")

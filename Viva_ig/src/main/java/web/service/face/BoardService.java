@@ -12,6 +12,7 @@ import web.dto.Comments;
 import web.dto.Files;
 import web.dto.Likes;
 import web.dto.Tag;
+import web.dto.Users;
 import web.util.Paging;
 
 public interface BoardService {
@@ -36,8 +37,13 @@ public interface BoardService {
 	 * @param page - 페이징 정보 객체
 	 * @return 페이징이 적용된 게시글 목록
 	 */
-	public List<Board> boardList(Paging paging, String userId, String keyword, String categoryType);
+//	public List<Board> boardList(Paging paging, String userId, String keyword, String categoryType);
+//	public List<Board> boardList(Paging paging, String keyword, String categoryType);
 
+//	public List<Board> boardList(Paging paramData, String userId, String keyword, String categoryType);
+	public List<Board> boardList(Paging paging, String keyword, String categoryType);
+
+	
 	/**
 	 * 게시글 상세보기
 	 * 
@@ -171,6 +177,16 @@ public interface BoardService {
 	 * @param check
 	 */
 	public void deleteCheckBoard(int[] check);
+
+	/**
+	 * 보현작성 
+	 * 세션에있는 userno로 id랑 nick가져오기
+	 * @param attribute
+	 * @return
+	 */
+	public Users getUserInfo(int attribute);
+
+
 
 
 

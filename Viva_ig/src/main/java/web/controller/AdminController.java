@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import web.dto.Admin;
 import web.dto.AdminAnswer;
+import web.dto.Board;
 import web.dto.ExchangeInfo;
 import web.dto.UserQuestion;
 import web.dto.Users;
 import web.service.face.AdminService;
+import web.service.face.BoardService;
 import web.util.Paging;
 
 @Controller
@@ -28,6 +30,7 @@ public class AdminController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired AdminService adminService;
+	@Autowired BoardService boardService;
 	
 	@GetMapping("/admin/login")
 	public void adminloginget() {
@@ -222,7 +225,62 @@ public class AdminController {
 	
 	}
 	
+	@GetMapping("/admin/boardlist")
+	public void adminboardlist(  Model model, Paging paramData, Board board,
+			@RequestParam(name = "categoryType", required = false, defaultValue = "all") String categoryType,
+			@RequestParam(name = "keyword", required = false) String keyword ) {
+
+		logger.info("/admin/boardlist [GET]");
+		
+		logger.info("categoryType: {}", categoryType);
+		logger.info("keyword: {}", keyword);
+		
+		//페이징 계산
+		Paging paging = boardService.getPaging(paramData, keyword, categoryType);
+		paging.setCategoryType(categoryType);
+		
+		//게시글 목록 조회
+		//List<Board> boardList = boardService.boardList(paging, userId, keyword, categoryType);
+		List<Board> boardList = boardService.boardList(paging, keyword, categoryType);
+		logger.info("boardList : {}", boardList);
+		
+		model.addAttribute("paging", paging);
+		//model.addAttribute("userId", userId);
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("categoryType", categoryType);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("board", board);
+		
+	}
 	
+	@PostMapping("/admin/boardlist")
+	public void adminboardlistPost(  Model model, Paging paramData, Board board,
+			@RequestParam(name = "categoryType", required = false, defaultValue = "all") String categoryType,
+			@RequestParam(name = "keyword", required = false) String keyword ,
+			@RequestParam(value="check") int[] check) {
+
+		logger.info("/admin/boardlist [GET]");
+		//페이징 계산
+		Paging paging = boardService.getPaging(paramData, keyword, categoryType);
+		paging.setCategoryType(categoryType);
+		
+		//게시글 목록 조회
+		//List<Board> boardList = boardService.boardList(paging, userId, keyword, categoryType);
+		List<Board> boardList = boardService.boardList(paging, keyword, categoryType);
+		logger.info("boardList : {}", boardList);
+		
+		model.addAttribute("paging", paging);
+		//model.addAttribute("userId", userId);
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("categoryType", categoryType);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("board", board);
+		
+		
+		   //관리자일때 리스트에서 선택한거 삭제가능하게 만드는거 - 보현
+		   logger.info("***check의값 : ***{}",check);
+		   boardService.deleteCheckBoard(check);
+	}
 //===========================================================
 	//환전 관리
 	@RequestMapping("/admin/credit")

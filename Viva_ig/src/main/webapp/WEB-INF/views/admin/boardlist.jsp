@@ -7,6 +7,25 @@
 
 
 <script type="text/javascript">
+//보현작성  -전체선택 
+function checkSelectAll(checkbox)  {
+  const selectall 
+    = document.querySelector('input[name="checkall"]');
+  
+  if(checkbox.checked === false)  {
+    selectall.checked = false;
+  }
+}
+
+function selectAll(selectAll)  {
+  const checkboxes 
+     = document.getElementsByName('check');
+  
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = selectAll.checked
+  })
+}
+
 	function selectCategoryType() {
 
 		console.log("실행 되는거지?");
@@ -153,7 +172,7 @@ th {
 </style>
 
 <div class="container-top">
-	<div class="FunctionTitle" style="margin: 0 auto;">FREE BOARD</div>
+	<div class="FunctionTitle" style="margin: 0 auto;">Admin FREE BOARD</div>
 	<div class="FunctionTitleLine" style="margin: 0 auto;">
 		<img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
 	</div>
@@ -216,16 +235,18 @@ th {
 				placeholder=" 검색어를 입력하세요">
 			<button class="btnSearch" id="btnSearch">검색</button>
 		</div>
+		</form>
 		<!-- search_wrap end -->
 		<!--    </form> -->
 		<!-------------------- 검색 끝 -------------------->
 
-
+	<form action="/admin/boardlist" method="post" name="form-head" style="width: 1400px; margin: 0 auto;">
 		<div id="formAfter">
 			<div class="container-list">
 				<table class="table" style="width: 1400px;">
 					<thead>
 						<tr class="thead">
+							<th class="table-th"><input type='checkbox' name='checkall'  value='selectall' onclick='selectAll(this)'/>Check All</th>
 							<th class="table-th">게시글 번호</th>
 							<th class="table-th">카테고리</th>
 							<th class="table-th">게시글 제목</th>
@@ -239,10 +260,11 @@ th {
 						<c:forEach var="boardList" items="${boardList}">
 							<tr class="board-item">
 								<!--  첫번째 row 시작 -->
+								<td><input type='checkbox' name='check' value="${boardList.boardNo }"  onclick='checkSelectAll(this)'/></td>
 								<td class="table-td"><span>${boardList.boardNo }</span></td>
 								<td class="table-td"><span>${boardList.categoryType }</span></td>
 								<td class="table-td"><a
-									href="./view?boardNo=${boardList.boardNo }"><span>${boardList.boardTitle }</span></a></td>
+									href="/board/view?boardNo=${boardList.boardNo }"><span>${boardList.boardTitle }</span></a></td>
 								<td class="table-td"><span>${boardList.userId}</span></td>
 								<td class="table-td"><span>${boardList.boardHit }</span></td>
 								<td class="table-td"><span><fmt:formatDate
@@ -258,106 +280,22 @@ th {
 		<!---------- 버튼 ---------->
 		<div class="container-button">
 		  <div class="d-flex justify-content-between align-items-center">
+		  <button id="btnDelete" name="btnDelete" class="btn btn-outline-danger btn-sm" style = "height: 30px; width: 100px; margin-right: 100px;">선택 삭제</button>
+	
 		    <div class="totalBoardCount">total : ${paging.totalCount }</div>
-		    <c:choose>
-		      <c:when test="${empty login}">
-		        <a href="/viva/login"><button type="button" class="btnWrite">게시글 작성하기</button></a>
-		      </c:when>
-		      <c:when test="${not empty login and login}">
 		        <div>
 		          <a href="./write"><button type="button" id="btnWrite" class="btnWrite" name="btnWrite">게시글 작성하기</button></a>
 		        </div>
-		      </c:when>
-		    </c:choose>
 		  </div>
 		</div> <!-- container-button end -->
 		
 	</form>
 </div> <!-- container end -->
 
-<!-- <!-- 		<script> -->
-<!-- // 		/*  ===== 말머리 유지하게 하기 ===== */ -->
-<!-- // 		$(document).ready(function() { -->
-
-<!-- // 			//select 태그를 동적쿼리로 등록하는것.  -->
-<!-- //             var filterSelect = $(".filterSelect") // jQuery  -->
-
-<!-- //             //select 태그에 변화가 감지되면 -->
-<!-- //             filterSelect.on("change", function(e) { -->
-
-<!-- //             e.preventDefault(); -->
-<!-- //             console.log("변화감지..!"); -->
-
-<!-- //              var status = this.options[this.selectedIndex].value; -->
-<!-- //              console.log("status : ", status); -->
-
-<!-- //              var index = $(this.options[this.selectedIndex]).data('index'); -->
-<!-- //             console.log("index변수 선언 : ",index)   //[Object object] 로 출력됨 -->
-
-<!-- //             $('.boardCategory[data-index=' + index + ']').addClass('clicked_menu'); -->
-<!-- //             console.log($('.boardCategory[data-index=' + index + ']').addClass('clicked_menu')) -->
-
-<!-- //             $('.boardCategory[data-index!=' + index + ']').removeClass('clicked_menu'); -->
-<!-- //             console.log($('.boardCategory[data-index!=' + index + ']').removeClass('clicked_menu')) -->
-
-
-<!-- //              $.ajax({ -->
-<!-- //                 url: "/board/category", -->
-<!-- //                 type : "POST", -->
-<!-- //                 data : {categoryType : status}, -->
-<!-- //                 dataType : "json", -->
-<!-- //                 success : function(data) { -->
-<!-- //                    console.log("ajax 성공"); -->
-<!-- //                    console.log(data) -->
-
-<!-- //                    // 서버에서 받아온 데이터를 테이블에 적용하는 로직 작성 -->
-<!-- //                    var list = data; // 서버에서 받아온 ArrayList -->
-<!-- //                    var tableBody = $("#formAfter").find("tbody"); // 테이블의 tbody 요소 선택 -->
-<!-- //                    console.log(list) -->
-<!-- //                    console.log(tableBody) -->
-<!-- //                    // 기존의 tbody 내용 제거 -->
-<!-- //                      tableBody.empty(); -->
-
-<!-- //                    //컨트롤러에서 받아온 데이터를 반복하면서 가상의 테이블에 가상의 행을 추가! -->
-<!-- //                    $.each(list, function(index, item) { -->
-<!-- //                       var row = $("<tr>").addClass("board-item"); -->
-
-<!-- //                       //각 열에 데이터 추가 -->
-<!-- //                       var boardNo = $("<td>").html('<span>' + item.boardNo + ' </span>'); -->
-<!-- //                       var categoryType=$("<td>") -->
-
-<!-- //                       if(item.categoryType === 'free') { -->
-<!-- //                          categoryType.html('<span>자유</span>') -->
-<!-- //                       } else if (item.categoryType === 'all') { -->
-<!-- //                          categoryType.html('<span>전체</span>') -->
-<!-- //                       } else if (item.categoryType === 'qna') { -->
-<!-- //                          categoryType.html('<span>질문</span>') -->
-<!-- //                       } -->
-
-<!-- // //                  var boardTitle = $("<td>").html('<span>' + item.boardTitle + ' </span>'); -->
-<!-- // 					var boardTitle = $("<td>").html('<a href="./view?boardNo=' + item.boardNo + '"><span>' + item.boardTitle + '</span></a>'); -->
-<!-- // 					var userId = $("<td>").html('<span>' + item.userId + ' </span>'); -->
-<!-- // 					var boardHit = $("<td>").html('<span>' + item.boardHit + ' </span>'); -->
-<!-- // 					var boardDate = $("<td>").html('<span>' + item.boardDate + '</span>'); -->
-
-<!-- // 					//새롭게 동적으로 만든 행을 동적으로 만든 테이블에 추가 -->
-<!-- // 					row.append(boardNo, categoryType, boardTitle, userId, boardHit, boardDate ); -->
-<!-- // 					tableBody.append(row); -->
-<!-- //                    }) -->
-<!-- //                 }, -->
-<!-- //                 error : function() { -->
-<!-- //                    console.log("AJAX 실패") -->
-<!-- //                 } -->
-
-<!-- //              })/*  ajax END */ -->
-<!-- //              })/*  change 이벤트  END */ -->
-
-<!-- //          });/*  document.ready END */ -->
-<!-- <!--          </script> -->
 
 
 
 
-<c:import url="/WEB-INF/views/layout/boardpaging.jsp" />
+<c:import url="/WEB-INF/views/layout/adminboardpaging.jsp" />
 
 <c:import url="/WEB-INF/views/layout/footer.jsp" />

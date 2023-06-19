@@ -47,7 +47,7 @@ Admin은 로그인을 해주세요
 안녕하세요!<br>
 <span style="font-size: 1.5em; color: red;"> ${adminNo }</span>번 Admin
 <span style="font-size: 1.5em; color: red;"> ${adminloginid }</span>님<br>
-<a href="/board/list"><button class="btn btn-outline-secondary">Board</button></a>
+<a href="/admin/boardlist"><button class="btn btn-outline-secondary">Board</button></a>
 <a href="/qna/list"><button class="btn btn-outline-secondary">Q&A</button></a>
 <a href="/admin/credit"><button class="btn btn-outline-secondary">Credit</button></a>
 <a href="/admin/userlist"><button class="btn btn-outline-secondary">User</button></a>

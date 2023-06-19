@@ -45,13 +45,6 @@ public interface BoardNoticeDao {
 	public List<BoardNotice> selectBoardNoticeListByKeyword(@Param("paging") Paging page, @Param(value="keyword") String keyword);
 
 	/**
-	 * 조회하려는 공지게시글의 조회수를 1 증가시킨다
-	 * 
-	 * @param boardNotice - 조회된 공지게시글 번호
-	 */
-	public void hit(BoardNotice boardNotice);
-
-	/**
 	 * 공지게시글 번호를 이용하여 공지게시글을 조회한다
 	 * 
 	 * @param boardNotice - 조회하려는 공지게시글 번호
@@ -78,6 +71,6 @@ public interface BoardNoticeDao {
 	 * 
 	 * @param boardNotice - 삭제할 공지게시글의 글번호
 	 */
-	public void delete(Board boardNotice);
+	public void delete(BoardNotice boardNotice);
 
 }

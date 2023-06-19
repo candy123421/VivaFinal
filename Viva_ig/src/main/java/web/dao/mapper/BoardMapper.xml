@@ -5,101 +5,137 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="web.dao.face.BoardDao">	
-  	
-  	<select id="selectCntAll" resultType="int">
+  
+ 	<select id="selectCntAll" resultType="int">
   		SELECT count(*) FROM board
-  		<choose>
-	  		<when test="cateogoryType == 'free' &amp;&amp; keyword == null">
-	  			WHERE category_Type = #{categoryType}
-	  		</when>
-	  		<when test="cateogoryType == 'free' &amp;&amp; keyword != null">
-	  			WHERE category_Type = #{categoryType} AND BOARD_TITLE like '%' || #{keyword} || '%'
-	  		</when>
-	  		
-	  		
-	  		<when test="cateogoryType == 'qna' &amp;&amp; keyword == null">
-	  			WHERE category_Type = #{categoryType}
-	  		</when>
-	  		<when test="cateogoryType == 'qna' &amp;&amp; keyword != null">
-	  			WHERE category_Type = #{categoryType} AND BOARD_TITLE like '%' || #{keyword} || '%'
-	  		</when>
-	  		
-	  		<when test="categoryType == null &amp;&amp; keyword != null">
-	  			WHERE BOARD_TITLE like '%' || #{keyword} || '%'
-	  		</when>
-	  		
-  		</choose>
   	</select>
   	
-  	<select id="selectAllBoardList" resultType="web.dto.Board" parameterType="Map">
-        SELECT * FROM (
-         SELECT rownum rnum, B.* FROM (
-            select * from Board
-            <choose>
-               <when test="categoryType == 'free' &amp;&amp; keyword == null">
-               WHERE category_Type = #{categoryType}
-               </when>
-               
-               <when test="categoryType == 'free' &amp;&amp; keyword != null">
-               WHERE category_Type = #{categoryType} AND BOARD_TITLE like '%' || #{keyword} || '%'
-               </when>
-               
-               <otherwise>     
-               </otherwise>
-            </choose>
-             order by BOARD_NO DESC
-         ) B
-      ) Board
-      WHERE rnum BETWEEN #{paging.startNo } AND #{paging.endNo }
-     </select>
-     
-  	<select id="selectQnaBoardList" resultType="web.dto.Board" parameterType="Map">
-        SELECT * FROM (
-         SELECT rownum rnum, B.* FROM (
-            select * from Board
-            <choose>
-               <when test="categoryType == 'qna' &amp;&amp; keyword == null">
-               WHERE category_Type = #{categoryType}
-               </when>
-               
-               <when test="categoryType == 'qna' &amp;&amp; keyword != null">
-               WHERE category_Type = #{categoryType} AND BOARD_TITLE like '%' || #{keyword} || '%'
-               </when>
-               
-               <otherwise>     
-               </otherwise>
-            </choose>
-             order by BOARD_NO DESC
-         ) B
-      ) Board
-      WHERE rnum BETWEEN #{paging.startNo } AND #{paging.endNo }
-     </select>
-     
-  	<select id="selectAllBoardListByKeyword" resultType="web.dto.Board" parameterType="Map">
-        SELECT * FROM (
-         SELECT rownum rnum, B.* FROM (
-            <choose>
-               <when test="categoryType == null &amp;&amp; keyword != null">
-               select * from Board
-               WHERE BOARD_TITLE like '%' || #{keyword} || '%'
-               </when>
-               
-               <when test="categoryType == null &amp;&amp; keyword == null">
-               select * from Board
-               </when>
-               
-               <otherwise>     
-               </otherwise>
-            </choose>
-             order by BOARD_NO DESC
-         ) B
-      ) Board
-      WHERE rnum BETWEEN #{paging.startNo } AND #{paging.endNo }
-     </select>
+  	<select id="selectCntFree" resultType="int">
+  		SELECT count(*) FROM board
+  		WHERE category_type = 'free'
+  	</select>
+  	
+  	<select id="selectCntQna" resultType="int">
+  		SELECT count(*) FROM board
+  		WHERE category_type = 'qna'
+  	</select>
+  	
+  		<select id="selectAllBoardList" resultType="web.dto.Board" parameterType="web.util.Paging">
+		SELECT * FROM (
+	        SELECT rownum rnum, B.* FROM (
+	            SELECT * FROM board
+	                LEFT OUTER JOIN users ON board.user_no = users.user_no
+	            WHERE (category_type = #{categoryType, jdbcType=VARCHAR, javaType=java.lang.String, typeHandler=org.apache.ibatis.type.StringTypeHandler}
+	                OR (#{categoryType, jdbcType=VARCHAR, javaType=java.lang.String, typeHandler=org.apache.ibatis.type.StringTypeHandler} IS NULL
+	                    AND 'all' = 'all'))
+	            ORDER BY board_no DESC
+	        ) B
+	    )
+	    WHERE rnum BETWEEN #{startNo} AND #{endNo}
+	</select>
 
+    <select id="selectFreeBoardList" resultType="web.dto.Board" parameterType="web.util.Paging">
+		SELECT * FROM (
+			SELECT rownum rnum, B.*  FROM (
+				SELECT * FROM board
+					LEFT OUTER JOIN users ON board.user_no = users.user_no
+					WHERE category_type = 'free'
+					ORDER BY board_no DESC
+				) B
+			)
+		WHERE rnum BETWEEN #{startNo} AND #{endNo}
+	</select>
 
+    <select id="selectQnaBoardList" resultType="web.dto.Board" parameterType="web.util.Paging">
+		SELECT * FROM (
+			SELECT rownum rnum, B.* FROM (
+				SELECT * FROM board
+					LEFT OUTER JOIN users ON board.user_no = users.user_no
+				WHERE category_type = 'qna'
+				ORDER BY board_no DESC
+			) B
+		  )
+		WHERE rnum BETWEEN #{startNo} AND #{endNo}
+	</select>
+	
+	<select id="selectCntQnaByKeyword" parameterType="string" resultType="int">
+	  SELECT COUNT(*) FROM board
+	  WHERE category_type = 'qna' AND board_title LIKE '%' || #{keyword} || '%'
+	</select>
+	<select id="selectCntFreeByKeyword" parameterType="string" resultType="int">
+	  SELECT COUNT(*) FROM board
+	  WHERE category_type = 'free' AND board_title LIKE '%' || #{keyword} || '%'
+	</select>
+	
 
-
+  	<select id="selectCntAllByKeyword" parameterType="string" resultType="int">
+  		SELECT count(*) FROM board
+	  		<if test="keyword != null and keyword != ''">
+	  			WHERE board_title LIKE '%' || #{keyword} || '%' 
+	  		</if>
+  	</select>
+  	
+  	<select id="selectAllBoardListByKeyword" resultType="web.dto.Board" parameterType="java.util.Map">
+		SELECT * FROM (
+		    SELECT rownum rnum, B.* FROM (
+		        SELECT * FROM board
+					LEFT OUTER JOIN users ON board.user_no = users.user_no
+					WHERE board_title LIKE '%' || #{keyword} || '%'
+					ORDER BY board_no DESC
+		        ) B
+		    ) BOARD
+		WHERE rnum BETWEEN #{paging.startNo} AND #{paging.endNo}
+  	</select>
+  	
+  	<select id="selectFreeBoardListByKeyword" resultType="web.dto.Board" parameterType="java.util.Map">
+	    SELECT * FROM (
+	        SELECT rownum rnum, B.* FROM (
+	            SELECT * FROM board
+	            	LEFT OUTER JOIN users ON board.user_no = users.user_no
+	           	 	WHERE board_title LIKE '%' || #{keyword} || '%'
+					AND category_type = 'free'
+					ORDER BY board_no DESC
+				) B
+			) BOARD
+	    WHERE rnum BETWEEN #{paging.startNo} AND #{paging.endNo}
+	</select>
+  	
+  	<select id="selectQnaBoardListByKeyword" resultType="web.dto.Board" parameterType="java.util.Map">
+	    SELECT * FROM (
+	        SELECT rownum rnum, B.* FROM (
+	            SELECT * FROM board
+	            	LEFT OUTER JOIN users ON board.user_no = users.user_no
+	           	 	WHERE board_title LIKE '%' || #{keyword} || '%'
+					AND category_type = 'qna'
+					ORDER BY board_no DESC
+				) B
+			) BOARD
+	    WHERE rnum BETWEEN #{paging.startNo} AND #{paging.endNo}
+	</select>
+  	
+  	
+	<select id="selectBoardListByKeyword" parameterType="java.util.Map" resultType="web.dto.Board">
+	  SELECT *
+	  FROM (
+	    SELECT ROW_NUMBER() OVER (ORDER BY BOARD_NO DESC) AS rn, B.*
+	    FROM BOARD B
+	    WHERE
+	      <choose>
+	        <when test="categoryType != null">
+	          CATEGORY_TYPE = #{categoryType}
+	        </when>
+	        <otherwise>
+	          1=1
+	        </otherwise>
+	      </choose>
+	      <if test="keyword != null and keyword != ''">
+	        AND BOARD_TITLE LIKE '%' || #{keyword} || '%'
+	      </if>
+	    )
+	    WHERE rn BETWEEN #{paging.startNo} AND #{paging.endNo}
+	    ORDER BY BOARD_NO DESC
+	</select>
+	     
   	
   	<update id="hit" parameterType="web.dto.Board">
   		UPDATE board
@@ -213,5 +249,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	DELETE FROM comments
  	WHERE board_no = #{boardNo}
  	</delete>
+ 	
+ 	<select id="selectUserInfo" resultType="web.dto.Users" parameterType="int">
+ 	select * from users 
+ 	where user_no = #{attribute}
+ 	</select>
  	
   </mapper>

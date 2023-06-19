@@ -169,8 +169,8 @@ function selectProcess() {
 	  
 	  
 		  <div class="qnalist">
-		  <input type="hidden" value="${qProcess }" name="qProcess">
-		  <input type="hidden" value="${keyword }" name="keyword">
+<%-- 		  <input type="hidden" value="${qProcess }" name="qProcess"> --%>
+<%-- 		  <input type="hidden" value="${keyword }" name="keyword"> --%>
 				<div class="item">문의번호</div>
 				<div class="item">문의제목</div>
 				<div class="item">처리여부

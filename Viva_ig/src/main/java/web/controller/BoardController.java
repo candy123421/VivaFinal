@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
@@ -36,6 +37,7 @@ import web.dto.SourceLike;
 import web.dto.Tag;
 import web.dto.Users;
 import web.service.face.BoardService;
+import web.service.face.UsersService;
 import web.util.Paging;
 
 @Controller
@@ -46,80 +48,35 @@ public class BoardController {
    
    private final Logger logger = LoggerFactory.getLogger(BoardController.class);
    
-   @GetMapping("/list")
-   public void list( Paging paramData, Board board, Model model, String userId, String keyword, String categoryType ) {
-      logger.info("board/list [GET] ❤️도착❤️");
-      
-      logger.info("CCCCCCCCCCCCCCCCCCCCCCategoryType {}", categoryType);
-      if (categoryType == null) {
-          categoryType = "all";
-      }
-      
-      //페이징 계산
-      Paging paging = boardService.getPaging(paramData, keyword, categoryType);
-      
-      //게시글 목록 조회
-      List<Board> boardList = boardService.boardList(paging, userId, keyword, categoryType);
-      
-      model.addAttribute("paging", paging);
-      model.addAttribute("boardList", boardList);
-      model.addAttribute("userId", userId);
-      model.addAttribute("keyword", keyword);
-      model.addAttribute("categoryType", categoryType);
-      
-      logger.info("ccccccccccccccccccccccccategoryType {}", categoryType);
-      logger.info("1");
-   }
+	@GetMapping("/list")
+//	public String list(  Model model, Paging paramData, Board board, String userId
+	public String list(  Model model, Paging paramData, Board board,
+					@RequestParam(name = "categoryType", required = false, defaultValue = "all") String categoryType,
+					@RequestParam(name = "keyword", required = false) String keyword ) {
    
-   @PostMapping("/list")
-   public String listpost(
-		   Paging paramData, Model model, String userId, Board board, String keyword, String categoryType,
-		   @RequestParam(value="check") int[] check ) {
-	   
-	   logger.info("/board/list [Post]");
+	   logger.info("board/list [GET] ❤️도착❤️");
+
+	   logger.info("categoryType: {}", categoryType);
+	   logger.info("keyword: {}", keyword);
 	   
 	   //페이징 계산
-	   Paging paging = boardService.getPaging(paramData, keyword, categoryType);
-	   logger.info("check : {}", check);
-	   
-	   //게시글 목록 조회
-	   List<Board> boardList = boardService.boardList(paging, userId, keyword, categoryType);
-	   model.addAttribute("paging", paging);
-	   model.addAttribute("boardList", boardList);
-	   model.addAttribute("userId", userId);
-	   model.addAttribute("categoryType", board.getCategoryType());
-	   
-	   //관리자일때 리스트에서 선택한거 삭제가능하게 만드는거 - 보현
-	   logger.info("***check의값 : ***{}",check);
-	   boardService.deleteCheckBoard(check);
-	   
-	   return "redirect:./list";
+	    Paging paging = boardService.getPaging(paramData, keyword, categoryType);
+	    paging.setCategoryType(categoryType);
+      
+	    //게시글 목록 조회
+//	    List<Board> boardList = boardService.boardList(paging, userId, keyword, categoryType);
+	    List<Board> boardList = boardService.boardList(paging, keyword, categoryType);
+	    logger.info("boardList : {}", boardList);
+      
+	    model.addAttribute("paging", paging);
+//	    model.addAttribute("userId", userId);
+	    model.addAttribute("boardList", boardList);
+	    model.addAttribute("categoryType", categoryType);
+	    model.addAttribute("keyword", keyword);
+	    model.addAttribute("board", board);
+	    
+	   return "/board/list"; // 리스트를 보여줄 뷰 이름을 반환합니다.
    }
-   
-   @RequestMapping("/category")
-   @ResponseBody
-   public List<Board> category( Paging paging, Board board, Model model, String userId, String keyword, String categoryType ) {
-      logger.info("board/category [GET] ❤️도착❤️");
-      
-      logger.info("CCCCCCCCCCCCCCCCCCCCCCategoryType {}", categoryType);
-      if (categoryType == null || "all".equals(categoryType)) {
-    	  logger.info("전체 카테고리 선택!");
-          categoryType = "all";
-      }
-      //페이징 계산
-      Paging page = boardService.getPaging(paging, keyword, categoryType);
-      
-      //게시글 목록 조회
-      List<Board> boardList = boardService.boardList(page, userId, keyword, categoryType);
-      model.addAttribute("page", page);
-      model.addAttribute("boardList", boardList);
-      model.addAttribute("userId", userId);
-      model.addAttribute("keyword", keyword);
-      model.addAttribute("categoryType", board.getCategoryType());
-      
-      return boardList;
-   }
-   
    
    @RequestMapping("/view")
    public String view( Board viewBoard, Model model, List<MultipartFile> file, HttpSession session, Comments comments, Likes like ) {
@@ -140,7 +97,6 @@ public class BoardController {
       
       //첨부파일 정보 모델값 전달
       List<Files> boardFile = boardService.getAttachFile(viewBoard);
-      
       model.addAttribute("boardFile", boardFile);
       
       //댓글 조회
@@ -164,6 +120,12 @@ public class BoardController {
          model.addAttribute("likeCheck", likeCheck);
       }
       
+      //보현작성 세션에있는 no로 id 랑 nick 가져오기(nick가져올지 id가져올지 고민중)
+      Users userInfo = boardService.getUserInfo((int)session.getAttribute("userNo"));
+      
+      model.addAttribute("userInfo", userInfo);
+      
+      
       return "board/view";
    }      
    
@@ -179,6 +141,9 @@ public class BoardController {
       
       int userNo = (Integer)session.getAttribute("userNo");
       writeBoard.setUserNo(userNo);
+      String userId = (String)session.getAttribute("userId");
+      writeBoard.setUserId(userId);
+      logger.info("userId : {}", userId);
       
       boardService.write( writeBoard, file );
       model.addAttribute("writeBoard", writeBoard);
@@ -216,22 +181,22 @@ public class BoardController {
       return "board/update";
    }
    
-   @PostMapping("/update")
-       public String update(Board updateBoard, List<MultipartFile> file, Model model) {
-      logger.info("update[POST] -> Controller 도착! {}");
+	@PostMapping("/update")
+		public String update(Board updateBoard, List<MultipartFile> file, Model model) {
+		logger.info("update[POST] -> Controller 도착! {}");
 
-      updateBoard.getBoardNo();
+		updateBoard.getBoardNo();
       
-      //게시글+첨부파일 수정
-      boardService.update(updateBoard, file);
-      model.addAttribute("updateBoard", updateBoard);
+		//게시글+첨부파일 수정
+		boardService.update(updateBoard, file);
+		model.addAttribute("updateBoard", updateBoard);
       
-      //첨부파일 정보 모델값 전달
-      List<Files> boardFile = boardService.getAttachFile(updateBoard);
-      model.addAttribute("boardFile", boardFile);
+		//첨부파일 정보 모델값 전달
+		List<Files> boardFile = boardService.getAttachFile(updateBoard);
+		model.addAttribute("boardFile", boardFile);
       
-       return "redirect:./view?boardNo=" + updateBoard.getBoardNo();
-       }
+		return "redirect:./view?boardNo=" + updateBoard.getBoardNo();
+	}
       
    
    @RequestMapping("/delete")
@@ -297,10 +262,7 @@ public class BoardController {
                e.printStackTrace();
             }
          }
-//      model.addAttribute("likeCount", likeCount);
-      
-//      logger.info("나와라!!!!!!!!!!!!!!! {}", likeCount);
-      logger.info("나와라!!!!!!!!!!!!!!! {}", board.getLikeCount());
+      logger.info("likeCount : {}", board.getLikeCount());
    }
    
    
@@ -341,20 +303,17 @@ public class BoardController {
    @PostMapping("/commentUpdate")
    @ResponseBody
    public List<Comments> commentUpdate(Comments comments, Model model) {
+	   logger.info("/commentUpdate ❤️도착❤️ ");
       
-      logger.info("@@@@@@@@@@@@ commentUpdate()");
-      
-       logger.info("$$$$$$$$$$$$$$$$$$comments {}", comments);
+       logger.info("comments {}", comments);
        
-      boardService.updateComment(comments);
+       boardService.updateComment(comments);
       
       //수정된 댓글 리스트 조회
        List<Comments> commentList = boardService.viewComment(comments);
-//       model.addAttribute("commentList", commentList);
        
 //      return "redirect:./view?boardNo=" + board.getBoardNo();
        return commentList;
-//      return null;
    }
 
    
@@ -381,5 +340,6 @@ public class BoardController {
        return commentList;
    }
    
+
 
 }

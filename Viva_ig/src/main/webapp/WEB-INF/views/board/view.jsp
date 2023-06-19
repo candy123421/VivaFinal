@@ -24,7 +24,6 @@
 
 .file-container {
   width: 100%;
-  height: 200px; /* 설정한 공간의 높이 */
   overflow: hidden;
   display: ${empty boardFile ? 'none' : 'block'};
 }
@@ -145,20 +144,24 @@ input[name="commListContent"] {
 	        
 	        <tr>
 <!-- 			<td class="table-td" valign="top" style="height: 300px; width: 1200px;"> -->
-			<td class="content" colspan="4" style="height: 300px; width: 1000px;">${viewBoard.boardContent }</td>
-	        </tr>
-	      </table>
-	      <!---------- 첨부파일 ---------->
+			<td class="content" colspan="4" style="height: 300px; width: 1000px;">${viewBoard.boardContent }
+			
 			<div class="file-container">
 				<c:if test="${not empty boardFile }">
 					<div class="file" >
 						<c:forEach var="boardFile" items="${boardFile}">
-							<a href="./download?fileNo=${boardFile.fileNo }">${boardFile.fileNo}</a>
 							<img src="/boardUpload/${boardFile.storedname }" alt="❤️"><hr>
+							<a href="./download?fileNo=${boardFile.fileNo }">${boardFile.fileNo}</a>
 						</c:forEach>
 					</div>
 				</c:if>
 			</div>
+			
+			
+			</td>
+	        </tr>
+	      </table>
+	      <!---------- 첨부파일 ---------->
 	        
 <div class="like-wrapper">
   <div class="like-container">
@@ -181,6 +184,10 @@ input[name="commListContent"] {
       <button class="btnDelete" id="btnDelete">삭제</button>
     </div>
   </c:if>
+  <c:if test="${adminlogin }">
+  
+      <button class="btnDelete" id="btnDelete">삭제</button>
+  </c:if>
 </div>
 
 	<!-------------------- 댓글 시작 -------------------->
@@ -189,8 +196,8 @@ input[name="commListContent"] {
 		<form action="/commentWrite" method="post"><hr>
 			<input type="hidden" name="boardNo" value="${viewBoard.boardNo}">
 			<div style="display: flex; align-items: center; margin-bottom: 10px;">
-				<img src="../resources/icon/comment.svg" style="width: 45px;">
-			<div style="margin-left: 10px;">${viewBoard.userId}</div>
+				<img src="../../../profile/${userProfile}" style="width: 45px; border-radius:50px;">
+			<div style="margin-left: 10px;">${userInfo.userNick}</div>
 			</div>
 			<input id="commContent" name="commContent" placeholder="댓글을 작성하세요" rows="4" cols="100"><br>
 			<div style="display: flex; justify-content: flex-end;">
@@ -215,6 +222,10 @@ input[name="commListContent"] {
 				<c:if test="${id eq viewBoard.userId}">
 					<button type="button" class="btnCommentUpdate" data-comm-no="${commentList.commNo}">댓글 수정</button>
 					<button type="button" class="btnCommentDelete" data-comm-no="${commentList.commNo}">댓글 삭제</button>
+	       		</c:if>
+	       		<c:if test="${adminlogin }">
+					<button type="button" class="btnCommentDelete" data-comm-no="${commentList.commNo}">댓글 삭제</button>
+	       		
 	       		</c:if>
 				</div>
 		<hr>

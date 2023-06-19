@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.multipart.MultipartFile;
 
 import web.dto.Board;
 import web.dto.Comments;
 import web.dto.Files;
 import web.dto.Likes;
-import web.dto.Tag;
+import web.dto.Users;
 import web.util.Paging;
 
 public interface BoardDao {
@@ -272,6 +271,13 @@ public interface BoardDao {
 	 * @return
 	 */
 	public List<Board> selectBoardBySearch(Map<String, Object> list);
+
+	/**
+	 * 세션에있는 userno로 id,nick 가져오기
+	 * @param attribute
+	 * @return
+	 */
+	public Users selectUserInfo(int attribute);
 
 
 

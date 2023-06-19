@@ -389,7 +389,7 @@ font-weight: bold;
 	<li>
       <div class="menu"><i class="fa fa-mobile"></i><a class="subCategory" href="/source/sound">Admin</a><i class="fa fa-chevron-down"></i></div>
       <ul class="submenu">
-		<li><a href="/board/list">Board</a></li>
+		<li><a href="/admin/boardlist">Board</a></li>
 		<li><a href="/qna/list">Q&A</a></li>
 		<li><a href="/admin/credit">Credit</a></li>
 		<li><a href="/admin/userlist">UserList</a></li>

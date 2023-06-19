@@ -6,7 +6,7 @@
 
 	<%-- 첫 페이지로 이동 --%>
 	<c:if test="${page.curPage ne 1}">
-		<li class="page-item"><a href="./list?categoryType=${categoryType}" class="page-link">&larr; 처음</a></li>
+		<li class="page-item"><a href="./list?categoryType=${categoryType}" class="page-link" style="width: 60px;">&larr; 처음</a></li>
 	</c:if>
 
 	<%-- 이전 페이징 리스트로 이동 --%>
@@ -54,7 +54,7 @@
 	</c:choose>
 
 	<c:if test="${paging.curPage ne paging.totalPage}">
-		<li class="page-item"><a href="./list?curPage=${paging.totalPage}&amp;categoryType=${categoryType}&amp;keyword=${keyword}" class="page-link">끝 &rarr;</a></li>
+		<li class="page-item"><a href="./list?curPage=${paging.totalPage}&amp;categoryType=${categoryType}&amp;keyword=${keyword}" class="page-link" style="width: 60px;">끝 &rarr;</a></li>
 	</c:if>
 
 	</ul>

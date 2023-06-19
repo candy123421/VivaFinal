@@ -24,6 +24,7 @@ import web.dto.Board;
 import web.dto.Comments;
 import web.dto.Files;
 import web.dto.Likes;
+import web.dto.Users;
 import web.service.face.BoardService;
 import web.util.Paging;
 
@@ -467,7 +468,11 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 	}
-
+	
+	@Override
+	public Users getUserInfo(int attribute) {
+		return boardDao.selectUserInfo(attribute);
+	}
 
 
 

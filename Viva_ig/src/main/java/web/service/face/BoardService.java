@@ -12,6 +12,7 @@ import web.dto.Comments;
 import web.dto.Files;
 import web.dto.Likes;
 import web.dto.Tag;
+import web.dto.Users;
 import web.util.Paging;
 
 public interface BoardService {
@@ -176,6 +177,14 @@ public interface BoardService {
 	 * @param check
 	 */
 	public void deleteCheckBoard(int[] check);
+
+	/**
+	 * 보현작성 
+	 * 세션에있는 userno로 id랑 nick가져오기
+	 * @param attribute
+	 * @return
+	 */
+	public Users getUserInfo(int attribute);
 
 
 

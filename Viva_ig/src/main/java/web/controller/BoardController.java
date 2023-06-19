@@ -120,6 +120,12 @@ public class BoardController {
          model.addAttribute("likeCheck", likeCheck);
       }
       
+      //보현작성 세션에있는 no로 id 랑 nick 가져오기(nick가져올지 id가져올지 고민중)
+      Users userInfo = boardService.getUserInfo((int)session.getAttribute("userNo"));
+      
+      model.addAttribute("userInfo", userInfo);
+      
+      
       return "board/view";
    }      
    
@@ -333,5 +339,7 @@ public class BoardController {
 
        return commentList;
    }
+   
+
 
 }

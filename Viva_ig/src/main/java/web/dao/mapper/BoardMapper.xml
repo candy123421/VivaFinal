@@ -250,4 +250,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	WHERE board_no = #{boardNo}
  	</delete>
  	
+ 	<select id="selectUserInfo" resultType="web.dto.Users" parameterType="int">
+ 	select * from users 
+ 	where user_no = #{attribute}
+ 	</select>
+ 	
   </mapper>

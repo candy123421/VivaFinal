@@ -52,7 +52,7 @@ function selectProcess() {
 	place-content: center;
 }
 
-.menu{
+.m{
 	width: 1050px; 
 	margin: 0 auto;
 	display: grid;
@@ -250,7 +250,7 @@ function selectProcess() {
 		
 		</div>
 	  
-	  <div class="menu">
+	  <div class="m">
 		<a href="/qna/question" ><button class="question">문의하기</button></a>
 	  </div>
 	  

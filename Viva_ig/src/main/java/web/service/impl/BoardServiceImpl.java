@@ -437,7 +437,7 @@ public class BoardServiceImpl implements BoardService {
 	
 	 
 	@Override
-	public List<Comments> viewComment(Comments comments) {
+	public List<Map<String,Object>> viewComment(Comments comments) {
 		return boardDao.selectComment(comments);
 	}
 	

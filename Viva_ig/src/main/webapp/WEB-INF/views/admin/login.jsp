@@ -29,7 +29,7 @@
 <form action="./login" method="post">
 <div class="text-center" style="margin-left: 555px;">
 <input type="text" id="adminId" name="adminId" class="form-control" placeholder="Admin ID"><br>
-<input type="text" id="adminPw" name="adminPw" class="form-control" placeholder="Admin PW"><br>
+<input type="password" id="adminPw" name="adminPw" class="form-control" placeholder="Admin PW"><br>
 </div>
 
 <div class="text-center"  style="margin-top: 20px;">

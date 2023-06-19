@@ -156,7 +156,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		</selectKey>
   		
   		INSERT INTO board ( board_no, board_title, board_content, board_date, category_type, board_hit, board_like, user_no )
-  		VALUES ( #{boardNo}, #{boardTitle}, #{boardContent}, sysdate, #{categoryType}, 0, 0, #{userNo} )
+  		VALUES ( #{boardNo}, #{boardTitle}, #{boardContent}, current_date, #{categoryType}, 0, 0, #{userNo} )
   	</insert>
   	
   	<insert id="insertFile" parameterType="web.dto.Files">
@@ -218,16 +218,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE board_no = #{boardNo} AND user_no = #{userNo}
   	</select>
   	
-  	<select id="selectComment" resultType="web.dto.Comments" parameterType="int">
-  		SELECT COMM_NO, COMM_CONTENT, COMM_DATE, BOARD_NO, USER_NO
-  		FROM Comments
-  		WHERE board_no = #{boardNo}
-  		ORDER BY comm_no DESC
+  	<select id="selectComment" resultType="Map" parameterType="Map">
+		select * from comments c
+		inner join users u on u.user_no=c.user_no
+		inner join userprofile p on u.user_no=p.user_no
+		where board_no=#{boardNo}
+		order by comm_no desc
   	</select>
   	
 	<insert id="insertComment" parameterType="web.dto.Comments">
   		INSERT INTO Comments (COMM_NO, COMM_CONTENT, COMM_DATE, BOARD_NO, USER_NO)
-  		VALUES ( comments_seq.nextval, #{commContent}, sysdate, #{boardNo}, 1)	
+  		VALUES ( comments_seq.nextval, #{commContent}, current_date, #{boardNo}, #{userNo})	
   	</insert>
   	
   	<update id="updateComment" parameterType="web.dto.Comments">

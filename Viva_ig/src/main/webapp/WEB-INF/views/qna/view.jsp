@@ -56,7 +56,7 @@
 	margin: 0 auto;
 	
 }
-.menu{
+.m{
 	width: 1050px; 
 	margin: 0 auto;
 	display: grid;
@@ -109,9 +109,9 @@
 </div>
 <div class = first>
 	<div class="t">
-		<div class="item">유저 번호:${userQuestion.userNo }</div>
-		<div class="item">유저 닉네임:${users.userNick }</div>
-		<div class="item">유저 아이디:${users.userId }</div>
+		<div class="item">Number:${userQuestion.userNo }</div>
+		<div class="item">Nick:${users.userNick }</div>
+		<div class="item">ID:${users.userId }</div>
 		<div class="item">문의번호:${userQuestion.qNo}</div>
 		<div class="item">처리여부:${userQuestion.qProcess }</div>
 		<div class="item">문의 작성일:<fmt:formatDate value="${userQuestion.qDate }" pattern="yyyy-MM-dd [E] a hh:mm"/></div>
@@ -146,7 +146,7 @@
 	
 	
 	</c:if>
-	<div class="menu">
+	<div class="m">
 		<a href="/qna/list"><button class="list">목록</button></a>
 	</div>
 		
@@ -156,7 +156,7 @@
 		</c:when>
 		
 		<c:when test="${not empty adminlogin and adminlogin && process eq 0}">
-			<div class="menu">
+			<div class="m">
 				<a href="/qna/answer?qNo=${userQuestion.qNo }"><button class="list">답변하기 </button></a>
 			</div>
 		</c:when>

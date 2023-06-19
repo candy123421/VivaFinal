@@ -54,35 +54,40 @@
 }
 
 
-.btnUpdate, .btnList, .btnComment, .btnList, .btnCommentUpdate, .btnCommentDelete {
-	background: #FC466B;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+.btnUpdate, .btnList, .btnComment, .btnList, .btnCommentUpdate, .btnCommentDelete , .btnDelete {
+	background: #FFFFFF;  /* fallback for old browsers */
 	border: 2px solid #F88080;
 	border-radius: 10px;
-	width:150px;
+	width:70px;
 	height:40px;
 	transition: all 0.4s;
-	color: #ffffff;
+	color: #F88080;
 }
 
 .btnList {
-	background: #FC5C7D;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	background: #FFFFFF;  /* fallback for old browsers */
 	border: 2px solid #F88080;
 	border-radius: 10px;
 	width:120px;
 	height:40px;
 	transition: all 0.4s;
-	color: #ffffff;
+	color: #F88080;
 }
 
 .btnUpdate:focus, .btnDelete:focus, .btnList:focus, .btnComment:focus, .btnCommentUpdate:focus, .btnCommentDelete:focus  {
 	outline: none;
 }
+.btnList:hover{
+	background: #FC466B;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	width:120px;
+	height:40px;
+	color: white;
+}
 
-.btnUpdate:hover, .btnDelete:hover, .btnList:hover, .btnComment:hover, .btnCommentUpdate:hover, .btnCommentDelete:hover {
+
+.btnUpdate:hover, .btnDelete:hover,  .btnComment:hover, .btnCommentUpdate:hover, .btnCommentDelete:hover {
 	background: #FC466B;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -117,16 +122,26 @@ input[name="commListContent"] {
 	cursor: pointer;
 }
 
+#titleWrap{
+	width: 1400px;
+	margin: 0 auto;
+	font-size: 2.5rem;
+	font-weight: bold;
+	margin-bottom: 30px;
+}
+
 </style>
 
 <!-- <div class="container"> -->
 <!-- <h1>FREE BOARD View</h1> -->
 <!-- <hr> -->
-<div class="container-top">
-	<div class="FunctionTitle" style="margin: 0 auto;">FREE BOARD View</div>
-	<div class="FunctionTitleLine"  style="margin: 0 auto; margin-top: 30px;">
-		<img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
-	</div>
+<div id="titleWrap">
+<div class="FunctionTitle">
+  FREE BOARD View
+</div>
+<div class="FunctionTitleLine1">
+   <img class="FunctionTilteLine" src="../../../resources/icon/Line.svg" style="margin-top:15px; margin-bottom: 15px; width:1400px;">
+</div>
 </div>
 
 
@@ -209,11 +224,11 @@ input[name="commListContent"] {
 			<input type="hidden" name="boardNo" value="${viewBoard.boardNo}">
 			<div style="display: flex; align-items: center; margin-bottom: 10px;">
 				<img src="../../../profile/${userProfile}" style="width: 45px; border-radius:50px;">
-			<div style="margin-left: 10px;">${userInfo.userNick}</div>
+			<div style="margin-left: 10px;">${userInfo.userNick }</div>
 			</div>
 			<input id="commContent" name="commContent" placeholder="댓글을 작성하세요" rows="4" cols="100"><br>
 			<div style="display: flex; justify-content: flex-end;">
-				<button type="button" id="btnComment" class="btnComment" style="margin-left: auto;">댓글 작성</button>
+				<button type="button" id="btnComment" class="btnComment" style="margin-left: auto;">작성</button>
 			</div>
 		<hr>
 		</form>
@@ -221,22 +236,22 @@ input[name="commListContent"] {
 	<!---------- 댓글 목록 ---------->
 	<div id="commentList" class="commentList">
 		<c:forEach items="${commentList}" var="commentList">
-			<input type="hidden" name="commboardNo" value="${commentList.boardNo}">
-			<input type="hidden" value="${commentList.commNo}">
+			<input type="hidden" name="commboardNo" value="${commentList.BOARD_NO}">
+			<input type="hidden" value="${commentList.COMM_NO}">
 			<div style="display: flex; align-items: center; margin-bottom: 10px;">
-			  <img src="../resources/icon/profile.svg" style="width: 45px;">
-			  <div style="margin-left: 10px;">${viewBoard.userId}</div>
+			  <img src="../../../profile/${commentList.STOREDNAME}" style="width: 45px; border-radius:50px;">
+			  <div style="margin-left: 10px;">${commentList.USER_NICK}</div>
 			  <div style="flex: 1;"></div>
-			  <div name="writeDate" style="order: 2;"><fmt:formatDate value="${commentList.commDate}" pattern="yyyy-MM-dd hh:mm" /></div>
+			  <div name="writeDate" style="order: 2;"><fmt:formatDate value="${commentList.COMM_DATE}" pattern="yyyy-MM-dd hh:mm" /></div>
 			</div>
-			<input id="commContent-${commentList.commNo}" name="commListContent" value="${commentList.commContent}" readonly="readonly"><br>
+			<input id="commContent-${commentList.COMM_NO}" name="commListContent" value="${commentList.COMM_CONTENT}" readonly="readonly"><br>
 				<div class="btnCommentList" style="margin-top: 50px;">
-				<c:if test="${id eq viewBoard.userId}">
-					<button type="button" class="btnCommentUpdate" data-comm-no="${commentList.commNo}">댓글 수정</button>
-					<button type="button" class="btnCommentDelete" data-comm-no="${commentList.commNo}">댓글 삭제</button>
+				<c:if test="${id eq commentList.USER_ID}">
+					<button type="button" class="btnCommentUpdate" data-comm-no="${commentList.COMM_NO}">수정</button>
+					<button type="button" class="btnCommentDelete" data-comm-no="${commentList.COMM_NO}">삭제</button>
 	       		</c:if>
 	       		<c:if test="${adminlogin }">
-					<button type="button" class="btnCommentDelete" data-comm-no="${commentList.commNo}">댓글 삭제</button>
+					<button type="button" class="btnCommentDelete" data-comm-no="${commentList.COMM_NO}">삭제</button>
 	       		
 	       		</c:if>
 				</div>

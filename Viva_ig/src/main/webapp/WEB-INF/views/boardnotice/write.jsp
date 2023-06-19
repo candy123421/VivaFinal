@@ -17,6 +17,11 @@ $(document).ready(function() {
 		$("form").submit();
 	})
 })
+	
+	function updateContents() {
+		//스마트 에디터에 작성된 내용을 textarea#content에 반영한다
+		oEditors.getById["noticeContent"].exec("UPDATE_CONTENTS_FIELD", [])
+	}
 </script>
 
 <c:choose>
@@ -57,6 +62,17 @@ $(document).ready(function() {
 	
 	</c:when>
 </c:choose>
+
+<!-- 스마트에디터 초기화 -->
+<script type="text/javascript">
+	var oEditors = [];
+	nhn.husky.EZCreator.createInIFrame({
+		oAppRef : oEditors,
+		elPlaceHolder : "noticeContent", //에디터가 적용될 <textarea>의 id속성값
+		sSkinURI : "../resources/se2/SmartEditor2Skin.html",
+		fCreator : "createSEditor2"
+	})
+</script>
 
 
 <c:import url="/WEB-INF/views/layout/footer.jsp" />

@@ -33,20 +33,22 @@ public class BoardNoticeController {
 	@Autowired BoardNoticeService boardNoticeService;
 	
 	@RequestMapping("/list")
-	public void noticeList(Paging paging, Model model, String keyword) {
+	public void noticeList(Paging paramData, Model model, String keyword) {
 		logger.info("/boardnotice/list ❤️도착❤️");
 		
 		//페이징 계산
-		Paging page = boardNoticeService.getPaging(paging, keyword);
+		Paging paging = boardNoticeService.getPaging(paramData, keyword);
 		
 		//게시글 목록 조회
-		List<BoardNotice> boardNoticeList = boardNoticeService.boardNoticeList(page, keyword);
+		List<BoardNotice> boardNoticeList = boardNoticeService.boardNoticeList(paging, keyword);
 		
-		model.addAttribute("page", page);
+		model.addAttribute("paging", paging);
 		model.addAttribute("boardNoticeList", boardNoticeList);
 		model.addAttribute("keyword", keyword);
 		
 		logger.info("boardNoticeList : {}", boardNoticeList);
+		logger.info("paging : {}", paging);
+		logger.info("keyword : {}", keyword);
 	}
 	
 	@RequestMapping("/view")

@@ -85,13 +85,16 @@
 
 
 .btnWrite, .btnCancel {
-/* 	background: rgba(255, 255, 255, 0.01); */
-	background: #FC466B;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+/* 	background: #FC466B;  /* fallback for old browsers */ */
+/* 	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */ */
+/* 	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ */
+	background: #FC5C7D;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	
 	border: 2px solid #F88080;
 	border-radius: 10px;
-	width:70px;
+	width:100px;
 	height:40px;
 	transition: all 0.4s;
 	color: #ffffff;
@@ -110,7 +113,6 @@
 	height:40px;
 	color: white;
 }
-
 		
 .container-button {
 	margin-top: 15px; 
@@ -124,8 +126,8 @@
 <div class="container">
 <!-- 	<h2 class="text-center">게시글 작성</h2> -->
 <div class="container-top">
-	<div class="FunctionTitle">FREE BOARD Write</div>
-	<div class="FunctionTitleLine">
+	<div class="FunctionTitle" style="margin: 0 auto;">FREE BOARD Write</div>
+	<div class="FunctionTitleLine" style="margin: 0 auto;">
 		<img class="FunctionTilteLine" src="../../../resources/icon/Line.svg">
 	</div>
 </div>
@@ -139,9 +141,6 @@
 						<td class="item">카테고리</td>
 						<td><select name="categoryType" class="categoryType">
 								<option value="free">자유</option>
-								<c:if test="${not empty adminlogin and adminlogin }">
-									<option value="공지">공지</option>
-								</c:if>
 								<option value="qna">질문</option>
 						</select></td>
 						</td>

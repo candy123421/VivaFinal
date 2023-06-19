@@ -36,6 +36,7 @@
 
 .container {
 	width: 1400px;
+	margin-left: 100px;
 }
 
 table {
@@ -54,11 +55,6 @@ th, td {
 
 th {
 	font-size: 19px;
-	/*    background: #9F468F; */
-	/*    background: #710193; */
-	/*    background: #873286; */
-	/*    background: #67127C; */
-	/*     color: white; */
 }
 
 .search_wrap, .filterSelect {
@@ -88,13 +84,25 @@ th {
 	border-radius: 15px;
 }
 
-.btnWrite, .btnSearch {
-	background: #FC466B;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+.btnWrite {
+background: #EDE574;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to left, #E1F5C4, #EDE574);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to left, #E1F5C4, #EDE574); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+	border: 2px solid #ffffff;
+	border-radius: 10px;
+	width:160px;
+	height:40px;
+	transition: all 0.4s;
+	color: black;
+}
+.btnSearch {
+	background: #FC5C7D;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	border: 2px solid #F88080;
 	border-radius: 10px;
-	width:150px;
+	width:120px;
 	height:40px;
 	transition: all 0.4s;
 	color: #ffffff;
@@ -104,25 +112,13 @@ th {
 	outline: none;
 }
 
-.btnWrite:hover, .btnSearch:hover {
-/* 	background: #7F00FF;  /* fallback for old browsers */ 
-/* background: -webkit-linear-gradient(to left, #E100FF, #7F00FF);  /* Chrome 10-25, Safari 5.1-6 */ 
-/* background: linear-gradient(to left, #E100FF, #7F00FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ 
-
-/* background: #3A1C71;  /* fallback for old browsers */ 
-/* background: -webkit-linear-gradient(to left, #FFAF7B, #D76D77, #3A1C71);  /* Chrome 10-25, Safari 5.1-6 */ 
-/* background: linear-gradient(to left, #FFAF7B, #D76D77, #3A1C71); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ 
-			
-/* background: #c0392b;  /* fallback for old browsers */ 
-/* background: -webkit-linear-gradient(to left, #8e44ad, #c0392b);  /* Chrome 10-25, Safari 5.1-6 */ */
-/* background: linear-gradient(to left, #8e44ad, #c0392b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ 
-	
+.btnSearch:hover {
 	background: #FC466B;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	width:70px;
 	height:40px;
-	color: white;
+	color: black;
 }
 
 .container-button {

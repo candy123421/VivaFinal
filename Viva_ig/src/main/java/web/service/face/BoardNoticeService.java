@@ -22,7 +22,7 @@ public interface BoardNoticeService {
 	 * @param keyword - 검색어
 	 * @return 계산이 완료된 Paging객체
 	 */
-	Paging getPaging(Paging paging, String keyword);
+	Paging getPaging(Paging paramData, String keyword);
 
 	/**
 	 * 페이징이 적용된 공지 게시글 목록 조회

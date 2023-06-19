@@ -15,7 +15,7 @@
 	margin: 0 atuo;
 	font-family: "typeFont";
 	src: url('../../resources/font/BalooBhaina2-VariableFont_wght.ttf')
-		text-align: center;
+	text-align: center;
 }
 
 .text-center {

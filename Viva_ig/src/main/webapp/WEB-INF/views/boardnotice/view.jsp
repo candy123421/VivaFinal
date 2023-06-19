@@ -27,8 +27,28 @@
 	margin-bottom: 10px;
 }
 
+.btnList {
+	background: #FC5C7D;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #6A82FB, #FC5C7D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	border: 2px solid #F88080;
+	border-radius: 10px;
+	width:100px;
+	height:40px;
+	transition: all 0.4s;
+	color: white;
+}
 
-.btnList, .btnComment, .btnList, .btnCommentUpdate, .btnCommentDelete {
+.btnList:hover {
+	background: #FC466B;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	width:100px;
+	height:40px;
+	color: white;
+}
+
+.btnComment, .btnCommentUpdate, .btnCommentDelete {
 	background: #FC466B;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -45,7 +65,7 @@
 	background: linear-gradient(to right, #b20a2c, #fffbd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	border: 2px solid #F88080;
 	border-radius: 10px;
-	width:150px;
+	width:100px;
 	height:40px;
 	transition: all 0.4s;
 	color: #ffffff;
@@ -55,11 +75,11 @@
 	outline: none;
 }
 
-.btnList:hover, .btnComment:hover, .btnCommentUpdate:hover, .btnCommentDelete:hover {
+.btnComment:hover, .btnCommentUpdate:hover, .btnCommentDelete:hover {
 	background: #FC466B;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	width:70px;
+	width:100px;
 	height:40px;
 	color: white;
 }
@@ -67,7 +87,7 @@
 	background: #fffbd5;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to right, #b20a2c, #fffbd5);  /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to right, #b20a2c, #fffbd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	width:70px;
+	width:100px;
 	height:40px;
 	color: white;
 }

@@ -92,21 +92,19 @@ th {
 }
 
 .btnSearch {
-	background: #fffbd5;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #b20a2c, #fffbd5);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to right, #b20a2c, #fffbd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	border: 2px solid #F88080;
+	background: white;  /* fallback for old browsers */
+	border: 2px solid grey;
 	border-radius: 10px;
-	width:120px;
+	width:100px;
 	height:40px;
 	transition: all 0.4s;
-	color: #ffffff;
+	color: black;
 }
 .btnSearch:hover {
-	background: #fffbd5;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #b20a2c, #fffbd5);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to right, #b20a2c, #fffbd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	width:150px;
+	background: #FC466B;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	width:100px;
 	height:40px;
 	color: white;
 }
@@ -117,7 +115,7 @@ th {
 
 .paging {
 	width: 1400px;
-	margin: 0 auto;
+	margin-top: 30px;
 	text-align: -webkit-center;
 }
 
@@ -143,22 +141,7 @@ th {
 	</div>
 </form>
 
-	
-<%-- 	<form action="./list?keyword=${keyword}" method="get" name="searchForm"> --%>
-<!-- 		<div class="search_wrap"> -->
-<!-- 			<div class="search_area" style="padding-right:10px"> -->
-<!-- 				<select class="searchType" id="searchType"> -->
-<!-- 					<option>제목</option> -->
-<!-- 				</select> -->
-<!-- 			</div> -->
-<!-- 			<div class="search" style="padding-right:10px"> -->
-<!-- 				<input type="text" class="keyword" name="keyword" id="keyword" placeholder="검색어를 입력하세요"> -->
-<!-- 				<button class="btnSearch" id="btnSearch">검색</button> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</form> -->
 <!--------------- 검색 끝 --------------->
-
 
 <div class=container-table>
 	<table>
@@ -201,31 +184,22 @@ th {
 <div class="float-end mb-3" style="display: block;">total : <span id="totalCount">${paging.totalCount}</span></div>
 
  	<!---------- 버튼 ---------->
-	<div class="btnList">
+	<div class="btnList" style="margin-top: 10px;">
 	    <c:choose>
-	        <c:when test="${empty adminlogin}">
-	            <a href="/viva/login"><button type="button" name="btnWrite" class="btnWrite">게시글 작성하기</button></a>
-	        </c:when>
 	        <c:when test="${not empty adminlogin and adminlogin}">
-	            <button id="btnDelete" name="btnDelete" class="btn btn-danger">선택 삭제</button>
+	            <button id="btnDelete" name="btnDelete" class="btn btn-danger" style="width:120px;"">선택 삭제</button>
+	            <a href="/viva/login"><button type="button" name="btnWrite" class="btn btn-danger">게시글 작성하기</button></a>
 	        </c:when>
 	    </c:choose>
 	</div>
 
 <!-- 게시글 작성하기 -->
-<c:choose>
-    <c:when test="${not empty adminlogin and adminlogin}">
-        <div class="float-end" style="padding-top: 10px;">
-            <a href="./write"><button type="button" id="btnWrite" name="btnWrite" class="btn btn-danger">게시글 작성하기</button></a>
-        </div>
-    </c:when>
-</c:choose>
 	
 	
 </form>
 </div>
 </div>
 
-<c:import url="/WEB-INF/views/layout/paging.jsp"/>
+<c:import url="/WEB-INF/views/layout/boardnoticepaging.jsp"/>
 
 <c:import url="/WEB-INF/views/layout/footer.jsp" />

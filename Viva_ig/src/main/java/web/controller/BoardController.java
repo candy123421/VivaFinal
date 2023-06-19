@@ -271,7 +271,10 @@ public class BoardController {
       //댓글 조회
       int boardNo = viewBoard.getBoardNo();
       
+
+   
       List<Map<String,Object>> commentList = boardService.viewComment(comments);
+
       model.addAttribute("commentList", commentList);
       
       return commentList;

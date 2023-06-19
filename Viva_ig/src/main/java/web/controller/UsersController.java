@@ -430,7 +430,7 @@ public class UsersController {
 		logger.info("userInfo:{}", userInfo);
 		
 		model.addAttribute("userInfo",userInfo);
-		
+		session.setAttribute("grade", userInfo.getUserGrade());
 		session.getAttribute("userProfile");
 	}
 	

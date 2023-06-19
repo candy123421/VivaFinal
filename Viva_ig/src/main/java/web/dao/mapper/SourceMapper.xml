@@ -163,11 +163,12 @@
   	</select>
   	
 	<select id="selectPackForSound" resultType="hashmap">
-		SELECT p.pack_no, p.pack_name, pmg.pack_img_storedname
-		FROM pack p 
-		INNER JOIN packimginfo pmg on pmg.pack_no = p.pack_no
-		where rownum<![CDATA[<=]]>10
-		order by p.pack_no desc
+		SELECT * FROM (
+			SELECT p.pack_no, p.pack_name, pmg.pack_img_storedname
+			FROM pack p 
+			INNER JOIN packimginfo pmg on pmg.pack_no = p.pack_no
+			order by p.pack_no desc) B
+		where rownum <![CDATA[<=]]> 10
 	</select>  	
   	
   	

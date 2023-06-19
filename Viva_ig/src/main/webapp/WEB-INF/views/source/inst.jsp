@@ -691,7 +691,7 @@ div[data-itemtype='line']{
 				  	, dataType :"json"
 				  	, success : function(res) {
 				  		console.log("장바구니 ajax 성공")
-				  		if(res.result == true) {
+				  		if(res == true) {
 				  			
 				  			$(".cartmsg").eq(cidx).text('Get Source!')
 					  		$(".cartmsg").eq(cidx).css("display","block")
@@ -710,7 +710,7 @@ div[data-itemtype='line']{
 				  		
 				  		$(".cartmsg").eq(cidx).fadeOut(1000)
 				  		
-				  	, error : function(res) {
+				  	}, error : function(res) {
 				  		console.log("장바구니 ajax 실패")
 				  		
 					  		$(".cartmsg").eq(cidx).css("display","block")

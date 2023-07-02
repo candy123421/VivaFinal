@@ -33,13 +33,23 @@
 </div><br>
 <div align="center"> 
 	<p>✨ Api/Library ✨</p>
-	<img src="https://img.shields.io/badge/json-000000?style=flat&logo=json&logoColor=white" />
-	<img src="https://img.shields.io/badge/kakao_api-FFCD00?style=flat&logo=kakao_api&logoColor=white" />
+	<img src="https://img.shields.io/badge/JSON-000000?style=flat&logo=JSON&logoColor=white" />
+	<img src="https://img.shields.io/badge/KAKAO_API-FFCD00?style=flat&logo=KAKAO_API&logoColor=white" />
+ 	<img src="https://img.shields.io/badge/NAVER_SMARTEDITOR-03C75A?style=flat&logo=NAVER_SMARTEDITOR&logoColor=white" />
+ 	<img src="https://img.shields.io/badge/WAVESURFER_JS-1B365D?style=flat&logo=WAVESURFER_JS&logoColor=white" />
+   	<img src="https://img.shields.io/badge/TOSSPAYMENTS-000000?style=flat&logo=TOSSPAYMENTS&logoColor=white" />
+       	<img src="https://img.shields.io/badge/JAVAX_MAIL[SMTP]-EA4335?style=flat&logo=JAVAX_MAIL[SMTP]&logoColor=white" />
+       	<img src="https://img.shields.io/badge/TAGIFY-FF6D70?style=flat&logo=TAGIFY&logoColor=white" />
+	
+
+
+
 
 </div><br>
 <div align="center"> 
 	<p>✨ .etc ✨</p>
- 	
+ 	<img src="https://img.shields.io/badge/starUML-00B67A?style=flat&logo=starUML&logoColor=white" />
+
 </div>
 
 <h2>DB Modeling</h2>

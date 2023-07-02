@@ -16,8 +16,8 @@
 	<img src="https://img.shields.io/badge/oracle-F80000?style=flat&logo=oracle&logoColor=white"/>
 	<img src="https://img.shields.io/badge/apachetomcat-F8DC75?style=flat&logo=ApacheTomcat&logoColor=white" />
 	<img src="https://img.shields.io/badge/spring-6DB33F?style=flat&logo=spring&logoColor=white" />
-	<br>
-	
+</div><br>
+<div align="center">	
 	<p>✨ Front-end ✨</p>
 	<img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=HTML5&logoColor=white" />
 	<img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white" />
@@ -25,17 +25,17 @@
 	<img src="https://img.shields.io/badge/jQuery-0769AD?style=flat&logo=jQuery&logoColor=white" />
 	<img src="https://img.shields.io/badge/Ajax-3178C6?style=flat&logo=Ajax&logoColor=white"/> 
 	<img src="https://img.shields.io/badge/Bootstrap-7952B3?style=flat&logo=Bootstrap&logoColor=white" />
-	<br>
- 
+</div><br>
+<div align="center"> 
 	<p>✨ Tools ✨</p>
  	<img src="https://img.shields.io/badge/windows-0078D6?style=flat&logo=windows&logoColor=white" />
  	<img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white" />
-	<br>
- 
+</div><br>
+<div align="center"> 
 	<p>✨ Api/Library ✨</p>
 	<img src="https://img.shields.io/badge/json-000000?style=flat&logo=json&logoColor=white" />
-	<br>
- 
+</div><br>
+<div align="center"> 
 	<p>✨ .etc ✨</p>
  	
 </div>

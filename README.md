@@ -43,7 +43,7 @@
 <p>https://www.erdcloud.com/d/qhLzPBPH4mST7uwi3</p>
 <br>
 <h2>개요 및 기능 구현</h2>
-<a href="https://www.notion.so/5abb3a53809e4a9688ab67ead060de7d?v=f9b78162f19647a580633b14c8cf2135">개요 및 기능 구현(Notion)</a>
+<a href="https://pacific-dimple-9f0.notion.site/5abb3a53809e4a9688ab67ead060de7d?v=f9b78162f19647a580633b14c8cf2135&pvs=4">개요 및 기능 구현(Notion)</a>
 	
 <br><br>
 <h2>담당 역할</h2>

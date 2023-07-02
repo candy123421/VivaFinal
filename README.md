@@ -8,10 +8,10 @@
 
 <div align=center>
 	<h3>📚 Tech Stack 📚</h3>
-	<p>✨ Platforms & Languages ✨</p>
 </div>
 
 <div align="center">
+	<p>✨ Back-end ✨</p>
 	<img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Conda-Forge&logoColor=white" />
 	<img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=HTML5&logoColor=white" />
 	<img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white" />
@@ -19,9 +19,20 @@
 	<img src="https://img.shields.io/badge/jQuery-0769AD?style=flat&logo=jQuery&logoColor=white" />
 	<img src="https://img.shields.io/badge/Ajax-3178C6?style=flat&logo=Ajax&logoColor=white"/> 
 	<br>
+	<p>✨ Front-end ✨</p>
 	<img src="https://img.shields.io/badge/Bootstrap-7952B3?style=flat&logo=Bootstrap&logoColor=white" />
 	<img src="https://img.shields.io/badge/json-000000?style=flat&logo=json&logoColor=white" />
 	<img src="https://img.shields.io/badge/oracle-F80000?style=flat&logo=oracle&logoColor=white"/>
+	<br>
+	<p>✨ Tools ✨</p>
+ 	<img src="https://img.shields.io/badge/windows-0078D6?style=flat&logo=windows&logoColor=white" />
+ 	<img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white" />
+	<br>
+	<p>✨ Api/Library ✨</p>
+	
+	<br>
+	<p>✨ .etc ✨</p>
+ 	
 </div>
 <br>
 <div align=center>

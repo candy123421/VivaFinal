@@ -32,7 +32,7 @@
  	<img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white" />
 </div><br>
 <div align="center"> 
-	<p>✨ Api/Library ✨</p>
+	<p>✨ API ✨</p>
 	<img src="https://img.shields.io/badge/JSON-000000?style=flat&logo=JSON&logoColor=white" />
 	<img src="https://img.shields.io/badge/KAKAO_API-FFCD00?style=flat&logo=KAKAO_API&logoColor=white" />
  	<img src="https://img.shields.io/badge/NAVER_SMARTEDITOR-03C75A?style=flat&logo=NAVER_SMARTEDITOR&logoColor=white" />

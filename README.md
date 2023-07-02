@@ -8,7 +8,7 @@
 
 <div align=center>
 	<h3>📚 Tech Stack 📚</h3>
-</div>
+</div><br>
 
 <div align="center">
 	<p>✨ Back-end ✨</p>
@@ -34,12 +34,13 @@
 <div align="center"> 
 	<p>✨ Api/Library ✨</p>
 	<img src="https://img.shields.io/badge/json-000000?style=flat&logo=json&logoColor=white" />
+	<img src="https://img.shields.io/badge/kakao_api-FFCD00?style=flat&logo=kakao_api&logoColor=white" />
+
 </div><br>
 <div align="center"> 
 	<p>✨ .etc ✨</p>
  	
 </div>
-<br>
 
 <h2>DB Modeling</h2>
 <img src="https://github.com/gami03/new_semi_project/assets/128332485/4ffe22ee-51af-4496-b126-004b5eb99313" />

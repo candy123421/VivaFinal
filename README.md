@@ -40,16 +40,11 @@
    	<img src="https://img.shields.io/badge/TOSSPAYMENTS-000000?style=flat&logo=TOSSPAYMENTS&logoColor=white" />
        	<img src="https://img.shields.io/badge/JAVAX_MAIL[SMTP]-EA4335?style=flat&logo=JAVAX_MAIL[SMTP]&logoColor=white" />
        	<img src="https://img.shields.io/badge/TAGIFY-FF6D70?style=flat&logo=TAGIFY&logoColor=white" />
-	
-
-
-
-
 </div><br>
 <div align="center"> 
 	<p>✨ .etc ✨</p>
  	<img src="https://img.shields.io/badge/starUML-00B67A?style=flat&logo=starUML&logoColor=white" />
-
+   	<img src="https://img.shields.io/badge/ERD-2C39BD?style=flat&logo=ERD&logoColor=white" />
 </div>
 
 <h2>DB Modeling</h2>

@@ -48,7 +48,7 @@
 </div>
 <div align="center"> 
 <h2>DB Modeling</h2>
-<img src="https://github.com/gami03/new_semi_project/assets/128332485/4ffe22ee-51af-4496-b126-004b5eb99313" />
+<img src="https://github.com/candy123421/VivaFinal/blob/main/ERD_All_Table.png" />
 <p>https://www.erdcloud.com/d/qhLzPBPH4mST7uwi3</p>
 </div><br>
 

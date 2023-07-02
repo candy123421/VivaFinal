@@ -1,7 +1,6 @@
 
 <h2 align=center>VivaFinal[음원소스 공유사이트]</h2>
 <div align=center>
-	<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Garlic%20Action!&fontSize=90" />	
 	<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Viva&fontSize=90" />
 
 <b>국내 음원 Source를 구매, 공유하는 사이트</b>는 커뮤니티 위주로 소규모 네트워크에 그 수도 현저히 부족합니다.<br> 이에 간편하고 직관적인 UI를 통해 원하는 음원 Sample을 쉽게 다운로드하고, 공유하며, 게시판을 통해 커뮤니티를 구성할 수 있는 서비스를 제공합니다.<br> 또한, 자신이 만든 음원 Source로 서비스 내에서의 수익 창출을 할 수 있도록 유도하는 사이트입니다.
@@ -21,6 +20,7 @@
 	<img src="https://img.shields.io/badge/Ajax-3178C6?style=flat&logo=Ajax&logoColor=white"/> 
 	<br>
 	<img src="https://img.shields.io/badge/Bootstrap-7952B3?style=flat&logo=Bootstrap&logoColor=white" />
+	<img src="https://img.shields.io/badge/json-#000000?style=flat&logo=json&logoColor=white" />
 	<img src="https://img.shields.io/badge/oracle-#F80000?style=flat&logo=oracle&logoColor=white"/>
 </div>
 <br>
@@ -29,12 +29,11 @@
 </div>
 <div align=center>
 	
-	<img src="https://img.shields.io/badge/Eclipse-2C2255?style=flat&logo=EclipseIDE&logoColor=white" />
-	<img src="https://img.shields.io/badge/Visual%20Studio%20Code-007ACC?style=flat&logo=VisualStudioCode&logoColor=white" />
+	<img src="https://img.shields.io/badge/spring-#6DB33F?style=flat&logo=spring&logoColor=white" />
 	<br>
-	<img src="https://img.shields.io/badge/Tomcat-F8DC75?style=flat&logo=ApacheTomcat&logoColor=white" />
+	<img src="https://img.shields.io/badge/apachetomcat-F8DC75?style=flat&logo=ApacheTomcat&logoColor=white" />
 	<img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white" />
-	<img src="https://img.shields.io/badge/Oracle-4479A1?style=flat&logo=MySQL&logoColor=white" />
+	<img src="https://img.shields.io/badge/oracle-#F80000?style=flat&logo=oracle&logoColor=white"/>
 </div>
 <br>
 <div align=center>

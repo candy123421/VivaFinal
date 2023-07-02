@@ -43,11 +43,11 @@
 <p>https://www.erdcloud.com/d/qhLzPBPH4mST7uwi3</p>
 <br>
 <h2>개요 및 기능 구현</h2>
-<a href="https://apricot-smile-640.notion.site/c7ae2e1857474ebcba96c6b3815c9a29?v=1d7e43401f2e4cf5b33844effe60a715&pvs=4">개요 및 기능 구현(Notion)</a>
+<a href="https://www.notion.so/5abb3a53809e4a9688ab67ead060de7d?v=f9b78162f19647a580633b14c8cf2135">개요 및 기능 구현(Notion)</a>
 	
 <br><br>
 <h2>담당 역할</h2>
-	로그인, 로그아웃 ,아이디 찾기, 비밀번호 찾기<br>회원가입, 마이페이지, 프로젝트 인터셉터 설정
+	로그인, 로그아웃 ,아이디 찾기, 비밀번호 찾기,<br>회원가입, 마이페이지, 프로젝트 인터셉터 설정
 <br><br>
 
 <h2>프로젝트 참여소감</h2>
@@ -59,9 +59,9 @@
 <table>
     <tr>
         <td align="center"><a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/Rivershot"><img src="https://avatars.githubusercontent.com/u/128332735?v=4" width="400px" alt="JB9216" style="max-width: 100%;"></a></td>
-        <td align="center"><a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/eneinp"><img src="https://avatars.githubusercontent.com/u/121911273?v=4" width="400px" alt="eneinp" style="max-width: 100%;"></a></td>
-        <td align="center"><a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/gami03"><img src="https://avatars.githubusercontent.com/u/128332485?v=4" width="400px" alt="gami03" style="max-width: 100%;"></a></td>
-        <td align="center"><a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/HaHuRyu"><img src="https://avatars.githubusercontent.com/u/115006836?v=4" width="400px" alt="HaHuRyu" style="max-width: 100%;"></a></td>
+        <td align="center"><a target="_blank" rel="noopener noreferrer nofollow" href=""><img src="https://avatars.githubusercontent.com/u/121911273?v=4" width="400px" alt="eneinp" style="max-width: 100%;"></a></td>
+        <td align="center"><a target="_blank" rel="noopener noreferrer nofollow" href=""><img src="https://avatars.githubusercontent.com/u/128332485?v=4" width="400px" alt="gami03" style="max-width: 100%;"></a></td>
+        <td align="center"><a target="_blank" rel="noopener noreferrer nofollow" href=""><img src="https://avatars.githubusercontent.com/u/115006836?v=4" width="400px" alt="HaHuRyu" style="max-width: 100%;"></a></td>
     </tr>
     <tr>
         <td align="center"><a href="https://github.com/JB9216">박채원</a></td>

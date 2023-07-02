@@ -20,7 +20,7 @@
 	<img src="https://img.shields.io/badge/Ajax-3178C6?style=flat&logo=Ajax&logoColor=white"/> 
 	<br>
 	<img src="https://img.shields.io/badge/Bootstrap-7952B3?style=flat&logo=Bootstrap&logoColor=white" />
-	< <img src="https://img.shields.io/badge/Oracle-#F80000?style=flat&logo=Oracle&logoColor=white"/>
+	<img src="https://img.shields.io/badge/Oracle-#F80000?style=flat&logo=Oracle&logoColor=white"/>
 </div>
 <br>
 <div align=center>

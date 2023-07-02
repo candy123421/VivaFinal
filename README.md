@@ -46,25 +46,29 @@
  	<img src="https://img.shields.io/badge/starUML-00B67A?style=flat&logo=starUML&logoColor=white" />
    	<img src="https://img.shields.io/badge/ERD-2C39BD?style=flat&logo=ERD&logoColor=white" />
 </div>
-
+<div align="center"> 
 <h2>DB Modeling</h2>
 <img src="https://github.com/gami03/new_semi_project/assets/128332485/4ffe22ee-51af-4496-b126-004b5eb99313" />
 <p>https://www.erdcloud.com/d/qhLzPBPH4mST7uwi3</p>
-<br>
+</div><br>
 
+<div align="center"> 
 <h2>개요 및 기능 구현</h2>
 <a href="https://pacific-dimple-9f0.notion.site/5abb3a53809e4a9688ab67ead060de7d?v=f9b78162f19647a580633b14c8cf2135&pvs=4">개요 및 기능 구현(Notion)</a>
-<br><br>
+</div><br><br>
 
+<div align="center"> 
 <h2>담당 역할</h2>
 	로그인, 로그아웃 ,아이디 찾기, 비밀번호 찾기,<br>회원가입, 마이페이지, 프로젝트 인터셉터 설정
-<br><br>
+</div><br><br>
 
+<div align="center"> 
 <h2>프로젝트 참여소감</h2>
 	팀원 개개인이 서로 각자 맡은 파트의 프로젝트를 열정적으로 하는 모습을 보고<br>책임감이 생겼고 많은 자극이 되었습니다. <br>
  	이번 프로젝트 외에도 따로 팀원을 모아 맡지 않은 파트 또는 부족한 부분을 <br>채워 나가기 위해 프로젝트를 추가적으로 할 생각입니다. 
-<br><br>
+</div><br><br>
 
+<div align="center"> 
 <h2>팀원</h2>
 <table>
     <tr>
@@ -80,4 +84,4 @@
         <td align="center"><a href="https://github.com/HaHuRyu">김우정</a></td>
     </tr>
 </table>
- <br>
+</div><br>

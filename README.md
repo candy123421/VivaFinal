@@ -20,26 +20,27 @@
 	<img src="https://img.shields.io/badge/Ajax-3178C6?style=flat&logo=Ajax&logoColor=white"/> 
 	<br>
 	<img src="https://img.shields.io/badge/Bootstrap-7952B3?style=flat&logo=Bootstrap&logoColor=white" />
-	<img src="https://img.shields.io/badge/Oracle-003545?style=flat&logo=MariaDB&logoColor=white" />
+	< <img src="https://img.shields.io/badge/Oracle-#F80000?style=flat&logo=Oracle&logoColor=white"/>
 </div>
 <br>
 <div align=center>
 	<p>🛠 Tools 🛠</p>
 </div>
 <div align=center>
+	
 	<img src="https://img.shields.io/badge/Eclipse-2C2255?style=flat&logo=EclipseIDE&logoColor=white" />
 	<img src="https://img.shields.io/badge/Visual%20Studio%20Code-007ACC?style=flat&logo=VisualStudioCode&logoColor=white" />
 	<br>
 	<img src="https://img.shields.io/badge/Tomcat-F8DC75?style=flat&logo=ApacheTomcat&logoColor=white" />
 	<img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white" />
-	<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white" />
+	<img src="https://img.shields.io/badge/Oracle-4479A1?style=flat&logo=MySQL&logoColor=white" />
 </div>
 <br>
 <div align=center>
 <br>
 <h2>DB Modeling</h2>
 <img src="https://github.com/gami03/new_semi_project/assets/128332485/4ffe22ee-51af-4496-b126-004b5eb99313" />
-<p>https://www.erdcloud.com/d/fNz3AdX3oGx8GDvP7</p>
+<p>https://www.erdcloud.com/d/qhLzPBPH4mST7uwi3</p>
 <br>
 <h2>개요 및 기능 구현</h2>
 <a href="https://apricot-smile-640.notion.site/c7ae2e1857474ebcba96c6b3815c9a29?v=1d7e43401f2e4cf5b33844effe60a715&pvs=4">개요 및 기능 구현(Notion)</a>

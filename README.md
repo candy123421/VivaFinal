@@ -46,14 +46,8 @@
 <a href="https://apricot-smile-640.notion.site/c7ae2e1857474ebcba96c6b3815c9a29?v=1d7e43401f2e4cf5b33844effe60a715&pvs=4">개요 및 기능 구현(Notion)</a>
 	
 <br>
-<h2>아쉬운 점</h2>
-	브런치와 커밋명이 체계적으로 관리되지 않아 해석하기 어려웠으며, 
-	<br>
-	다양한 쿼리문을 활용하지 못해 자바에서 데이터 처리가 이루어져 성능 저하가 발생한 점이 아쉬웠습니다. 
-	<br>
-	이러한 문제를 개선하기 위해 브런치와 커밋 명명 규칙을 명확히 정하고, 
-	<br>
-	적절한 쿼리문을 사용하여 데이터 처리를 최적화하는 방향으로 개선하면 더 좋은 결과물이 나왔을거 같은 아쉬움이 있습니다.
+<h2>담당 역할</h2>
+	로그인, 로그아웃 ,아이디 찾기, 비밀번호 찾기<br>회원가입, 마이페이지, 프로젝트 인터셉터 설정
 <br>
 <h2>팀원</h2>
 <table>
@@ -64,10 +58,10 @@
         <td align="center"><a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/HaHuRyu"><img src="https://avatars.githubusercontent.com/u/115006836?v=4" width="400px" alt="HaHuRyu" style="max-width: 100%;"></a></td>
     </tr>
     <tr>
-        <td align="center"><a href="https://github.com/JB9216">김정빈</a></td>
-        <td align="center"><a href="https://github.com/eneinp">남주희</a></td>
-        <td align="center"><a href="https://github.com/gami03">윤보감</a></td>
-        <td align="center"><a href="https://github.com/HaHuRyu">이정희</a></td>
+        <td align="center"><a href="https://github.com/JB9216">박채원</a></td>
+        <td align="center"><a href="https://github.com/eneinp">이보현</a></td>
+        <td align="center"><a href="https://github.com/gami03">황지선</a></td>
+        <td align="center"><a href="https://github.com/HaHuRyu">김우정</a></td>
     </tr>
 </table>
  <br>

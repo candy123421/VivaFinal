@@ -13,50 +13,42 @@
 <div align="center">
 	<p>✨ Back-end ✨</p>
 	<img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Conda-Forge&logoColor=white" />
+	<img src="https://img.shields.io/badge/oracle-F80000?style=flat&logo=oracle&logoColor=white"/>
+	<img src="https://img.shields.io/badge/apachetomcat-F8DC75?style=flat&logo=ApacheTomcat&logoColor=white" />
+	<img src="https://img.shields.io/badge/spring-6DB33F?style=flat&logo=spring&logoColor=white" />
+	<img src="https://img.shields.io/badge/spring-6DB33F?style=flat&logo=spring&logoColor=white" />
+
+	<br>
+	<p>✨ Front-end ✨</p>
 	<img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=HTML5&logoColor=white" />
 	<img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white" />
 	<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white" />
 	<img src="https://img.shields.io/badge/jQuery-0769AD?style=flat&logo=jQuery&logoColor=white" />
 	<img src="https://img.shields.io/badge/Ajax-3178C6?style=flat&logo=Ajax&logoColor=white"/> 
-	<br>
-	<p>✨ Front-end ✨</p>
 	<img src="https://img.shields.io/badge/Bootstrap-7952B3?style=flat&logo=Bootstrap&logoColor=white" />
-	<img src="https://img.shields.io/badge/json-000000?style=flat&logo=json&logoColor=white" />
-	<img src="https://img.shields.io/badge/oracle-F80000?style=flat&logo=oracle&logoColor=white"/>
+	
 	<br>
 	<p>✨ Tools ✨</p>
  	<img src="https://img.shields.io/badge/windows-0078D6?style=flat&logo=windows&logoColor=white" />
  	<img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white" />
 	<br>
 	<p>✨ Api/Library ✨</p>
-	
+	<img src="https://img.shields.io/badge/json-000000?style=flat&logo=json&logoColor=white" />
 	<br>
 	<p>✨ .etc ✨</p>
  	
 </div>
 <br>
-<div align=center>
-	<p>🛠 Tools 🛠</p>
-</div>
-<div align=center>
-	<img src="https://img.shields.io/badge/spring-6DB33F?style=flat&logo=spring&logoColor=white" />
-	<br>
-	<img src="https://img.shields.io/badge/apachetomcat-F8DC75?style=flat&logo=ApacheTomcat&logoColor=white" />
-	<img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white" />
-	<img src="https://img.shields.io/badge/oracle-F80000?style=flat&logo=oracle&logoColor=white"/>
-</div>
 
-<br>
-<div align=center>
-<br>
 <h2>DB Modeling</h2>
 <img src="https://github.com/gami03/new_semi_project/assets/128332485/4ffe22ee-51af-4496-b126-004b5eb99313" />
 <p>https://www.erdcloud.com/d/qhLzPBPH4mST7uwi3</p>
 <br>
+
 <h2>개요 및 기능 구현</h2>
 <a href="https://pacific-dimple-9f0.notion.site/5abb3a53809e4a9688ab67ead060de7d?v=f9b78162f19647a580633b14c8cf2135&pvs=4">개요 및 기능 구현(Notion)</a>
-	
 <br><br>
+
 <h2>담당 역할</h2>
 	로그인, 로그아웃 ,아이디 찾기, 비밀번호 찾기,<br>회원가입, 마이페이지, 프로젝트 인터셉터 설정
 <br><br>
